@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8">
+      <title>Edit User</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      
+   </head>
+   <body>
+ 
+ 	  <!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+      <h3>Edit Product</h3>
+ 	  
+         <form id=edit_user method="POST" th:action="@{editUser}" onsubmit="return userForm('edit_user');">
+         <p class="error" style="color: red;" th:text="${errorString}"></p>
+            <input type="hidden" class="userid" name="userid" th:value="${useracc.userid}" />
+            <table border="0">
+               <tr>
+                  <td>UserCode</td>
+                  
+                  <td><input type="text" class="usercode" name="usercode" th:value="${useracc.usercode}" onkeyup="userCode('edit_user');"/>
+                   <td class="usercode_status"></td>
+                   <td style="visibility:hidden;" class="usercode_flag" th:text="true"></td>
+               </tr>
+               <tr>
+                  <td>UserName</td>
+                  
+                  <td><input type="text" class="username" name="username" th:value="${useracc.username}" onkeyup="userName('edit_user');"/></td>
+                  <td class="username_status"></td>
+                  <td style="visibility:hidden;" class="username_flag" th:text="true"></td>
+               </tr>
+               <tr>
+	               <td>User Role</td>
+	               <td>
+		           <select name="userrole">
+	               	   <option value="0">Select User Role</option>
+	               	   <option th:each="list: ${approles}" th:selected="${list.isSelected(userrole.roleid)}" th:value="${list.roleid}" th:text="${list.rolename}">
+	               </select>
+	               </td>
+               </tr>
+	            <tr>
+	               <td>Organization</td>
+	               <td>
+	               <select name="orgid" onchange="department_select('edit_user', this.value);">
+	               	   <option value="0">Select Organization</option>
+		               <option th:each="list: ${orgs}" th:selected="${list.isSelected(useracc.orgid)}" th:value="${list.orgid}" th:text="${list.orgname}" ></option>
+	               </select></td>
+				   <td class="org_status"></td>
+	            </tr>
+	            <tr id="row_dept">
+	            	<td>Department</td>
+	            	<td><select name="deptid" class="dept_select" onchange="subdepartment_select('edit_user', this.value);">
+		            	<option value="0">Select Department</option>
+		            	<option th:each="list: ${depts}" th:selected="${list.isSelected(useracc.deptid)}" th:value="${list.deptid}" th:text="${list.deptname}" ></option>
+	            	</select></td>
+	            </tr>
+	            <tr>
+	            	<td>Sub Department</td>
+	            	<td><select name="subdeptid" class="subdept_select">
+		            	<option value="0">Select Sub Department</option>
+		            	<option th:each="list: ${subdepts}" th:selected="${list.isSelected(useracc.subdeptid)}" th:value="${list.subdeptid}" th:text="${list.subdeptname}" ></option>
+	            	</select></td>
+	            </tr>
+               <tr>
+                  <td colspan = "2">
+                      <input type="submit" value="Submit" />
+<!--                       <a th:href="@{productList}">Cancel</a> -->
+                  </td>
+               </tr>
+            </table>
+         </form>
+         <script src="../js/validation.js"></script>
+   </body>
+</html>

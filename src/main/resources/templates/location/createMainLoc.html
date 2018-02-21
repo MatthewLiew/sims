@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8">
+      <title>Create Main Location</title>
+      
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      
+   </head>
+   <body>
+      
+      <!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+      <h3>Create Main Location</h3>
+
+	 
+      <form id="create_mainloc" method="POST" th:action="@{createMainLoc}"  onsubmit="return mainlocForm('create_mainloc');">
+      <p class="error" style="color: red;" th:text="${errorString}" ></p>
+      <input type="hidden" class="mainlocid" name="mainlocid" th:value="${mainlocid}" />
+         <table th:border="0">
+            <tr>
+               <td>Main Location Name</td>
+               
+               <td><input type="text" class="mainlocname" name="mainlocname" th:value="${mainlocname}" onkeyup="mainlocName('create_mainloc');"/></td>
+			   <td class="mainlocname_status"></td>
+			   <td style="visibility:hidden;" class="mainlocname_flag" th:text="true"></td>
+            </tr>
+            <tr>
+               <td colspan="2">                   
+                <input type="submit" value="Submit" />
+               </td>
+            </tr>  
+         </table>
+      </form>
+
+     <script src="../js/validation.js"></script>
+   </body>
+</html>

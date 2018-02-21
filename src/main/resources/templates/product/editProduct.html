@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8">
+      <title>Edit Product</title>
+      
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      
+   </head>
+   <body>
+      
+      <!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+      <h3>Edit Product</h3>
+
+      <form id="edit_product" method="POST" th:action="@{editProduct}" onsubmit="return productForm('edit_product');">
+      <p class="error" style="color: red;" th:text="${errorString}" ></p>
+      <input type="hidden" class="productid "name="productid" th:value="${product.productid}" />
+         <table th:border="0">
+            <tr>
+               <td>Product Code</td>
+               <td><input type="text" class="productcode" name="productcode" th:value="${product.productcode}" onkeyup="productCode('edit_product');"/></td>
+			   <td class="productcode_status"></td>
+			   <td style="visibility:hidden;" class="productcode_flag" th:text="true"></td>
+            </tr>
+            <tr>
+               <td>Product Name</td>
+               <td><input type="text" class="productname" name="productname" th:value="${product.productname}" onkeyup="productName('edit_product');" /></td>
+			   <td class="productname_status"></td>
+			   <td style="visibility:hidden;" class="productname_flag" th:text="true"></td>
+            </tr>
+            <tr>
+               <td>Brand</td>
+               <td>
+	               <select name="brandid">
+	               	   <option value="0">Select Brand</option>
+	               	   <option th:each="list: ${brands}" th:selected="${list.isBrand(product.brandid)}" th:value="${list.brandid}" th:text="${list.brandname}">
+	               </select>
+               </td>
+            </tr>
+            <tr>
+               <td>Hardware</td>
+               <td>
+               <select name="hardwareid">
+               	   <option value="0">Select Hardware</option>
+	               <option th:each="list: ${hardwares}" th:selected="${list.isHardware(product.hardwareid)}" th:value="${list.hardwareid}" th:text="${list.hardwaretype}"></option>
+               </select></td>
+			   <td class="org_status"></td>
+            </tr>
+<!--             <tr > -->
+<!--             	<td>Part No</td> -->
+<!--             	<td><select name="partnoid"> -->
+<!-- 	            	<option value="0">Select Part No</option> -->
+<!-- 	            	<option th:each="list: ${partnos}" th:selected="${list.isPartNo(product.partnoid)}" th:value="${list.partnoid}" th:text="${list.partnocode}"></option> -->
+<!--             	</select></td> -->
+<!--             </tr> -->
+            <tr>
+               <td>Low Balance Threshold</td>
+               <td><input type="text" class="lbvalue" name="lbvalue" th:value="${product.lbvalue}" onkeyup="productLBValue('edit_product');" /></td>
+			   <td class="lbvalue_status"></td>
+			   <td style="visibility:hidden;" class="lbvalue_flag" th:text="true"></td>
+            </tr>
+            <tr>
+               <td colspan="2">                   
+                <input type="submit" value="Submit" />
+               </td>
+            </tr>
+            
+         </table>
+      </form>
+	<script src="../js/validation.js"></script>
+   </body>
+</html>

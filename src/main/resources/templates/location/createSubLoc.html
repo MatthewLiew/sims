@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8">
+      <title>Create Sub Location</title>
+      
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      
+   </head>
+   <body>
+      
+      <!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+      <h3>Create Sub Location</h3>
+
+      <form id="create_subloc" method="POST" th:action="@{createSubLoc}"  onsubmit="return sublocForm('create_subloc');">
+      <p class="error" style="color: red;" th:text="${errorString}" ></p>
+      <input type="hidden" class="sublocid" name="sublocid" th:value="${sublocid}" />
+         <table th:border="0">
+         
+         	<tr>
+               <td>Main Location</td>
+               <td>
+               <select name="mainlocid" >
+               	   <option value="0">Select Main Location</option>
+	               <option th:each="list: ${mainlocs}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option>
+               </select></td>
+<!-- 			   <td class="mainloc_status"></td> -->
+            </tr>
+            <tr>
+               <td>Sub Location Name</td>
+              
+               <td><input type="text" class="sublocname" name="sublocname" th:value="${sublocname}" onkeyup="sublocName('create_subloc');" /></td>
+			   <td class="sublocname_status"></td>
+			   <td style="visibility:hidden;" class="sublocname_flag" th:text="true"></td>
+            </tr>       
+            <tr>
+               <td colspan="2">                   
+                <input type="submit" value="Submit" />
+               </td>
+            </tr>  
+         </table>
+      </form>
+
+     <script src="../js/validation.js"></script>
+   </body>
+</html>

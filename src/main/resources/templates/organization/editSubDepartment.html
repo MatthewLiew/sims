@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8">
+      <title>Edit Sub Department</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="../js/validation.js"></script>
+   </head>
+   <body>
+ 
+ 	  <!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+      <h3>Edit Sub Department</h3>
+ 	  
+         <form id="edit_subdept" method="POST" th:action="@{editSubDepartment}" onsubmit="return subdeptForm('edit_subdept');">
+         <p class="error" style="color: red;" th:text="${errorString}"></p>
+            <input type="hidden" class="subdeptid" name="subdeptid" th:value="${subdept.subdeptid}" />
+            <table border="0">
+            	<tr>
+            	<td>Organization</td>
+            	<input type="hidden" name="orgid" th:value="${org.orgid}" />
+            	<td th:text=${org.orgname}></td>
+            	</tr>
+            	
+            	<tr>
+            	<td>Department</td>
+            	<input type="hidden" name="deptid" th:value="${dept.deptid}" />
+            	<td th:text=${dept.deptname}></td>
+            	</tr>
+               <tr>
+                  <td>Sub Department Code</td>
+                  
+                  <td><input type="text" class="subdeptcode" name="subdeptcode" th:value="${subdept.subdeptcode}" onkeyup="subdeptCode('edit_subdept');"/>
+                   <td class="subdeptcode_status"></td>
+                   <td style="visibility:hidden;" class="subdeptcode_flag" th:text="true"></td>
+               </tr>
+               <tr>
+                  <td>Sub Department Name</td>
+                  
+                  <td><input type="text" class="subdeptname" name="subdeptname" th:value="${subdept.subdeptname}" onkeyup="subdeptName('edit_subdept');"/></td>
+                  <td class="subdeptname_status"></td>
+                  <td style="visibility:hidden;" class="subdeptname_flag" th:text="true"></td>
+               </tr>
+               <tr>
+                  <td colspan = "2">
+                      <input type="submit" value="Submit" />
+                  </td>
+               </tr>
+            </table>
+         </form>
+   </body>
+</html>

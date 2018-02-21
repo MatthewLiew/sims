@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Stock</title>
+</head>
+<body>
+	
+	<!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+    
+    <h3>Reason</h3>
+    
+    <table border="1" cellpadding="5" cellspacing="1" >
+	
+       <tr>
+       	  <th>Stock Type</th>
+          <th>Reason</th>
+          <th>Edit</th>
+          <th>Delete</th>
+       </tr>
+          <tr th:each="r : ${reasons}">
+          	 <td th:each="st : ${stocktypes}" th:if="${st.isStockType(r.stocktypeid)}" th:text="${st.stocktype}"></td>
+             <td th:text="${r.reason}"></td>
+             <td>
+                <a th:href="@{editReason(reasonid=${r.reasonid})}">Edit</a>
+             </td>
+             <td>
+                <a th:href="@{deleteReason(reasonid=${r.reasonid})}">Delete</a>
+             </td>
+          </tr>
+    </table>
+    <a th:href="@{createReason}" >Create Reason</a>
+    
+     <h3>Product</h3>
+    
+     <table border="1" cellpadding="5" cellspacing="1" >
+	
+       <tr>
+          <th>Product Code</th>
+          <th>Product Name</th>
+          <th>Brand</th>
+          <th>Hardware</th>
+<!--           <th>Serial No</th> -->
+		  <th>Stock Status</th>
+		  <th>Quantity</th>
+          <th>Low Balance Threshold</th>
+          <th>Edit</th>
+          <th>Delete</th>
+       </tr>
+          <tr th:each="prod : ${products}">
+             <td th:text="${prod.productcode}"></td>
+             <td th:text="${prod.productname}"></td>
+             <td th:each="brand : ${brands}" th:if="${brand.isBrand(prod.brandid)}" th:text="${brand.brandname}"></td>
+             <td th:each="hardware : ${hardwares}" th:if="${hardware.isHardware(prod.hardwareid)}" th:text="${hardware.hardwaretype}"></td>
+<!--              <td th:each="partno : ${partnos}" th:if="${partno.isPartNo(prod.partnoid)}" th:text="${partno.serialno}"></td> -->
+             <td>Stock Status</td>
+             <td>Quantity</td>
+             <td th:text="${prod.lbvalue}"></td>
+             <td>
+<!--                 <a th:href="@{/editProduct(productid=${prod.productid})}">Edit</a> -->
+             </td>
+             <td>
+<!--                 <a th:href="@{/deleteProduct(productid=${prod.productid})}">Delete</a> -->
+             </td>
+          </tr>
+    </table>
+    <a th:href="@{/createProduct}" >Create Product</a>
+      
+	<h3>Stock History</h3>
+	
+	<table border="1" cellpadding="5" cellspacing="1" >
+	
+	<tr>
+		<th>Product Name</th>
+		<th>Quantity</th>
+		<th>Date</th>
+		<th>Time</th>
+        <th>Stock In / Out</th>
+        <th>Reason</th>
+        <th>Reason Details</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+          <tr th:each="sh : ${stockhistories}">
+             <td th:each="p : ${products}" th:if="${p.isProduct(sh.productid)}" th:text="${p.productname}"></td>
+             <td th:text="${sh.quantity}"></td>
+             <td th:text="${sh.historydate}"></td>
+             <td th:text="${sh.historytime}"></td>
+             <td th:each="st : ${stocktypes}" th:if="${st.isStockType(sh.stocktypeid)}" th:text="${st.stocktype}"></td>
+             <td th:each="r : ${reasons}" th:if="${r.isReason(sh.reasonid)}" th:text="${r.reason}"></td>
+             <td th:text="${sh.reasondesc}"></td>
+             <td>
+                <a th:href="@{editStockHistory(stockhistoryid=${sh.stockhistoryid})}">Edit</a>
+             </td>
+             <td>
+                <a th:href="@{deleteStockHistory(stockhistoryid=${sh.stockhistoryid})}">Delete</a>
+             </td>
+          </tr>
+    </table>
+    <a th:href="@{/stockIn(stocktypeid=1)}" >Stock In</a>&nbsp;&nbsp;<a th:href="@{/stockOut(stocktypeid=2)}" >Stock Out</a>
+    
+</body>
+</html>

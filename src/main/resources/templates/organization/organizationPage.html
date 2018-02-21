@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Organization Page</title>
+</head>
+<body>
+
+	<!-- Include _menu.html -->
+    <th:block th:include="/_menu"></th:block>
+	<h3>Organization</h3>
+	
+	<table border="1" cellpadding="5" cellspacing="1">
+       <tr>
+       	  <th>Organization Code</th>
+          <th>Organization Name</th>
+          <th>Edit</th>
+          <th>Delete</th>
+       </tr>
+          <tr th:each="org : ${orgs}">
+          	 <td th:text="${org.orgcode}"></td>
+             <td th:text="${org.orgname}"></td>
+             <td>
+                <a th:href="@{editOrganization(orgid=${org.orgid})}">Edit</a>
+             </td>
+             <td>
+                <a th:href="@{deleteOrganization(orgid=${org.orgid})}">Delete</a>
+             </td>
+          </tr>
+    </table>
+    <a th:href="@{createOrganization}" >Create Organization</a>
+
+	<h3>Department</h3>
+	<table border="1" cellpadding="5" cellspacing="1">
+       <tr>
+     	  <th>Organization Name</th>
+       	  <th>Department Code</th>
+          <th>Department Name</th>
+          <th>Edit</th>
+          <th>Delete</th>
+       </tr>
+          <tr th:each="dept : ${depts}">
+          	 <td th:each="org : ${orgs}" th:if="${org.isOrgname(dept.orgid)}" th:text="${org.orgname}"></td>
+             <td th:text="${dept.deptcode}"></td>
+          	 <td th:text="${dept.deptname}"></td>
+             <td>
+                <a th:href="@{editDepartment(deptid=${dept.deptid})}">Edit</a>
+             </td>
+             <td>
+                <a th:href="@{deleteDepartment(deptid=${dept.deptid})}">Delete</a>
+             </td>
+          </tr>
+    </table>
+    <a th:href="@{createDepartment}" >Create Department</a>
+
+	<h3>Sub Department</h3>
+	<table border="1" cellpadding="5" cellspacing="1">
+       <tr>
+       	  <th>Organization Name</th>
+     	  <th>Department Name</th>
+       	  <th>Sub Department Code</th>
+          <th>Sub Department Name</th>
+          <th>Edit</th>
+          <th>Delete</th>
+       </tr>
+          <tr th:each="subdept : ${subdepts}">
+             <td th:each="dept : ${depts}" th:if="${dept.isDeptname(subdept.deptid)}"><span th:each="org : ${orgs}" th:if="${org.isOrgname(dept.orgid)}" th:text="${org.orgname}"></span></td>        
+          	 <td th:each="dept : ${depts}" th:if="${dept.isDeptname(subdept.deptid)}" th:text="${dept.deptname}"></td>
+             <td th:text="${subdept.subdeptcode}"></td>
+          	 <td th:text="${subdept.subdeptname}"></td>
+             <td>
+                <a th:href="@{editSubDepartment(subdeptid=${subdept.subdeptid})}">Edit</a>
+             </td>
+             <td>
+                <a th:href="@{deleteSubDepartment(subdeptid=${subdept.subdeptid})}">Delete</a>
+             </td>
+          </tr>
+    </table>
+    <a th:href="@{createSubDepartment}" >Create Sub Department</a>
+</body>
+</html>

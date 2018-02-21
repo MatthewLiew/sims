@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Create User</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+    <body>
+    	<th:block th:include="/_menu"></th:block>
+      	<h3>Create User</h3>
+
+      	<form id="create_user" method="POST" th:action="@{createUser}" onsubmit="return userForm('create_user');">
+      	<p class="error" style="color: red;" th:text="${errorString}" ></p>
+      	<input type="hidden" class="userid "name="userid" th:value="${userid}" />
+        <table th:border="0">
+        <tr>
+        	<td>UserCode</td>
+            <td><input type="text" class="usercode" name="usercode" th:value="${usercode}" onkeyup="userCode('create_user');"/></td>
+			<td class="usercode_status"></td>
+<!-- 			<td class="usercode_flag" ></td> -->
+			<td style="visibility:hidden;" class="usercode_flag" th:text="true"></td>
+        </tr>
+        <tr>
+            <td>UserName</td>
+            <td><input type="text" class="username" name="username" th:value="${username}" onkeyup="userName('create_user');" /></td>
+			<td class="username_status"></td>
+<!-- 			<td class="username_flag" ></td> -->
+			<td style="visibility:hidden;"class="username_flag" th:text="true"></td>
+        </tr>
+        <tr>
+            <td>Password</td>
+            <td><input type="password" name="password" th:value="${password}" /></td>
+        </tr>
+        <tr>
+            <td>User Role</td>
+            <td><select name="userrole">
+	            <option value="0">Select User Role</option>
+	            <option th:each="list: ${approles}" th:value="${list.roleid}" th:text="${list.rolename}">
+	            </select>
+  			</td>
+        </tr>
+        <tr>
+            <td>Organization</td>
+            <td><select name="orgid" onchange="department_select('create_user',this.value);">
+               	<option value="0">Select Organization</option>
+	            <option th:each="list: ${orgs}" th:value="${list.orgid}" th:text="${list.orgname}"></option>
+                </select>
+            </td>
+			<td class="org_status"></td>
+        </tr>
+        <tr id="row_dept">
+            <td>Department</td>
+            <td><select name="deptid" class="dept_select" onchange="subdepartment_select('create_user', this.value);">
+	            <option value="0">Select Department</option>
+            	</select>
+            </td>
+        </tr>
+        <tr>
+            <td>Sub Department</td>
+            <td><select name="subdeptid" class="subdept_select">
+	        	<option value="0">Select Sub Department</option>
+            	</select>
+            </td>
+       </tr>
+       <tr>
+            <td colspan="2">                   
+            <input type="submit" value="Submit" />
+            </td>
+        </tr>
+        </table>
+        </form>
+	<script src="../js/validation.js"></script>
+   </body>
+</html>
