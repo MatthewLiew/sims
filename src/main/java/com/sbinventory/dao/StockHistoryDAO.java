@@ -18,7 +18,7 @@ import com.sbinventory.model.StockHistory;
 @Transactional
 public class StockHistoryDAO extends JdbcDaoSupport{
 
-	private static final String CREATE_SQL="INSERT INTO STOCK_HISTORY (PRODUCT_ID, QUANTITY, HISTORY_DATE, HISTORY_TIME, STOCK_TYPE_ID, REASON_ID, REASON_DESC) VALUES (?,?,?,?,?,?,?)";
+	private static final String CREATE_SQL="INSERT INTO STOCK_HISTORY (PRODUCT_ID, QUANTITY, HISTORY_DATE, HISTORY_TIME, STOCK_TYPE_ID, REASON_ID, REASON_DESC, LOG_DATETIME, LOG_USER) VALUES (?,?,?,?,?,?,?,?,?)";
 	private static final String READ_SQL="SELECT * FROM STOCK_HISTORY";
 	private static final String UPDATE_SQL="UPDATE STOCK_HISTORY";
 	private static final String DELETE_SQL="DELETE FROM STOCK_HISTORY";
@@ -28,9 +28,9 @@ public class StockHistoryDAO extends JdbcDaoSupport{
 		this.setDataSource(dataSource);
 	}
 	
-	public String createStockHistory(int productid, int quantity, String historydate, String historytime, int stocktypeid, int reasonid, String reasondesc ) {
+	public String createStockHistory(int productid, int quantity, String historydate, String historytime, int stocktypeid, int reasonid, String reasondesc, String logdatetime, String loguser) {
 		
-		Object[] params=new Object[]{productid, quantity, historydate, historytime, stocktypeid, reasonid, reasondesc};
+		Object[] params=new Object[]{productid, quantity, historydate, historytime, stocktypeid, reasonid, reasondesc, logdatetime, loguser};
 		String sql=CREATE_SQL;
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
@@ -53,6 +53,31 @@ public class StockHistoryDAO extends JdbcDaoSupport{
 		try {
             List<StockHistory> stockhistorys =  this.getJdbcTemplate().query(sql, mapper);
             return stockhistorys;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+	
+	public List<StockHistory> getAllStockHistory(String startdate, String enddate, int stocktypeid, int reasonid){
+		Object[] params = null;
+		String sql=READ_SQL+ " where HISTORY_DATE >= ? AND HISTORY_DATE <= ?"; 
+		params=new Object[] {startdate, enddate};
+		
+		if((stocktypeid!=0)) {
+			sql+= " AND STOCK_TYPE_ID = ?";
+			params=new Object[] {startdate, enddate, stocktypeid};
+			
+			if ((reasonid!=0)){
+				sql+= " AND REASON_ID = ? ";
+				params=new Object[] {startdate, enddate, stocktypeid, reasonid };
+			}
+		}
+//		
+		StockHistoryMapper mapper=new StockHistoryMapper();
+		
+		try {
+            List<StockHistory> stockhistory = this.getJdbcTemplate().query(sql, params, mapper);
+            return stockhistory;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }

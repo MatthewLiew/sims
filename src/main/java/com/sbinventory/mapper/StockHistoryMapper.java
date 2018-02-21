@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 
 import org.springframework.jdbc.core.RowMapper;
 
@@ -29,7 +30,18 @@ public class StockHistoryMapper implements RowMapper<StockHistory>{
 		int reasonid = rs.getInt("REASON_ID");
 		String reasondesc = rs.getString("REASON_DESC");
 		
-		return new StockHistory(stockhistoryid, productid, quantity, historydate, historytime, stocktypeid, reasonid, reasondesc);
+		String logdatetime = rs.getString("LOG_DATETIME");
+		SimpleDateFormat datetimeformatter = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
+		try {
+			logdatetime = datetimeformatter.format(datetimeformatter.parse(logdatetime));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String loguser = rs.getString("LOG_USER");
+		
+		return new StockHistory(stockhistoryid, productid, quantity, historydate, historytime, stocktypeid, 
+				reasonid, reasondesc, logdatetime, loguser);
 	}
 
 }

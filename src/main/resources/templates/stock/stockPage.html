@@ -3,6 +3,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Stock</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
 	
@@ -32,7 +33,7 @@
     </table>
     <a th:href="@{createReason}" >Create Reason</a>
     
-     <h3>Product</h3>
+     <h3>Stock Management</h3>
     
      <table border="1" cellpadding="5" cellspacing="1" >
 	
@@ -41,7 +42,6 @@
           <th>Product Name</th>
           <th>Brand</th>
           <th>Hardware</th>
-<!--           <th>Serial No</th> -->
 		  <th>Stock Status</th>
 		  <th>Quantity</th>
           <th>Low Balance Threshold</th>
@@ -53,22 +53,51 @@
              <td th:text="${prod.productname}"></td>
              <td th:each="brand : ${brands}" th:if="${brand.isBrand(prod.brandid)}" th:text="${brand.brandname}"></td>
              <td th:each="hardware : ${hardwares}" th:if="${hardware.isHardware(prod.hardwareid)}" th:text="${hardware.hardwaretype}"></td>
-<!--              <td th:each="partno : ${partnos}" th:if="${partno.isPartNo(prod.partnoid)}" th:text="${partno.serialno}"></td> -->
              <td>Stock Status</td>
              <td>Quantity</td>
              <td th:text="${prod.lbvalue}"></td>
              <td>
-<!--                 <a th:href="@{/editProduct(productid=${prod.productid})}">Edit</a> -->
+                <a th:href="@{/editProducts(productid=${prod.productid})}">Edit</a>
              </td>
              <td>
-<!--                 <a th:href="@{/deleteProduct(productid=${prod.productid})}">Delete</a> -->
+                <a th:href="@{/deleteProducts(productid=${prod.productid})}">Delete</a>
              </td>
           </tr>
     </table>
     <a th:href="@{/createProduct}" >Create Product</a>
       
-	<h3>Stock History</h3>
+	<h3>Stock Movement / History</h3>
 	
+	<form method="GET" th:action="@{/stock}">
+	<table>
+	<tr>
+		<td>From</td>
+	    <td><input type="date" class="startdate" name="startdate" th:value="${startdate}" /></td>
+	    <td>To</td>
+	    <td><input type="date" class="enddate" name="enddate" th:value="${enddate}" /></td>
+	    
+
+        <td>
+        <select name="stocktypeid" onchange="reason_option(this.value);">
+             <option value="0">All Stock History </option>
+	         <option th:each="list: ${stocktypes}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option>
+         </select>
+         </td>
+         
+         <td>
+         <select id="reason" name="reasonid" style="display:none;">
+             <option value="0">Any Stock In Type </option>
+<!-- 	         <option th:each="list: ${stocktypes}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option> -->
+         </select>
+         </td>
+         <td>
+         <input type="submit" value="Filter" />
+<!--          <a th:href="@{editUser(userid=${user.userid})}">Edit</a> -->
+         </td>
+	
+	</tr>
+	</table>
+	</form>
 	<table border="1" cellpadding="5" cellspacing="1" >
 	
 	<tr>
@@ -76,6 +105,8 @@
 		<th>Quantity</th>
 		<th>Date</th>
 		<th>Time</th>
+		<th>Log DateTime</th>
+		<th>Log User</th>
         <th>Stock In / Out</th>
         <th>Reason</th>
         <th>Reason Details</th>
@@ -87,6 +118,8 @@
              <td th:text="${sh.quantity}"></td>
              <td th:text="${sh.historydate}"></td>
              <td th:text="${sh.historytime}"></td>
+             <td th:text="${sh.logdatetime}"></td>
+             <td th:text="${sh.loguser}"></td>
              <td th:each="st : ${stocktypes}" th:if="${st.isStockType(sh.stocktypeid)}" th:text="${st.stocktype}"></td>
              <td th:each="r : ${reasons}" th:if="${r.isReason(sh.reasonid)}" th:text="${r.reason}"></td>
              <td th:text="${sh.reasondesc}"></td>
@@ -101,4 +134,5 @@
     <a th:href="@{/stockIn(stocktypeid=1)}" >Stock In</a>&nbsp;&nbsp;<a th:href="@{/stockOut(stocktypeid=2)}" >Stock Out</a>
     
 </body>
+<script src="../js/validation.js"></script>
 </html>

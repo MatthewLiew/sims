@@ -10,11 +10,13 @@ public class StockHistory {
 	private int stocktypeid;
 	private int reasonid;
 	private String reasondesc;
+	private String logdatetime;
+	private String loguser;
 	
 	public StockHistory () {}
 
 	public StockHistory(int stockhistoryid, int productid, int quantity, String historydate, String historytime, int stocktypeid,
-			int reasonid, String reasondesc) {
+			int reasonid, String reasondesc, String logdatetime, String loguser) {
 		this.stockhistoryid = stockhistoryid;
 		this.productid = productid;
 		this.quantity = quantity;
@@ -23,6 +25,8 @@ public class StockHistory {
 		this.stocktypeid = stocktypeid;
 		this.reasonid = reasonid;
 		this.reasondesc = reasondesc;
+		this.logdatetime = logdatetime;
+		this.loguser = loguser;
 	}
 
 	public int getStockhistoryid() {
@@ -89,6 +93,22 @@ public class StockHistory {
 		this.reasondesc = reasondesc;
 	}
 	
+	public String getLogdatetime() {
+		return logdatetime;
+	}
+
+	public void setLogdatetime(String logdatetime) {
+		this.logdatetime = logdatetime;
+	}
+
+	public String getLoguser() {
+		return loguser;
+	}
+
+	public void setLoguser(String loguser) {
+		this.loguser = loguser;
+	}
+
 	public boolean isProduct(int productid) {
 		if(this.productid==productid) {
 			return true;

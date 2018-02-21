@@ -498,4 +498,11 @@ public class MainRESTController {
 		
 		return subdepts;
 	}
+	
+	@PostMapping(value="/api/getReason")
+	public List<Reason> getReason(@RequestBody Reason reason) {
+		List<Reason> reasons=reasonDAO.getReasonStockInAndOut(reason.getStocktypeid());
+		
+		return reasons;
+	}
 }

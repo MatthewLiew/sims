@@ -88,21 +88,35 @@ public class ReasonDAO extends JdbcDaoSupport{
         }
 	}
 	
-	public List<Reason> getReasonstockin(int stocktypeid){
-	
-		String sql=READ_SQL+" where STOCK_TYPE_ID = ? ";
-		Object[] params=new Object[] {stocktypeid};
+	public Reason getReason(String reason, int stocktypeid){
+		
+		String sql=READ_SQL+" where REASON = ? AND ID != ?";
+		Object[] params=new Object[] {reason, stocktypeid};
 		ReasonMapper mapper=new ReasonMapper();
 		
 		try {
-            List<Reason> r = this.getJdbcTemplate().query(sql, params, mapper);
+            Reason r = this.getJdbcTemplate().queryForObject(sql, params, mapper);
             return r;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
 	}
+
+//	public List<Reason> getReasonstockin(int stocktypeid){
+//	
+//		String sql=READ_SQL+" where STOCK_TYPE_ID = ? ";
+//		Object[] params=new Object[] {stocktypeid};
+//		ReasonMapper mapper=new ReasonMapper();
+//		
+//		try {
+//            List<Reason> r = this.getJdbcTemplate().query(sql, params, mapper);
+//            return r;
+//        } catch (EmptyResultDataAccessException e) {
+//            return null;
+//        }
+//	}
 	
-	public List<Reason> getReasonstockout(int stocktypeid){
+	public List<Reason> getReasonStockInAndOut(int stocktypeid){
 		
 		String sql=READ_SQL+" where STOCK_TYPE_ID = ? ";
 		Object[] params=new Object[] {stocktypeid};

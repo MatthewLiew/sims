@@ -50,6 +50,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -383,12 +384,40 @@ public class MainController {
 	}
 	@PostMapping(value= "/editProduct")
 	public String editProductPOST(@RequestParam int productid, @RequestParam int productcode, @RequestParam String productname, 
-			@RequestParam int brandid, @RequestParam int hardwareid, @RequestParam int partnoid, @RequestParam int lbvalue, 
+			@RequestParam int brandid, @RequestParam int hardwareid, @RequestParam int lbvalue, 
 			Model model ) {
 
 //		String errorString=productDAO.updateProduct(productid, productcode, productname);
 //		if(errorString==null) {
 		return "redirect:/product";
+//		} else {
+//			model.addAttribute("errorString",errorString);
+//			return "product/editProduct";
+//		}
+	}
+	@GetMapping(value= "/editProducts")
+	public String editProductsPageGET(@RequestParam int productid,Model model ) {
+		Product product= productDAO.getProduct(productid);
+		List<Hardware> hardwares=hardwareDAO.getAllHardware();
+		List<Brand> brands = brandDAO.getAllBrand();
+		List<PartNo> partnos= partNoDAO.getAllPartNo();
+
+        model.addAttribute("product",product);
+        model.addAttribute("hardwares",hardwares);
+        model.addAttribute("brands",brands);
+        model.addAttribute("partnos",partnos);
+        model.addAttribute("errorString",null);
+        
+		return "product/editProducts";
+	}
+	@PostMapping(value= "/editProducts")
+	public String editProductsPOST(@RequestParam int productid, @RequestParam int productcode, @RequestParam String productname, 
+			@RequestParam int brandid, @RequestParam int hardwareid, @RequestParam int lbvalue, 
+			Model model ) {
+
+//		String errorString=productDAO.updateProduct(productid, productcode, productname);
+//		if(errorString==null) {
+		return "redirect:/stock";
 //		} else {
 //			model.addAttribute("errorString",errorString);
 //			return "product/editProduct";
@@ -400,6 +429,13 @@ public class MainController {
 //		productDAO.deleteProduct(productid);
 		
 		return "redirect:/product";
+	}
+	@GetMapping(value= "/deleteProducts")
+	public String deleteProducts(@RequestParam int productid, Model model ) {
+		System.out.println(productid);
+//		productDAO.deleteProduct(productid);
+		
+		return "redirect:/stock";
 	}
 	
 	//********* USERACCOUNT *********//
@@ -833,10 +869,28 @@ public class MainController {
 	
 	//********* STOCK *********//
 	@GetMapping(value= "/stock")
-	public String stockPage(Model model) {
+//	, int stocktypeid, int reasonid
+	public String stockPage(Model model, String startdate, String enddate, Integer stocktypeid, Integer reasonid) {
+		List<StockHistory> stockhistories;
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		ZoneId sg = ZoneId.of("Asia/Singapore");
+		String endDate = formatter.format(ZonedDateTime.now(sg));
+		String startDate = formatter.format(ZonedDateTime.now(sg).minusDays(7));
 		
 		List<Reason> reasons = reasonDAO.getAllReason();
-		List<StockHistory> stockhistories = stockHistoryDAO.getAllStockHistory();
+		if((startdate==null)&&(enddate==null)&&(stocktypeid==null)&&(reasonid==null)) {
+//			stockhistories = stockHistoryDAO.getAllStockHistory();
+			stockhistories = stockHistoryDAO.getAllStockHistory(startDate, endDate, 0, 0);
+			
+			model.addAttribute("startdate", startDate);
+			model.addAttribute("enddate", endDate);
+		} else {
+			stockhistories = stockHistoryDAO.getAllStockHistory(startdate, enddate, stocktypeid, reasonid);
+			
+			model.addAttribute("startdate", startdate);
+			model.addAttribute("enddate", enddate);
+		}
 		List<Product> products = productDAO.getAllProduct();
 		List<StockType> stocktypes = stockTypeDAO.getAllStockType();
 		
@@ -844,6 +898,8 @@ public class MainController {
 		model.addAttribute("stockhistories", stockhistories);
 		model.addAttribute("products", products);
 		model.addAttribute("stocktypes", stocktypes);
+		
+		
 		
 		List<Hardware> hardwares = hardwareDAO.getAllHardware();
 		List<Brand> brands = brandDAO.getAllBrand();
@@ -913,7 +969,7 @@ public class MainController {
 	public String stockInGET(@RequestParam int stocktypeid, Model model) {
 		
 		List<Product> products = productDAO.getAllProduct();
-		List<Reason> reasons = reasonDAO.getReasonstockin(stocktypeid);
+		List<Reason> reasons = reasonDAO.getReasonStockInAndOut(stocktypeid);
 		model.addAttribute("products",products);
 		model.addAttribute("reasons",reasons);
 		model.addAttribute("errorString",null);
@@ -922,12 +978,16 @@ public class MainController {
 	
 	@PostMapping(value= "/stockIn")
 	public String stockInPOST(@RequestParam int productid, @RequestParam int quantity,  @RequestParam int stocktypeid,
-			@RequestParam String date, @RequestParam String time, @RequestParam int reasonid, @RequestParam String reasondesc, Model model) {
+			@RequestParam String date, @RequestParam String time, @RequestParam int reasonid, @RequestParam String reasondesc,
+			Model model, Principal principal) {
 		
-//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//		ZoneId sg = ZoneId.of("Asia/Singapore");
-//		String datetime = formatter.format(ZonedDateTime.now(sg));
-//		System.out.println("Current time in singapore: "+datetime);
+//		if(principal!=null){
+			String loguser = principal.getName();
+//		}
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		ZoneId sg = ZoneId.of("Asia/Singapore");
+		String logdatetime = formatter.format(ZonedDateTime.now(sg));
+//		System.out.println("Current time in singapore: "+logdatetime);
 		
 //		String historydate, historytime;
 		
@@ -946,7 +1006,7 @@ public class MainController {
 			e.printStackTrace();
 		}
 		
-		String errorString= stockHistoryDAO.createStockHistory(productid, quantity, date, time, stocktypeid, reasonid, reasondesc);
+		String errorString= stockHistoryDAO.createStockHistory(productid, quantity, date, time, stocktypeid, reasonid, reasondesc, logdatetime, loguser);
 		if(errorString==null) {
 			return "redirect:/stock";
 		} else {
@@ -959,7 +1019,7 @@ public class MainController {
 	public String stockOutGET(@RequestParam int stocktypeid, Model model) {
 		
 		List<Product> products = productDAO.getAllProduct();
-		List<Reason> reasons = reasonDAO.getReasonstockout(stocktypeid);
+		List<Reason> reasons = reasonDAO.getReasonStockInAndOut(stocktypeid);
 		
 		model.addAttribute("products",products);
 		model.addAttribute("reasons",reasons);
@@ -969,12 +1029,15 @@ public class MainController {
 	
 	@PostMapping(value= "/stockOut")
 	public String stockOutPOST(@RequestParam int productid, @RequestParam int quantity,  @RequestParam int stocktypeid,
-			@RequestParam String date, @RequestParam String time, @RequestParam int reasonid, @RequestParam String reasondesc, Model model) {
+			@RequestParam String date, @RequestParam String time, @RequestParam int reasonid, @RequestParam String reasondesc, 
+			Model model, Principal principal) {
 		
-//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//		ZoneId sg = ZoneId.of("Asia/Singapore");
-//		String datetime = formatter.format(ZonedDateTime.now(sg));
-//		System.out.println("Current time in singapore: "+datetime);
+		String loguser = principal.getName();
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		ZoneId sg = ZoneId.of("Asia/Singapore");
+		String logdatetime = formatter.format(ZonedDateTime.now(sg));
+//		System.out.println("Current time in singapore: "+logdatetime);
 		
 //		String historydate, historytime;
 		
@@ -993,7 +1056,7 @@ public class MainController {
 			e.printStackTrace();
 		}
 		
-		String errorString= stockHistoryDAO.createStockHistory(productid, quantity, date, time, stocktypeid, reasonid, reasondesc);
+		String errorString= stockHistoryDAO.createStockHistory(productid, quantity, date, time, stocktypeid, reasonid, reasondesc, logdatetime, loguser);
 		if(errorString==null) {
 			return "redirect:/stock";
 		} else {

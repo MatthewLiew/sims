@@ -1,5 +1,33 @@
 var BASE_URL="http://localhost:8080/";
 
+function reason_option(val) {
+
+	var data={ stocktypeid:val }
+	if(val!=0){
+	$.ajax({
+		type: "POST",
+		url: BASE_URL + "api/getReason",
+		contentType: "application/json",
+		data: JSON.stringify (data),
+		dataType: 'json',
+		
+		success: function (response) {
+			$("#reason").show();
+			$("#reason").empty();
+			$("#reason").append("<option value='0'>Any Stock In Type</option>");
+//			$("#"+id+" .subdept_select").empty();
+//			$("#"+id+" .subdept_select").append("<option value='0'>Select Sub Department</option>");
+			for(var i of response) {
+				$("#reason").append("<option value='"+i["reasonid"]+"'>"+i["reason"]+"</option>");
+			}
+
+		}
+	});
+	} else {
+		$("#reason").hide();
+	}
+}
+
 function department_select(id, val) {
 
 	var data={ orgid:val }
