@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>User Account Page</title>
+</head>
+<body>
+
+	<!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+	<h3>User Account</h3>
+	
+	<table border="1" cellpadding="5" cellspacing="1" >
+	
+       <tr>
+       	  <th>UserCode</th>
+          <th>UserName</th>
+          <th>Change Password</th>
+          <th>Edit</th>
+          <th>Delete</th>
+       </tr>
+          <tr th:each="user : ${useraccs}">
+          	 <td th:text="${user.usercode}"></td>
+             <td th:text="${user.username}"></td>
+             <td>
+                <a th:href="@{changePassword(userid=${user.userid})}">Change</a>
+             </td>
+             <td>
+             <form method="POST" th:action="@{editUser2}">
+             	<input type="hidden" name="userid" th:value="${user.userid}"/>
+             	<input type="submit" value="Edit" />
+<!--                 <a th:href="@{editUser(userid=${user.userid})}">Edit</a> -->
+                </form>
+             </td>
+             <td>
+                <a th:href="@{deleteUser(userid=${user.userid})}">Delete</a>
+             </td>
+          </tr>
+    </table>
+    <a th:href="@{createUser}" >Create User</a>
+</body>
+</html>

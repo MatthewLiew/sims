@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8">
+      <title>Create Brand</title>
+      
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      
+   </head>
+   <body>
+      
+      <!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+      <h3>Create Brand</h3>
+
+	 
+      <form id="create_brand" method="POST" th:action="@{createBrand}"  onsubmit="return brandForm('create_brand');">
+      <p class="error" style="color: red;" th:text="${errorString}" ></p>
+      <input type="hidden" class="brandid" name="brandid" th:value="${brandid}" />
+         <table th:border="0">
+            <tr>
+               <td>Brand Code</td>
+               <td><input type="text" class="brandcode" name="brandcode" th:value="${brandcode}" onkeyup="brandCode('create_brand');"/></td>
+			   <td class="brandcode_status"></td>
+			   <td style="visibility:hidden;" class="brandcode_flag" th:text="true"></td>
+            </tr>
+            <tr>
+               <td>Brand Name</td>
+               <td><input type="text" class="brandname" name="brandname" th:value="${brandname}" onkeyup="brandName('create_brand');"/></td>
+			   <td class="brandname_status"></td>
+			   <td style="visibility:hidden;" class="brandname_flag" th:text="true"></td>
+            </tr>
+            <tr>
+               <td colspan="2">                   
+                <input type="submit" value="Submit" />
+               </td>
+            </tr>  
+         </table>
+      </form>
+
+     <script src="../js/validation.js"></script>
+   </body>
+</html>

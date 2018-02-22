@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <title>User Info</title>
+   </head>
+   <body>
+      <!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+       
+       
+      <h2>User Info Page</h2>
+      <h3>Welcome : <span th:utext="${#request.userPrincipal.name}"></span></h3>
+      <b>This is protected page!</b>  
+       
+      <br/><br/>
+       
+<!--       <div th:if="${myAccInfo != null}" th:utext="${myAccInfo}"></div> -->
+       <table>
+    	<tr>
+    		<td>User ID:</td>
+    		<td th:text="${user.userid}"></td>
+    	</tr>
+    	<tr>
+    		<td>User Name:</td>
+    		<td th:text="${myAccInfo}"></td>
+    	</tr>
+    	<tr>
+    		<td>Organization:</td>
+    		<td th:text="${org.orgname}"></td>
+    	</tr>
+    	<tr>
+    		<td>Department:</td>
+    		<td th:text="${dept.deptname}"></td>
+    	</tr>
+    	<tr>
+    		<td>Sub Department:</td>
+    		<td th:text="${subdept.subdeptname}"></td>
+    	</tr>
+    	</table>
+   </body>
+    
+</html>

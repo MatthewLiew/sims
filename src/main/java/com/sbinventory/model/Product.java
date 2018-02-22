@@ -9,10 +9,11 @@ public class Product {
 	private int brandid;
 	private int partnoid;
 	private int lbvalue;
+	private int quantity;
 	
 	public Product() {}
 	
-	public Product(int productid, int productcode, String productname, int hardwareid, int brandid, int partnoid, int lbvalue) {
+	public Product(int productid, int productcode, String productname, int hardwareid, int brandid, int partnoid, int lbvalue, int quantity) {
 
 		this.productid=productid;
 		this.productcode = productcode;
@@ -21,6 +22,7 @@ public class Product {
 		this.brandid = brandid;
 		this.partnoid = partnoid;
 		this.lbvalue = lbvalue;
+		this.quantity = quantity;
 	}
 	
 	public int getProductid() {
@@ -81,6 +83,14 @@ public class Product {
 		this.lbvalue = lbvalue;
 	}
 	
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
 	public boolean isProduct(int productid) {
 		if(this.productid==productid) {
 			return true;

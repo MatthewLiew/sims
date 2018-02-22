@@ -6,15 +6,17 @@ public class PartNo {
 	private String serialno;
 	private String modelno;
 	private String upccode;
+	private int productid;
 	
 	public PartNo() {}
 	
-	public PartNo(int partnoid, String serialno, String modelno, String upccode) {
+	public PartNo(int partnoid, String serialno, String modelno, String upccode, int productid) {
 		
 		this.partnoid = partnoid;
 		this.serialno = serialno;
 		this.modelno = modelno;
 		this.upccode = upccode;
+		this.productid = productid;
 	}
 	
 	public int getPartnoid() {
@@ -49,6 +51,14 @@ public class PartNo {
 		this.upccode = upccode;
 	}
 	
+	public int getProductid() {
+		return productid;
+	}
+
+	public void setProductid(int productid) {
+		this.productid = productid;
+	}
+
 	public boolean isPartNo(int partnoid){
         if (this.partnoid==partnoid) {
             return true;

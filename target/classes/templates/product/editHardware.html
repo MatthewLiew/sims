@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8">
+      <title>Edit Hardware</title>
+      
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      
+   </head>
+   <body>
+      
+      <!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+      <h3>Edit Hardware</h3>
+
+	 
+      <form id="edit_hardware" method="POST" th:action="@{editHardware}"  onsubmit="return hardwareForm('edit_hardware');">
+      <p class="error" style="color: red;" th:text="${errorString}" ></p>
+      <input type="hidden" class="hardwareid" name="hardwareid" th:value="${hardware.hardwareid}" />
+         <table th:border="0">
+            <tr>
+               <td>Hardware Code</td>
+               
+               <td><input type="text" class="hardwarecode" name="hardwarecode" th:value="${hardware.hardwarecode}" onkeyup="hardwareCode('edit_hardware');"/></td>
+			   <td class="hardwarecode_status"></td>
+			   <td style="visibility:hidden;" class="hardwarecode_flag" th:text="true"></td>
+            </tr>
+            <tr>
+               <td>Hardware Type</td>
+               
+               <td><input type="text" class="hardwaretype" name="hardwaretype" th:value="${hardware.hardwaretype}" onkeyup="hardwareType('edit_hardware');"/></td>
+			   <td class="hardwaretype_status"></td>
+			   <td style="visibility:hidden;" class="hardwaretype_flag" th:text="true"></td>
+            </tr>
+            <tr>
+               <td colspan="2">                   
+                <input type="submit" value="Submit" />
+               </td>
+            </tr>  
+         </table>
+      </form>
+
+     <script src="../js/validation.js"></script>
+   </body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8">
+      <title>Create Part No</title>
+      
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      
+   </head>
+   <body>
+      
+      <!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+      <h3>Create Part No</h3>
+
+	 
+      <form id="create_partno" method="POST" th:action="@{createPartNos}"  onsubmit="return partnoForm('create_partno');">
+      <p class="error" style="color: red;" th:text="${errorString}" ></p>
+      <input type="hidden" class="partnoid" name="partnoid" th:value="${partnoid}" />
+         <table th:border="0">
+            <tr>
+               <td>Product</td>
+               <td>
+               <select name="productid">
+               	   <option value="0">Select Product</option>
+	               <option th:each="list: ${products}" th:value="${list.productid}" th:text="${list.productname}"></option>
+               </select></td>
+			   <td class="productid_status"></td>
+            </tr>
+			<tr>
+               <td>Serial No</td>
+               <td><input type="text" class="serialno" name="serialno" th:value="${serialno}" onkeyup="partnoSerialNo('create_partno');"/></td>
+			   <td class="serialno_status"></td>
+			   <td style="visibility:hidden;" class="serialno_flag" th:text="true"></td>
+            </tr>
+            <tr>
+               <td>Model No</td>
+               <td><input type="text" class="modelno" name="modelno" th:value="${modelno}" onkeyup="partnoModelNo('create_partno');"/></td>
+			   <td class="modelno_status"></td>
+			   <td style="visibility:hidden;" class="modelno_flag" th:text="true"></td>
+            </tr>
+            <tr>
+               <td>UPC Code</td>
+<!--                onkeyup="partnoUpcCode('create_partno');" -->
+               <td><input type="text" class="upccode" name="upccode" th:value="${upccode}" /></td>
+			   <td class="upccode_status"></td>
+			   <td style="visibility:hidden;" class="upccode_flag" th:text="true"></td>
+            </tr>
+            <tr>
+               <td colspan="2">                   
+                <input type="submit" value="Submit" />
+               </td>
+            </tr>  
+         </table>
+      </form>
+
+     <script src="../js/validation.js"></script>
+   </body>
+</html>

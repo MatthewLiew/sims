@@ -19,7 +19,7 @@ import com.sbinventory.model.PartNo;
 public class PartNoDAO extends JdbcDaoSupport{
 	
 	private static final String READ_SQL="SELECT * FROM PART_NO";
-	private static final String CREATE_SQL="INSERT INTO PART_NO (SERIAL_NO, MODEL_NO, UPC_CODE) VALUES (?,?,?)";
+	private static final String CREATE_SQL="INSERT INTO PART_NO (SERIAL_NO, MODEL_NO, UPC_CODE, PRODUCT_ID) VALUES (?,?,?,?)";
 	private static final String UPDATE_SQL="UPDATE PART_NO";
 	private static final String DELETE_SQL="DELETE FROM PART_NO";
 	
@@ -140,9 +140,9 @@ public class PartNoDAO extends JdbcDaoSupport{
 	    }
 	}
 	
-	public String createPartNo(String serialno, String modelno, String upccode) {
+	public String createPartNo(String serialno, String modelno, String upccode, int productid) {
 		
-		Object[] params=new Object[]{serialno, modelno, upccode};
+		Object[] params=new Object[]{serialno, modelno, upccode, productid};
 		String sql=CREATE_SQL;
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
@@ -157,9 +157,9 @@ public class PartNoDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public String updatePartNo(int partnoid, String serialno, String modelno, String upccode ){
-		String sql=UPDATE_SQL+" set SERIAL_NO = ?, MODEL_NO = ?, UPC_CODE = ? where ID= ?";
-		Object[] params=new Object[] { serialno, modelno, upccode, partnoid};
+	public String updatePartNo(int partnoid, String serialno, String modelno, String upccode, int productid){
+		String sql=UPDATE_SQL+" set SERIAL_NO = ?, MODEL_NO = ?, UPC_CODE = ?, PRODUCT_ID = ? where ID= ?";
+		Object[] params=new Object[] { serialno, modelno, upccode, productid, partnoid };
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8">
+      <title>Create Sub Department</title>
+      
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      
+   </head>
+   <body>
+      
+      <!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+      <h3>Create Sub Department</h3>
+
+      <form id="create_subdept" method="POST" th:action="@{createSubDepartment}"  onsubmit="return subdeptForm('create_subdept');">
+      <p class="error" style="color: red;" th:text="${errorString}" ></p>
+      <input type="hidden" class="subdeptid" name="subdeptid" th:value="${subdeptid}" />
+         <table th:border="0">
+         
+         	<tr>
+               <td>Organization</td>
+               <td>
+               <select name="orgid" onchange="department_select('create_subdept',this.value);">
+               	   <option value="0">Select Organization</option>
+	               <option th:each="list: ${orgs}" th:value="${list.orgid}" th:text="${list.orgname}"></option>
+               </select></td>
+			   <td class="org_status"></td>
+            </tr>
+         	<tr>
+               <td>Department</td>
+               <td>
+               <select name="deptid" class="dept_select" onchange="subdepartment_select('create_subdept',this.value);">
+               	   <option value="0">Select Department</option>
+	               <option th:each="list: ${depts}" th:value="${list.deptid}" th:text="${list.deptname}"></option>
+               </select></td>
+			   <td class="dept_status"></td>
+            </tr>
+            <tr>
+               <td>Sub Department Code</td>
+               
+               <td><input type="text" class="subdeptcode" name="subdeptcode" th:value="${subdeptcode}" onkeyup="subdeptCode('create_subdept');"/></td>
+			   <td class="subdeptcode_status"></td>
+			   <td style="visibility:hidden;" class="subdeptcode_flag" th:text="true"></td>
+            </tr>
+            <tr>
+               <td>Sub Department Name</td>
+              
+               <td><input type="text" class="subdeptname" name="subdeptname" th:value="${subdeptname}" onkeyup="subdeptName('create_subdept');" /></td>
+			   <td class="subdeptname_status"></td>
+			   <td style="visibility:hidden;" class="subdeptname_flag" th:text="true"></td>
+            </tr>       
+            <tr>
+               <td colspan="2">                   
+                <input type="submit" value="Submit" />
+               </td>
+            </tr>  
+         </table>
+      </form>
+
+     <script src="../js/validation.js"></script>
+   </body>
+</html>

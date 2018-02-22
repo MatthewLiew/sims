@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8">
+      <title>Create Department</title>
+      
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      
+   </head>
+   <body>
+      
+      <!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+      <h3>Create Department</h3>
+
+	 
+      <form id="create_dept" method="POST" th:action="@{createDepartment}"  onsubmit="return deptForm('create_dept');">
+      <p class="error" style="color: red;" th:text="${errorString}" ></p>
+      <input type="hidden" class="deptid" name="deptid" th:value="${deptid}" />
+         <table th:border="0">
+         
+         	<tr>
+               <td>Organization</td>
+               <td>
+               <select name="orgid">
+               	   <option value="0">Select Organization</option>
+	               <option th:each="list: ${orgs}" th:value="${list.orgid}" th:text="${list.orgname}"></option>
+               </select></td>
+			   <td class="org_status"></td>
+            </tr>
+            <tr>
+               <td>Department Code</td>
+               
+               <td><input type="text" class="deptcode" name="deptcode" th:value="${deptcode}" onkeyup="deptCode('create_dept');"/></td>
+			   <td class="deptcode_status"></td>
+			   <td style="visibility:hidden;" class="deptcode_flag" th:text="true"></td>
+            </tr>
+            <tr>
+               <td>Department Name</td>
+              
+               <td><input type="text" class="deptname" name="deptname" th:value="${deptname}" onkeyup="deptName('create_dept');" /></td>
+			   <td class="deptname_status"></td>
+			   <td style="visibility:hidden;" class="deptname_flag" th:text="true"></td>
+            </tr>       
+            <tr>
+               <td colspan="2">                   
+                <input type="submit" value="Submit" />
+               </td>
+            </tr>  
+         </table>
+      </form>
+
+     <script src="../js/validation.js"></script>
+   </body>
+</html>

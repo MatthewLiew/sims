@@ -16,8 +16,9 @@ public class PartNoMapper implements RowMapper<PartNo>{
 		String serialno = rs.getString("SERIAL_NO");
 		String modelno = rs.getString("MODEL_NO");
 		String upccode = rs.getString("UPC_CODE");
+		int productid = rs.getInt("PRODUCT_ID");
 		
-		return new PartNo(partnoid, serialno, modelno, upccode);
+		return new PartNo(partnoid, serialno, modelno, upccode, productid);
 	}
 
 }

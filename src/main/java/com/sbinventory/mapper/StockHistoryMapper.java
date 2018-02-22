@@ -39,9 +39,10 @@ public class StockHistoryMapper implements RowMapper<StockHistory>{
 			e.printStackTrace();
 		}
 		String loguser = rs.getString("LOG_USER");
+		String approval = rs.getString("APPROVAL");
 		
 		return new StockHistory(stockhistoryid, productid, quantity, historydate, historytime, stocktypeid, 
-				reasonid, reasondesc, logdatetime, loguser);
+				reasonid, reasondesc, logdatetime, loguser, approval);
 	}
 
 }

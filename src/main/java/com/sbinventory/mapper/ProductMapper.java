@@ -19,8 +19,9 @@ public class ProductMapper implements RowMapper<Product> {
 		int brandid=rs.getInt("BRAND_ID");
 		int partnoid=rs.getInt("PART_NO_ID");
 		int lbvalue=rs.getInt("LB_VALUE");
+		int quantity=rs.getInt("QUANTITY");
 		
-		return new Product(productid, productcode, productname, hardwareid, brandid, partnoid, lbvalue);
+		return new Product(productid, productcode, productname, hardwareid, brandid, partnoid, lbvalue, quantity);
 	}
 
 }

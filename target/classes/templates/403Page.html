@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Access Denied</title>
+</head>
+ 
+<body>
+    <!-- Include _menu.html -->
+    <th:block th:include="/_menu"></th:block>
+ 
+    <h3 th:if="${message != null}" th:utext="${message}" style="color: red;"></h3>
+ 
+    <div th:if="${myAccInfo != null}" th:utext="${myAccInfo}"></div>
+<!--     <table> -->
+<!--     	<tr> -->
+<!--     		<td>User ID:</td> -->
+<!--     		<td th:text="${user.userid}"></td> -->
+<!--     	</tr> -->
+<!--     	<tr> -->
+<!--     		<td>Organization:</td> -->
+<!--     		<td th:text="${org.orgname}"></td> -->
+<!--     	</tr> -->
+<!--     	<tr> -->
+<!--     		<td>Department:</td> -->
+<!--     		<td th:text="${dept.deptname}"></td> -->
+<!--     	</tr> -->
+<!-- <!--     	<tr> -->
+<!--     		<td>Sub Department:</td> -->
+<!--     		<td th:text="${subdept.subdeptname}"></td> -->
+<!--     	</tr> -->
+<!--     </table> -->
+     
+</body>
+ 
+</html>

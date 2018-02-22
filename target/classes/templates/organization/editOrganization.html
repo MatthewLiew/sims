@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8">
+      <title>Edit Organization</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="../js/validation.js"></script>
+   </head>
+   <body>
+ 
+ 	  <!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+      <h3>Edit Organization</h3>
+ 	  
+         <form id=edit_org method="POST" th:action="@{editOrganization}" onsubmit="return orgForm('edit_org');" >
+         <p class="error" style="color: red;" th:text="${errorString}"></p>
+            <input type="hidden" class="orgid" name="orgid" th:value="${org.orgid}" />
+            <table border="0">
+               <tr>
+                  <td>Organization Code</td>
+                  
+                  <td><input type="text" class="orgcode" name="orgcode" th:value="${org.orgcode}" onkeyup="orgCode('edit_org');"/>
+                   <td class="orgcode_status"></td>
+                   <td style="visibility:hidden;" class="orgcode_flag" th:text="true"></td>
+               </tr>
+               <tr>
+                  <td>Organization Name</td>
+                  
+                  <td><input type="text" class="orgname" name="orgname" th:value="${org.orgname}" onkeyup="orgName('edit_org');"/></td>
+                  <td class="orgname_status"></td>
+                  <td style="visibility:hidden;" class="orgname_flag" th:text="true"></td>
+               </tr>
+               <tr>
+                  <td colspan = "2">
+                      <input type="submit" value="Submit" />
+                  </td>
+               </tr>
+            </table>
+         </form>
+   </body>
+</html>

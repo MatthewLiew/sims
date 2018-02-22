@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8">
+      <title>Edit Part No</title>
+      
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      
+   </head>
+   <body>
+      
+      <!-- Include _menu.html -->
+      <th:block th:include="/_menu"></th:block>
+      <h3>Edit Part No</h3>
+
+	 
+      <form id="edit_partno" method="POST" th:action="@{editPartNos}"  onsubmit="return partnoForm('edit_partno');">
+      <p class="error" style="color: red;" th:text="${errorString}" ></p>
+      <input type="hidden" class="partnoid" name="partnoid" th:value="${partno.partnoid}" />
+         <table th:border="0">
+<!-- 	        <tr> -->
+<!-- 	               <td>Product</td> -->
+<!-- 	               <td> -->
+<!-- 	               <select name="productid" > -->
+<!-- 	               	   <option value="0">Select Organization</option> -->
+<!-- 		               <option th:each="list: ${products}" th:selected="${list.isProduct(partno.productid)}" th:value="${list.productid}" th:text="${list.productname}" ></option> -->
+<!-- 	               </select></td> -->
+<!-- 				   <td class="org_status"></td> -->
+<!-- 	            </tr> -->
+<!-- 			<tr> -->
+               <td>Serial No</td>
+               <td><input type="text" class="serialno" name="serialno" th:value="${partno.serialno}" onkeyup="partnoSerialNo('edit_partno');"/></td>
+			   <td class="serialno_status"></td>
+			   <td style="visibility:hidden;" class="serialno_flag" th:text="true"></td>
+            </tr>
+            <tr>
+               <td>Model No</td>
+               <td><input type="text" class="modelno" name="modelno" th:value="${partno.modelno}" onkeyup="partnoModelNo('edit_partno');"/></td>
+			   <td class="modelno_status"></td>
+			   <td style="visibility:hidden;" class="modelno_flag" th:text="true"></td>
+            </tr>
+            <tr>
+<!--             onkeyup="partnoUpcCode('edit_partno');" -->
+               <td>UPC Code</td>
+               <td><input type="text" class="upccode" name="upccode" th:value="${partno.upccode}" /></td>
+			   <td class="upccode_status"></td>
+			   <td style="visibility:hidden;" class="upccode_flag" th:text="true"></td>
+            </tr>
+            <tr>
+               <td colspan="2">                   
+                <input type="submit" value="Submit" />
+               </td>
+            </tr>  
+         </table>
+      </form>
+
+     <script src="../js/validation.js"></script>
+   </body>
+</html>

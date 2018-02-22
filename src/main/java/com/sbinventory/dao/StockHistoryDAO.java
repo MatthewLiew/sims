@@ -97,6 +97,20 @@ public class StockHistoryDAO extends JdbcDaoSupport{
         }
 	}
 	
+	public List<StockHistory> getStockQuantity(int productid){
+		
+		String sql=READ_SQL+" where PRODUCT_ID = ?";
+		Object[] params=new Object[] {productid};
+		StockHistoryMapper mapper=new StockHistoryMapper();
+		
+		try {
+            List<StockHistory> stockquantity = this.getJdbcTemplate().query(sql, params, mapper);
+            return stockquantity;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+	
 	public String updateStockHistory(int stockhistoryid, int productid, int quantity, String historydate, String historytime, int stocktypeid, int reasonid, String reasondesc ){
 		String sql=UPDATE_SQL+" set PRODUCT_ID = ?, QUANTITY = ?, HISTORY_DATE = ?, HISTORY_TIME = ? , STOCK_TYPE_ID = ? , REASON_ID = ? , REASON_DESC = ?  where ID= ?";
 		Object[] params=new Object[]{productid, quantity, historydate, historytime, stocktypeid, reasonid, reasondesc, stockhistoryid};
@@ -120,6 +134,21 @@ public class StockHistoryDAO extends JdbcDaoSupport{
 			System.out.println(rows + " row(s) updated.");
 		}catch(EmptyResultDataAccessException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public String approval(int stockhistoryid, String approve ){
+		String sql=UPDATE_SQL+" set APPROVAL = ? where ID= ?";
+		Object[] params=new Object[]{approve, stockhistoryid};
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+		}catch(EmptyResultDataAccessException e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}catch(DataAccessException  e) {
+			return e.getMessage();
 		}
 	}
 }

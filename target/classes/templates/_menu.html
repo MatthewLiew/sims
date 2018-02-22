@@ -1,0 +1,38 @@
+<div xmlns:th="http://www.thymeleaf.org"
+     style="border: 1px solid #ccc;padding:5px;margin-bottom:20px;">
+ 
+  <a th:href="@{/}">Home</a>
+ 
+ 	 | &nbsp;
+     
+  <a th:href="@{/location}">Location</a>
+  
+     | &nbsp;
+     
+  <a th:href="@{/product}">Product</a>
+  
+  	 | &nbsp;
+  	 
+  <a th:href="@{/stock}">Stock</a>
+  
+  	 | &nbsp;
+  	 
+  <a th:href="@{/organization}">Organization</a>
+  
+  	 | &nbsp; 
+  	 
+  <a th:href="@{/useraccount}">User Account</a>
+  
+  	 | &nbsp;
+  	 
+   <a th:href="@{/myAccInfo}">My Account Info</a>
+  
+     | &nbsp;
+  
+   <a th:href="@{/admin}">Admin</a>
+    
+     | &nbsp;
+      
+   <a th:if="${#request.userPrincipal != null}" th:href="@{/logout}">Logout</a>
+  
+</div>

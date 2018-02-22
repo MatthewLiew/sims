@@ -168,6 +168,20 @@ public class ProductDAO extends JdbcDaoSupport{
 		}
 	}
 	
+	public String updateQuantity(int productid, int quantity ){
+		String sql=UPDATE_SQL+" set QUANTITY = ? where ID= ?";
+		Object[] params=new Object[] { quantity, productid};
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+		}catch(EmptyResultDataAccessException e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}catch(DataAccessException  e) {
+			return e.getMessage();
+		}
+	}
 	public void deleteProduct(int productid){
 		String sql=DELETE_SQL+" where ID= ?";
 		Object[] params= new Object[] {productid};
