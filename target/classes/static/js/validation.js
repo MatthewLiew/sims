@@ -1,5 +1,20 @@
 var BASE_URL="http://localhost:8080/";
 
+function addmorepartno(){
+//	var $element=$(".create_partno_table").data();
+//	var cln = $element.clone(true);
+//    $(".create_partno").appendChild(cln);
+	$(".create_partno_table:first").clone().insertAfter(".create_partno_table:last");
+}
+$(document).on("click", ".remove_partno", function() {
+    $(this).closest(".create_partno_table").remove();
+});
+//function removepartno(){
+////	var $element=$(".create_partno_table").data();
+////	var cln = $element.clone(true);
+////    $(".create_partno").appendChild(cln);
+//	$("this").closest(".create_partno_table").remove();
+//}
 function reason_option(val) {
 
 	var data={ stocktypeid:val }

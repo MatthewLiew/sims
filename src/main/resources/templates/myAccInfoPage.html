@@ -7,6 +7,12 @@
       <!-- Include _menu.html -->
       <th:block th:include="/_menu"></th:block>
        
+<!--        <video width="320" height="240" controls> -->
+<!--   			<source src="rtsp://192.168.0.202/" type="video/mp4"> -->
+  			
+<!-- 				Your browser does not support the video tag. -->
+<!-- 			</video> -->
+       <iframe  width="425" height="344" src="rtsp://192.168.0.202/" frameborder="0" allowfullscreen></iframe>
        
       <h2>User Info Page</h2>
       <h3>Welcome : <span th:utext="${#request.userPrincipal.name}"></span></h3>
