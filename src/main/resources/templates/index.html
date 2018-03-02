@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title th:utext="${title}"></title>
+	
+	<!-- Bootstrap core CSS-->
+	<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<!-- 	<link href="css/bootstrap.min.css" rel="stylesheet"> -->
+
+	<!-- Custom fonts for this template-->
+	<link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	
+	<!-- Page level plugin CSS-->
+	<link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+	
+	<!-- Custom styles for this template-->
+  	<link href="css/sb-admin.css" rel="stylesheet">
+  	<link href="css/style.css" rel="stylesheet">
+  	
+  	<!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    
+    <!-- Page level plugin JavaScript-->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="vendor/datatables/jquery.dataTables.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+    
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin.min.js"></script>
+    
+    <!-- Custom scripts for this page-->
+    <script src="js/sb-admin-datatables.min.js"></script>
+    <script src="js/sb-admin-charts.min.js"></script>
+    
+</head>
+<body class="fix-nav sticky-footer bg-dark" id="page-top" onload="startTime()">
+	<!-- Navigation -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+		<a class="navbar-brand" th:href="@{/}" th:text="${home}"></a>
+		<!-- Induclude _menu.html -->
+<!-- 		<div style="display:inline-block" th:include="/_menu"></div> -->
+		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		
+		
+		<div class="collapese navbar-collapse" id="navbarResponsive">
+			<ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+					<a class="nav-link" th:href="'#'">
+						<i class="fa fa-fw fa-dashboard"></i>
+		            	<span class="nav-link-text">Dashboard</span>
+	            	</a>
+				</li>
+				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="My Profile">
+					<a class="nav-link" th:href="'#'">
+						<i class="fa fa-fw fa-dashboard"></i>
+		            	<span class="nav-link-text">My Profile</span>
+	            	</a>
+				</li>
+				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="User Account">
+					<a class="nav-link" th:href="'#'">
+						<i class="fa fa-fw fa-dashboard"></i>
+		            	<span class="nav-link-text">User Account</span>
+	            	</a>
+				</li>
+				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Organization">
+					<a class="nav-link" th:href="'#'">
+						<i class="fa fa-fw fa-dashboard"></i>
+		            	<span class="nav-link-text">Organization</span>
+	            	</a>
+				</li>
+				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Stock">
+					<a class="nav-link" th:href="'#'">
+						<i class="fa fa-fw fa-dashboard"></i>
+		            	<span class="nav-link-text">Stock</span>
+	            	</a>
+				</li>
+				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Product">
+					<a class="nav-link" th:href="'#'">
+						<i class="fa fa-fw fa-dashboard"></i>
+		            	<span class="nav-link-text">Product</span>
+	            	</a>
+				</li>
+				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Location">
+					<a class="nav-link" th:href="'#'">
+						<i class="fa fa-fw fa-dashboard"></i>
+		            	<span class="nav-link-text">Location</span>
+	            	</a>
+				</li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+                	<a class="nav-link" data-toggle="modal">
+	                    <i class="fa fa-fw fa-clock-o"></i>
+	                    <span id="ShowTime">15:19:58</span>
+                    </a>
+                </li>
+		        <li class="nav-item">
+		          <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+		            <i class="fa fa-fw fa-sign-out"></i>Logout</a>
+		        </li>
+		    </ul>
+		</div>
+	</nav>
+	<div th:include="/header"></div>
+	<div class="content-wrapper">
+    	<div class="container-fluid">
+	   		<!-- Breadcrumbs -->
+	    	<ol class="breadcrumb">
+		        <li class="breadcrumb-item">
+		          <a href="#">Dashboard</a>
+		        </li>
+		        <li class="breadcrumb-item active">Tables</li>
+	      	</ol>
+    		<!-- Example DataTables Card-->
+			<div class="card mb-3">
+			  <div class="card-header">
+			    <i class="fa fa-table"></i> Data Table Example</div>
+			  <div class="card-body">
+			    <div class="table-responsive">
+			      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+			        <thead>
+			          <tr>
+			            <th>Name</th>
+			            <th>Position</th>
+			            <th>Office</th>
+			            <th>Age</th>
+			            <th>Start date</th>
+			            <th>Salary</th>
+			          </tr>
+			        </thead>
+			        <tfoot>
+			          <tr>
+			            <th>Name</th>
+			            <th>Position</th>
+			            <th>Office</th>
+			            <th>Age</th>
+			            <th>Start date</th>
+			            <th>Salary</th>
+			          </tr>
+			        </tfoot>
+			        <tbody>
+			          <tr>
+			            <td>Tiger Nixon</td>
+			            <td>System Architect</td>
+			            <td>Edinburgh</td>
+			            <td>61</td>
+			            <td>2011/04/25</td>
+			            <td>$320,800</td>
+			          </tr>
+			          <tr>
+			            <td>Rhona Davidson</td>
+			            <td>Integration Specialist</td>
+			            <td>Tokyo</td>
+			            <td>55</td>
+			            <td>2010/10/14</td>
+			            <td>$327,900</td>
+			          </tr>
+			          <tr>
+			            <td>Bradley Greer</td>
+			            <td>Software Engineer</td>
+			            <td>London</td>
+			            <td>41</td>
+			            <td>2012/10/13</td>
+			            <td>$132,000</td>
+			          </tr>
+			          <tr>
+			            <td>Dai Rios</td>
+			            <td>Personnel Lead</td>
+			            <td>Edinburgh</td>
+			            <td>35</td>
+			            <td>2012/09/26</td>
+			            <td>$217,500</td>
+			          </tr>
+			          <tr>
+			            <td>Jenette Caldwell</td>
+			            <td>Development Lead</td>
+			            <td>New York</td>
+			            <td>30</td>
+			            <td>2011/09/03</td>
+			            <td>$345,000</td>
+			          </tr>
+			          <tr>
+			            <td>Yuri Berry</td>
+			            <td>Chief Marketing Officer (CMO)</td>
+			            <td>New York</td>
+			            <td>40</td>
+			            <td>2009/06/25</td>
+			            <td>$675,000</td>
+			          </tr>
+			          <tr>
+			            <td>Caesar Vance</td>
+			            <td>Pre-Sales Support</td>
+			            <td>New York</td>
+			            <td>21</td>
+			            <td>2011/12/12</td>
+			            <td>$106,450</td>
+			          </tr>
+			          <tr>
+			            <td>Doris Wilder</td>
+			            <td>Sales Assistant</td>
+			            <td>Sidney</td>
+			            <td>23</td>
+			            <td>2010/09/20</td>
+			            <td>$85,600</td>
+			          </tr>
+			          <tr>
+			            <td>Angelica Ramos</td>
+			            <td>Chief Executive Officer (CEO)</td>
+			            <td>London</td>
+			            <td>47</td>
+			            <td>2009/10/09</td>
+			            <td>$1,200,000</td>
+			          </tr>
+			          <tr>
+			            <td>Gavin Joyce</td>
+			            <td>Developer</td>
+			            <td>Edinburgh</td>
+			            <td>42</td>
+			            <td>2010/12/22</td>
+			            <td>$92,575</td>
+			          </tr>
+			          <tr>
+			            <td>Jennifer Chang</td>
+			            <td>Regional Director</td>
+			            <td>Singapore</td>
+			            <td>28</td>
+			            <td>2010/11/14</td>
+			            <td>$357,650</td>
+			          </tr>
+			          <tr>
+			            <td>Brenden Wagner</td>
+			            <td>Software Engineer</td>
+			            <td>San Francisco</td>
+			            <td>28</td>
+			            <td>2011/06/07</td>
+			            <td>$206,850</td>
+			          </tr>
+			          <tr>
+			            <td>Fiona Green</td>
+			            <td>Chief Operating Officer (COO)</td>
+			            <td>San Francisco</td>
+			            <td>48</td>
+			            <td>2010/03/11</td>
+			            <td>$850,000</td>
+			          </tr>
+			          <tr>
+			            <td>Shou Itou</td>
+			            <td>Regional Marketing</td>
+			            <td>Tokyo</td>
+			            <td>20</td>
+			            <td>2011/08/14</td>
+			            <td>$163,000</td>
+			          </tr>
+			          <tr>
+			            <td>Michelle House</td>
+			            <td>Integration Specialist</td>
+			            <td>Sidney</td>
+			            <td>37</td>
+			            <td>2011/06/02</td>
+			            <td>$95,400</td>
+			          </tr>
+			          <tr>
+			            <td>Suki Burks</td>
+			            <td>Developer</td>
+			            <td>London</td>
+			            <td>53</td>
+			            <td>2009/10/22</td>
+			            <td>$114,500</td>
+			          </tr>
+			        </tbody>
+			      </table>
+			    </div>
+			  </div>
+			  <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+			</div>
+      </div>
+    </div>
+	<!-- /.container-fluid-->
+	<!-- /.content-wrapper-->
+	
+
+	<script type="text/javascript">
+		function startTime() {
+		    var today = new Date();
+		    var h = today.getHours();
+		    var m = today.getMinutes();
+		    var s = today.getSeconds();
+		    m = checkTime(m);
+		    s = checkTime(s);
+		    document.getElementById('ShowTime').innerHTML =
+		            h + ":" + m + ":" + s;
+		    var t = setTimeout(startTime, 500);
+		}
+		function checkTime(i) {
+		       if (i < 10) {
+		           i = "0" + i
+		       }
+		       ;  // add zero in front of numbers < 10
+		       return i;
+		   }
+	</script>
+	
+	<div th:include="/footer"></div>
