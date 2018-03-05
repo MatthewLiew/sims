@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title th:text="${title}"></title>
+	</head>
+	<div class="header_ref" th:include="/header"></div>
+	<div class="content-wrapper">
+   		<div class="container-fluid">
+      		<!-- Breadcrumbs -->
+	    	<ol class="breadcrumb">
+		        <li class="breadcrumb-item">
+		          <a th:href="@{/myAccInfo}">Profile</a>
+		        </li>
+		        <li class="breadcrumb-item active">My Profile</li>
+	      	</ol>
+			<h2>User Info Page</h2>
+			<h3>Welcome : <span th:utext="${#request.userPrincipal.name}"></span></h3>
+			<b>This is protected page!</b>  
+      
+     			<br/><br/>
+     			<table>
+     				<tr>
+     					<td>User ID:</td>
+	    			<td th:text="${user.userid}"></td>
+	    		</tr>
+		    	<tr>
+		    		<td>User Name:</td>
+		    		<td th:text="${myAccInfo}"></td>
+		    	</tr>
+		    	<tr>
+		    		<td>Organization:</td>
+		    		<td th:text="${org.orgname}"></td>
+		    	</tr>
+		    	<tr>
+		    		<td>Department:</td>
+		    		<td th:text="${dept.deptname}"></td>
+		    	</tr>
+		    	<tr>
+		    		<td>Sub Department:</td>
+		    		<td th:text="${subdept.subdeptname}"></td>
+		    	</tr>
+	    	</table>
+    	</div><!-- end of .container-fluid-->
+   	</div><!-- end of .content-wrapper-->
+	<div class="footer_ref" th:include="/footer"></div>  
+</html>

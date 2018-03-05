@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Product</title>
+	</head>
+	
+	<div class="header_ref" th:include="/header"></div>
+	<div class="content-wrapper">
+    	<div class="container-fluid">
+	   		<!-- Breadcrumbs -->
+	    	<ol class="breadcrumb">
+		        <li class="breadcrumb-item">
+		          <a th:href="@{/}">Product</a>
+		        </li>
+		        <li class="breadcrumb-item active">My Product</li>
+	      	</ol>
+      
+			<h3>Hardware</h3>
+			
+			<table border="1" cellpadding="5" cellspacing="1" >
+			
+		       <tr>
+		          <th>Hardware Code</th>
+		          <th>Hardware Type</th>
+		          <th>Edit</th>
+		          <th>Delete</th>
+		       </tr>
+		          <tr th:each="hw : ${hardwares}">
+		             <td th:text="${hw.hardwarecode}"></td>
+		             <td th:text="${hw.hardwaretype}"></td>
+		             <td>
+		                <a th:href="@{/editHardware(hardwareid=${hw.hardwareid})}">Edit</a>
+		             </td>
+		             <td>
+		                <a th:href="@{/deleteHardware(hardwareid=${hw.hardwareid})}">Delete</a>
+		             </td>
+		          </tr>
+		    </table>
+		    <a th:href="@{/createHardware}" >Create Hardware</a>
+		    
+		    <h3>Brand</h3>
+		    
+		    <table border="1" cellpadding="5" cellspacing="1" >
+			
+		       <tr>
+		          <th>Brand Code</th>
+		          <th>Brand Name</th>
+		          <th>Edit</th>
+		          <th>Delete</th>
+		       </tr>
+		          <tr th:each="brand : ${brands}">
+		             <td th:text="${brand.brandcode}"></td>
+		             <td th:text="${brand.brandname}"></td>
+		             <td>
+		                <a th:href="@{/editBrand(brandid=${brand.brandid})}">Edit</a>
+		             </td>
+		             <td>
+		                <a th:href="@{/deleteBrand(brandid=${brand.brandid})}">Delete</a>
+		             </td>
+		          </tr>
+		    </table>
+		    <a th:href="@{/createBrand}" >Create Brand</a>
+		    
+		    <h3>Part No</h3>
+		     
+		    <table border="1" cellpadding="5" cellspacing="1" >
+			
+		       <tr>
+		       	  <th>Serial No</th>
+		          <th>Model No</th>
+		          <th>UPC Code</th>
+		          <th>Edit</th>
+		          <th>Delete</th>
+		       </tr>
+		          <tr th:each="pn : ${partnos}">
+		          	 <td th:text="${pn.serialno}"></td>
+		             <td th:text="${pn.modelno}"></td>
+		             <td th:text="${pn.upccode}"></td>
+		             <td>
+		                <a th:href="@{/editPartNo(partnoid=${pn.partnoid})}">Edit</a>
+		             </td>
+		             <td>
+		                <a th:href="@{/deletePartNo(partnoid=${pn.partnoid})}">Delete</a>
+		             </td>
+		          </tr>
+		    </table>
+		    <a th:href="@{/createPartNo}" >Create Part No</a>
+		    
+		    <h3>Product</h3>
+		    
+		     <table border="1" cellpadding="5" cellspacing="1" >
+			
+		       <tr>
+		          <th>Product Code</th>
+		          <th>Product Name</th>
+		          <th>Brand</th>
+		          <th>Hardware</th>
+		<!--           <th>Serial No</th> -->
+				  <th>Stock Status</th>
+				  <th>Quantity</th>
+		          <th>Low Balance Threshold</th>
+		          <th>Edit</th>
+		          <th>Delete</th>
+		       </tr>
+		          <tr th:each="prod : ${products}">
+		             <td th:text="${prod.productcode}"></td>
+		             <td th:text="${prod.productname}"></td>
+		             <td th:each="brand : ${brands}" th:if="${brand.isBrand(prod.brandid)}" th:text="${brand.brandname}"></td>
+		             <td th:each="hardware : ${hardwares}" th:if="${hardware.isHardware(prod.hardwareid)}" th:text="${hardware.hardwaretype}"></td>
+		<!--              <td th:each="partno : ${partnos}" th:if="${partno.isPartNo(prod.partnoid)}" th:text="${partno.serialno}"></td> -->
+		             <td>Stock Status</td>
+		             <td>Quantity</td>
+		             <td th:text="${prod.lbvalue}"></td>
+		             <td>
+		                <a th:href="@{/editProduct(productid=${prod.productid})}">Edit</a>
+		             </td>
+		             <td>
+		                <a th:href="@{/deleteProduct(productid=${prod.productid})}">Delete</a>
+		             </td>
+		          </tr>
+		    </table>
+		    <a th:href="@{/createProduct}" >Create Product</a>
+		    
+		</div><!-- end of .container-fluid-->
+    </div><!-- end of .content-wrapper-->
+	<div class="footer_ref" th:include="/footer"></div>
+</html>

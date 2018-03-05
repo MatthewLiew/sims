@@ -6,7 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="">
 	<meta name="author" content="">
-	<title th:utext="${title}"></title>
 	
 	<!-- Bootstrap core CSS-->
 	<link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -40,12 +39,13 @@
     <!-- Custom scripts for this page-->
     <script src="js/sb-admin-datatables.min.js"></script>
     <script src="js/sb-admin-charts.min.js"></script>
+    <script src="js/validation.js"></script>
     
 </head>
 <body class="fix-nav sticky-footer bg-dark" id="page-top" onload="startTime()">
 	<!-- Navigation -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-		<a class="navbar-brand" th:href="@{/}" th:text="${home}"></a>
+		<a class="navbar-brand" th:href="@{/}" th:text="'Welcome to VOGOMO Inventory System'"></a>
 		<!-- Induclude _menu.html -->
 <!-- 		<div style="display:inline-block" th:include="/_menu"></div> -->
 		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,43 +56,68 @@
 		<div class="collapese navbar-collapse" id="navbarResponsive">
 			<ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
 				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-					<a class="nav-link" th:href="'#'">
+					<a class="nav-link" th:href="@{/}">
 						<i class="fa fa-fw fa-dashboard"></i>
 		            	<span class="nav-link-text">Dashboard</span>
 	            	</a>
 				</li>
 				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="My Profile">
-					<a class="nav-link" th:href="'#'">
+					<a class="nav-link" th:href="@{/myAccInfo}">
 						<i class="fa fa-fw fa-dashboard"></i>
-		            	<span class="nav-link-text">My Profile</span>
+		            	<span class="nav-link-text">Profile</span>
 	            	</a>
 				</li>
 				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="User Account">
-					<a class="nav-link" th:href="'#'">
+					<a class="nav-link" th:href="@{/useraccount}">
 						<i class="fa fa-fw fa-dashboard"></i>
 		            	<span class="nav-link-text">User Account</span>
 	            	</a>
 				</li>
 				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Organization">
-					<a class="nav-link" th:href="'#'">
-						<i class="fa fa-fw fa-dashboard"></i>
+	          		<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
+		            	<i class="fa fa-fw fa-sitemap"></i>
 		            	<span class="nav-link-text">Organization</span>
-	            	</a>
-				</li>
+		         	 </a>
+		          	<ul class="sidenav-second-level collapse" id="collapseMulti">
+			            <li>
+		              		<a th:href="@{/organization}">Organization</a>
+			            </li>
+			            <li>
+		              		<a th:href="@{/department}">Department</a>
+			            </li>
+			            <li>
+			              	<a th:href="@{/subdepartment}">Sub Department</a>
+			            </li>
+           			</ul>
+	          	</li>
 				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Stock">
-					<a class="nav-link" th:href="'#'">
+					<a class="nav-link" th:href="@{/stock}">
 						<i class="fa fa-fw fa-dashboard"></i>
 		            	<span class="nav-link-text">Stock</span>
 	            	</a>
 				</li>
 				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Product">
-					<a class="nav-link" th:href="'#'">
+					<a class="nav-link" th:href="@{/product}">
 						<i class="fa fa-fw fa-dashboard"></i>
 		            	<span class="nav-link-text">Product</span>
 	            	</a>
 				</li>
 				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Location">
-					<a class="nav-link" th:href="'#'">
+	          		<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti2" data-parent="#exampleAccordion">
+		            	<i class="fa fa-fw fa-sitemap"></i>
+		            	<span class="nav-link-text">Location</span>
+		         	 </a>
+		          	<ul class="sidenav-second-level collapse" id="collapseMulti2">
+			            <li>
+		              		<a th:href="@{/mainlocation}">Main Location</a>
+			            </li>
+			            <li>
+		              		<a th:href="@{/sublocation}">Sub Location</a>
+			            </li>
+           			</ul>
+	          	</li>
+				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Location">
+					<a class="nav-link" th:href="@{/location}">
 						<i class="fa fa-fw fa-dashboard"></i>
 		            	<span class="nav-link-text">Location</span>
 	            	</a>

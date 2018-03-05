@@ -23,6 +23,20 @@ body.sticky-footer .content-wrapper {
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
+
+@media (min-width: 992px){
+	mainNav .navbar-collapse .navbar-sidenav {
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    overflow-x: hidden;
+	    overflow-y: auto;
+	    -webkit-flex-direction: column;
+	    -ms-flex-direction: column;
+	    flex-direction: column;
+	    margin-top: 56px;
+	}
+}
 /* .bg-dark{ */
 /*     background-color: #367fa9!important; */
 /* } */

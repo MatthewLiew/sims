@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	<title>User Account</title>
+	</head>
+
+	<div class="header_ref" th:include="/header"></div>
+	<div class="content-wrapper">
+   		<div class="container-fluid">
+	   		<!-- Breadcrumbs -->
+	    	<ol class="breadcrumb">
+		        <li class="breadcrumb-item">
+		          <a th:href="@{/useraccount}">User Account</a>
+		        </li>
+		        <li class="breadcrumb-item active">User Account</li>
+	      	</ol>
+	      	<div class="card mb-3">
+	      		<div class="card-header">
+	      			<i class="fa fa-table"></i> User Account &nbsp;&nbsp;
+<!-- 	      			<a th:href="@{createUser}"> -->
+<!-- data-target="#PreviewUser" -->
+	      			<a onclick="doAction('new', 0);">
+	      			<button class="btn btn-primary" data-toggle="modal" >Create User</button>
+	      				</a>
+	      		</div>	  	
+		        <div class="card-body">
+		        	<div class="table-responsive">
+		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+		        			<thead>
+		        				<tr>
+		        					<th>User Name</th>
+				                  	<th>Role</th>
+				                  	<th>Organization</th>
+				                 	<th>Department</th>
+				                 	<th>Sub Department</th>
+				                  	<th>Action</th>
+	               			 	</tr>
+		              		</thead>
+		              		<tfoot>
+		                		<tr>
+		                  			<th>User Name</th>
+				                  	<th>Role</th>
+				                  	<th>Organization</th>
+				                 	<th>Department</th>
+				                 	<th>Sub Department</th>
+				                  	<th>Action</th>
+		                		</tr>
+		              		</tfoot>
+		              		<tbody>
+		                		<tr th:each="user : ${useraccs}">
+						            <td th:text="${user.username}"></td>
+						            <td>Role</td>
+<!-- 						            <td th:each="list: ${approles}" th:selected="${list.isSelected(userrole.roleid)}" th:text="${list.rolename}"></td> -->
+						            <td th:each="list: ${orgs}" th:if="${list.isSelected(user.orgid)}" th:text="${list.orgname}" ></td>
+						            <td th:each="list: ${depts}" th:if="${list.isSelected(user.deptid)}" th:text="${list.deptname}" ></td>
+						            <td th:each="list: ${subdepts}" th:if="${list.isSelected(user.subdeptid)}" th:text="${list.subdeptname}" ></td>
+						            <td>
+<!-- 						            &nbsp;&nbsp; -->
+						            
+<!-- 						            <form method="POST" th:action="@{editUser2}"> -->
+<!-- 						            	<input type="hidden" name="userid" th:value="${user.userid}"/> -->
+<!-- 						             	<input type="submit" value="Edit" /> -->
+						                <a th:href="@{editUser(userid=${user.userid})}"><i class="fa fa-edit" title="Edit User"></i></a>
+<!-- 						            </form> -->
+<!-- 						            &nbsp;&nbsp; -->
+									<a th:href="@{changePassword(userid=${user.userid})}"><i class="fa fa-key" title="Change Password"></i></a>
+									<!-- @{deleteUser(userid=${user.userid})}-->
+						            <a th:href="'#'"><i class="fa fa-trash" title="delete"></i></a></td>
+					            </tr>
+		              		</tbody>
+	              		</table>
+              		</div>
+		         </div>
+		         <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+		       </div>
+		       
+		       <div class="modal clickable" id="PreviewUser" tabindex="-1" role="dialog" aria-labelledby="PreviewUser" aria-hidden="true">
+		            <form method="POST" th:action="@{createUser}" id="CreateUser">
+		                <div class="vertical-alignment-helper">
+		                    <div class="modal-dialog  modal-lg vertical-align-center">
+		                        <!-- Modal content-->
+		                        <div class="modal-content">
+		                            <div class="modal-header">
+		                                <h4 class="modal-title">Create User</h4>
+		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                            </div>
+		                            
+		                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+		
+		                            <div class="modal-body">
+		
+		                            </div>
+		
+		                            <div class="modal-footer">
+		                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		                                <button type="submit" class="btn btn-primary">Save</button>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </form>
+		        </div>
+<!-- 			<h3>User Account</h3> -->
+<!-- 			<table border="1" cellpadding="5" cellspacing="1" > -->
+<!-- 				<tr> -->
+<!-- 					<th>UserCode</th> -->
+<!-- 					<th>UserName</th> -->
+<!-- 					<th>Change Password</th> -->
+<!-- 					<th>Edit</th> -->
+<!-- 					<th>Delete</th> -->
+<!-- 				</tr> -->
+<!-- 				<tr th:each="user : ${useraccs}"> -->
+<!-- 					<td th:text="${user.usercode}"></td> -->
+<!-- 		            <td th:text="${user.username}"></td> -->
+<!-- 		            <td><a th:href="@{changePassword(userid=${user.userid})}">Change</a></td> -->
+<!-- 		            <td> -->
+<!-- 		            <form method="POST" th:action="@{editUser2}"> -->
+<!-- 		            	<input type="hidden" name="userid" th:value="${user.userid}"/> -->
+<!-- 		             	<input type="submit" value="Edit" /> -->
+<!-- <!-- 		                <a th:href="@{editUser(userid=${user.userid})}">Edit</a> --> 
+<!-- <!-- 		            </form> --> 
+<!-- 		            </td> -->
+<!-- 		            <td><a th:href="@{deleteUser(userid=${user.userid})}">Delete</a></td> -->
+<!-- 	            </tr> -->
+<!-- 			</table> -->
+<!-- 		    <a th:href="@{createUser}" >Create User</a> -->
+
+	    </div><!-- end of .container-fluid-->
+   	</div><!-- end of .content-wrapper-->
+	<div class="footer_ref" th:include="/footer"></div>  
+
+	<script type="text/javascript">
+        function doAction(action, id) {
+            if (action == 'new') {
+                $('#PreviewUser .modal-body').empty();
+                $('#PreviewUser .modal-title').text("New User");
+//                 $('#PreviewUser').modal({show: true});
+                $('#PreviewUser .modal-body').load('createUser', function () {
+                    $('#PreviewUser').modal({show: true});
+                });
+                //$('#PreviewUser').modal({show:true});
+            }
+        }
+    </script>
+</html>

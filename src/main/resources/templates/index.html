@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
-	<div th:include="/header"></div>
+	<head>
+		<title th:text="${title}"></title>
+	</head>
+	<div class="header_ref" th:include="/header"></div>
 	<div class="content-wrapper">
     	<div class="container-fluid">
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		        <li class="breadcrumb-item">
-		          <a href="#">Dashboard</a>
+		          <a th:href="@{/}">Dashboard</a>
 		        </li>
-		        <li class="breadcrumb-item active">Tables</li>
+		        <li class="breadcrumb-item active">My DashBoard</li>
 	      	</ol>
     		<!-- Example DataTables Card-->
 			<div class="card mb-3">
@@ -173,10 +175,7 @@
 			  </div>
 			  <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 			</div>
-      </div>
-    </div>
-	<!-- /.container-fluid-->
-	<!-- /.content-wrapper-->
-	
-	<div th:include="/footer"></div>
+      </div><!-- end of .container-fluid-->
+    </div><!-- end of .content-wrapper-->
+	<div class="footer_ref" th:include="/footer"></div>
 </html>

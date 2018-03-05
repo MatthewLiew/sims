@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Stock</title>
+	</head>
+	
+	<div class="header_ref" th:include="/header"></div>
+	<div class="content-wrapper">
+    	<div class="container-fluid">
+	   		<!-- Breadcrumbs -->
+	    	<ol class="breadcrumb">
+		        <li class="breadcrumb-item">
+		          <a th:href="@{/}">Stock</a>
+		        </li>
+		        <li class="breadcrumb-item active">My Stock</li>
+	      	</ol>
+      
+		    <h3>Reason</h3>
+		    
+		    <table border="1" cellpadding="5" cellspacing="1" >
+			
+		       <tr>
+		       	  <th>Stock Type</th>
+		          <th>Reason</th>
+		          <th>Edit</th>
+		          <th>Delete</th>
+		       </tr>
+		          <tr th:each="r : ${reasons}">
+		          	 <td th:each="st : ${stocktypes}" th:if="${st.isStockType(r.stocktypeid)}" th:text="${st.stocktype}"></td>
+		             <td th:text="${r.reason}"></td>
+		             <td>
+		                <a th:href="@{editReason(reasonid=${r.reasonid})}">Edit</a>
+		             </td>
+		             <td>
+		                <a th:href="@{deleteReason(reasonid=${r.reasonid})}">Delete</a>
+		             </td>
+		          </tr>
+		    </table>
+		    <a th:href="@{createReason}" >Create Reason</a>
+		    
+		    <h3>Part No</h3>
+		     
+		    <table border="1" cellpadding="5" cellspacing="1" >
+			
+		       <tr>
+		       	  <th>Serial No</th>
+		          <th>Model No</th>
+		          <th>UPC Code</th>
+		          <th>Product</th>
+		          <th>Status</th>
+		          <th>Edit</th>
+		          <th>Delete</th>
+		       </tr>
+		          <tr th:each="pn : ${partnos}">
+		          	 <td th:text="${pn.serialno}"></td>
+		             <td th:text="${pn.modelno}"></td>
+		             <td th:text="${pn.upccode}"></td>
+		             <td th:each="list: ${products}" th:if="${list.isProduct(pn.productid)}" th:text="${list.productname}"></td>
+		             <td style="color:green;">Available</td>
+		             <td>
+		                <a th:href="@{/editPartNos(partnoid=${pn.partnoid})}">Edit</a>
+		             </td>
+		             <td>
+		                <a th:href="@{/deletePartNos(partnoid=${pn.partnoid})}">Delete</a>
+		             </td>
+		          </tr>
+		    </table>
+		    <a th:href="@{/createPartNos}" >Create Part No</a>
+		    
+		     <h3>Stock Management</h3>
+		    
+		     <table border="1" cellpadding="5" cellspacing="1" >
+			
+		       <tr>
+		          <th>Product Code</th>
+		          <th>Product Name</th>
+		          <th>Brand</th>
+		          <th>Hardware</th>
+				  <th>Stock Status</th>
+				  <th>Quantity</th>
+		          <th>Low Balance Threshold</th>
+		          <th>Edit</th>
+		          <th>Delete</th>
+		       </tr>
+		          <tr th:each="prod : ${products}">
+		             <td th:text="${prod.productcode}"></td>
+		             <td th:text="${prod.productname}"></td>
+		             <td th:each="brand : ${brands}" th:if="${brand.isBrand(prod.brandid)}" th:text="${brand.brandname}"></td>
+		             <td th:each="hardware : ${hardwares}" th:if="${hardware.isHardware(prod.hardwareid)}" th:text="${hardware.hardwaretype}"></td>
+		             <td th:style="(${prod.quantity} <= 0) ? 'color:red;' : 'color:green;'" th:text="(${prod.quantity} <= 0) ? 'Out of Stock' : 'In Stock'">Stock Status</td>
+		             <td th:text="${prod.quantity}"></td>
+		             <td th:text="${prod.lbvalue}"></td>
+		             <td>
+		                <a th:href="@{/editProducts(productid=${prod.productid})}">Edit</a>
+		             </td>
+		             <td>
+		                <a th:href="@{/deleteProducts(productid=${prod.productid})}">Delete</a>
+		             </td>
+		          </tr>
+		    </table>
+		    <a th:href="@{/createProduct}" >Create Product</a>
+		      
+			<h3>Stock Movement / History</h3>
+			
+			<form method="GET" th:action="@{/stock}">
+			<table>
+			<tr>
+				<td>From</td>
+			    <td><input type="date" class="startdate" name="startdate" th:value="${startdate}" /></td>
+			    <td>To</td>
+			    <td><input type="date" class="enddate" name="enddate" th:value="${enddate}" /></td>
+			    
+		
+		        <td>
+		        <select name="stocktypeid" onchange="reason_option(this.value);">
+		             <option value="0">All Stock History </option>
+			         <option th:each="list: ${stocktypes}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option>
+		         </select>
+		         </td>
+		         
+		         <td>
+		         <select id="reason" name="reasonid" style="display:none;">
+		             <option value="0">Any Stock In Type </option>
+		<!-- 	         <option th:each="list: ${stocktypes}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option> -->
+		         </select>
+		         </td>
+		         <td>
+		         <input type="submit" value="Filter" />
+		<!--          <a th:href="@{editUser(userid=${user.userid})}">Edit</a> -->
+		         </td>
+			
+			</tr>
+			</table>
+			</form>
+			<table border="1" cellpadding="5" cellspacing="1" >
+			
+			<tr>
+				<th>Product Name</th>
+				<th>Quantity</th>
+				<th>Date</th>
+				<th>Time</th>
+				<th>Log DateTime</th>
+				<th>Log User</th>
+		        <th>Stock In / Out</th>
+		        <th>Reason</th>
+		        <th>Reason Details</th>
+		        <th>Approval</th>
+		        <th>Edit</th>
+		        <th>Delete</th>
+		    </tr>
+		          <tr th:each="sh : ${stockhistories}">
+		             <td th:each="p : ${products}" th:if="${p.isProduct(sh.productid)}" th:text="${p.productname}"></td>
+		             <td th:text="${sh.quantity}"></td>
+		             <td th:text="${sh.historydate}"></td>
+		             <td th:text="${sh.historytime}"></td>
+		             <td th:text="${sh.logdatetime}"></td>
+		             <td th:text="${sh.loguser}"></td>
+		             <td th:each="st : ${stocktypes}" th:if="${st.isStockType(sh.stocktypeid)}" th:text="${st.stocktype}"></td>
+		             <td th:each="r : ${reasons}" th:if="${r.isReason(sh.reasonid)}" th:text="${r.reason}"></td>
+		             <td th:text="${sh.reasondesc}"></td>
+		             <td th:if="${sh.approval}=='pending'"><a th:href="@{/approval(stockhistoryid=${sh.stockhistoryid},approve='approved',productid=${sh.productid})}">Yes</a>&nbsp;&nbsp;<a th:href="@{/approval(stockhistoryid=${sh.stockhistoryid},approve='cancelled',productid=${sh.productid})}">No</a></td>
+		             <td th:unless="${sh.approval}=='pending'" th:text="(${sh.approval}=='approved') ? 'Approved' : 'Not Approve'"></td>
+		             <td>
+		                <a th:href="@{editStockHistory(stockhistoryid=${sh.stockhistoryid})}">Edit</a>
+		             </td>
+		             <td>
+		                <a th:href="@{deleteStockHistory(stockhistoryid=${sh.stockhistoryid})}">Delete</a>
+		             </td>
+		          </tr>
+		    </table>
+		    <a th:href="@{/stockIn(stocktypeid=1)}" >Stock In</a>&nbsp;&nbsp;<a th:href="@{/stockOut(stocktypeid=2)}" >Stock Out</a>
+    	</div><!-- end of .container-fluid-->
+    </div><!-- end of .content-wrapper-->
+	<div class="footer_ref" th:include="/footer"></div>
+</html>

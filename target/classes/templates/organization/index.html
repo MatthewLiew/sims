@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	<title>Organization</title>
+	</head>
+
+	<div class="header_ref" th:include="/header"></div>
+	<div class="content-wrapper">
+   		<div class="container-fluid">
+	   		<!-- Breadcrumbs -->
+	    	<ol class="breadcrumb">
+		        <li class="breadcrumb-item">
+		          <a th:href="@{/organization}">Organization</a>
+		        </li>
+		        <li class="breadcrumb-item active">Organization</li>
+	      	</ol>
+			<h3>Organization</h3>
+			<table border="1" cellpadding="5" cellspacing="1">
+				<tr>
+					<th>Organization Code</th>
+		          	<th>Organization Name</th>
+		          	<th>Edit</th>
+		          	<th>Delete</th>
+	          	</tr>
+	          	<tr th:each="org : ${orgs}">
+	          		<td th:text="${org.orgcode}"></td>
+	             	<td th:text="${org.orgname}"></td>
+	             	<td><a th:href="@{editOrganization(orgid=${org.orgid})}">Edit</a></td>
+	             	<td><a th:href="@{deleteOrganization(orgid=${org.orgid})}">Delete</a></td>
+	          	</tr>
+	    	</table>
+		    <a th:href="@{createOrganization}" >Create Organization</a>
+		</div><!-- end of .container-fluid-->
+   	</div><!-- end of .content-wrapper-->
+	<div class="footer_ref" th:include="/footer"></div> 
+</html>
