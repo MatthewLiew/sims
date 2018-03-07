@@ -129,9 +129,9 @@ public class UserAccountDAO extends JdbcDaoSupport {
 			return null;
 		}
 	}
-	public String updateUserAccount(int usercode, int userid, String username ){
-		String sql=UPDATE_SQL+" set USER_CODE = ?, USER_NAME = ? where ID= ?";
-		Object[] params=new Object[]{usercode, username, userid};
+	public String updateUserAccount (int userid, String username ){
+		String sql=UPDATE_SQL+" set USER_NAME = ? where ID= ?";
+		Object[] params=new Object[]{username, userid};
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");

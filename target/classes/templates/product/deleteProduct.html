@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+   	</head>
+	
+	<input type="hidden" name="productid" th:value="${product.productid}" />
+	<input type="hidden" name="referer" th:value="${referer}" />
+	
+	<div class="form-group">
+        <div class="form-row">
+            <div class="col-md-12">
+                Are you sure to Delete Following Product ? <br/>
+                Product Code - <b><span th:text="${product.productcode}"></span></b>
+                										   <br/>
+                Product Name - <b><span th:text="${product.productname}"></span></b>
+            </div>
+        </div>
+    </div>
+           
+</html>

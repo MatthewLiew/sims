@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Serial Management</title>
+	</head>
+	
+	<div class="header_ref" th:include="/header"></div>
+	<div class="content-wrapper">
+    	<div class="container-fluid">
+	   		<!-- Breadcrumbs -->
+	    	<ol class="breadcrumb">
+		        <li class="breadcrumb-item">
+		          <a th:href="@{/}">Stock Management</a>
+		        </li>
+		        <li class="breadcrumb-item active">Serial Management</li>
+	      	</ol>
+	      	
+	      	<div class="card mb-3">
+      			<div class="card-header">
+      				<i class="fa fa-table"></i> Serial Management &nbsp;&nbsp;
+<!-- 	      			<a th:href="@{createUser}"> -->
+      				<a onclick="doAction('new', 0);">
+      					<button class="btn btn-primary" data-toggle="modal" >Add Serial No</button>
+	      			</a>
+	      		</div>	
+	      		<div class="card-body">
+		        	<div class="table-responsive">
+		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+		        			<thead>
+		        				<tr>
+		        					<th>Serial No</th>
+						          	<th>Model No</th>
+						          	<th>UPC Code</th>
+						         	<th>Product</th>
+						          	<th>Status</th>
+						          	<th>Action</th>
+	               			 	</tr>
+		              		</thead>
+		              		<tfoot>
+		                		<tr>
+		                  			<th>Serial No</th>
+						          	<th>Model No</th>
+						          	<th>UPC Code</th>
+						         	<th>Product</th>
+						          	<th>Status</th>
+						          	<th>Action</th>
+					          	</tr>
+				          	</tfoot>
+				          	<tbody>
+				          		<tr th:each="pn : ${partnos}">
+				          			<td th:text="${pn.serialno}"></td>
+					             	<td th:text="${pn.modelno}"></td>
+					             	<td th:text="${pn.upccode}"></td>
+					             	<td th:each="list: ${products}" th:if="${list.isProduct(pn.productid)}" th:text="${list.productname}"></td>
+					             	<td style="color:green;">Available</td>
+					             	<td>
+					             	<!-- <a th:href="@{/editPartNos(partnoid=${pn.partnoid})}"> -->
+				              	 	<a th:onclick="'doAction(\'edit\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Edit Serial No"><i class="fa fa-edit" title="Edit Serial No"></i></button></a>
+					             	<!-- <a th:href="@{/deletePartNos(partnoid=${pn.partnoid})}"> -->
+					             	<a th:onclick="'doAction(\'delete\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Delete Serial No"><i class="fa fa-trash" title="Delete Serial No"></i></button></a>
+					             	</td>
+					          	</tr>
+				          	</tbody>
+			          	</table>
+		          	</div>
+	          	</div>
+	          	<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+			</div>    	
+	      	<div class="modal clickable" id="CreatePartNo" tabindex="-1" role="dialog" aria-labelledby="CreatePartNo" aria-hidden="true">
+	            <form method="POST" th:action="@{/createPartNos}" id="CreatePartNo">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Add Serial No</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Save</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+	        
+	        <div class="modal clickable" id="EditPartNo" tabindex="-1" role="dialog" aria-labelledby="EditPartNo" aria-hidden="true">
+	            <form method="POST" th:action="@{/editPartNos}" id="EditPartNo">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Edit Serial No</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Save</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+			
+			<div class="modal clickable" id="DeletePartNo" tabindex="-1" role="dialog" aria-labelledby="DeletePartNo" aria-hidden="true">
+	            <form method="POST" th:action="@{/deletePartNo}" id="DeletePartNo">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Delete Serial No</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Delete</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div> 
+<!-- 		    <h3>Part No</h3> -->
+		     
+<!-- 		    <table border="1" cellpadding="5" cellspacing="1" > -->
+			
+<!-- 		       <tr> -->
+<!-- 		       	  <th>Serial No</th> -->
+<!-- 		          <th>Model No</th> -->
+<!-- 		          <th>UPC Code</th> -->
+<!-- 		          <th>Product</th> -->
+<!-- 		          <th>Status</th> -->
+<!-- 		          <th>Edit</th> -->
+<!-- 		          <th>Delete</th> -->
+<!-- 		       </tr> -->
+<!-- 		          <tr th:each="pn : ${partnos}"> -->
+<!-- 		          	 <td th:text="${pn.serialno}"></td> -->
+<!-- 		             <td th:text="${pn.modelno}"></td> -->
+<!-- 		             <td th:text="${pn.upccode}"></td> -->
+<!-- 		             <td th:each="list: ${products}" th:if="${list.isProduct(pn.productid)}" th:text="${list.productname}"></td> -->
+<!-- 		             <td style="color:green;">Available</td> -->
+<!-- 		             <td> -->
+<!-- 		             <a th:href="@{/editPartNos(partnoid=${pn.partnoid})}"> -->
+<!-- 	              	 <a th:onclick="'doAction(\'edit\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Edit Serial No"><i class="fa fa-edit" title="Edit Serial No"></i></button></a> -->
+<!-- 		             <a th:href="@{/deletePartNos(partnoid=${pn.partnoid})}"> -->
+<!-- 		             <a th:onclick="'doAction(\'delete\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Delete Serial No"><i class="fa fa-trash" title="Delete Serial No"></i></button></a> -->
+<!-- 		             </td> -->
+<!-- 		          </tr> -->
+<!-- 		    </table> -->
+<!-- 		    <a th:href="@{/createPartNos}" >Create Part No</a> -->
+		    
+    	</div><!-- end of .container-fluid-->
+    </div><!-- end of .content-wrapper-->
+	<div class="footer_ref" th:include="/footer"></div>
+	
+	<script type="text/javascript">
+        function doAction(action, id) {
+            if (action == 'new') {
+                $('#CreatePartNo .modal-body').empty();
+                $('#CreatePartNo .modal-title').text("Add Serial No");
+                $('#CreatePartNo .modal-body').load('createPartNos', function () {
+                    $('#CreatePartNo').modal({show: true});
+                });
+            } else if (action == 'edit') {
+                $('#EditPartNo .modal-body').empty();
+                $('#EditPartNo .modal-title').text("Edit Serial No");
+                $('#EditPartNo .modal-body').load('editPartNos?partnoid=' + id, function () {
+                    $('#EditPartNo').modal({show: true});
+                });
+            } else if (action == 'change') {
+            	console.log("change");
+                $('#ChangePwd .modal-body').empty();
+                $('#ChangePwd .modal-title').text("Change Password");
+                $('#ChangePwd .modal-body').load('changePassword?userid=' + id, function () {
+                    $('#ChangePwd').modal({show: true});
+                });
+            } else if (action == 'delete') {
+                $('#DeletePartNo .modal-body').empty();
+                $('#DeletePartNo .modal-title').text("Delete Serial No");
+                $('#DeletePartNo .modal-body').load('deletePartNo?partnoid=' + id, function () {
+                    $('#DeletePartNo').modal({show: true});
+                });
+            }
+        }
+    </script>
+</html>

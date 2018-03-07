@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Settings</title>
+	</head>
+	
+	<div class="header_ref" th:include="/header"></div>
+	<div class="content-wrapper">
+    	<div class="container-fluid">
+	   		<!-- Breadcrumbs -->
+	    	<ol class="breadcrumb">
+		        <li class="breadcrumb-item">
+		          <a th:href="@{/}">Stock Management</a>
+		        </li>
+		        <li class="breadcrumb-item active">Settings</li>
+	      	</ol>
+      		
+     		<div class="card mb-3">
+      			<div class="card-header">
+      				<i class="fa fa-table"></i> Settings &nbsp;&nbsp;
+<!-- 	      			<a th:href="@{createUser}"> -->
+      				<a onclick="doAction('new', 0);">
+      					<button class="btn btn-primary" data-toggle="modal" >Add Reason</button>
+	      			</a>
+	      		</div>	
+	      		<div class="card-body">
+		        	<div class="table-responsive">
+		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+		        			<thead>
+		        				<tr>
+		        					<th>Stock Type</th>
+						          	<th>Reason</th>
+						          	<th>Action</th>
+	               			 	</tr>
+		              		</thead>
+		              		<tfoot>
+		                		<tr>
+		                  			<th>Stock Type</th>
+						          	<th>Reason</th>
+						          	<th>Action</th>
+				          		</tr>
+			          		</tfoot>
+			          		<tbody>
+				          		<tr th:each="r : ${reasons}">
+				          			<td th:each="st : ${stocktypes}" th:if="${st.isStockType(r.stocktypeid)}" th:text="${st.stocktype}"></td>
+					             	<td th:text="${r.reason}"></td>
+					             	<td>
+					             	<!-- <a th:href="@{editReason(reasonid=${r.reasonid})}"> -->
+					             	<a th:onclick="'doAction(\'edit\',\''+ ${r.reasonid} +'\');'"><button class="btn btn-primary" title="Edit Reason"><i class="fa fa-edit" title="Edit Reason"></i></button></a>
+					             	<!-- <a th:href="@{deleteReason(reasonid=${r.reasonid})}"> -->
+					             	<a th:onclick="'doAction(\'delete\',\''+ ${r.reasonid} +'\');'"><button class="btn btn-primary" title="Delete Reason"><i class="fa fa-trash" title="Delete Reason"></i></button></a></td>
+				             	</tr>
+				          	</tbody>
+		          		</table>
+	          		</div>
+          		</div>
+          		<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+       		</div>
+			
+			<div class="modal clickable" id="CreateReason" tabindex="-1" role="dialog" aria-labelledby="CreateReason" aria-hidden="true">
+	            <form method="POST" th:action="@{/createReason}" id="CreateReason">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Create Reason</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Save</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+	        
+	        <div class="modal clickable" id="EditReason" tabindex="-1" role="dialog" aria-labelledby="EditReason" aria-hidden="true">
+	            <form method="POST" th:action="@{/editReason}" id="EditReason">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Edit Reason</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Save</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+			
+			<div class="modal clickable" id="DeleteReason" tabindex="-1" role="dialog" aria-labelledby="DeleteReason" aria-hidden="true">
+	            <form method="POST" th:action="@{/deleteReason}" id="DeleteReason">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Delete Reason</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Delete</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+		        
+<!-- 		    <h3>Reason</h3> -->
+		    
+<!-- 		    <table border="1" cellpadding="5" cellspacing="1" > -->
+			
+<!-- 		       <tr> -->
+<!-- 		       	  <th>Stock Type</th> -->
+<!-- 		          <th>Reason</th> -->
+<!-- 		          <th>Edit</th> -->
+<!-- 		          <th>Delete</th> -->
+<!-- 		       </tr> -->
+<!-- 		          <tr th:each="r : ${reasons}"> -->
+<!-- 		          	 <td th:each="st : ${stocktypes}" th:if="${st.isStockType(r.stocktypeid)}" th:text="${st.stocktype}"></td> -->
+<!-- 		             <td th:text="${r.reason}"></td> -->
+<!-- 		             <td> -->
+<!-- 		                <a th:href="@{editReason(reasonid=${r.reasonid})}">Edit</a> -->
+<!-- 		             </td> -->
+<!-- 		             <td> -->
+<!-- 		                <a th:href="@{deleteReason(reasonid=${r.reasonid})}">Delete</a> -->
+<!-- 		             </td> -->
+<!-- 		          </tr> -->
+<!-- 		    </table> -->
+<!-- 		    <a th:href="@{createReason}" >Create Reason</a> -->
+		    
+	   	</div><!-- end of .container-fluid-->
+    </div><!-- end of .content-wrapper-->
+	<div class="footer_ref" th:include="/footer"></div>
+	<script type="text/javascript">
+        function doAction(action, id) {
+            if (action == 'new') {
+                $('#CreateReason .modal-body').empty();
+                $('#CreateReason .modal-title').text("Add Reason");
+                $('#CreateReason .modal-body').load('createReason', function () {
+                    $('#CreateReason').modal({show: true});
+                });
+            } else if (action == 'edit') {
+                $('#EditReason .modal-body').empty();
+                $('#EditReason .modal-title').text("Edit Reason");
+                $('#EditReason .modal-body').load('editReason?reasonid=' + id, function () {
+                    $('#EditReason').modal({show: true});
+                });
+            } else if (action == 'change') {
+            	console.log("change");
+                $('#ChangePwd .modal-body').empty();
+                $('#ChangePwd .modal-title').text("Change Password");
+                $('#ChangePwd .modal-body').load('changePassword?userid=' + id, function () {
+                    $('#ChangePwd').modal({show: true});
+                });
+            } else if (action == 'delete') {
+                $('#DeleteReason .modal-body').empty();
+                $('#DeleteReason .modal-title').text("Delete Reason");
+                $('#DeleteReason .modal-body').load('deleteReason?reasonid=' + id, function () {
+                    $('#DeleteReason').modal({show: true});
+                });
+            }
+        }
+    </script>
+</html>

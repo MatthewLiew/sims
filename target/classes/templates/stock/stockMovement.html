@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Stock Movement</title>
+	</head>
+	
+	<div class="header_ref" th:include="/header"></div>
+	<div class="content-wrapper">
+    	<div class="container-fluid">
+	   		<!-- Breadcrumbs -->
+	    	<ol class="breadcrumb">
+		        <li class="breadcrumb-item">
+		          <a th:href="@{/}">Stock Management</a>
+		        </li>
+		        <li class="breadcrumb-item active">Stock Movement</li>
+	      	</ol>
+	      	
+	      	<div class="card mb-3">
+      			<div class="card-header">
+      				<i class="fa fa-table"></i> Stock Movement &nbsp;&nbsp;
+<!-- 	      			<a th:href="@{createUser}"> -->
+      				<a onclick="doAction('in', 0);">
+      					<button class="btn btn-primary" data-toggle="modal" >Stock In</button>
+	      			</a>
+	      			<a onclick="doAction('out', 0);">
+      					<button class="btn btn-primary" data-toggle="modal" >Stock Out</button>
+	      			</a>
+	      			<form method="GET" th:action="@{/stockmovement}">
+<!-- 	      			<table> -->
+<!-- 						<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0"> -->
+<!-- 						<tbody> -->
+						<div class="form-group">
+            				<div class="form-row">
+								<div>From</div>
+						    	<div><input type="date" class="startdate" name="startdate" th:value="${startdate}" /></div>
+						    	<div>To</div>
+						    	<div><input type="date" class="enddate" name="enddate" th:value="${enddate}" /></div>
+						    
+					
+<!-- 					        <td> -->
+					        <div>
+						        <select name="stocktypeid" onchange="reason_option(this.value);">
+						             <option value="0">All Stock History </option>
+							         <option th:each="list: ${stocktypes}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option>
+						         </select>
+					         </div>
+					         
+					         <div>
+						         <select id="reason" name="reasonid" style="display:none;">
+						             <option value="0">Any Stock In Type </option>
+							         <option th:each="list: ${stocktypes}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option>
+						         </select>
+					         </div>
+					         <div>
+					         	<input type="submit" value="Filter" />
+<!-- 					         <a th:href="@{editUser(userid=${user.userid})}">Edit</a> -->
+					         </div>
+							</div>
+						</div>
+<!-- 						</tr> -->
+<!-- 						</tbody> -->
+<!-- 					</table> -->
+					</form>
+	      		</div>	
+	      		<div class="card-body">
+		        	<div class="table-responsive">
+		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+		        			<thead>
+		        				<tr>
+		        					<th>Product Name</th>
+									<th>Quantity</th>
+									<th>Date</th>
+									<th>Time</th>
+									<th>Log DateTime</th>
+									<th>Log User</th>
+							        <th>Stock In / Out</th>
+							        <th>Reason</th>
+							        <th>Reason Details</th>
+							        <th>Approval</th>
+<!-- 						          	<th>Action</th> -->
+	               			 	</tr>
+		              		</thead>
+		              		<tfoot>
+		                		<tr>
+		                  			<th>Product Name</th>
+									<th>Quantity</th>
+									<th>Date</th>
+									<th>Time</th>
+									<th>Log DateTime</th>
+									<th>Log User</th>
+							        <th>Stock In / Out</th>
+							        <th>Reason</th>
+							        <th>Reason Details</th>
+							        <th>Approval</th>
+<!-- 						          	<th>Action</th> -->
+					          	</tr>
+				          	</tfoot>
+				          	<tbody>
+				          		<tr th:each="sh : ${stockhistories}">
+						             <td th:each="p : ${products}" th:if="${p.isProduct(sh.productid)}" th:text="${p.productname}"></td>
+						             <td th:text="${sh.quantity}"></td>
+						             <td th:text="${sh.historydate}"></td>
+						             <td th:text="${sh.historytime}"></td>
+						             <td th:text="${sh.logdatetime}"></td>
+						             <td th:text="${sh.loguser}"></td>
+						             <td th:each="st : ${stocktypes}" th:if="${st.isStockType(sh.stocktypeid)}" th:text="${st.stocktype}"></td>
+						             <td th:each="r : ${reasons}" th:if="${r.isReason(sh.reasonid)}" th:text="${r.reason}"></td>
+						             <td th:text="${sh.reasondesc}"></td>
+						             <td th:if="${sh.approval}=='pending'"><a th:href="@{/approval(stockhistoryid=${sh.stockhistoryid},approve='approved',productid=${sh.productid})}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/approval(stockhistoryid=${sh.stockhistoryid},approve='cancelled',productid=${sh.productid})}"><i class="fa fa-close" title="Not Approve"></i></a></td>
+						             <td th:unless="${sh.approval}=='pending'" th:text="(${sh.approval}=='approved') ? 'Approved' : 'Not Approve'"></td>
+<!-- 						             <td> -->
+<!-- 						                <a th:href="@{editStockHistory(stockhistoryid=${sh.stockhistoryid})}"> -->
+<!-- 						                <a th:onclick="'doAction(\'edit\',\''+ ${sh.stockhistoryid} +'\');'"><button  title="Edit"><i class="fa fa-edit" title="Edit"></i></button></a> -->
+<!-- 						           		<a th:href="@{deleteStockHistory(stockhistoryid=${sh.stockhistoryid})}"> -->
+<!-- 						           		<a th:onclick="'doAction(\'delete\',\''+ ${sh.stockhistoryid} +'\');'"><button  title="Delete"><i class="fa fa-trash" title="Delete"></i></button></a> -->
+<!-- 						             </td> -->
+					             </tr>
+				          	</tbody>
+			          	</table>
+		          	</div>
+	          	</div>
+	          	<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+          	</div>
+          	
+          	<div class="modal clickable" id="StockIn" tabindex="-1" role="dialog" aria-labelledby="StockIn" aria-hidden="true">
+	            <form method="POST" th:action="@{/stockIn}" id="StockIn">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Stock In</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Save</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+	        
+	        <div class="modal clickable" id="StockOut" tabindex="-1" role="dialog" aria-labelledby="StockOut" aria-hidden="true">
+	            <form method="POST" th:action="@{/stockOut}" id="StockOut">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Stock Out</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Save</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+	        
+	        <div class="modal clickable" id="EditStockHistory" tabindex="-1" role="dialog" aria-labelledby="EditStockHistory" aria-hidden="true">
+	            <form method="POST" th:action="@{/editStockHistory}" id="EditStockHistory">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Edit Stock History</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Save</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+			
+			<div class="modal clickable" id="DeleteStockHistory" tabindex="-1" role="dialog" aria-labelledby="DeleteStockHistory" aria-hidden="true">
+	            <form method="POST" th:action="@{/deleteStockHistory}" id="DeleteStockHistory">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Delete Stock History</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Delete</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+<!-- 			<h3>Stock Movement / History</h3> -->
+			
+<!-- 			<form method="GET" th:action="@{/stock}"> -->
+<!-- 			<table> -->
+<!-- 			<tr> -->
+<!-- 				<td>From</td> -->
+<!-- 			    <td><input type="date" class="startdate" name="startdate" th:value="${startdate}" /></td> -->
+<!-- 			    <td>To</td> -->
+<!-- 			    <td><input type="date" class="enddate" name="enddate" th:value="${enddate}" /></td> -->
+			    
+		
+<!-- 		        <td> -->
+<!-- 		        <select name="stocktypeid" onchange="reason_option(this.value);"> -->
+<!-- 		             <option value="0">All Stock History </option> -->
+<!-- 			         <option th:each="list: ${stocktypes}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option> -->
+<!-- 		         </select> -->
+<!-- 		         </td> -->
+		         
+<!-- 		         <td> -->
+<!-- 		         <select id="reason" name="reasonid" style="display:none;"> -->
+<!-- 		             <option value="0">Any Stock In Type </option> -->
+<!-- 		<!-- 	         <option th:each="list: ${stocktypes}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option> --> 
+<!-- 		         </select> -->
+<!-- 		         </td> -->
+<!-- 		         <td> -->
+<!-- 		         <input type="submit" value="Filter" /> -->
+<!-- 		<!--          <a th:href="@{editUser(userid=${user.userid})}">Edit</a> --> 
+<!-- 		         </td> -->
+			
+<!-- 			</tr> -->
+<!-- 			</table> -->
+<!-- 			</form> -->
+<!-- 			<table border="1" cellpadding="5" cellspacing="1" > -->
+			
+<!-- 			<tr> -->
+<!-- 				<th>Product Name</th> -->
+<!-- 				<th>Quantity</th> -->
+<!-- 				<th>Date</th> -->
+<!-- 				<th>Time</th> -->
+<!-- 				<th>Log DateTime</th> -->
+<!-- 				<th>Log User</th> -->
+<!-- 		        <th>Stock In / Out</th> -->
+<!-- 		        <th>Reason</th> -->
+<!-- 		        <th>Reason Details</th> -->
+<!-- 		        <th>Approval</th> -->
+<!-- 		        <th>Edit</th> -->
+<!-- 		        <th>Delete</th> -->
+<!-- 		    </tr> -->
+<!-- 		          <tr th:each="sh : ${stockhistories}"> -->
+<!-- 		             <td th:each="p : ${products}" th:if="${p.isProduct(sh.productid)}" th:text="${p.productname}"></td> -->
+<!-- 		             <td th:text="${sh.quantity}"></td> -->
+<!-- 		             <td th:text="${sh.historydate}"></td> -->
+<!-- 		             <td th:text="${sh.historytime}"></td> -->
+<!-- 		             <td th:text="${sh.logdatetime}"></td> -->
+<!-- 		             <td th:text="${sh.loguser}"></td> -->
+<!-- 		             <td th:each="st : ${stocktypes}" th:if="${st.isStockType(sh.stocktypeid)}" th:text="${st.stocktype}"></td> -->
+<!-- 		             <td th:each="r : ${reasons}" th:if="${r.isReason(sh.reasonid)}" th:text="${r.reason}"></td> -->
+<!-- 		             <td th:text="${sh.reasondesc}"></td> -->
+<!-- 		             <td th:if="${sh.approval}=='pending'"><a th:href="@{/approval(stockhistoryid=${sh.stockhistoryid},approve='approved',productid=${sh.productid})}">Yes</a>&nbsp;&nbsp;<a th:href="@{/approval(stockhistoryid=${sh.stockhistoryid},approve='cancelled',productid=${sh.productid})}">No</a></td> -->
+<!-- 		             <td th:unless="${sh.approval}=='pending'" th:text="(${sh.approval}=='approved') ? 'Approved' : 'Not Approve'"></td> -->
+<!-- 		             <td> -->
+<!-- 		                <a th:href="@{editStockHistory(stockhistoryid=${sh.stockhistoryid})}">Edit</a> -->
+<!-- 		             </td> -->
+<!-- 		             <td> -->
+<!-- 		                <a th:href="@{deleteStockHistory(stockhistoryid=${sh.stockhistoryid})}">Delete</a> -->
+<!-- 		             </td> -->
+<!-- 		          </tr> -->
+<!-- 		    </table> -->
+<!-- 		    <a th:href="@{/stockIn(stocktypeid=1)}" >Stock In</a>&nbsp;&nbsp;<a th:href="@{/stockOut(stocktypeid=2)}" >Stock Out</a> -->
+    	</div><!-- end of .container-fluid-->
+    </div><!-- end of .content-wrapper-->
+	<div class="footer_ref" th:include="/footer"></div>
+	
+	<script type="text/javascript">
+        function doAction(action, id) {
+            if (action == 'in') {
+                $('#StockIn .modal-body').empty();
+                $('#StockIn .modal-title').text("Stock In");
+                $('#StockIn .modal-body').load('stockIn?stocktypeid=1', function () {
+                    $('#StockIn').modal({show: true});
+                });
+            } else if (action == 'out') {
+                $('#StockOut .modal-body').empty();
+                $('#StockOut .modal-title').text("Stock Out");
+                $('#StockOut .modal-body').load('stockOut?stocktypeid=2', function () {
+                    $('#StockOut').modal({show: true});
+                });
+            } else if (action == 'edit') {
+            	console.log("change");
+                $('#EditStockHistory .modal-body').empty();
+                $('#EditStockHistory .modal-title').text("Edit Stock Movement");
+                $('#EditStockHistory .modal-body').load('editStockHistory?stockhistoryid=' + id, function () {
+                    $('#EditStockHistory').modal({show: true});
+                });
+            } else if (action == 'delete') {
+                $('#DeleteStockHistory .modal-body').empty();
+                $('#DeleteStockHistory .modal-title').text("Delete");
+                $('#DeleteStockHistory .modal-body').load('deleteProduct?productid=' + id, function () {
+                    $('#DeleteStockHistory').modal({show: true});
+                });
+            }
+        }
+    </script>
+</html>

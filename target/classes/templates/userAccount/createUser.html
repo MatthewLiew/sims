@@ -1,21 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<!-- 	<head> -->
-<!-- 		<meta charset="UTF-8"> -->
-<!-- 		<title>Create User</title> -->
-<!-- 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
-<!--     </head> -->
-<!--     <body> -->
-<!--     	<th:block th:include="/_menu"></th:block> -->
-<!--       	<h3>Create User</h3> -->
-
-<!--       	<form id="create_user" method="POST" th:action="@{createUser}" onsubmit="return userForm('create_user');"> -->
+	
+	<head>
+		<meta charset="UTF-8">
+    </head>
       	<p class="error" style="color: red;" th:text="${errorString}" ></p>
 		
 		<div class="form-group">
             <div class="form-row">
                 <div class="col-md-3">
-                    <label for="UserIDLabel">User Name</label>
+                    <label for="UserNameLabel">User Name</label>
                 </div>
                 <div class="col-md-6">                    
                     <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
@@ -31,90 +25,70 @@
         <div class="form-group">
             <div class="form-row">
                 <div class="col-md-3">
-                    <label for="UserIDLabel">Password</label>
+                    <label for="PasswordLabel">Password</label>
                 </div>
                 <div class="col-md-6">                    
                     <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
                     <input class="form-control password" id="password" name="password" type="password" data-error="Please Enter Password" aria-describedby="Password" placeholder="Enter Password" value="" required>
                 </div>
-<!--                 <div class="col-md-3"> -->
-<!--                 	<span class="username_status"></span> -->
-<!--                     <span style="visibility:hidden;"class="username_flag" th:text="true"></span> -->
-<!--                 </div> -->
             </div>
         </div>
         
         <div class="form-group">
             <div class="form-row">
                 <div class="col-md-3">
-                    <label for="UserIDLabel">Role</label>
+                    <label for="UserRoleLabel">Role</label>
                 </div>
                 <div class="col-md-6">                    
                     <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
                     <select name="userrole" required>
-			            <option value="0">Select User Role</option>
-			            <option th:each="list: ${approles}" th:value="${list.roleid}" th:text="${list.rolename}">
+			            <option value="">Select User Role</option>
+			            <option th:each="list: ${approles}" th:selected="${list.roleid}==2" th:value="${list.roleid}" th:text="${list.rolename}">
 			        </select>
                 </div>
-<!--                 <div class="col-md-3"> -->
-<!--                 	<span class="username_status"></span> -->
-<!--                     <span style="visibility:hidden;"class="username_flag" th:text="true"></span> -->
-<!--                 </div> -->
             </div>
         </div>
         
         <div class="form-group">
             <div class="form-row">
                 <div class="col-md-3">
-                    <label for="UserIDLabel">Organization</label>
+                    <label for="OrganizationLabel">Organization</label>
                 </div>
                 <div class="col-md-6">                    
                     <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
                     <select required name="orgid" onchange="department_select('CreateUser',this.value);">
-		               	<option value="0">Select Organization</option>
+		               	<option value="">Select Organization</option>
 			            <option th:each="list: ${orgs}" th:value="${list.orgid}" th:text="${list.orgname}"></option>
 	                </select>
                 </div>
-<!--                 <div class="col-md-3"> -->
-<!--                 	<span class="username_status"></span> -->
-<!--                     <span style="visibility:hidden;"class="username_flag" th:text="true"></span> -->
-<!--                 </div> -->
             </div>
         </div>
         
          <div class="form-group">
             <div class="form-row">
                 <div class="col-md-3">
-                    <label for="UserIDLabel">Department</label>
+                    <label for="DepartmentLabel">Department</label>
                 </div>
                 <div class="col-md-6">                    
                     <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
                     <select required name="deptid" class="dept_select" onchange="subdepartment_select('CreateUser', this.value);">
-		            	<option value="0">Select Department</option>
+		            	<option value="">Select Department</option>
 	            	</select>
                 </div>
-<!--                 <div class="col-md-3"> -->
-<!--                 	<span class="username_status"></span> -->
-<!--                     <span style="visibility:hidden;"class="username_flag" th:text="true"></span> -->
-<!--                 </div> -->
             </div>
         </div>
         
         <div class="form-group">
             <div class="form-row">
                 <div class="col-md-3">
-                    <label for="UserIDLabel">Sub Department</label>
+                    <label for="SubDepartmentLabel">Sub Department</label>
                 </div>
                 <div class="col-md-6">                    
                     <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
-                    <select name="subdeptid" class="subdept_select">
-			        	<option value="0">Select Sub Department</option>
+                    <select required name="subdeptid" class="subdept_select">
+			        	<option value="">Select Sub Department</option>
 		            </select>
                 </div>
-<!--                 <div class="col-md-3"> -->
-<!--                 	<span class="username_status"></span> -->
-<!--                     <span style="visibility:hidden;"class="username_flag" th:text="true"></span> -->
-<!--                 </div> -->
             </div>
         </div>
 		
@@ -168,13 +142,14 @@
 <!--             	</select> -->
 <!--             </td> -->
 <!--        </tr> -->
-<!--        <tr> -->
-<!--             <td colspan="2">                    -->
-<!--             <input type="submit" value="Submit" /> -->
-<!--             </td> -->
-<!--         </tr> -->
+<!-- <       <tr> --> 
+<!-- <!--             <td colspan="2">                    --> 
+<!-- <!--             <input type="submit" value="Submit" /> --> 
+<!-- <!--             </td> --> 
+<!-- <!--         </tr> -->
 <!--         </table> -->
 <!--         </form> -->
-<!-- 	<script src="../js/validation.js"></script> -->
+
 <!--    </body> -->
+<!-- <script src="../js/validation.js"></script> -->
 </html>

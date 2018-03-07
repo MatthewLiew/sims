@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+   	</head>
+	
+	<input type="hidden" name="userid" th:value="${useracc.userid}" />
+	
+	<div class="form-group">
+        <div class="form-row">
+            <div class="col-md-12">
+                Are you sure to Delete Following User ? <br/>
+                User Name - <b><span th:text="${useracc.username}"></span></b>
+            </div>
+        </div>
+    </div>
+           
+</html>

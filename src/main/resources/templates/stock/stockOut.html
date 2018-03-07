@@ -1,76 +1,158 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-   <head>
-      <meta charset="UTF-8">
-      <title>Stock Out</title>
-      
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      
-   </head>
-   <body>
-      
-      <!-- Include _menu.html -->
-      <th:block th:include="/_menu"></th:block>
-      <h3>Stock Out</h3>
+	<head>
+		<meta charset="UTF-8">
+	</head>
+   
+      	<p class="error" style="color: red;" th:text="${errorString}" ></p>
+      	<input type="hidden" name="stocktypeid" value="2" />
+	  	<input type="hidden" name="referer" th:value="${referer}" />
+      	
+      	<div class="form-group">
+            <div class="form-row">
+                <div class="col-md-3">
+                    <label for="ProductLabel">Product</label>
+                </div>
+                <div class="col-md-6">                    
+                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
+                    <select name="productid" required>
+			            <option value="">Select Product</option>
+			            <option th:each="list: ${products}" th:value="${list.productid}" th:text="${list.productname}"></option>
+			        </select>
+                </div>
+            </div>
+        </div>
+        
+	 	<div class="form-group">
+            <div class="form-row">
+                <div class="col-md-3">
+                    <label for="QuantityLabel">Quantity</label>
+                </div>
+                <div class="col-md-6">                    
+                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
+                    <input class="form-control quantity" id="quantity" name="quantity" type="text" data-error="Please Enter Quantity" aria-describedby="Quantity" placeholder="Enter Quantity" value="1" required>
+                </div>
+                <div class="col-md-3">
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-3">
+                    <label for="DateLabel">Date</label>
+                </div>
+                <div class="col-md-6">                    
+                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
+                    <input class="form-control date" id="date" name="date" type="date" data-error="Please Enter Date" aria-describedby="Date" placeholder="Enter Date" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" required>
+                </div>
+                <div class="col-md-3">
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-3">
+                    <label for="TimeLabel">Time</label>
+                </div>
+                <div class="col-md-6">                    
+                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
+                    <input class="form-control time" id="time" name="time" type="time" data-error="Please Enter Time" aria-describedby="Time" placeholder="Enter Time" th:value="${#dates.format(#dates.createNow(), 'HH:mm')}" required>
+                </div>
+                <div class="col-md-3">
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-3">
+                    <label for="ReasonLabel">Reason</label>
+                </div>
+                <div class="col-md-6">                    
+                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
+                    <select name="reasonid" required>
+			            <option value="">Select Reason</option>
+			            <option th:each="list: ${reasons}" th:value="${list.reasonid}" th:text="${list.reason}"></option>
+			        </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-3">
+                    <label for="RemarkLabel">Remark</label>
+                </div>
+                <div class="col-md-6">                    
+                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
+<!--                     <input class="form-control remark" id="remark" name="remark" type="text" data-error="Please Enter Remark" aria-describedby="Remark" placeholder="Remark" value="" required> -->
+                    <textarea class="form-control remark" id="remark" name="remark" rows="4" cols="50" data-error="Please Enter Remark" aria-describedby="Remark" placeholder="Remark" value="" required></textarea>
+                </div>
+                <div class="col-md-3">
+                </div>
+            </div>
+        </div>
 
 	 
-      <form id="stock_out" method="POST" th:action="@{stockOut}" >
-      <p class="error" style="color: red;" th:text="${errorString}" ></p>
-      <input type="hidden" class="stocktypeid" name="stocktypeid" value="2" />
-<!--       <input type="hidden" class="deptid" name="deptid" th:value="${deptid}" /> -->
-         <table th:border="0">
+<!--       <form id="stock_out" method="POST" th:action="@{stockOut}" > -->
+<!--       <p class="error" style="color: red;" th:text="${errorString}" ></p> -->
+<!--       <input type="hidden" class="stocktypeid" name="stocktypeid" value="2" /> -->
+<!-- <!--       <input type="hidden" class="deptid" name="deptid" th:value="${deptid}" /> --> 
+<!--          <table th:border="0"> -->
          
-         	<tr>
-               <td>Product</td>
-               <td>
-               <select name="productid">
-               	   <option value="0">Select Product</option>
-	               <option th:each="list: ${products}" th:value="${list.productid}" th:text="${list.productname}"></option>
-               </select></td>
-<!-- 			   <td class="product_status"></td> -->
-            </tr>
-            <tr>
-               <td>Quantity</td>
-               <td><input type="text" class="quantity" name="quantity" th:value=1/></td>
-<!-- 			   <td class="quantity_status"></td> -->
-            </tr>
+<!--          	<tr> -->
+<!--                <td>Product</td> -->
+<!--                <td> -->
+<!--                <select name="productid"> -->
+<!--                	   <option value="0">Select Product</option> -->
+<!-- 	               <option th:each="list: ${products}" th:value="${list.productid}" th:text="${list.productname}"></option> -->
+<!--                </select></td> -->
+<!-- <!-- 			   <td class="product_status"></td> --> 
+<!--             </tr> -->
+<!--             <tr> -->
+<!--                <td>Quantity</td> -->
+<!--                <td><input type="text" class="quantity" name="quantity" th:value=1 /></td> -->
+<!-- <!-- 			   <td class="quantity_status"></td> --> 
+<!--             </tr> -->
 
-             <tr>
-               <td>Date</td>
-               <td><input type="date" class="date" name="date" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" /></td>
-<!-- 			   <td class="date_status"></td> -->
-            </tr>
-             <tr>
-               <td>Time</td>
-               <td><input type="time" class="time" name="time" th:value="${#dates.format(#dates.createNow(), 'HH:mm')}"/></td>
-<!-- 			   <td class="time_status"></td> -->
-            </tr>
-            <tr>
-               <td>Reason</td>
-               <td>
-               <select name="reasonid">
-               	   <option value="0">Select Reason</option>
-	               <option th:each="list: ${reasons}" th:value="${list.reasonid}" th:text="${list.reason}"></option>
-               </select></td>
-<!--                <td><input type="text" class="reason" name="reason" th:value="${reason}"/></td> -->
-<!-- 			   <td class="time_status"></td> -->
-            </tr>
-            <tr>
-               <td>Reason (Details)</td>
-<!--                onkeyup="deptCode('create_dept');" -->
-			   <td><textarea class="reasondesc" name="reasondesc" rows="4" cols="50"></textarea><td>
-<!--                <td><input type="text" class="reason" name="reason" th:value="${reason}" /></td> -->
-<!-- 			   <td class="deptcode_status"></td> -->
-<!-- 			   <td style="visibility:hidden;" class="deptcode_flag" th:text="true"></td> -->
-            </tr>      
-            <tr>
-               <td colspan="2">                   
-                <input type="submit" value="Submit" />
-               </td>
-            </tr>  
-         </table>
-      </form>
+<!--              <tr> -->
+<!--                <td>Date</td> -->
+<!--                <td><input type="date" class="date" name="date" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" /></td> -->
+<!-- <!-- 			   <td class="date_status"></td> --> 
+<!--             </tr> -->
+<!--              <tr> -->
+<!--                <td>Time</td> -->
+<!--                <td><input type="time" class="time" name="time" th:value="${#dates.format(#dates.createNow(), 'HH:mm')}"/></td> -->
+<!-- <!-- 			   <td class="time_status"></td> --> 
+<!--             </tr> -->
+<!--             <tr> -->
+<!--                <td>Reason</td> -->
+<!--                <td> -->
+<!--                <select name="reasonid"> -->
+<!--                	   <option value="0">Select Reason</option> -->
+<!-- 	               <option th:each="list: ${reasons}" th:value="${list.reasonid}" th:text="${list.reason}"></option> -->
+<!--                </select></td> -->
+<!-- <!--                <td><input type="text" class="reason" name="reason" th:value="${reason}"/></td> --> 
+<!-- <!-- 			   <td class="time_status"></td> --> 
+<!--             </tr> -->
+<!--             <tr> -->
+<!--                <td>Reason (Details)</td> -->
+<!-- <!--                onkeyup="deptCode('create_dept');" --> 
+<!-- 			   <td><textarea class="reasondesc" name="reasondesc" rows="4" cols="50"></textarea><td> -->
+<!-- <!--                <td><input type="text" class="reason" name="reason" th:value="${reason}" /></td> --> 
+<!-- <!-- 			   <td class="deptcode_status"></td> --> 
+<!-- <!-- 			   <td style="visibility:hidden;" class="deptcode_flag" th:text="true"></td> --> 
+<!--             </tr>       -->
+<!--             <tr> -->
+<!--                <td colspan="2">                    -->
+<!--                 <input type="submit" value="Submit" /> -->
+<!--                </td> -->
+<!--             </tr>   -->
+<!--          </table> -->
+<!--       </form> -->
 
-     <script src="../js/validation.js"></script>
-   </body>
+<!-- <!--      <script src="../js/validation.js"></script> -->
+<!--    </body> -->
 </html>

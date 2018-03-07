@@ -20,7 +20,7 @@
 	<!-- Custom styles for this template-->
   	<link href="css/sb-admin.css" rel="stylesheet">
   	<link href="css/style.css" rel="stylesheet">
-  	
+	
   	<!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -39,8 +39,9 @@
     <!-- Custom scripts for this page-->
     <script src="js/sb-admin-datatables.min.js"></script>
     <script src="js/sb-admin-charts.min.js"></script>
-    <script src="js/validation.js"></script>
     
+<!--     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+   	<script src="js/validation.js"></script>
 </head>
 <body class="fix-nav sticky-footer bg-dark" id="page-top" onload="startTime()">
 	<!-- Navigation -->
@@ -90,12 +91,26 @@
 			            </li>
            			</ul>
 	          	</li>
-				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Stock">
-					<a class="nav-link" th:href="@{/stock}">
-						<i class="fa fa-fw fa-dashboard"></i>
-		            	<span class="nav-link-text">Stock</span>
-	            	</a>
-				</li>
+	          	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Stock Management">
+	          		<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti2" data-parent="#exampleAccordion">
+		            	<i class="fa fa-fw fa-sitemap"></i>
+		            	<span class="nav-link-text">Stock Management</span>
+		         	 </a>
+		          	<ul class="sidenav-second-level collapse" id="collapseMulti2">
+			            <li>
+		              		<a th:href="@{/stockmanagement}">Stock Management</a>
+			            </li>
+			            <li>
+		              		<a th:href="@{/stockmovement}">Stock Movement</a>
+			            </li>
+			            <li>
+		              		<a th:href="@{/serialmanagement}">Serial Management</a>
+			            </li>
+			            <li>
+		              		<a th:href="@{/settings}">Settings</a>
+			            </li>
+           			</ul>
+	          	</li>
 				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Product">
 					<a class="nav-link" th:href="@{/product}">
 						<i class="fa fa-fw fa-dashboard"></i>
@@ -103,11 +118,11 @@
 	            	</a>
 				</li>
 				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Location">
-	          		<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti2" data-parent="#exampleAccordion">
+	          		<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti3" data-parent="#exampleAccordion">
 		            	<i class="fa fa-fw fa-sitemap"></i>
 		            	<span class="nav-link-text">Location</span>
 		         	 </a>
-		          	<ul class="sidenav-second-level collapse" id="collapseMulti2">
+		          	<ul class="sidenav-second-level collapse" id="collapseMulti3">
 			            <li>
 		              		<a th:href="@{/mainlocation}">Main Location</a>
 			            </li>
@@ -116,12 +131,6 @@
 			            </li>
            			</ul>
 	          	</li>
-				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Location">
-					<a class="nav-link" th:href="@{/location}">
-						<i class="fa fa-fw fa-dashboard"></i>
-		            	<span class="nav-link-text">Location</span>
-	            	</a>
-				</li>
 			</ul>
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
@@ -130,8 +139,12 @@
 	                    <span id="ShowTime">15:19:58</span>
                     </a>
                 </li>
+                <li class="nav-item">
+		          <a class="nav-link" th:href="@{/login2}">
+		            <i class="fa fa-fw fa-sign-in"></i>Login</a>
+		        </li>
 		        <li class="nav-item">
-		          <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+		          <a class="nav-link" th:href="@{/logout}">
 		            <i class="fa fa-fw fa-sign-out"></i>Logout</a>
 		        </li>
 		    </ul>
@@ -158,4 +171,5 @@
 	       return i;
 	   }
 </script>
+
 </html>

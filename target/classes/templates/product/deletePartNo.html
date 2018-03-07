@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+   	</head>
+	
+	<input type="hidden" name="referer" th:value="${referer}" />
+	<input type="hidden" name="partnoid" th:value="${partno.partnoid}" />
+	
+	<div class="form-group">
+        <div class="form-row">
+            <div class="col-md-12">
+                Are you sure to Delete Following User ? <br/>
+                Serial No - <b><span th:text="${partno.serialno}"></span></b>
+<!--                 										<br/> -->
+<!--                 Reason - <b><span th:text="${reason.reason}"></span></b> -->
+            </div>
+        </div>
+    </div>
+           
+</html>

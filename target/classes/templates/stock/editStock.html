@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
    <head>
       <meta charset="UTF-8">
-      <title>Edit Product</title>
+      <title>Edit Stock</title>
       
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
       
@@ -13,7 +13,7 @@
       <th:block th:include="/_menu"></th:block>
       <h3>Edit Product</h3>
 
-      <form id="edit_product" method="POST" th:action="@{editProducts}" onsubmit="return productForm('edit_product');">
+      <form id="edit_product" method="POST" th:action="@{editProduct}" onsubmit="return productForm('edit_product');">
       <p class="error" style="color: red;" th:text="${errorString}" ></p>
       <input type="hidden" class="productid "name="productid" th:value="${product.productid}" />
          <table th:border="0">

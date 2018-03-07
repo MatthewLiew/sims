@@ -18,10 +18,9 @@
 	      		<div class="card-header">
 	      			<i class="fa fa-table"></i> User Account &nbsp;&nbsp;
 <!-- 	      			<a th:href="@{createUser}"> -->
-<!-- data-target="#PreviewUser" -->
 	      			<a onclick="doAction('new', 0);">
-	      			<button class="btn btn-primary" data-toggle="modal" >Create User</button>
-	      				</a>
+	      				<button class="btn btn-primary" data-toggle="modal" >Create User</button>
+	      			</a>
 	      		</div>	  	
 		        <div class="card-body">
 		        	<div class="table-responsive">
@@ -60,12 +59,15 @@
 <!-- 						            <form method="POST" th:action="@{editUser2}"> -->
 <!-- 						            	<input type="hidden" name="userid" th:value="${user.userid}"/> -->
 <!-- 						             	<input type="submit" value="Edit" /> -->
-						                <a th:href="@{editUser(userid=${user.userid})}"><i class="fa fa-edit" title="Edit User"></i></a>
+											<!-- th:href="@{editUser(userid=${user.userid})}" -->
+<!-- 											th:onclick="'javascript:getContactId(\'' + ${contact.id} + '\');'" -->
+						                <a th:onclick="'doAction(\'edit\',\''+ ${user.userid} + '\');'" ><button class="btn btn-primary" title="Edit User"><i class="fa fa-edit" title="Edit User"></i></button></a>
 <!-- 						            </form> -->
 <!-- 						            &nbsp;&nbsp; -->
-									<a th:href="@{changePassword(userid=${user.userid})}"><i class="fa fa-key" title="Change Password"></i></a>
-									<!-- @{deleteUser(userid=${user.userid})}-->
-						            <a th:href="'#'"><i class="fa fa-trash" title="delete"></i></a></td>
+<!-- 									"@{changePassword(userid=${user.userid})}" -->
+									<a th:onclick="'doAction(\'change\',\''+ ${user.userid} +'\');'"><button class="btn btn-primary" title="Change Password"><i class="fa fa-key" title="Change Password"></i></button></a>
+<!-- 									<a th:href="@{deleteUser(userid=${user.userid})}"> -->
+						            <a th:onclick="'doAction(\'delete\',\''+ ${user.userid} +'\');'"><button class="btn btn-primary" title="Delete User"><i class="fa fa-trash" title="Delete User"></i></button></a></td>
 					            </tr>
 		              		</tbody>
 	              		</table>
@@ -74,8 +76,8 @@
 		         <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 		       </div>
 		       
-		       <div class="modal clickable" id="PreviewUser" tabindex="-1" role="dialog" aria-labelledby="PreviewUser" aria-hidden="true">
-		            <form method="POST" th:action="@{createUser}" id="CreateUser">
+		       <div class="modal clickable" id="CreateUser" tabindex="-1" role="dialog" aria-labelledby="CreateUser" aria-hidden="true">
+		            <form method="POST" th:action="@{/createUser}" id="CreateUser">
 		                <div class="vertical-alignment-helper">
 		                    <div class="modal-dialog  modal-lg vertical-align-center">
 		                        <!-- Modal content-->
@@ -94,6 +96,87 @@
 		                            <div class="modal-footer">
 		                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 		                                <button type="submit" class="btn btn-primary">Save</button>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </form>
+		        </div>
+		        
+		        <div class="modal clickable" id="EditUser" tabindex="-1" role="dialog" aria-labelledby="EditUser" aria-hidden="true">
+		            <form method="POST" th:action="@{/editUser}" id="EditUser">
+		                <div class="vertical-alignment-helper">
+		                    <div class="modal-dialog  modal-lg vertical-align-center">
+		                        <!-- Modal content-->
+		                        <div class="modal-content">
+		                            <div class="modal-header">
+		                                <h4 class="modal-title">Edit User</h4>
+		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                            </div>
+		                            
+		                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+		
+		                            <div class="modal-body">
+		
+		                            </div>
+		
+		                            <div class="modal-footer">
+		                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		                                <button type="submit" class="btn btn-primary">Save</button>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </form>
+		        </div>
+		        
+		        <div class="modal clickable" id="ChangePwd" tabindex="-1" role="dialog" aria-labelledby="ChangePwd" aria-hidden="true">
+		            <form method="POST" th:action="@{/changePassword}" id="ChangePwd">
+		                <div class="vertical-alignment-helper">
+		                    <div class="modal-dialog  modal-lg vertical-align-center">
+		                        <!-- Modal content-->
+		                        <div class="modal-content">
+		                            <div class="modal-header">
+		                                <h4 class="modal-title">Change Password</h4>
+		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                            </div>
+		                            
+		                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+		
+		                            <div class="modal-body">
+		
+		                            </div>
+		
+		                            <div class="modal-footer">
+		                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		                                <button type="submit" class="btn btn-primary">Save</button>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </form>
+		        </div>
+		        
+		        <div class="modal clickable" id="DeleteUser" tabindex="-1" role="dialog" aria-labelledby="DeleteUser" aria-hidden="true">
+		            <form method="POST" th:action="@{/deleteUser}" id="DeleteUser">
+		                <div class="vertical-alignment-helper">
+		                    <div class="modal-dialog  modal-lg vertical-align-center">
+		                        <!-- Modal content-->
+		                        <div class="modal-content">
+		                            <div class="modal-header">
+		                                <h4 class="modal-title">Change Password</h4>
+		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                            </div>
+		                            
+		                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+		
+		                            <div class="modal-body">
+		
+		                            </div>
+		
+		                            <div class="modal-footer">
+		                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		                                <button type="submit" class="btn btn-primary">Delete</button>
 		                            </div>
 		                        </div>
 		                    </div>
@@ -132,13 +215,30 @@
 	<script type="text/javascript">
         function doAction(action, id) {
             if (action == 'new') {
-                $('#PreviewUser .modal-body').empty();
-                $('#PreviewUser .modal-title').text("New User");
-//                 $('#PreviewUser').modal({show: true});
-                $('#PreviewUser .modal-body').load('createUser', function () {
-                    $('#PreviewUser').modal({show: true});
+                $('#CreateUser .modal-body').empty();
+                $('#CreateUser .modal-title').text("New User");
+                $('#CreateUser .modal-body').load('createUser', function () {
+                    $('#CreateUser').modal({show: true});
                 });
-                //$('#PreviewUser').modal({show:true});
+            } else if (action == 'edit') {
+                $('#EditUser .modal-body').empty();
+                $('#EditUser .modal-title').text("Edit User");
+                $('#EditUser .modal-body').load('editUser?userid=' + id, function () {
+                    $('#EditUser').modal({show: true});
+                });
+            } else if (action == 'change') {
+            	console.log("change");
+                $('#ChangePwd .modal-body').empty();
+                $('#ChangePwd .modal-title').text("Change Password");
+                $('#ChangePwd .modal-body').load('changePassword?userid=' + id, function () {
+                    $('#ChangePwd').modal({show: true});
+                });
+            } else if (action == 'delete') {
+                $('#DeleteUser .modal-body').empty();
+                $('#DeleteUser .modal-title').text("Delete User");
+                $('#DeleteUser .modal-body').load('deleteUser?userid=' + id, function () {
+                    $('#DeleteUser').modal({show: true});
+                });
             }
         }
     </script>

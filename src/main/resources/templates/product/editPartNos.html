@@ -1,59 +1,102 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-   <head>
-      <meta charset="UTF-8">
-      <title>Edit Part No</title>
-      
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      
-   </head>
-   <body>
-      
-      <!-- Include _menu.html -->
-      <th:block th:include="/_menu"></th:block>
-      <h3>Edit Part No</h3>
+	<head>
+		<meta charset="UTF-8">
+	</head>
 
-	 
-      <form id="edit_partno" method="POST" th:action="@{editPartNos}"  onsubmit="return partnoForm('edit_partno');">
-      <p class="error" style="color: red;" th:text="${errorString}" ></p>
-      <input type="hidden" class="partnoid" name="partnoid" th:value="${partno.partnoid}" />
-         <table th:border="0">
-<!-- 	        <tr> -->
-<!-- 	               <td>Product</td> -->
-<!-- 	               <td> -->
-<!-- 	               <select name="productid" > -->
-<!-- 	               	   <option value="0">Select Organization</option> -->
-<!-- 		               <option th:each="list: ${products}" th:selected="${list.isProduct(partno.productid)}" th:value="${list.productid}" th:text="${list.productname}" ></option> -->
-<!-- 	               </select></td> -->
-<!-- 				   <td class="org_status"></td> -->
-<!-- 	            </tr> -->
-<!-- 			<tr> -->
-               <td>Serial No</td>
-               <td><input type="text" class="serialno" name="serialno" th:value="${partno.serialno}" onkeyup="partnoSerialNo('edit_partno');"/></td>
-			   <td class="serialno_status"></td>
-			   <td style="visibility:hidden;" class="serialno_flag" th:text="true"></td>
-            </tr>
-            <tr>
-               <td>Model No</td>
-               <td><input type="text" class="modelno" name="modelno" th:value="${partno.modelno}" onkeyup="partnoModelNo('edit_partno');"/></td>
-			   <td class="modelno_status"></td>
-			   <td style="visibility:hidden;" class="modelno_flag" th:text="true"></td>
-            </tr>
-            <tr>
-<!--             onkeyup="partnoUpcCode('edit_partno');" -->
-               <td>UPC Code</td>
-               <td><input type="text" class="upccode" name="upccode" th:value="${partno.upccode}" /></td>
-			   <td class="upccode_status"></td>
-			   <td style="visibility:hidden;" class="upccode_flag" th:text="true"></td>
-            </tr>
-            <tr>
-               <td colspan="2">                   
-                <input type="submit" value="Submit" />
-               </td>
-            </tr>  
-         </table>
-      </form>
+		<p class="error" style="color: red;" th:text="${errorString}" ></p>
+		<input type="hidden" name="partnoid" th:value="${partno.partnoid}" />
+	  	<input type="hidden" name="referer" th:value="${referer}" />
+	 	
+	 	<div class="form-group">
+            <div class="form-row">
+                <div class="col-md-3">
+                    <label for="SerialNoLabel">Serial No</label>
+                </div>
+                <div class="col-md-6">                    
+                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
+                    <input class="form-control serialno" id="serialno" name="serialno" type="text" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Enter Serial No" th:value="${partno.serialno}" onkeyup="partnoSerialNo('EditPartNo');" required>
+<!--                     <textarea class="form-control serialno" id="serialno"name="serialno" type="text" rows="4" cols="50" data-error="Please Ener Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space" required></textarea> -->
+                </div>
+                <div class="col-md-3">
+                	<span class="serialno_status"></span>
+                    <span style="visibility:hidden;"class="serialno_flag" th:text="true"></span>
+                </div>
+            </div>
+        </div>
+        
+         <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-3">
+                    <label for="ModelNoLabel">Model No</label>
+                </div>
+                <div class="col-md-6">                    
+                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
+                    <input class="form-control modelno" id="modelno" name="modelno" type="text" data-error="Please Ener Model No" aria-describedby="ModelNo" placeholder="Enter Model No" th:value="${partno.modelno}">
+                </div>
+                <div class="col-md-3">
+<!--                 	<span class="productname_status"></span> -->
+<!--                     <span style="visibility:hidden;"class="productname_flag" th:text="true"></span> -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="form-row">
+                <div class="col-md-3">
+                    <label for="UPCCodeLabel">UPC Code</label>
+                </div>
+                <div class="col-md-6">                    
+                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
+                    <input class="form-control upccode" id="upccode" name="upccode" type="text" data-error="Please Ener UPC Code" aria-describedby="UPCCode" placeholder="Enter UPC Code" th:value="${partno.upccode}">
+                </div>
+                <div class="col-md-3">
+<!--                 	<button type="button" class="btn btn-primary remove_partno">Remove</button> -->
+<!--                 	<span class="productname_status"></span> -->
+<!--                     <span style="visibility:hidden;"class="productname_flag" th:text="true"></span> -->
+                </div>
+            </div>
+        </div>
+<!--       <form id="edit_partno" method="POST" th:action="@{editPartNos}"  onsubmit="return partnoForm('edit_partno');"> -->
+<!--       <p class="error" style="color: red;" th:text="${errorString}" ></p> -->
+<!--       <input type="hidden" class="partnoid" name="partnoid" th:value="${partno.partnoid}" /> -->
+<!--          <table th:border="0"> -->
+<!-- <!-- 	        <tr> --> 
+<!-- <!-- 	               <td>Product</td> --> 
+<!-- <!-- 	               <td> --> 
+<!-- <!-- 	               <select name="productid" > --> 
+<!-- <!-- 	               	   <option value="0">Select Organization</option> --> 
+<!-- <!-- 		               <option th:each="list: ${products}" th:selected="${list.isProduct(partno.productid)}" th:value="${list.productid}" th:text="${list.productname}" ></option> --> 
+<!-- <!-- 	               </select></td> --> 
+<!-- <!-- 				   <td class="org_status"></td> --> 
+<!-- <!-- 	            </tr> --> 
+<!-- <!-- 			<tr> --> 
+<!--                <td>Serial No</td> -->
+<!--                <td><input type="text" class="serialno" name="serialno" th:value="${partno.serialno}" onkeyup="partnoSerialNo('edit_partno');"/></td> -->
+<!-- 			   <td class="serialno_status"></td> -->
+<!-- 			   <td style="visibility:hidden;" class="serialno_flag" th:text="true"></td> -->
+<!--             </tr> -->
+<!--             <tr> -->
+<!--                <td>Model No</td> -->
+<!--                <td><input type="text" class="modelno" name="modelno" th:value="${partno.modelno}" onkeyup="partnoModelNo('edit_partno');"/></td> -->
+<!-- 			   <td class="modelno_status"></td> -->
+<!-- 			   <td style="visibility:hidden;" class="modelno_flag" th:text="true"></td> -->
+<!--             </tr> -->
+<!--             <tr> -->
+<!-- <!--             onkeyup="partnoUpcCode('edit_partno');" --> 
+<!--                <td>UPC Code</td> -->
+<!--                <td><input type="text" class="upccode" name="upccode" th:value="${partno.upccode}" /></td> -->
+<!-- 			   <td class="upccode_status"></td> -->
+<!-- 			   <td style="visibility:hidden;" class="upccode_flag" th:text="true"></td> -->
+<!--             </tr> -->
+<!--             <tr> -->
+<!--                <td colspan="2">                    -->
+<!--                 <input type="submit" value="Submit" /> -->
+<!--                </td> -->
+<!--             </tr>   -->
+<!--          </table> -->
+<!--       </form> -->
 
-     <script src="../js/validation.js"></script>
-   </body>
+<!-- <!--      <script src="../js/validation.js"></script> --> 
+<!--    </body> -->
 </html>

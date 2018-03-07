@@ -25,12 +25,12 @@ body.sticky-footer .content-wrapper {
 }
 
 @media (min-width: 992px){
-	mainNav .navbar-collapse .navbar-sidenav {
+	#mainNav .navbar-collapse .navbar-sidenav {
 	    position: absolute;
 	    top: 0;
 	    left: 0;
 	    overflow-x: hidden;
-	    overflow-y: auto;
+	    overflow-y: auto !important;
 	    -webkit-flex-direction: column;
 	    -ms-flex-direction: column;
 	    flex-direction: column;
