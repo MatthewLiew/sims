@@ -505,4 +505,11 @@ public class MainRESTController {
 		
 		return reasons;
 	}
+	
+	@PostMapping(value="/api/getSubLoc")
+	public List<SubLoc> getSubLoc(@RequestBody SubLoc subloc) {
+		List<SubLoc> sublocs=subLocDAO.getAllSubLoc(subloc.getMainlocid());
+		
+		return sublocs;
+	}
 }

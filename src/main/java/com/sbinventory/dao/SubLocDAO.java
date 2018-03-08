@@ -60,6 +60,20 @@ public class SubLocDAO extends JdbcDaoSupport{
         }
 	}
 	
+	public List<SubLoc> getAllSubLoc(int mainlocid){
+		
+		String sql=READ_SQL+" where MAIN_LOC_ID = ?"; ;
+		Object[] params=new Object[] {mainlocid};
+		SubLocMapper mapper=new SubLocMapper();
+		
+		try {
+            List<SubLoc> sublocs =  this.getJdbcTemplate().query(sql, params, mapper);
+            return sublocs;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+	
 	public SubLoc getSubLoc(int sublocid){
 		
 		String sql=READ_SQL+" where ID = ?";

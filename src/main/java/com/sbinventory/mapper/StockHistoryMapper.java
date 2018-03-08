@@ -40,9 +40,11 @@ public class StockHistoryMapper implements RowMapper<StockHistory>{
 		}
 		String loguser = rs.getString("LOG_USER");
 		String approval = rs.getString("APPROVAL");
+		int mainlocid = rs.getInt("MAIN_LOC_ID");
+		int sublocid = rs.getInt("SUB_LOC_ID");
 		
 		return new StockHistory(stockhistoryid, productid, quantity, historydate, historytime, stocktypeid, 
-				reasonid, reasondesc, logdatetime, loguser, approval);
+				reasonid, reasondesc, logdatetime, loguser, approval, mainlocid, sublocid);
 	}
 
 }

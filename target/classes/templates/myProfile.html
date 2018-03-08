@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<head>
 		<title th:text="${title}"></title>
 	</head>
@@ -13,6 +14,7 @@
 		        </li>
 		        <li class="breadcrumb-item active">My Profile</li>
 	      	</ol>
+	      	<div sec:authorize="hasRole('ROLE_ADMIN')">
 			<h2>User Info Page</h2>
 			<h3>Welcome : <span th:utext="${#request.userPrincipal.name}"></span></h3>
 			<b>This is protected page!</b>  
@@ -22,24 +24,25 @@
      				<tr>
      					<td>User ID:</td>
 	    			<td th:text="${user.userid}"></td>
-	    		</tr>
-		    	<tr>
-		    		<td>User Name:</td>
-		    		<td th:text="${myAccInfo}"></td>
-		    	</tr>
-		    	<tr>
-		    		<td>Organization:</td>
-		    		<td th:text="${org.orgname}"></td>
-		    	</tr>
-		    	<tr>
-		    		<td>Department:</td>
-		    		<td th:text="${dept.deptname}"></td>
-		    	</tr>
-		    	<tr>
-		    		<td>Sub Department:</td>
-		    		<td th:text="${subdept.subdeptname}"></td>
-		    	</tr>
-	    	</table>
+		    		</tr>
+			    	<tr>
+			    		<td>User Name:</td>
+			    		<td th:text="${myAccInfo}"></td>
+			    	</tr>
+			    	<tr>
+			    		<td>Organization:</td>
+			    		<td th:text="${org.orgname}"></td>
+			    	</tr>
+			    	<tr>
+			    		<td>Department:</td>
+			    		<td th:text="${dept.deptname}"></td>
+			    	</tr>
+			    	<tr>
+			    		<td>Sub Department:</td>
+			    		<td th:text="${subdept.subdeptname}"></td>
+			    	</tr>
+		    	</table>
+		    	</div>
     	</div><!-- end of .container-fluid-->
    	</div><!-- end of .content-wrapper-->
 	<div class="footer_ref" th:include="/footer"></div>  

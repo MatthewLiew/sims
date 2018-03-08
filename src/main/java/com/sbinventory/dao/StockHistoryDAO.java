@@ -18,7 +18,7 @@ import com.sbinventory.model.StockHistory;
 @Transactional
 public class StockHistoryDAO extends JdbcDaoSupport{
 
-	private static final String CREATE_SQL="INSERT INTO STOCK_HISTORY (PRODUCT_ID, QUANTITY, HISTORY_DATE, HISTORY_TIME, STOCK_TYPE_ID, REASON_ID, REASON_DESC, LOG_DATETIME, LOG_USER) VALUES (?,?,?,?,?,?,?,?,?)";
+	private static final String CREATE_SQL="INSERT INTO STOCK_HISTORY (PRODUCT_ID, MAIN_LOC_ID, SUB_LOC_ID, QUANTITY, HISTORY_DATE, HISTORY_TIME, STOCK_TYPE_ID, REASON_ID, REASON_DESC, LOG_DATETIME, LOG_USER) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 	private static final String READ_SQL="SELECT * FROM STOCK_HISTORY";
 	private static final String UPDATE_SQL="UPDATE STOCK_HISTORY";
 	private static final String DELETE_SQL="DELETE FROM STOCK_HISTORY";
@@ -28,9 +28,9 @@ public class StockHistoryDAO extends JdbcDaoSupport{
 		this.setDataSource(dataSource);
 	}
 	
-	public String createStockHistory(int productid, int quantity, String historydate, String historytime, int stocktypeid, int reasonid, String reasondesc, String logdatetime, String loguser) {
+	public String createStockHistory(int productid, int mainlocid, int sublocid, int quantity, String historydate, String historytime, int stocktypeid, int reasonid, String reasondesc, String logdatetime, String loguser) {
 		
-		Object[] params=new Object[]{productid, quantity, historydate, historytime, stocktypeid, reasonid, reasondesc, logdatetime, loguser};
+		Object[] params=new Object[]{productid, mainlocid, sublocid, quantity, historydate, historytime, stocktypeid, reasonid, reasondesc, logdatetime, loguser};
 		String sql=CREATE_SQL;
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
