@@ -18,5 +18,4 @@ public class SubLocMapper implements RowMapper<SubLoc>{
 		
 		return new SubLoc(sublocid, sublocname, mainlocid);
 	}
-
 }

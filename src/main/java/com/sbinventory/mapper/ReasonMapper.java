@@ -18,5 +18,4 @@ public class ReasonMapper implements RowMapper<Reason>{
 		
 		return new Reason(reasonid, reason, stocktypeid);
 	}
-
 }

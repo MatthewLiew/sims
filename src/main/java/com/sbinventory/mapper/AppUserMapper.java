@@ -14,7 +14,7 @@ public class AppUserMapper implements RowMapper<AppUser>{
 
 	@Override
 	public AppUser mapRow(ResultSet rs, int rowNum) throws SQLException {
-		// TODO Auto-generated method stub
+
 		int userId=rs.getInt("Id");
 		int userCode=rs.getInt("User_Code");
 		String userName = rs.getString("User_Name");

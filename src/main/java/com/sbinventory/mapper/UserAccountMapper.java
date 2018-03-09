@@ -22,5 +22,4 @@ public class UserAccountMapper implements RowMapper<UserAccount> {
         
         return new UserAccount(userid, usercode, username, price, orgid, deptid, subdeptid);
 	}
-
 }

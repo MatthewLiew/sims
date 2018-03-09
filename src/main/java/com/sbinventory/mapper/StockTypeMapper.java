@@ -17,5 +17,4 @@ public class StockTypeMapper implements RowMapper<StockType>{
 		
 		return new StockType(stocktypeid, stocktype);
 	}
-
 }

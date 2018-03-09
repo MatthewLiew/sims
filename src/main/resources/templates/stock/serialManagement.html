@@ -33,6 +33,8 @@
 						          	<th>UPC Code</th>
 						         	<th>Product</th>
 						          	<th>Status</th>
+						          	<th>Customer Name</th>
+						          	<th>Invoice</th>
 						          	<th>Action</th>
 	               			 	</tr>
 		              		</thead>
@@ -43,6 +45,8 @@
 						          	<th>UPC Code</th>
 						         	<th>Product</th>
 						          	<th>Status</th>
+						          	<th>Customer Name</th>
+						          	<th>Invoice</th>
 						          	<th>Action</th>
 					          	</tr>
 				          	</tfoot>
@@ -53,6 +57,8 @@
 					             	<td th:text="${pn.upccode}"></td>
 					             	<td th:each="list: ${products}" th:if="${list.isProduct(pn.productid)}" th:text="${list.productname}"></td>
 					             	<td style="color:green;">Available</td>
+					             	<td th:text="${pn.customername}"></td>
+					             	<td th:text="${pn.invoiceno}"></td>
 					             	<td>
 					             	<!-- <a th:href="@{/editPartNos(partnoid=${pn.partnoid})}"> -->
 				              	 	<a th:onclick="'doAction(\'edit\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Edit Serial No"><i class="fa fa-edit" title="Edit Serial No"></i></button></a>

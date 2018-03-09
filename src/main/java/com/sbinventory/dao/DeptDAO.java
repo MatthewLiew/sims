@@ -33,7 +33,6 @@ private static final String DELETE_SQL="DELETE FROM DEPT";
 	public List<Dept> getAllDept(){
 		
 		String sql=READ_SQL;
-		
 		DeptMapper mapper=new DeptMapper();
 		
 		try {
@@ -151,29 +150,32 @@ private static final String DELETE_SQL="DELETE FROM DEPT";
 	}
 	
 	public String updateDepartment(int deptid, int deptcode, String deptname ){
+		
 		String sql=UPDATE_SQL+" set DEPT_CODE = ?, DEPT_NAME = ? where ID= ?";
 		Object[] params=new Object[]{deptcode, deptname, deptid};
+		
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
 			return null;
-		}catch(EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			e.printStackTrace();
 			return e.getMessage();
-		}catch(DataAccessException  e) {
+		} catch (DataAccessException  e) {
 			return e.getMessage();
 		}
 	}
 	
 	public void deleteDepartment(int deptid){
+		
 		String sql=DELETE_SQL+" where ID= ?";
 		Object[] params= new Object[] {deptid};
+		
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
-		}catch(EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			e.printStackTrace();
 		}
 	}
-	
 }

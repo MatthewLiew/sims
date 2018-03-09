@@ -11,7 +11,7 @@ public class SubDeptMapper implements RowMapper<SubDept>{
 
 	@Override
 	public SubDept mapRow(ResultSet rs, int numRow) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		int subdeptid=rs.getInt("ID");
 		int subdeptcode=rs.getInt("SUB_DEPT_CODE");
 		String subdeptname=rs.getString("SUB_DEPT_NAME");
@@ -19,5 +19,4 @@ public class SubDeptMapper implements RowMapper<SubDept>{
 		
 		return new SubDept(subdeptid, subdeptcode, subdeptname, deptid);
 	}
-
 }

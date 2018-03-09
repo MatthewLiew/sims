@@ -164,7 +164,7 @@ public class UserAccountDAO extends JdbcDaoSupport {
 			try {
 				int rows=this.getJdbcTemplate().update(sql, params);
 				System.out.println(rows + " row(s) updated.");
-			}catch(EmptyResultDataAccessException e) {
+			} catch (EmptyResultDataAccessException e) {
 				e.printStackTrace();
 			}
 		}

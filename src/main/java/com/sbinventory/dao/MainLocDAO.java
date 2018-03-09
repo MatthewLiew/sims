@@ -32,14 +32,15 @@ public class MainLocDAO extends JdbcDaoSupport{
 		
 		Object[] params=new Object[]{mainlocname};
 		String sql=CREATE_SQL;
+		
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
 			return null;
-		}catch(EmptyResultDataAccessException e ) {
+		} catch (EmptyResultDataAccessException e ) {
 			return e.getMessage();
 			
-		}catch(DataAccessException  e) {
+		} catch (DataAccessException  e) {
 //			throw new DataAccessException("Something error", e);
 			return e.getMessage();
 		}
@@ -73,6 +74,7 @@ public class MainLocDAO extends JdbcDaoSupport{
 	}
 	
 	public MainLoc getMainLocName(String mainlocname){
+		
 		String sql=READ_SQL+" where MAIN_LOC_NAME = ?";
 		Object[] params= new Object[] {mainlocname};
 		MainLocMapper mapper=new MainLocMapper();
@@ -80,12 +82,13 @@ public class MainLocDAO extends JdbcDaoSupport{
 		try {
 			MainLoc mainloc = this.getJdbcTemplate().queryForObject(sql,params,mapper);
 			return mainloc;
-		}catch(EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
 	}
 	
 	public MainLoc getMainLocName(String mainlocname, int mainlocid){
+		
 		String sql=READ_SQL+" where MAIN_LOC_NAME = ? AND ID != ?";
 		Object[] params= new Object[] {mainlocname, mainlocid};
 		MainLocMapper mapper=new MainLocMapper();
@@ -93,35 +96,38 @@ public class MainLocDAO extends JdbcDaoSupport{
 		try {
 			MainLoc mainloc = this.getJdbcTemplate().queryForObject(sql,params,mapper);
 			return mainloc;
-		}catch(EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
 	}
 	
 	public String updateMainLoc(int mainlocid, String mainlocname ){
+		
 		String sql=UPDATE_SQL+" set MAIN_LOC_NAME = ? where ID= ?";
 		Object[] params=new Object[]{ mainlocname, mainlocid};
+		
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
 			return null;
-		}catch(EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			e.printStackTrace();
 			return e.getMessage();
-		}catch(DataAccessException  e) {
+		} catch (DataAccessException  e) {
 			return e.getMessage();
 		}
 	}
 	
 	public void deleteMainLoc(int mainlocid){
+		
 		String sql=DELETE_SQL+" where ID= ?";
 		Object[] params= new Object[] {mainlocid};
+		
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
-		}catch(EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			e.printStackTrace();
 		}
 	}
-
 }

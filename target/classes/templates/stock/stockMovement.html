@@ -19,48 +19,37 @@
       			<div class="card-header">
       				<i class="fa fa-table"></i> Stock Movement &nbsp;&nbsp;
 <!-- 	      			<a th:href="@{createUser}"> -->
-      				<a onclick="doAction('in', 0);">
-      					<button class="btn btn-primary" data-toggle="modal" >Stock In</button>
-	      			</a>
-	      			<a onclick="doAction('out', 0);">
-      					<button class="btn btn-primary" data-toggle="modal" >Stock Out</button>
-	      			</a>
+      				<a onclick="doAction('in', 0);"><button class="btn btn-primary" data-toggle="modal" >Stock In</button></a>
+	      			<a onclick="doAction('out', 0);"><button class="btn btn-primary" data-toggle="modal" >Stock Out</button></a>
 	      			<form method="GET" th:action="@{/stockmovement}">
-<!-- 	      			<table> -->
-<!-- 						<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0"> -->
-<!-- 						<tbody> -->
-						<div class="form-group">
+	      			
+						<div class="form-group mt-3">
             				<div class="form-row">
-								<div>From</div>
-						    	<div><input type="date" class="startdate" name="startdate" th:value="${startdate}" /></div>
-						    	<div>To</div>
-						    	<div><input type="date" class="enddate" name="enddate" th:value="${enddate}" /></div>
-						    
-					
-<!-- 					        <td> -->
-					        <div>
-						        <select name="stocktypeid" onchange="reason_option(this.value);">
-						             <option value="0">All Stock History </option>
-							         <option th:each="list: ${stocktypes}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option>
-						         </select>
+								<div class="col-md-auto">From</div>
+					    		<div class="col-md-2"><input class="form-control startdate" name="startdate" type="date" th:value="${startdate}" /></div>
+					    		<div class="col-md-auto"> To </div>
+					    		<div class="col-md-2"><input class="form-control enddate" name="enddate" type="date" th:value="${enddate}" /></div>
+
+						        <div class="col-md-2">
+							        <select class="form-control" name="stocktypeid" onchange="reason_option(this.value);">
+							             <option value="0">All Stock History </option>
+								         <option th:each="list: ${stocktypes}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option>
+							         </select>
+						         </div>
+						         <div class="col-md-2">
+							         <select class="form-control" id="reason" name="reasonid" style="display:none;">
+							             <option value="0">Any Stock In Type </option>
+								         <option th:each="list: ${stocktypes}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option>
+							         </select>
+						         </div>
+						         <div class="col-md-auto ml-md-auto">
+						         	<button type="submit" class="btn btn-primary">Filter</button>
+						         	&nbsp;&nbsp;
+						         	<a th:href="@{/stockmovement}"><button type="button" class="btn btn-primary">Clear Filter</button></a>
+						         </div>
 					         </div>
-					         
-					         <div>
-						         <select id="reason" name="reasonid" style="display:none;">
-						             <option value="0">Any Stock In Type </option>
-							         <option th:each="list: ${stocktypes}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option>
-						         </select>
-					         </div>
-					         <div>
-					         	<input type="submit" value="Filter" />
-<!-- 					         <a th:href="@{editUser(userid=${user.userid})}">Edit</a> -->
-					         </div>
-							</div>
-						</div>
-<!-- 						</tr> -->
-<!-- 						</tbody> -->
-<!-- 					</table> -->
-					</form>
+				         </div>
+			         </form>
 	      		</div>	
 	      		<div class="card-body">
 		        	<div class="table-responsive">
@@ -69,7 +58,7 @@
 		        				<tr>
 		        					<th>Product Name</th>
 									<th>Quantity</th>
-									<th>Date</th>
+									<th>DateTime</th>
 									<th>Time</th>
 									<th>Log DateTime</th>
 									<th>Log User</th>

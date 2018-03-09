@@ -11,11 +11,10 @@ public class MainLocMapper implements RowMapper<MainLoc>{
 
 	@Override
 	public MainLoc mapRow(ResultSet rs, int numRow) throws SQLException {
-		// TODO Auto-generated method stub
+		
 		int mainlocid = rs.getInt("ID");
 		String mainlocname = rs.getString("MAIN_LOC_NAME");
 		
 		return new MainLoc(mainlocid, mainlocname);
 	}
-
 }

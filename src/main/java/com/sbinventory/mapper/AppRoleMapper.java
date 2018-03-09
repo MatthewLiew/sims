@@ -17,5 +17,4 @@ public class AppRoleMapper implements RowMapper<AppRole>{
 		
 		return new AppRole(roleid, rolename);
 	}
-
 }

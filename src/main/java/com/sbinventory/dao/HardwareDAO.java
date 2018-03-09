@@ -33,7 +33,6 @@ public class HardwareDAO extends JdbcDaoSupport{
 	public List<Hardware> getAllHardware(){
 		
 		String sql=READ_SQL;
-		
 		HardwareMapper mapper=new HardwareMapper();
 		
 		try {
@@ -116,43 +115,48 @@ public class HardwareDAO extends JdbcDaoSupport{
 	
 	public String createHardware(int hardwarecode, String hardwaretype) {
 		
-		Object[] params=new Object[]{hardwarecode, hardwaretype};
+		Object[] params=new Object[]{ hardwarecode, hardwaretype };
 		String sql=CREATE_SQL;
+		
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
 			return null;
-		}catch(EmptyResultDataAccessException e ) {
+		} catch (EmptyResultDataAccessException e ) {
 			return e.getMessage();
 			
-		}catch(DataAccessException  e) {
+		} catch (DataAccessException  e) {
 //			throw new DataAccessException("Something error", e);
 			return e.getMessage();
 		}
 	}
 	
 	public String updateDepartment(int hardwareid, int hardwarecode, String hardwaretype ){
+		
 		String sql=UPDATE_SQL+" set HARDWARE_CODE = ?, HARDWARE_TYPE = ? where ID= ?";
-		Object[] params=new Object[]{hardwarecode, hardwaretype, hardwareid};
+		Object[] params=new Object[]{ hardwarecode, hardwaretype, hardwareid };
+		
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
 			return null;
-		}catch(EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			e.printStackTrace();
 			return e.getMessage();
-		}catch(DataAccessException  e) {
+		} catch (DataAccessException  e) {
 			return e.getMessage();
 		}
 	}
 	
 	public void deleteDepartment(int hardwareid){
+		
 		String sql=DELETE_SQL+" where ID= ?";
 		Object[] params= new Object[] {hardwareid};
+		
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
-		}catch(EmptyResultDataAccessException e) {
+		} catch (EmptyResultDataAccessException e) {
 			e.printStackTrace();
 		}
 	}

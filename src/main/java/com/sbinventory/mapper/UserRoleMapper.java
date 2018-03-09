@@ -17,5 +17,4 @@ public class UserRoleMapper implements RowMapper<UserRole>{
 		
 		return new UserRole(userid, roleid);
 	}
-
 }

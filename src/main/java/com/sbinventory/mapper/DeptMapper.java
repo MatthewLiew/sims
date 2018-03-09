@@ -19,5 +19,4 @@ public class DeptMapper implements RowMapper<Dept>{
 		
 		return new Dept(deptid, deptcode, deptname, orgid);
 	}
-
 }

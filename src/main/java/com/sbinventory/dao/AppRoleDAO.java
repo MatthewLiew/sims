@@ -26,12 +26,11 @@ public class AppRoleDAO extends JdbcDaoSupport {
     }
  
     public List<String> getRoleNames(int userId) {
+    	
         String sql = "Select r.Role_Name " //
                 + " from User_Role ur, App_Role r " //
                 + " where ur.Role_Id = r.Role_Id and ur.User_Id = ? ";
- 
         Object[] params = new Object[] { userId };
- 
         List<String> roles = this.getJdbcTemplate().queryForList(sql, params, String.class);
  
         return roles;
@@ -49,5 +48,4 @@ public class AppRoleDAO extends JdbcDaoSupport {
             return null;
         }
     }
-     
 }

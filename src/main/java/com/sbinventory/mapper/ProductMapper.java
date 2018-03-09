@@ -23,5 +23,4 @@ public class ProductMapper implements RowMapper<Product> {
 		
 		return new Product(productid, productcode, productname, hardwareid, brandid, partnoid, lbvalue, quantity);
 	}
-
 }
