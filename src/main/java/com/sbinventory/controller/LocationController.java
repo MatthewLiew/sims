@@ -37,8 +37,9 @@ public class LocationController {
 	@Autowired
 	private SubLocDAO subLocDAO;
 	
-		@GetMapping(value= "/mainlocation")
-	public String mainlocationPage(Model model, Principal principal) {
+	/**************** INFORMATION PORTAL ***********************/
+	@GetMapping(value= "/mainlocation")
+	public String getMainlocation(Model model, Principal principal) {
 		List<MainLoc> mainlocs=mainLocDAO.getAllMainLoc();
 		model.addAttribute("mainlocs",mainlocs);
 		
@@ -49,11 +50,11 @@ public class LocationController {
 		List<SubLoc> sublocs=subLocDAO.getAllSubLoc();
 		model.addAttribute("sublocs",sublocs);
 			
-		return "location/index";
+		return "location/mainloc";
 	}
 	
 	@GetMapping(value= "/sublocation")
-	public String sublocationPage(Model model, Principal principal) {
+	public String getSublocation(Model model, Principal principal) {
 		List<MainLoc> mainlocs=mainLocDAO.getAllMainLoc();
 		model.addAttribute("mainlocs",mainlocs);
 		
@@ -64,18 +65,19 @@ public class LocationController {
 		List<SubLoc> sublocs=subLocDAO.getAllSubLoc();
 		model.addAttribute("sublocs",sublocs);
 			
-		return "location/sublocation/index";
+		return "location/subloc";
 	}
 		
+	/**************** MAIN LOCATION ACTION ***********************/
 	@GetMapping(value= "/createMainLoc")
-	public String createMainLocGET(Model model ) {
+	public String getCreateMainLoc(Model model ) {
 		model.addAttribute("errorString",null);
 			
 		return "location/createMainLoc";
 	}
 		
 	@PostMapping(value= "/createMainLoc")
-	public String createMainLocPOST(@RequestParam String mainlocname, Model model ) {
+	public String postCreateMainLoc(@RequestParam String mainlocname, Model model ) {
 //			String errorString=mainLocDAO.createMainLoc(mainlocname);
 //			if(errorString==null) {
 			return "redirect:/location";
@@ -86,7 +88,7 @@ public class LocationController {
 	}
 		
 	@GetMapping(value= "/editMainLoc")
-	public String editMainLocPageGET(@RequestParam int mainlocid, Model model ) {
+	public String getEditMainLoc(@RequestParam int mainlocid, Model model ) {
 			
 		MainLoc mainloc = mainLocDAO.getMainLoc(mainlocid);
 		model.addAttribute("mainloc",mainloc);
@@ -95,7 +97,7 @@ public class LocationController {
 	}
 		
 	@PostMapping(value= "/editMainLoc")
-	public String editMainLocPagePOST(@RequestParam int mainlocid, 
+	public String postEditMainLoc(@RequestParam int mainlocid, 
 			@RequestParam String mainlocname, Model model ) {
 //			System.out.println(orgid+" "+deptid+" "+deptcode+" "+deptname);
 //			String errorString=mainLocDAO.updateMainLoc(mainlocid, mainlocname);
@@ -108,16 +110,16 @@ public class LocationController {
 	}
 	
 	@GetMapping(value= "/deleteMainLoc")
-	public String deleteMainLoc(@RequestParam int mainlocid, Model model ) {
+	public String getDeleteMainLoc(@RequestParam int mainlocid, Model model ) {
 			
 		mainLocDAO.deleteMainLoc(mainlocid);
 			
 		return "redirect:/location";
 	}
 	
-		
+	/**************** SUB LOCATION ACTION ***********************/	
 	@GetMapping(value= "/createSubLoc")
-	public String createSubLocGET(Model model ) {
+	public String getCreateSubLoc(Model model ) {
 		List<MainLoc> mainlocs= mainLocDAO.getAllMainLoc();
 			
 		model.addAttribute("errorString",null);
@@ -127,7 +129,7 @@ public class LocationController {
 	}
 		
 	@PostMapping(value= "/createSubLoc")
-	public String createSubLocPOST(@RequestParam int mainlocid, @RequestParam String sublocname, Model model ) {
+	public String postCreateSubLoc(@RequestParam int mainlocid, @RequestParam String sublocname, Model model ) {
 //			String errorString=subLocDAO.createSubLoc(sublocname, mainlocid);
 //			System.out.println(deptid+" "+subdeptcode+" "+subdeptname);
 //			if(errorString==null) {
@@ -139,7 +141,7 @@ public class LocationController {
 	}
 		
 	@GetMapping(value= "/editSubLoc")
-	public String editSubLocPageGET(@RequestParam int sublocid, Model model ) {
+	public String getEditSubLoc(@RequestParam int sublocid, Model model ) {
 			
 		SubLoc subloc = subLocDAO.getSubLoc(sublocid);
 		MainLoc mainloc = mainLocDAO.getMainLoc(subloc.getMainlocid());
@@ -151,7 +153,7 @@ public class LocationController {
 	}
 		
 	@PostMapping(value= "/editSubLoc")
-	public String editSubLocPagePOST(@RequestParam int sublocid,
+	public String postEditSubLoc(@RequestParam int sublocid,
 			@RequestParam String sublocname, Model model ) {
 //			System.out.println(deptid+" "+subdeptid+" "+subdeptcode+" "+subdeptname);
 //			String errorString=subLocDAO.updateSubLoc(sublocid, sublocname);
@@ -164,7 +166,7 @@ public class LocationController {
 	}
 		
 	@GetMapping(value= "/deleteSubLoc")
-	public String deleteSubloc(@RequestParam int sublocid, Model model ) {
+	public String getDeleteSubloc(@RequestParam int sublocid, Model model ) {
 			System.out.println(sublocid);
 //			subDeptDAO.deleteDepartment(subdeptid);
 				

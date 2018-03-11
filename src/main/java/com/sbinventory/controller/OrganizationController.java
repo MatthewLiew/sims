@@ -40,8 +40,9 @@ public class OrganizationController {
 	@Autowired
 	private SubDeptDAO subDeptDAO;
 
-		@GetMapping(value= "/organization")
-	public String organizationPage(Model model) {
+	/**************** INFORMATION PORTAL ***********************/
+	@GetMapping(value= "/organization")
+	public String getOrganization(Model model) {
 		List<Organization> orgs=organizationDAO.getAllOrganization();
 		model.addAttribute("orgs",orgs);
 		
@@ -55,7 +56,7 @@ public class OrganizationController {
 	}
 	
 	@GetMapping(value= "/department")
-	public String departmentPage(Model model) {
+	public String getDepartment(Model model) {
 		List<Organization> orgs=organizationDAO.getAllOrganization();
 		model.addAttribute("orgs",orgs);
 		
@@ -69,7 +70,7 @@ public class OrganizationController {
 	}
 	
 	@GetMapping(value= "/subdepartment")
-	public String subdepartmentPage(Model model) {
+	public String getSubDepartment(Model model) {
 		List<Organization> orgs=organizationDAO.getAllOrganization();
 		model.addAttribute("orgs",orgs);
 		
@@ -82,8 +83,9 @@ public class OrganizationController {
 		return "organization/subdepartment/index";
 	}
 	
+	/**************** ORGANIZATION ACTION ***********************/
 	@GetMapping(value= "/createOrganization")
-	public String createOrganizationGET(Model model ) {
+	public String getCreateOrganization(Model model ) {
 //			List<Organization> orgs= organizationDAO.getAllOrganization();
 //			List<AppRole> approles = appRoleDAO.getAllRoleNames();
 		model.addAttribute("errorString",null);
@@ -93,7 +95,7 @@ public class OrganizationController {
 	}
 	
 	@PostMapping(value= "/createOrganization")
-	public String createOrganizationPOST(@RequestParam int orgcode,@RequestParam String orgname, Model model ) {
+	public String postCreateOrganization(@RequestParam int orgcode,@RequestParam String orgname, Model model ) {
 //			String errorString=organizationDAO.createOrganization(orgcode, orgname);
 		System.out.println(orgcode+" "+orgname);
 //			if(errorString==null) {
@@ -105,7 +107,7 @@ public class OrganizationController {
 	}
 	
 	@GetMapping(value= "/editOrganization")
-	public String editOrganizationPageGET(@RequestParam int orgid, Model model ) {
+	public String getEditOrganization(@RequestParam int orgid, Model model ) {
 		
 		Organization org = organizationDAO.getOrganization(orgid);
 	    model.addAttribute("org",org);
@@ -114,7 +116,7 @@ public class OrganizationController {
 	}
 	
 	@PostMapping(value= "/editOrganization")
-	public String editOrganizationPagePOST(@RequestParam int orgid, @RequestParam int orgcode,
+	public String postEditOrganization(@RequestParam int orgid, @RequestParam int orgcode,
 			@RequestParam String orgname, Model model ) {
 		System.out.println(orgid+" "+orgcode+" "+orgname);
 //			String errorString=organizationDAO.updateOrganization(orgid, orgcode, orgname);
@@ -127,15 +129,15 @@ public class OrganizationController {
 	}
 	
 	@GetMapping(value= "/deleteOrganization")
-	public String deleteOrganization(@RequestParam int orgid, Model model ) {
+	public String getDeleteOrganization(@RequestParam int orgid, Model model ) {
 		organizationDAO.deleteOrganization(orgid);
 		
 		return "redirect:/organization";
 	}
 	
-	
+	/**************** DEPARTMENT ACTION ***********************/
 	@GetMapping(value= "/createDepartment")
-	public String createDepartmentGET(Model model ) {
+	public String getCreateDepartment(Model model ) {
 		List<Organization> orgs= organizationDAO.getAllOrganization();
 
 		model.addAttribute("errorString",null);
@@ -145,7 +147,7 @@ public class OrganizationController {
 	}
 	
 	@PostMapping(value= "/createDepartment")
-	public String createDepartmentPOST(@RequestParam int orgid, @RequestParam int deptcode, @RequestParam String deptname, Model model ) {
+	public String postCreateDepartment(@RequestParam int orgid, @RequestParam int deptcode, @RequestParam String deptname, Model model ) {
 //			String errorString=deptDAO.createDepartment(orgid, deptcode, deptname);
 		System.out.println(orgid+" "+deptcode+" "+deptname);
 //			if(errorString==null) {
@@ -157,7 +159,7 @@ public class OrganizationController {
 	}
 	
 	@GetMapping(value= "/editDepartment")
-	public String editDepartmentPageGET(@RequestParam int deptid, Model model ) {
+	public String getEditDepartment(@RequestParam int deptid, Model model ) {
 		
 		Dept dept = deptDAO.getDept(deptid);
 		Organization org=organizationDAO.getOrganization(dept.getOrgid());
@@ -168,7 +170,7 @@ public class OrganizationController {
 	}
 	
 	@PostMapping(value= "/editDepartment")
-	public String editDepartmentPagePOST(@RequestParam int deptid, @RequestParam int deptcode,
+	public String postEditDepartment(@RequestParam int deptid, @RequestParam int deptcode,
 			@RequestParam String deptname, @RequestParam int orgid, Model model ) {
 		System.out.println(orgid+" "+deptid+" "+deptcode+" "+deptname);
 //			String errorString=deptDAO.updateDepartment(deptid, deptcode, deptname);
@@ -181,16 +183,16 @@ public class OrganizationController {
 	}
 	
 	@GetMapping(value= "/deleteDepartment")
-	public String deleteDepartment(@RequestParam int deptid, Model model ) {
+	public String getDeleteDepartment(@RequestParam int deptid, Model model ) {
 		System.out.println(deptid);
 //			deptDAO.deleteDepartment(deptid);
 		
 		return "redirect:/organization";
 	}
 	
-	
+	/**************** SUB DEPARTMENT ACTION ***********************/
 	@GetMapping(value= "/createSubDepartment")
-	public String createSubDepartmentGET(Model model ) {
+	public String getCreateSubDepartment(Model model ) {
 		List<Organization> orgs= organizationDAO.getAllOrganization();
 		List<Dept> depts= deptDAO.getAllDept();
 
@@ -202,7 +204,7 @@ public class OrganizationController {
 	}
 	
 	@PostMapping(value= "/createSubDepartment")
-	public String createSubDepartmentPOST(@RequestParam int deptid, @RequestParam int subdeptcode, @RequestParam String subdeptname, Model model ) {
+	public String postCreateSubDepartment(@RequestParam int deptid, @RequestParam int subdeptcode, @RequestParam String subdeptname, Model model ) {
 //			String errorString=subDeptDAO.createSubDepartment(deptid, subdeptcode, subdeptname);
 		System.out.println(deptid+" "+subdeptcode+" "+subdeptname);
 //			if(errorString==null) {
@@ -214,7 +216,7 @@ public class OrganizationController {
 	}
 	
 	@GetMapping(value= "/editSubDepartment")
-	public String editSubDepartmentPageGET(@RequestParam int subdeptid, Model model ) {
+	public String getEditSubDepartment(@RequestParam int subdeptid, Model model ) {
 		
 		SubDept subdept = subDeptDAO.getSubDept(subdeptid);
 		Dept dept=deptDAO.getDept(subdept.getDeptid());
@@ -227,7 +229,7 @@ public class OrganizationController {
 	}
 	
 	@PostMapping(value= "/editSubDepartment")
-	public String editSubDepartmentPagePOST(@RequestParam int subdeptid, @RequestParam int subdeptcode,
+	public String postEditSubDepartment(@RequestParam int subdeptid, @RequestParam int subdeptcode,
 			@RequestParam String subdeptname, @RequestParam int deptid, Model model ) {
 		System.out.println(deptid+" "+subdeptid+" "+subdeptcode+" "+subdeptname);
 //			String errorString=subDeptDAO.updateSubDepartment(subdeptid, subdeptcode, subdeptname);
@@ -240,7 +242,7 @@ public class OrganizationController {
 	}
 	
 	@GetMapping(value= "/deleteSubDepartment")
-	public String deleteSubDepartment(@RequestParam int subdeptid, Model model ) {
+	public String getDeleteSubDepartment(@RequestParam int subdeptid, Model model ) {
 			System.out.println(subdeptid);
 //			subDeptDAO.deleteDepartment(subdeptid);
 			

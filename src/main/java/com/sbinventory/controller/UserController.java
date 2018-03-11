@@ -52,8 +52,9 @@ public class UserController {
 	@Autowired
 	private AppRoleDAO appRoleDAO;
 	
+	/**************** INFORMATION PORTAL ***********************/
 	@GetMapping(value= "/useraccount")
-	public String userAccountPage(Model model) {
+	public String getUserAccount(Model model) {
 		List<UserAccount> useraccs=userAccountDAO.getAllUserAccount();
 		List<AppRole> approles = appRoleDAO.getAllRoleNames();
 		List<Organization> orgs= organizationDAO.getAllOrganization();
@@ -68,8 +69,9 @@ public class UserController {
 		return "userAccount/index";
 	}
 	
+	/**************** USER ACCOUNT ACTION ***********************/
 	@GetMapping(value= "/editUser")
-	public String editUserPageGET(@RequestParam int userid,Model model ) {
+	public String getEditUser(@RequestParam int userid,Model model ) {
 		UserAccount useracc= userAccountDAO.getUserAccount(userid);
 		UserRole userrole=userRoleDAO.getUserRole(userid);
 		List<AppRole> approles = appRoleDAO.getAllRoleNames();
@@ -88,7 +90,7 @@ public class UserController {
 	}
 	
 	@PostMapping(value= "/editUser2")
-	public String editUserPagePOST2(@RequestParam int userid,Model model ) {
+	public String postEditUser2(@RequestParam int userid,Model model ) {
 		UserAccount useracc= userAccountDAO.getUserAccount(userid);
 		UserRole userrole=userRoleDAO.getUserRole(userid);
 		List<AppRole> approles = appRoleDAO.getAllRoleNames();
@@ -107,7 +109,7 @@ public class UserController {
 	}
 	
 	@PostMapping(value= "/editUser")
-	public String editUserPagePOST(@RequestParam int userid, @RequestParam String username, 
+	public String getEditUser(@RequestParam int userid, @RequestParam String username, 
 			@RequestParam int userrole, @RequestParam int orgid, @RequestParam int deptid, @RequestParam int subdeptid, 
 			Model model ) {
 	
@@ -124,7 +126,7 @@ public class UserController {
 	}
 	
 	@GetMapping(value= "/deleteUser")
-	public String deleteUserGET(@RequestParam int userid,Model model ) {
+	public String getDeleteUser(@RequestParam int userid,Model model ) {
 		UserAccount useracc= userAccountDAO.getUserAccount(userid);
 		System.out.println(useracc.getUsername());
 		model.addAttribute("useracc",useracc);
@@ -133,7 +135,7 @@ public class UserController {
 	}
 	
 	@PostMapping(value= "/deleteUser")
-	public String deleteUserPOST(@RequestParam int userid,Model model ) {
+	public String postDeleteUser(@RequestParam int userid,Model model ) {
 //			userRoleDAO.deleteUserRole(userid);
 		//userAccountDAO.deleteUserAccount(userid);
 		System.out.println(userid);
@@ -141,7 +143,7 @@ public class UserController {
 	}
 	
 	@GetMapping(value= "/createUser")
-	public String createUserGET(Model model ) {
+	public String getCreateUser(Model model ) {
 		List<Organization> orgs= organizationDAO.getAllOrganization();
 		List<AppRole> approles = appRoleDAO.getAllRoleNames();
 		model.addAttribute("errorString",null);
@@ -151,7 +153,7 @@ public class UserController {
 	}
 	
 	@PostMapping(value= "/createUser")
-	public String createUserPOST(/*@RequestParam int usercode,*/ @RequestParam String username,@RequestParam String password,
+	public String postCreateUser(/*@RequestParam int usercode,*/ @RequestParam String username,@RequestParam String password,
 			@RequestParam int orgid, @RequestParam int deptid, @RequestParam int subdeptid, @RequestParam int userrole, Model model ) {
 //			String errorString=userAccountDAO.createUserAccount(usercode, username, password, orgid, deptid, subdeptid);
 //			UserAccount user=userAccountDAO.getUserName(username);
@@ -173,13 +175,13 @@ public class UserController {
 	}
 	
 	@GetMapping(value= "/changePassword")
-	public String changePasswordGET(@RequestParam int userid, Model model ) {
+	public String getChangePassword(@RequestParam int userid, Model model ) {
 		model.addAttribute("userid",userid);
 		return "userAccount/changePassword";
 	}
 	
 	@PostMapping(value= "/changePassword")
-	public String changePasswordPOST(@RequestParam int userid, @RequestParam String password, @RequestParam String repassword,Model model ) {
+	public String postChangePassword(@RequestParam int userid, @RequestParam String password, @RequestParam String repassword,Model model ) {
 		userAccountDAO.changeUserPassword(userid, password, repassword);
 		return "redirect:/useraccount";
 	}

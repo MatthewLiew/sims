@@ -74,7 +74,7 @@ public class StockController {
 	private StockTypeDAO stockTypeDAO;
 	
 	
-	//********* STOCK *********//
+	/**************** INFORMATION PORTAL ***********************/
 	@GetMapping(value= "/stockmanagement")
 //		, int stocktypeid, int reasonid
 	public String getStockManagement(Model model, String startdate, String enddate, Integer stocktypeid, Integer reasonid) {
@@ -254,90 +254,7 @@ public class StockController {
 		return "stock/settings";
 	}
 	
-	@GetMapping(value= "/createPartNos")
-	public String getCreatePartNos(Model model, HttpServletRequest request) {
-		
-		String referer = request.getHeader("Referer");
-		model.addAttribute("referer", referer);
-		
-		List<Product> products = productDAO.getAllProduct();
-		
-		model.addAttribute("errorString",null);
-		model.addAttribute("products",products);
-		
-		return "product/createPartNos";
-	}
-	
-	@PostMapping(value= "/createPartNos")
-	public String postCreatePartNos(@RequestParam String[] serialno,
-			@RequestParam String[] modelno, @RequestParam String[] upccode, int[] productid, 
-			@RequestParam String customername, @RequestParam String invoiceno, Model model, @RequestParam String referer) {
-		String delims = ", \r\n\t\f";
-//			String splitString = "one,two,,three,four,,five";
- 
-		System.out.println("StringTokenizer Example: \n");
-		for(int i=0;i<serialno.length; i++) {
-			StringTokenizer st = new StringTokenizer(serialno[i],delims);
-			while (st.hasMoreElements()) {
-	//			String errorString= partNoDAO.createPartNo(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno, upccode, productid, customername, invoiceno);
-				System.out.println(" Token: "+st.nextElement()+" "+productid[i]);
-			}
-		}
-//			for(int b:productid){
-//				System.out.println(b);
-//			}
-//			if(errorString==null) {
-			return "redirect:"+referer;
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "product/createPartNos";
-//			}
-	}
-	
-//	@GetMapping(value= "/deletePartNos")
-//	public String getDeletePartNos(@RequestParam int partnoid, Model model ) {
-//		partNoDAO.deletePartNo(partnoid);
-//		
-//		return "redirect:/stock";
-//	}
-	
-	@GetMapping(value= "/editPartNos")
-	public String getEditPartNos(/*@RequestParam*/ int partnoid, Model model, HttpServletRequest request) {
-		
-		String referer = request.getHeader("Referer");
-		model.addAttribute("referer", referer);
-		
-		List <Product> products = productDAO.getAllProduct();
-		PartNo partno = partNoDAO.getPartNo(partnoid);
-		
-		model.addAttribute("partno",partno);
-		model.addAttribute("products",products);
-		    
-		return "product/editPartNos";
-	}
-	
-	@PostMapping(value= "/editPartNos")
-	public String postEditPartNos(/*@RequestParam*/ int partnoid,
-			/*@RequestParam*/ String serialno, /*@RequestParam*/ String modelno, /*@RequestParam*/ String upccode/*, @RequestParam int productid*/, 
-			/*@RequestParam*/ String customername, /*@RequestParam*/ String invoiceno, Model model, /*@RequestParam*/ String referer) {
-
-			String errorString=partNoDAO.updatePartNo(partnoid, serialno, modelno, upccode, /*productid,*/ customername, invoiceno);
-//			if(errorString==null) {
-			return "redirect:"+referer; 
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "product/editPartNos";
-//			}
-	}
-	
-//	@GetMapping(value= "/deleteStock")
-//	public String getDeleteStock(@RequestParam int productid, Model model ) {
-//		System.out.println(productid);
-////			productDAO.deleteProduct(productid);
-//		
-//		return "redirect:/stockmanagement";
-//	}
-	
+	/**************** REASON ACTION ***********************/
 	@GetMapping(value= "/createReason")
 	public String getCreateReason(Model model, HttpServletRequest request) {
 	
@@ -412,6 +329,7 @@ public class StockController {
 		return "redirect:"+referer;
 	}
 	
+	/**************** STOCK ACTION ***********************/
 	@GetMapping(value= "/stockIn")
 	public String getStockIn(@RequestParam int stocktypeid, Model model, HttpServletRequest request) {
 		
