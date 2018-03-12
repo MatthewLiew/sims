@@ -14,23 +14,174 @@
 		        </li>
 		        <li class="breadcrumb-item active">Main Location</li>
 	      	</ol>
-      
-			<h3>Main Location</h3>
-			<table border="1" cellpadding="5" cellspacing="1" >
-				<tr>
-					<th>Main Location</th>
-		          	<th>Edit</th>
-		          	<th>Delete</th>
-		       	</tr>
-	          	<tr th:each="mainloc : ${mainlocs}">
-	             	<td th:text="${mainloc.mainlocname}"></td>
-	             	<td><a th:href="@{editMainLoc(mainlocid=${mainloc.mainlocid})}">Edit</a></td>
-	             	<td><a th:href="@{deleteMainLoc(mainlocid=${mainloc.mainlocid})}">Delete</a></td>
-	    		</tr>
-		    </table>
-		    <a th:href="@{createMainLoc}" >Create Main Location</a>
+      		
+      		<div class="card mb-3">
+	      		<div class="card-header">
+	      			<i class="fa fa-table"></i> Main Location &nbsp;&nbsp;
+<!-- 	      			<a th:href="@{createUser}"> -->
+	      			<a onclick="doAction('new', 0);">
+	      				<button class="btn btn-primary" data-toggle="modal" >Create Main Location</button>
+	      			</a>
+	      		</div>	  	
+		        <div class="card-body">
+		        	<div class="table-responsive">
+		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+		        			<thead>
+		        				<tr>
+		        					<th>Main Location</th>
+				                  	<th>Action</th>
+	               			 	</tr>
+		              		</thead>
+		              		<tfoot>
+		                		<tr>
+		                  			<th>Main Location</th>
+				                  	<th>Action</th>
+			                  	</tr>
+		                  	</tfoot>
+		                  	<tbody>
+		                		<tr  th:each="mainloc : ${mainlocs}">
+		                			<td th:text="${mainloc.mainlocname}"></td>
+						            <td>
+						                <a th:onclick="'doAction(\'edit\',\''+ ${mainloc.mainlocid} + '\');'" ><button class="btn btn-primary" title="Edit Main Location"><i class="fa fa-edit" title="Edit Main Location"></i></button></a>
+					            
+<!-- 									<a th:href="@{deleteUser(userid=${user.userid})}"> -->
+						            	<a th:onclick="'doAction(\'delete\',\''+ ${mainloc.mainlocid} +'\');'"><button class="btn btn-primary" title="Delete Main Location"><i class="fa fa-trash" title="Delete Main Location"></i></button></a>
+					            	</td>
+					            </tr>
+		              		</tbody>
+	                  	</table>
+                  	</div>
+               	</div>
+               	<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+           	</div>
+           	
+           	<div class="modal clickable" id="CreateMainLocation" tabindex="-1" role="dialog" aria-labelledby="CreateMainLocation" aria-hidden="true">
+	            <form method="POST" th:action="@{/createMainLoc}" id="CreateMainLocation">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Create Main Location</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Save</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+	        
+	        <div class="modal clickable" id="EditMainLocation" tabindex="-1" role="dialog" aria-labelledby="EditMainLocation" aria-hidden="true">
+	            <form method="POST" th:action="@{/editMainLoc}" id="EditMainLocation">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Edit Main Location</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Save</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+	        
+	        <div class="modal clickable" id="DeleteMainLocation" tabindex="-1" role="dialog" aria-labelledby="DeleteMainLocation" aria-hidden="true">
+	            <form method="POST" th:action="@{/deleteMainLoc}" id="DeleteMainLocation">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Delete Main Location</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Delete</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+<!-- 			<h3>Main Location</h3> -->
+<!-- 			<table border="1" cellpadding="5" cellspacing="1" > -->
+<!-- 				<tr> -->
+<!-- 					<th>Main Location</th> -->
+<!-- 		          	<th>Edit</th> -->
+<!-- 		          	<th>Delete</th> -->
+<!-- 		       	</tr> -->
+<!-- 	          	<tr th:each="mainloc : ${mainlocs}"> -->
+<!-- 	             	<td th:text="${mainloc.mainlocname}"></td> -->
+<!-- 	             	<td><a th:href="@{editMainLoc(mainlocid=${mainloc.mainlocid})}">Edit</a></td> -->
+<!-- 	             	<td><a th:href="@{deleteMainLoc(mainlocid=${mainloc.mainlocid})}">Delete</a></td> -->
+<!-- 	    		</tr> -->
+<!-- 		    </table> -->
+<!-- 		    <a th:href="@{createMainLoc}" >Create Main Location</a> -->
     
 		</div><!-- end of .container-fluid-->
     </div><!-- end of .content-wrapper-->
 	<div class="footer_ref" th:include="/footer"></div>
+	
+	<script type="text/javascript">
+        function doAction(action, id) {
+            if (action == 'new') {
+                $('#CreateMainLocation .modal-body').empty();
+                $('#CreateMainLocation .modal-title').text("New Main Location");
+                $('#CreateMainLocation .modal-body').load('createMainLoc', function () {
+                    $('#CreateMainLocation').modal({show: true});
+                });
+            } else if (action == 'edit') {
+                $('#EditMainLocation .modal-body').empty();
+                $('#EditMainLocation .modal-title').text("Edit Main Location");
+                $('#EditMainLocation .modal-body').load('editMainLoc?mainlocid=' + id, function () {
+                    $('#EditMainLocation').modal({show: true});
+                });
+            } else if (action == 'change') {
+            	console.log("change");
+                $('#ChangePwd .modal-body').empty();
+                $('#ChangePwd .modal-title').text("Change Password");
+                $('#ChangePwd .modal-body').load('changePassword?userid=' + id, function () {
+                    $('#ChangePwd').modal({show: true});
+                });
+            } else if (action == 'delete') {
+                $('#DeleteMainLocation .modal-body').empty();
+                $('#DeleteMainLocation .modal-title').text("Delete Main Location");
+                $('#DeleteMainLocation .modal-body').load('deleteMainLoc?mainlocid=' + id, function () {
+                    $('#DeleteMainLocation').modal({show: true});
+                });
+            }
+        }
+    </script>
 </html>

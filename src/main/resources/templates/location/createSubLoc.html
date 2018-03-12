@@ -1,47 +1,76 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-   <head>
-      <meta charset="UTF-8">
-      <title>Create Sub Location</title>
+	<head>
+		<meta charset="UTF-8">
+	</head>
+   
+   		<p class="error" style="color: red;" th:text="${errorString}" ></p>
+	  	<input type="hidden" name="referer" th:value="${referer}" />
       
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      
-   </head>
-   <body>
-      
-      <!-- Include _menu.html -->
-      <th:block th:include="/_menu"></th:block>
-      <h3>Create Sub Location</h3>
+      	<div class="form-group">
+            <div class="form-row">
+                <div class="col-md-3">
+                    <label for="MainLocationLabel">Main Location</label>
+                </div>
+                <div class="col-md-6">                    
+                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
+                    <select class="form-control" name="mainlocid" required>
+			            <option value="">Select Main Location</option>
+			            <option th:each="list: ${mainlocs}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option>
+			        </select>
+                </div>
+            </div>
+        </div>
+        
+      	<div class="form-group">
+            <div class="form-row">
+                <div class="col-md-3">
+                    <label for="SubLocationLabel">Sub Location Name</label>
+                </div>
+                <div class="col-md-6">                    
+                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
+                    <input class="form-control sublocname" id="sublocname" name="sublocname" type="text" data-error="Please Enter Sub Location Name" aria-describedby="SubLocationName" placeholder="Enter Sub Location Name" value="" onkeyup="sublocName('CreateSubLocation');" required>
+                </div>
+                <div class="col-md-3">
+                	<span class="sublocname_status"></span>
+                    <span style="visibility:hidden;"class="sublocname_flag" th:text="true"></span>
+                </div>
+            </div>
+        </div>
+        
+<!--       Include _menu.html -->
+<!--       <th:block th:include="/_menu"></th:block> -->
+<!--       <h3>Create Sub Location</h3> -->
 
-      <form id="create_subloc" method="POST" th:action="@{createSubLoc}"  onsubmit="return sublocForm('create_subloc');">
-      <p class="error" style="color: red;" th:text="${errorString}" ></p>
-      <input type="hidden" class="sublocid" name="sublocid" th:value="${sublocid}" />
-         <table th:border="0">
+<!--       <form id="create_subloc" method="POST" th:action="@{createSubLoc}"  onsubmit="return sublocForm('create_subloc');"> -->
+<!--       <p class="error" style="color: red;" th:text="${errorString}" ></p> -->
+<!--       <input type="hidden" class="sublocid" name="sublocid" th:value="${sublocid}" /> -->
+<!--          <table th:border="0"> -->
          
-         	<tr>
-               <td>Main Location</td>
-               <td>
-               <select name="mainlocid" >
-               	   <option value="0">Select Main Location</option>
-	               <option th:each="list: ${mainlocs}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option>
-               </select></td>
-<!-- 			   <td class="mainloc_status"></td> -->
-            </tr>
-            <tr>
-               <td>Sub Location Name</td>
+<!--          	<tr> -->
+<!--                <td>Main Location</td> -->
+<!--                <td> -->
+<!--                <select name="mainlocid" > -->
+<!--                	   <option value="0">Select Main Location</option> -->
+<!-- 	               <option th:each="list: ${mainlocs}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option> -->
+<!--                </select></td> -->
+<!-- <!-- 			   <td class="mainloc_status"></td> --> 
+<!--             </tr> -->
+<!--             <tr> -->
+<!--                <td>Sub Location Name</td> -->
               
-               <td><input type="text" class="sublocname" name="sublocname" th:value="${sublocname}" onkeyup="sublocName('create_subloc');" /></td>
-			   <td class="sublocname_status"></td>
-			   <td style="visibility:hidden;" class="sublocname_flag" th:text="true"></td>
-            </tr>       
-            <tr>
-               <td colspan="2">                   
-                <input type="submit" value="Submit" />
-               </td>
-            </tr>  
-         </table>
-      </form>
+<!--                <td><input type="text" class="sublocname" name="sublocname" th:value="${sublocname}" onkeyup="sublocName('create_subloc');" /></td> -->
+<!-- 			   <td class="sublocname_status"></td> -->
+<!-- 			   <td style="visibility:hidden;" class="sublocname_flag" th:text="true"></td> -->
+<!--             </tr>        -->
+<!--             <tr> -->
+<!--                <td colspan="2">                    -->
+<!--                 <input type="submit" value="Submit" /> -->
+<!--                </td> -->
+<!--             </tr>   -->
+<!--          </table> -->
+<!--       </form> -->
 
-     <script src="../js/validation.js"></script>
-   </body>
+<!--      <script src="../js/validation.js"></script> -->
+<!--    </body> -->
 </html>

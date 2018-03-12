@@ -3,6 +3,8 @@ package com.sbinventory.controller;
 import java.security.Principal;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,7 @@ import com.sbinventory.dao.SubLocDAO;
 import com.sbinventory.dao.UserAccountDAO;
 import com.sbinventory.dao.UserRoleDAO;
 import com.sbinventory.model.MainLoc;
+import com.sbinventory.model.SubDept;
 import com.sbinventory.model.SubLoc;
 
 @Controller
@@ -109,12 +112,30 @@ public class LocationController {
 //			}
 	}
 	
+//	@GetMapping(value= "/deleteMainLoc")
+//	public String getDeleteMainLoc(@RequestParam int mainlocid, Model model ) {
+//			
+//		mainLocDAO.deleteMainLoc(mainlocid);
+//			
+//		return "redirect:/location";
+//	}
+	
 	@GetMapping(value= "/deleteMainLoc")
-	public String getDeleteMainLoc(@RequestParam int mainlocid, Model model ) {
-			
-		mainLocDAO.deleteMainLoc(mainlocid);
-			
-		return "redirect:/location";
+	public String getDeleteMainLoc(@RequestParam int mainlocid, Model model, HttpServletRequest request ) {
+		String referer = request.getHeader("Referer");
+		MainLoc mainloc = mainLocDAO.getMainLoc(mainlocid);
+		
+		model.addAttribute("mainloc", mainloc);
+		model.addAttribute("referer", referer);
+		return "location/deleteMainLoc";
+	}
+	
+	@PostMapping(value= "/deleteMainLoc")
+	public String getDeleteMainLoc(@RequestParam int mainlocid, Model model, @RequestParam String referer ) {
+		System.out.println(mainlocid);
+//			productDAO.deleteProduct(productid);
+		
+		return "redirect:"+referer;
 	}
 	
 	/**************** SUB LOCATION ACTION ***********************/	
@@ -165,11 +186,29 @@ public class LocationController {
 //			}
 	}
 		
+//	@GetMapping(value= "/deleteSubLoc")
+//	public String getDeleteSubloc(@RequestParam int sublocid, Model model ) {
+//		System.out.println(sublocid);
+////			subDeptDAO.deleteDepartment(subdeptid);
+//			
+//		return "redirect:/location";
+//	}
+	
 	@GetMapping(value= "/deleteSubLoc")
-	public String getDeleteSubloc(@RequestParam int sublocid, Model model ) {
-			System.out.println(sublocid);
-//			subDeptDAO.deleteDepartment(subdeptid);
-				
-			return "redirect:/location";
-		}
+	public String getDeleteSubLoc(@RequestParam int sublocid, Model model, HttpServletRequest request ) {
+		String referer = request.getHeader("Referer");
+		SubLoc subloc = subLocDAO.getSubLoc(sublocid);
+		
+		model.addAttribute("subloc", subloc);
+		model.addAttribute("referer", referer);
+		return "location/deleteSubLoc";
+	}
+	
+	@PostMapping(value= "/deleteSubLoc")
+	public String getDeleteSubLoc(@RequestParam int sublocid, Model model, @RequestParam String referer ) {
+		System.out.println(sublocid);
+//			productDAO.deleteProduct(productid);
+		
+		return "redirect:"+referer;
+	}
 }

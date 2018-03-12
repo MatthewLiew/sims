@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+   	</head>
+	
+	<input type="hidden" name="orgid" th:value="${dept.deptid}" />
+	<input type="hidden" name="referer" th:value="${referer}" />
+	
+	<div class="form-group">
+        <div class="form-row">
+            <div class="col-md-12">
+                Are you sure to Delete Following Department ? <br/>
+                Department Code - <b><span th:text="${dept.deptcode}"></span></b>
+                										   <br/>
+                Department Name - <b><span th:text="${dept.deptname}"></span></b>
+            </div>
+        </div>
+    </div>
+           
+</html>

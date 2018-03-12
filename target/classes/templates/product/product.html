@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Product</title>
+	</head>
+	
+	<div class="header_ref" th:include="/header"></div>
+	<div class="content-wrapper">
+    	<div class="container-fluid">
+	   		<!-- Breadcrumbs -->
+	    	<ol class="breadcrumb">
+		        <li class="breadcrumb-item">
+		          <a th:href="@{/}">Product</a>
+		        </li>
+		        <li class="breadcrumb-item active"> Product</li>
+	      	</ol>
+	      	
+	      	<div class="card mb-3">
+      			<div class="card-header">
+      				<i class="fa fa-table"></i> Product &nbsp;&nbsp;
+<!-- 	      			<a th:href="@{createUser}"> -->
+      				<a onclick="doAction('new', 0);">
+      					<button class="btn btn-primary" data-toggle="modal" >Add Product</button>
+	      			</a>
+	      		</div>	
+	      		<div class="card-body">
+		        	<div class="table-responsive">
+		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+		        			<thead>
+		        				<tr>
+		        					<th>Product Code</th>
+						          	<th>Product Name</th>
+						          	<th>Brand</th>
+						          	<th>Hardware</th>
+								  	<th>Stock Status</th>
+								 	 <th>Quantity</th>
+						          	<th>Low Balance Threshold</th>
+						          	<th>Action</th>
+	               			 	</tr>
+		              		</thead>
+		              		<tfoot>
+		                		<tr>
+		                  			<th>Product Code</th>
+						          	<th>Product Name</th>
+						          	<th>Brand</th>
+						          	<th>Hardware</th>
+								  	<th>Stock Status</th>
+								 	 <th>Quantity</th>
+						          	<th>Low Balance Threshold</th>
+						          	<th>Action</th>
+					          	</tr>
+				          	</tfoot>
+				          	<tbody>
+				          		<tr th:each="prod : ${products}">
+				          			<td th:text="${prod.productcode}"></td>
+					             	<td th:text="${prod.productname}"></td>
+					             	<td th:each="brand : ${brands}" th:if="${brand.isBrand(prod.brandid)}" th:text="${brand.brandname}"></td>
+					             	<td th:each="hardware : ${hardwares}" th:if="${hardware.isHardware(prod.hardwareid)}" th:text="${hardware.hardwaretype}"></td>
+					             	<td th:class="(${prod.quantity} <= 0) ? 'text-danger' : 'text-success'" th:text="(${prod.quantity} <= 0) ? 'Out of Stock' : 'In Stock'">Stock Status</td>
+					             	<td th:text="${prod.quantity}"></td>
+					             	<td th:text="${prod.lbvalue}"></td>
+					             	<td>
+					                <!-- <a th:href="@{/editStock(productid=${prod.productid})}"> -->
+					                <a th:onclick="'doAction(\'edit\',\''+ ${prod.productid} +'\');'"><button class="btn btn-primary" title="Edit Product"><i class="fa fa-edit" title="Edit Product"></i></button></a>
+					                <!-- <a th:href="@{/deleteStock(productid=${prod.productid})}"> -->
+					                <a th:onclick="'doAction(\'delete\',\''+ ${prod.productid} +'\');'"><button class="btn btn-primary" title="Delete Product"><i class="fa fa-trash" title="Delete Product"></i></button></a>
+					            	 </td>
+				            	 </tr>
+				          	</tbody>
+			          	</table>
+		          	</div>
+	          	</div>
+	          	<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+          	</div>
+          	
+          	<div class="modal clickable" id="CreateProduct" tabindex="-1" role="dialog" aria-labelledby="CreateProduct" aria-hidden="true">
+	            <form method="POST" th:action="@{/createProduct}" id="CreateProduct">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Add Product</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Save</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+	        
+	        <div class="modal clickable" id="EditProduct" tabindex="-1" role="dialog" aria-labelledby="EditProduct" aria-hidden="true">
+	            <form method="POST" th:action="@{/editProduct}" id="EditProduct">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Edit Product</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Save</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+			
+			<div class="modal clickable" id="DeleteProduct" tabindex="-1" role="dialog" aria-labelledby="DeleteProduct" aria-hidden="true">
+	            <form method="POST" th:action="@{/deleteProduct}" id="DeleteProduct">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Delete Product</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Delete</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>	    
+		</div><!-- end of .container-fluid-->
+    </div><!-- end of .content-wrapper-->
+	<div class="footer_ref" th:include="/footer"></div>
+	
+	<script type="text/javascript">
+        function doAction(action, id) {
+            if (action == 'new') {
+                $('#CreateProduct .modal-body').empty();
+                $('#CreateProduct .modal-title').text("Add Product");
+                $('#CreateProduct .modal-body').load('createProduct', function () {
+                    $('#CreateProduct').modal({show: true});
+                });
+            } else if (action == 'edit') {
+                $('#EditProduct .modal-body').empty();
+                $('#EditProduct .modal-title').text("Edit Product");
+                $('#EditProduct .modal-body').load('editProduct?productid=' + id, function () {
+                    $('#EditProduct').modal({show: true});
+                });
+            } else if (action == 'change') {
+            	console.log("change");
+                $('#ChangePwd .modal-body').empty();
+                $('#ChangePwd .modal-title').text("Change Password");
+                $('#ChangePwd .modal-body').load('changePassword?userid=' + id, function () {
+                    $('#ChangePwd').modal({show: true});
+                });
+            } else if (action == 'delete') {
+                $('#DeleteProduct .modal-body').empty();
+                $('#DeleteProduct .modal-title').text("Delete Product");
+                $('#DeleteProduct .modal-body').load('deleteProduct?productid=' + id, function () {
+                    $('#DeleteProduct').modal({show: true});
+                });
+            }
+        }
+    </script>
+</html>

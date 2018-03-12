@@ -2,6 +2,8 @@ package com.sbinventory.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +28,7 @@ import com.sbinventory.dao.UserAccountDAO;
 import com.sbinventory.dao.UserRoleDAO;
 import com.sbinventory.model.Dept;
 import com.sbinventory.model.Organization;
+import com.sbinventory.model.Product;
 import com.sbinventory.model.SubDept;
 
 @Controller
@@ -52,7 +55,7 @@ public class OrganizationController {
 		List<SubDept> subdepts=subDeptDAO.getAllSubDept();
 		model.addAttribute("subdepts",subdepts);
         
-		return "organization/index";
+		return "organization/organization";
 	}
 	
 	@GetMapping(value= "/department")
@@ -66,7 +69,7 @@ public class OrganizationController {
 		List<SubDept> subdepts=subDeptDAO.getAllSubDept();
 		model.addAttribute("subdepts",subdepts);
         
-		return "organization/department/index";
+		return "organization/department";
 	}
 	
 	@GetMapping(value= "/subdepartment")
@@ -80,7 +83,7 @@ public class OrganizationController {
 		List<SubDept> subdepts=subDeptDAO.getAllSubDept();
 		model.addAttribute("subdepts",subdepts);
         
-		return "organization/subdepartment/index";
+		return "organization/subdepartment";
 	}
 	
 	/**************** ORGANIZATION ACTION ***********************/
@@ -95,7 +98,7 @@ public class OrganizationController {
 	}
 	
 	@PostMapping(value= "/createOrganization")
-	public String postCreateOrganization(@RequestParam int orgcode,@RequestParam String orgname, Model model ) {
+	public String postCreateOrganization(@RequestParam int orgcode, @RequestParam String orgname, Model model ) {
 //			String errorString=organizationDAO.createOrganization(orgcode, orgname);
 		System.out.println(orgcode+" "+orgname);
 //			if(errorString==null) {
@@ -128,11 +131,29 @@ public class OrganizationController {
 //			}
 	}
 	
+//	@GetMapping(value= "/deleteOrganization")
+//	public String getDeleteOrganization(@RequestParam int orgid, Model model ) {
+//		organizationDAO.deleteOrganization(orgid);
+//		
+//		return "redirect:/organization";
+//	}
+	
 	@GetMapping(value= "/deleteOrganization")
-	public String getDeleteOrganization(@RequestParam int orgid, Model model ) {
-		organizationDAO.deleteOrganization(orgid);
+	public String getDeleteOrganization(@RequestParam int orgid, Model model, HttpServletRequest request ) {
+		String referer = request.getHeader("Referer");
+		Organization org= organizationDAO.getOrganization(orgid);
 		
-		return "redirect:/organization";
+		model.addAttribute("org", org);
+		model.addAttribute("referer", referer);
+		return "organization/deleteOrganization";
+	}
+	
+	@PostMapping(value= "/deleteOrganization")
+	public String postDeleteOrganization(@RequestParam int orgid, Model model, @RequestParam String referer ) {
+		System.out.println(orgid);
+//			productDAO.deleteProduct(productid);
+		
+		return "redirect:"+referer;
 	}
 	
 	/**************** DEPARTMENT ACTION ***********************/
@@ -182,12 +203,30 @@ public class OrganizationController {
 //			}
 	}
 	
+//	@GetMapping(value= "/deleteDepartment")
+//	public String getDeleteDepartment(@RequestParam int deptid, Model model ) {
+//		System.out.println(deptid);
+////			deptDAO.deleteDepartment(deptid);
+//		
+//		return "redirect:/organization";
+//	}
+	
 	@GetMapping(value= "/deleteDepartment")
-	public String getDeleteDepartment(@RequestParam int deptid, Model model ) {
-		System.out.println(deptid);
-//			deptDAO.deleteDepartment(deptid);
+	public String getDeleteDepartment(@RequestParam int deptid, Model model, HttpServletRequest request ) {
+		String referer = request.getHeader("Referer");
+		Dept dept= deptDAO.getDept(deptid);
 		
-		return "redirect:/organization";
+		model.addAttribute("dept", dept);
+		model.addAttribute("referer", referer);
+		return "organization/deleteDepartment";
+	}
+	
+	@PostMapping(value= "/deleteDepartment")
+	public String postDeleteDepartment(@RequestParam int deptid, Model model, @RequestParam String referer ) {
+		System.out.println(deptid);
+//			productDAO.deleteProduct(productid);
+		
+		return "redirect:"+referer;
 	}
 	
 	/**************** SUB DEPARTMENT ACTION ***********************/
@@ -241,12 +280,29 @@ public class OrganizationController {
 //			}
 	}
 	
-	@GetMapping(value= "/deleteSubDepartment")
+	/*@GetMapping(value= "/deleteSubDepartment")
 	public String getDeleteSubDepartment(@RequestParam int subdeptid, Model model ) {
-			System.out.println(subdeptid);
+		System.out.println(subdeptid);
 //			subDeptDAO.deleteDepartment(subdeptid);
-			
-			return "redirect:/organization";
-		}
 		
+		return "redirect:/organization";
+	}*/
+	
+	@GetMapping(value= "/deleteSubDepartment")
+	public String getDeleteSubDepartment(@RequestParam int subdeptid, Model model, HttpServletRequest request ) {
+		String referer = request.getHeader("Referer");
+		SubDept subdept = subDeptDAO.getSubDept(subdeptid);
+		
+		model.addAttribute("subdept", subdept);
+		model.addAttribute("referer", referer);
+		return "organization/deleteSubDepartment";
+	}
+	
+	@PostMapping(value= "/deleteSubDepartment")
+	public String postDeleteSubDepartment(@RequestParam int subdeptid, Model model, @RequestParam String referer ) {
+		System.out.println(subdeptid);
+//			productDAO.deleteProduct(productid);
+		
+		return "redirect:"+referer;
+	}
 }

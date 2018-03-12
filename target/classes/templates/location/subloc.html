@@ -15,24 +15,179 @@
 		        <li class="breadcrumb-item active">Sub Location</li>
 	      	</ol>
 	      	
-		    <h3>Sub Location</h3>
-		    <table border="1" cellpadding="5" cellspacing="1" >
-		    	<tr>
-		       	  	<th>Main Location</th>
-		          	<th>Sub Location</th>
-		          	<th>Edit</th>
-		          	<th>Delete</th>
-		       	</tr>
-	          	<tr th:each="sub : ${sublocs}">
-	             	<td th:each="main : ${mainlocs}" th:if="${main.isMainLocName(sub.mainlocid)}" th:text="${main.mainlocname}"></td>
-	             	<td th:text="${sub.sublocname}"></td>
-	             	<td><a th:href="@{editSubLoc(sublocid=${sub.sublocid})}">Edit</a></td>
-	             	<td><a th:href="@{deleteSubLoc(sublocid=${sub.sublocid})}">Delete</a></td>
-	          	</tr>
-		    </table>
-		    <a th:href="@{createSubLoc}" >Create Sub Location</a>
+	      	<div class="card mb-3">
+	      		<div class="card-header">
+	      			<i class="fa fa-table"></i> Sub Location &nbsp;&nbsp;
+<!-- 	      			<a th:href="@{createUser}"> -->
+	      			<a onclick="doAction('new', 0);">
+	      				<button class="btn btn-primary" data-toggle="modal" >Create Sub Location</button>
+	      			</a>
+	      		</div>	  	
+		        <div class="card-body">
+		        	<div class="table-responsive">
+		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+		        			<thead>
+		        				<tr>
+		        					<th>Main Location</th>
+		          					<th>Sub Location</th>
+				                  	<th>Action</th>
+	               			 	</tr>
+		              		</thead>
+		              		<tfoot>
+		                		<tr>
+		                  			<th>Main Location</th>
+		          					<th>Sub Location</th>
+				                  	<th>Action</th>
+			                  	</tr>
+		                  	</tfoot>
+		                  	<tbody>
+		                		<tr th:each="sub : ${sublocs}">
+		                			<td th:each="main : ${mainlocs}" th:if="${main.isMainLocName(sub.mainlocid)}" th:text="${main.mainlocname}"></td>
+	             					<td th:text="${sub.sublocname}"></td>
+						            <td>
+						                <a th:onclick="'doAction(\'edit\',\''+ ${sub.sublocid} + '\');'" ><button class="btn btn-primary" title="Edit Sub Location"><i class="fa fa-edit" title="Edit Sub Location"></i></button></a>
+					            
+<!-- 									<a th:href="@{deleteUser(userid=${user.userid})}"> -->
+						            	<a th:onclick="'doAction(\'delete\',\''+ ${sub.sublocid} +'\');'"><button class="btn btn-primary" title="Delete Sub Location"><i class="fa fa-trash" title="Delete Sub Location"></i></button></a>
+					            	</td>
+					            </tr>
+		              		</tbody>
+	                  	</table>
+                  	</div>
+               	</div>
+               	<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+           	</div>
+           	
+           		<div class="modal clickable" id="CreateSubLocation" tabindex="-1" role="dialog" aria-labelledby="CreateSubLocation" aria-hidden="true">
+	            <form method="POST" th:action="@{/createSubLoc}" id="CreateSubLocation">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Create Sub Location</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Save</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+	        
+	        <div class="modal clickable" id="EditSubLocation" tabindex="-1" role="dialog" aria-labelledby="EditSubLocation" aria-hidden="true">
+	            <form method="POST" th:action="@{/editSubLoc}" id="EditSubLocation">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Edit Sub Location</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Save</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+	        
+	        <div class="modal clickable" id="DeleteSubLocation" tabindex="-1" role="dialog" aria-labelledby="DeleteSubLocation" aria-hidden="true">
+	            <form method="POST" th:action="@{/deleteSubLoc}" id="DeleteSubLocation">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Delete Sub Location</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Delete</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+	        
+<!-- 		    <h3>Sub Location</h3> -->
+<!-- 		    <table border="1" cellpadding="5" cellspacing="1" > -->
+<!-- 		    	<tr> -->
+<!-- 		       	  	<th>Main Location</th> -->
+<!-- 		          	<th>Sub Location</th> -->
+<!-- 		          	<th>Edit</th> -->
+<!-- 		          	<th>Delete</th> -->
+<!-- 		       	</tr> -->
+<!-- 	          	<tr th:each="sub : ${sublocs}"> -->
+<!-- 	             	<td th:each="main : ${mainlocs}" th:if="${main.isMainLocName(sub.mainlocid)}" th:text="${main.mainlocname}"></td> -->
+<!-- 	             	<td th:text="${sub.sublocname}"></td> -->
+<!-- 	             	<td><a th:href="@{editSubLoc(sublocid=${sub.sublocid})}">Edit</a></td> -->
+<!-- 	             	<td><a th:href="@{deleteSubLoc(sublocid=${sub.sublocid})}">Delete</a></td> -->
+<!-- 	          	</tr> -->
+<!-- 		    </table> -->
+<!-- 		    <a th:href="@{createSubLoc}" >Create Sub Location</a> -->
     
 		</div><!-- end of .container-fluid-->
     </div><!-- end of .content-wrapper-->
 	<div class="footer_ref" th:include="/footer"></div>
+	
+	<script type="text/javascript">
+        function doAction(action, id) {
+            if (action == 'new') {
+                $('#CreateSubLocation .modal-body').empty();
+                $('#CreateSubLocation .modal-title').text("New Sub Location");
+                $('#CreateSubLocation .modal-body').load('createSubLoc', function () {
+                    $('#CreateSubLocation').modal({show: true});
+                });
+            } else if (action == 'edit') {
+                $('#EditSubLocation .modal-body').empty();
+                $('#EditSubLocation .modal-title').text("Edit Sub Location");
+                $('#EditSubLocation .modal-body').load('editSubLoc?sublocid=' + id, function () {
+                    $('#EditSubLocation').modal({show: true});
+                });
+            } else if (action == 'change') {
+            	console.log("change");
+                $('#ChangePwd .modal-body').empty();
+                $('#ChangePwd .modal-title').text("Change Password");
+                $('#ChangePwd .modal-body').load('changePassword?userid=' + id, function () {
+                    $('#ChangePwd').modal({show: true});
+                });
+            } else if (action == 'delete') {
+                $('#DeleteSubLocation .modal-body').empty();
+                $('#DeleteSubLocation .modal-title').text("Delete Sub Location");
+                $('#DeleteSubLocation .modal-body').load('deleteSubLoc?sublocid=' + id, function () {
+                    $('#DeleteSubLocation').modal({show: true});
+                });
+            }
+        }
+    </script>
 </html>

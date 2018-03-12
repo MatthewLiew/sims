@@ -1,38 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-   <head>
-      <meta charset="UTF-8">
-      <title>Create Main Location</title>
-      
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      
-   </head>
-   <body>
-      
-      <!-- Include _menu.html -->
-      <th:block th:include="/_menu"></th:block>
-      <h3>Create Main Location</h3>
+	<head>
+		<meta charset="UTF-8">
+	</head>
+	
+	  	<p class="error" style="color: red;" th:text="${errorString}" ></p>
+	  	<input type="hidden" name="referer" th:value="${referer}" />
 
-	 
-      <form id="create_mainloc" method="POST" th:action="@{createMainLoc}"  onsubmit="return mainlocForm('create_mainloc');">
-      <p class="error" style="color: red;" th:text="${errorString}" ></p>
-      <input type="hidden" class="mainlocid" name="mainlocid" th:value="${mainlocid}" />
-         <table th:border="0">
-            <tr>
-               <td>Main Location Name</td>
+	 	<div class="form-group">
+            <div class="form-row">
+                <div class="col-md-3">
+                    <label for="MainLocationLabel">Main Location Name</label>
+                </div>
+                <div class="col-md-6">                    
+                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
+                    <input class="form-control mainlocname" id="mainlocname" name="mainlocname" type="text" data-error="Please Enter Main Location Name" aria-describedby="MainLocationName" placeholder="Enter Main Location Name" value="" onkeyup="mainlocName('CreateMainLocation');" required>
+                </div>
+                <div class="col-md-3">
+                	<span class="mainlocname_status"></span>
+                    <span style="visibility:hidden;"class="mainlocname_flag" th:text="true"></span>
+                </div>
+            </div>
+        </div>
+        
+<!--       <form id="create_mainloc" method="POST" th:action="@{createMainLoc}"  onsubmit="return mainlocForm('create_mainloc');"> -->
+<!--       <p class="error" style="color: red;" th:text="${errorString}" ></p> -->
+<!--       <input type="hidden" class="mainlocid" name="mainlocid" th:value="${mainlocid}" /> -->
+<!--          <table th:border="0"> -->
+<!--             <tr> -->
+<!--                <td>Main Location Name</td> -->
                
-               <td><input type="text" class="mainlocname" name="mainlocname" th:value="${mainlocname}" onkeyup="mainlocName('create_mainloc');"/></td>
-			   <td class="mainlocname_status"></td>
-			   <td style="visibility:hidden;" class="mainlocname_flag" th:text="true"></td>
-            </tr>
-            <tr>
-               <td colspan="2">                   
-                <input type="submit" value="Submit" />
-               </td>
-            </tr>  
-         </table>
-      </form>
+<!--                <td><input type="text" class="mainlocname" name="mainlocname" th:value="${mainlocname}" onkeyup="mainlocName('create_mainloc');"/></td> -->
+<!-- 			   <td class="mainlocname_status"></td> -->
+<!-- 			   <td style="visibility:hidden;" class="mainlocname_flag" th:text="true"></td> -->
+<!--             </tr> -->
+<!--             <tr> -->
+<!--                <td colspan="2">                    -->
+<!--                 <input type="submit" value="Submit" /> -->
+<!--                </td> -->
+<!--             </tr>   -->
+<!--          </table> -->
+<!--       </form> -->
 
-     <script src="../js/validation.js"></script>
-   </body>
+<!--      <script src="../js/validation.js"></script> -->
+<!--    </body> -->
 </html>

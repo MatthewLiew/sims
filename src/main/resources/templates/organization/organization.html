@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	<title>Organization</title>
+	</head>
+
+	<div class="header_ref" th:include="/header"></div>
+	<div class="content-wrapper">
+   		<div class="container-fluid">
+	   		<!-- Breadcrumbs -->
+	    	<ol class="breadcrumb">
+		        <li class="breadcrumb-item">
+		          <a th:href="@{/organization}">Organization</a>
+		        </li>
+		        <li class="breadcrumb-item active">Organization</li>
+	      	</ol>
+	      	<div class="card mb-3">
+	      		<div class="card-header">
+	      			<i class="fa fa-table"></i> Organization &nbsp;&nbsp;
+<!-- 	      			<a th:href="@{createUser}"> -->
+	      			<a onclick="doAction('new', 0);">
+	      				<button class="btn btn-primary" data-toggle="modal" >Create Organization</button>
+	      			</a>
+	      		</div>	  	
+		        <div class="card-body">
+		        	<div class="table-responsive">
+		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+		        			<thead>
+		        				<tr>
+		        					<th>Organization Code</th>
+				                  	<th>Organization Name</th>
+				                  	<th>Action</th>
+	               			 	</tr>
+		              		</thead>
+		              		<tfoot>
+		                		<tr>
+		                  			<th>Organization Code</th>
+				                  	<th>Organization Name</th>
+				                  	<th>Action</th>
+			                  	</tr>
+		                  	</tfoot>
+		                  	<tbody>
+		                		<tr th:each="org : ${orgs}">
+		                			<td th:text="${org.orgcode}"></td>
+	             					<td th:text="${org.orgname}"></td>
+						            <td>
+						                <a th:onclick="'doAction(\'edit\',\''+ ${org.orgid} + '\');'" ><button class="btn btn-primary" title="Edit Organization"><i class="fa fa-edit" title="Edit Organization"></i></button></a>
+					            
+<!-- 									<a th:href="@{deleteUser(userid=${user.userid})}"> -->
+						            	<a th:onclick="'doAction(\'delete\',\''+ ${org.orgid} +'\');'"><button class="btn btn-primary" title="Delete Organization"><i class="fa fa-trash" title="Delete Organization"></i></button></a>
+					            	</td>
+					            </tr>
+		              		</tbody>
+	              		</table>
+              		</div>
+          		</div>
+          		<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+       		</div>
+       		
+       		<div class="modal clickable" id="CreateOrganization" tabindex="-1" role="dialog" aria-labelledby="CreateOrganization" aria-hidden="true">
+	            <form method="POST" th:action="@{/createOrganization}" id="CreateOrganization">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Create Organization</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Save</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+	        
+	        <div class="modal clickable" id="EditOrganization" tabindex="-1" role="dialog" aria-labelledby="EditOrganization" aria-hidden="true">
+	            <form method="POST" th:action="@{/editOrganization}" id="EditOrganization">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Edit Organization</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Save</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+	        
+	        <div class="modal clickable" id="DeleteOrganization" tabindex="-1" role="dialog" aria-labelledby="DeleteOrganization" aria-hidden="true">
+	            <form method="POST" th:action="@{/deleteOrganization}" id="DeleteOrganization">
+	                <div class="vertical-alignment-helper">
+	                    <div class="modal-dialog  modal-lg vertical-align-center">
+	                        <!-- Modal content-->
+	                        <div class="modal-content">
+	                            <div class="modal-header">
+	                                <h4 class="modal-title">Delete Organization</h4>
+	                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	                            </div>
+	                            
+	                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+	
+	                            <div class="modal-body">
+	
+	                            </div>
+	
+	                            <div class="modal-footer">
+	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	                                <button type="submit" class="btn btn-primary">Delete</button>
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+	            </form>
+	        </div>
+<!-- 			<h3>Organization</h3> -->
+<!-- 			<table border="1" cellpadding="5" cellspacing="1"> -->
+<!-- 				<tr> -->
+<!-- 					<th>Organization Code</th> -->
+<!-- 		          	<th>Organization Name</th> -->
+<!-- 		          	<th>Edit</th> -->
+<!-- 		          	<th>Delete</th> -->
+<!-- 	          	</tr> -->
+<!-- 	          	<tr th:each="org : ${orgs}"> -->
+<!-- 	          		<td th:text="${org.orgcode}"></td> -->
+<!-- 	             	<td th:text="${org.orgname}"></td> -->
+<!-- 	             	<td><a th:href="@{editOrganization(orgid=${org.orgid})}">Edit</a></td> -->
+<!-- 	             	<td><a th:href="@{deleteOrganization(orgid=${org.orgid})}">Delete</a></td> -->
+<!-- 	          	</tr> -->
+<!-- 	    	</table> -->
+<!-- 		    <a th:href="@{createOrganization}" >Create Organization</a> -->
+		</div><!-- end of .container-fluid-->
+   	</div><!-- end of .content-wrapper-->
+	<div class="footer_ref" th:include="/footer"></div> 
+	
+	<script type="text/javascript">
+        function doAction(action, id) {
+            if (action == 'new') {
+                $('#CreateOrganization .modal-body').empty();
+                $('#CreateOrganization .modal-title').text("New Organization");
+                $('#CreateOrganization .modal-body').load('createOrganization', function () {
+                    $('#CreateOrganization').modal({show: true});
+                });
+            } else if (action == 'edit') {
+                $('#EditOrganization .modal-body').empty();
+                $('#EditOrganization .modal-title').text("Edit Organization");
+                $('#EditOrganization .modal-body').load('editOrganization?orgid=' + id, function () {
+                    $('#EditOrganization').modal({show: true});
+                });
+            } else if (action == 'change') {
+            	console.log("change");
+                $('#ChangePwd .modal-body').empty();
+                $('#ChangePwd .modal-title').text("Change Password");
+                $('#ChangePwd .modal-body').load('changePassword?userid=' + id, function () {
+                    $('#ChangePwd').modal({show: true});
+                });
+            } else if (action == 'delete') {
+                $('#DeleteOrganization .modal-body').empty();
+                $('#DeleteOrganization .modal-title').text("Delete Organization");
+                $('#DeleteOrganization .modal-body').load('deleteOrganization?orgid=' + id, function () {
+                    $('#DeleteOrganization').modal({show: true});
+                });
+            }
+        }
+    </script>
+</html>

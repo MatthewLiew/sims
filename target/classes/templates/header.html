@@ -112,18 +112,32 @@
 			            </li>
            			</ul>
 	          	</li>
-				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Product">
-					<a class="nav-link" th:href="@{/product}">
-						<i class="fa fa-fw fa-dashboard"></i>
-		            	<span class="nav-link-text">Product</span>
-	            	</a>
-				</li>
-				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Location">
+	          	<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Product">
 	          		<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti3" data-parent="#exampleAccordion">
+		            	<i class="fa fa-fw fa-sitemap"></i>
+		            	<span class="nav-link-text">Product</span>
+		         	 </a>
+		          	<ul class="sidenav-second-level collapse" id="collapseMulti3">
+			            <li>
+		              		<a th:href="@{/hardware}">Hardware</a>
+			            </li>
+			            <li>
+		              		<a th:href="@{/brand}">Brand</a>
+			            </li>
+			            <li>
+		              		<a th:href="@{/partno}">Part No</a>
+			            </li>
+			            <li>
+		              		<a th:href="@{/product}">Product</a>
+			            </li>
+           			</ul>
+	          	</li>
+				<li class="nav-item" data-toggle="tooltip" data-placement="right" title="Location">
+	          		<a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti4" data-parent="#exampleAccordion">
 		            	<i class="fa fa-fw fa-sitemap"></i>
 		            	<span class="nav-link-text">Location</span>
 		         	 </a>
-		          	<ul class="sidenav-second-level collapse" id="collapseMulti3">
+		          	<ul class="sidenav-second-level collapse" id="collapseMulti4">
 			            <li>
 		              		<a th:href="@{/mainlocation}">Main Location</a>
 			            </li>

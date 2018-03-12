@@ -31,6 +31,7 @@ import com.sbinventory.model.Brand;
 import com.sbinventory.model.Hardware;
 import com.sbinventory.model.PartNo;
 import com.sbinventory.model.Product;
+import com.sbinventory.model.StockType;
 
 @Controller
 public class ProductController {
@@ -46,21 +47,71 @@ public class ProductController {
 	
 	@Autowired
 	private ProductDAO productDAO;
+	
+	@Autowired
+	private StockTypeDAO stockTypeDAO;
 
 	/**************** INFORMATION PORTAL ***********************/
+	@GetMapping(value= "/hardware")
+	public String getHardware(Model model) {
+		List<Hardware> hardwares = hardwareDAO.getAllHardware();
+//		List<Brand> brands = brandDAO.getAllBrand();
+//		List<PartNo> partnos = partNoDAO.getAllPartNo();
+//		List<Product> products = productDAO.getAllProduct();
+		
+		model.addAttribute("hardwares",hardwares);
+//		model.addAttribute("brands",brands);
+//		model.addAttribute("partnos",partnos);
+//        model.addAttribute("products",products);
+//        
+		return "product/hardware";
+	}
+	
+	@GetMapping(value= "/brand")
+	public String getBrand(Model model) {
+//		List<Hardware> hardwares = hardwareDAO.getAllHardware();
+		List<Brand> brands = brandDAO.getAllBrand();
+//		List<PartNo> partnos = partNoDAO.getAllPartNo();
+//		List<Product> products = productDAO.getAllProduct();
+//		
+//		model.addAttribute("hardwares",hardwares);
+		model.addAttribute("brands",brands);
+//		model.addAttribute("partnos",partnos);
+//        model.addAttribute("products",products);
+//        
+		return "product/brand";
+	}
+	
+	@GetMapping(value= "/partno")
+	public String getPartNo(Model model) {
+//		List<Hardware> hardwares = hardwareDAO.getAllHardware();
+//		List<Brand> brands = brandDAO.getAllBrand();
+		List<PartNo> partnos = partNoDAO.getAllPartNo();
+		List<Product> products = productDAO.getAllProduct();
+		
+//		model.addAttribute("hardwares",hardwares);
+//		model.addAttribute("brands",brands);
+		model.addAttribute("partnos",partnos);
+        model.addAttribute("products",products);
+        
+		return "product/partno";
+	}
+	
 	@GetMapping(value= "/product")
 	public String getProduct(Model model) {
 		List<Hardware> hardwares = hardwareDAO.getAllHardware();
 		List<Brand> brands = brandDAO.getAllBrand();
 		List<PartNo> partnos = partNoDAO.getAllPartNo();
 		List<Product> products = productDAO.getAllProduct();
+//		List<StockType> stocktypes = stockTypeDAO.getAllStockType();
 		
 		model.addAttribute("hardwares",hardwares);
 		model.addAttribute("brands",brands);
 		model.addAttribute("partnos",partnos);
         model.addAttribute("products",products);
+//        model.addAttribute("stocktypes",stocktypes);
         
-		return "product/index";
+		return "product/product";
 	}
 	
 	/**************** HARDWARE ACTION ***********************/
@@ -103,12 +154,24 @@ public class ProductController {
 //				return "product/editHardware";
 //			}
 	}
-	
+
 	@GetMapping(value= "/deleteHardware")
-	public String getDeleteHardware(@RequestParam int hardwareid, Model model ) {
+	public String getDeleteHardware(@RequestParam int hardwareid, Model model, HttpServletRequest request ) {
+
+		String referer = request.getHeader("Referer");
+		Hardware hardware = hardwareDAO.getHardware(hardwareid);
+		
+		model.addAttribute("hardware", hardware);
+		model.addAttribute("referer", referer);
+		return "product/deleteHardware";
+	}
+	
+	@PostMapping(value= "/deleteHardware")
+	public String postDeleteHardware(@RequestParam int hardwareid, Model model, @RequestParam String referer ) { 
 		System.out.println(hardwareid);
-//			hardwareDAO.deleteDepartment(hardwareid);
-		return "redirect:/product";
+//			productDAO.deleteProduct(productid);
+		
+		return "redirect:"+referer;
 	}
 	
 	/**************** BRAND ACTION ***********************/
@@ -153,11 +216,22 @@ public class ProductController {
 	}
 	
 	@GetMapping(value= "/deleteBrand")
-	public String getDeleteBrand(@RequestParam int brandid, Model model ) {
-		System.out.println(brandid);
-//			brandDAO.deleteBrand(brandid);
+	public String getDeleteBrand(@RequestParam int brandid, Model model, HttpServletRequest request ) {
+
+		String referer = request.getHeader("Referer");
+		Brand brand = brandDAO.getBrand(brandid);
 		
-		return "redirect:/product";
+		model.addAttribute("brand", brand);
+		model.addAttribute("referer", referer);
+		return "product/deleteBrand";
+	}
+	
+	@PostMapping(value= "/deleteBrand")
+	public String postDeleteBrand(@RequestParam int brandid, Model model, @RequestParam String referer ) { 
+		System.out.println(brandid);
+//			productDAO.deleteProduct(productid);
+		
+		return "redirect:"+referer;
 	}
 	
 	/**************** PART NO ACTION ***********************/
@@ -311,8 +385,6 @@ public class ProductController {
 		return "redirect:"+referer;
 	}
 
-	/**************** PRODUCT ACTION ***********************/
-
 	
 	/**************** PRODUCT ACTION ***********************/
 	@GetMapping(value= "/createProduct")
@@ -347,7 +419,6 @@ public class ProductController {
 //			}
 	}
 	
-	
 	@GetMapping(value= "/editProduct")
 	public String getEditProduct(@RequestParam int productid,Model model, HttpServletRequest request ) {
 		
@@ -369,7 +440,6 @@ public class ProductController {
         
 		return "product/editProduct";
 	}
-	
 	
 	@PostMapping(value= "/editProduct")
 	public String postEditProduct(@RequestParam int productid, @RequestParam int productcode, @RequestParam String productname, 

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+   	</head>
+	
+	<input type="hidden" name="sublocid" th:value="${subloc.sublocid}" />
+	<input type="hidden" name="referer" th:value="${referer}" />
+	
+	<div class="form-group">
+        <div class="form-row">
+            <div class="col-md-12">
+                Are you sure to Delete Following Sub Location ? <br/>
+                Sub Location - <b><span th:text="${subloc.sublocname}"></span></b>
+<!--                 										   <br/> -->
+<!--                 Sub Department Name - <b><span th:text="${subdept.subdeptname}"></span></b> -->
+            </div>
+        </div>
+    </div>
+           
+</html>
