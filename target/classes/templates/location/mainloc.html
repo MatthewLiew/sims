@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Main Location</title>
+	</head>
+	
+	<div class="header_ref" th:include="/header"></div>
+	<div class="content-wrapper">
+    	<div class="container-fluid">
+	   		<!-- Breadcrumbs -->
+	    	<ol class="breadcrumb">
+		        <li class="breadcrumb-item">
+		          <a th:href="@{/mainlocation}">Location</a>
+		        </li>
+		        <li class="breadcrumb-item active">Main Location</li>
+	      	</ol>
+      
+			<h3>Main Location</h3>
+			<table border="1" cellpadding="5" cellspacing="1" >
+				<tr>
+					<th>Main Location</th>
+		          	<th>Edit</th>
+		          	<th>Delete</th>
+		       	</tr>
+	          	<tr th:each="mainloc : ${mainlocs}">
+	             	<td th:text="${mainloc.mainlocname}"></td>
+	             	<td><a th:href="@{editMainLoc(mainlocid=${mainloc.mainlocid})}">Edit</a></td>
+	             	<td><a th:href="@{deleteMainLoc(mainlocid=${mainloc.mainlocid})}">Delete</a></td>
+	    		</tr>
+		    </table>
+		    <a th:href="@{createMainLoc}" >Create Main Location</a>
+    
+		</div><!-- end of .container-fluid-->
+    </div><!-- end of .content-wrapper-->
+	<div class="footer_ref" th:include="/footer"></div>
+</html>
