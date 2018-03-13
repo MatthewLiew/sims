@@ -17,7 +17,6 @@
 	      	<div class="card mb-3">
 	      		<div class="card-header">
 	      			<i class="fa fa-table"></i> User Account &nbsp;&nbsp;
-<!-- 	      			<a th:href="@{createUser}"> -->
 	      			<a onclick="doAction('new', 0);">
 	      				<button class="btn btn-primary" data-toggle="modal" >Create User</button>
 	      			</a>
@@ -54,20 +53,10 @@
 						            <td th:each="list: ${depts}" th:if="${list.isSelected(user.deptid)}" th:text="${list.deptname}" ></td>
 						            <td th:each="list: ${subdepts}" th:if="${list.isSelected(user.subdeptid)}" th:text="${list.subdeptname}" ></td>
 						            <td>
-<!-- 						            &nbsp;&nbsp; -->
-						            
-<!-- 						            <form method="POST" th:action="@{editUser2}"> -->
-<!-- 						            	<input type="hidden" name="userid" th:value="${user.userid}"/> -->
-<!-- 						             	<input type="submit" value="Edit" /> -->
-											<!-- th:href="@{editUser(userid=${user.userid})}" -->
-<!-- 											th:onclick="'javascript:getContactId(\'' + ${contact.id} + '\');'" -->
-						                <a th:onclick="'doAction(\'edit\',\''+ ${user.userid} + '\');'" ><button class="btn btn-primary" title="Edit User"><i class="fa fa-edit" title="Edit User"></i></button></a>
-<!-- 						            </form> -->
-<!-- 						            &nbsp;&nbsp; -->
-<!-- 									"@{changePassword(userid=${user.userid})}" -->
-									<a th:onclick="'doAction(\'change\',\''+ ${user.userid} +'\');'"><button class="btn btn-primary" title="Change Password"><i class="fa fa-key" title="Change Password"></i></button></a>
-<!-- 									<a th:href="@{deleteUser(userid=${user.userid})}"> -->
-						            <a th:onclick="'doAction(\'delete\',\''+ ${user.userid} +'\');'"><button class="btn btn-primary" title="Delete User"><i class="fa fa-trash" title="Delete User"></i></button></a></td>
+							            <a th:onclick="'doAction(\'edit\',\''+ ${user.userid} + '\');'" ><button class="btn btn-primary" title="Edit User"><i class="fa fa-edit" title="Edit User"></i></button></a>
+										<a th:onclick="'doAction(\'change\',\''+ ${user.userid} +'\');'"><button class="btn btn-primary" title="Change Password"><i class="fa fa-key" title="Change Password"></i></button></a>
+							            <a th:onclick="'doAction(\'delete\',\''+ ${user.userid} +'\');'"><button class="btn btn-primary" title="Delete User"><i class="fa fa-trash" title="Delete User"></i></button></a>
+						            </td>
 					            </tr>
 		              		</tbody>
 	              		</table>
@@ -183,30 +172,6 @@
 		                </div>
 		            </form>
 		        </div>
-<!-- 			<h3>User Account</h3> -->
-<!-- 			<table border="1" cellpadding="5" cellspacing="1" > -->
-<!-- 				<tr> -->
-<!-- 					<th>UserCode</th> -->
-<!-- 					<th>UserName</th> -->
-<!-- 					<th>Change Password</th> -->
-<!-- 					<th>Edit</th> -->
-<!-- 					<th>Delete</th> -->
-<!-- 				</tr> -->
-<!-- 				<tr th:each="user : ${useraccs}"> -->
-<!-- 					<td th:text="${user.usercode}"></td> -->
-<!-- 		            <td th:text="${user.username}"></td> -->
-<!-- 		            <td><a th:href="@{changePassword(userid=${user.userid})}">Change</a></td> -->
-<!-- 		            <td> -->
-<!-- 		            <form method="POST" th:action="@{editUser2}"> -->
-<!-- 		            	<input type="hidden" name="userid" th:value="${user.userid}"/> -->
-<!-- 		             	<input type="submit" value="Edit" /> -->
-<!-- <!-- 		                <a th:href="@{editUser(userid=${user.userid})}">Edit</a> --> 
-<!-- <!-- 		            </form> --> 
-<!-- 		            </td> -->
-<!-- 		            <td><a th:href="@{deleteUser(userid=${user.userid})}">Delete</a></td> -->
-<!-- 	            </tr> -->
-<!-- 			</table> -->
-<!-- 		    <a th:href="@{createUser}" >Create User</a> -->
 
 	    </div><!-- end of .container-fluid-->
    	</div><!-- end of .content-wrapper-->

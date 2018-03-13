@@ -18,7 +18,6 @@
 	      	<div class="card mb-3">
 	      		<div class="card-header">
 	      			<i class="fa fa-table"></i> Department &nbsp;&nbsp;
-<!-- 	      			<a th:href="@{createUser}"> -->
 	      			<a onclick="doAction('new', 0);">
 	      				<button class="btn btn-primary" data-toggle="modal" >Create Department</button>
 	      			</a>
@@ -49,8 +48,6 @@
 					          	 	<td th:text="${dept.deptname}"></td>
 						            <td>
 						                <a th:onclick="'doAction(\'edit\',\''+ ${dept.deptid} + '\');'" ><button class="btn btn-primary" title="Edit Department"><i class="fa fa-edit" title="Edit Department"></i></button></a>
-					            
-<!-- 									<a th:href="@{deleteUser(userid=${user.userid})}"> -->
 						            	<a th:onclick="'doAction(\'delete\',\''+ ${dept.deptid} +'\');'"><button class="btn btn-primary" title="Delete Department"><i class="fa fa-trash" title="Delete Department"></i></button></a>
 					            	</td>
 					            </tr>
@@ -141,25 +138,6 @@
 	                </div>
 	            </form>
 	        </div>
-	        
-<!-- 			<h3>Department</h3> -->
-<!-- 			<table border="1" cellpadding="5" cellspacing="1"> -->
-<!-- 				<tr> -->
-<!-- 					<th>Organization Name</th> -->
-<!-- 		       	  	<th>Department Code</th> -->
-<!-- 		          	<th>Department Name</th> -->
-<!-- 		          	<th>Edit</th> -->
-<!-- 		          	<th>Delete</th> -->
-<!-- 	          	</tr> -->
-<!-- 	          	<tr th:each="dept : ${depts}"> -->
-<!-- 	          	 	<td th:each="org : ${orgs}" th:if="${org.isOrgname(dept.orgid)}" th:text="${org.orgname}"></td> -->
-<!-- 	             	<td th:text="${dept.deptcode}"></td> -->
-<!-- 	          	 	<td th:text="${dept.deptname}"></td> -->
-<!--              		<td><a th:href="@{editDepartment(deptid=${dept.deptid})}">Edit</a></td> -->
-<!-- 	             	<td><a th:href="@{deleteDepartment(deptid=${dept.deptid})}">Delete</a></td> -->
-<!-- 	          	</tr> -->
-<!-- 	    	</table> -->
-<!-- 		    <a th:href="@{createDepartment}" >Create Department</a> -->
 	   	</div><!-- end of .container-fluid-->
    	</div><!-- end of .content-wrapper-->
 	<div class="footer_ref" th:include="/footer"></div> 

@@ -14,24 +14,34 @@ public class SubLoc {
 		this.sublocname = sublocname;
 		this.mainlocid = mainlocid;
 	}
+	
 	public int getSublocid() {
 		return sublocid;
 	}
+	
 	public void setSublocid(int sublocid) {
 		this.sublocid = sublocid;
 	}
+	
 	public String getSublocname() {
 		return sublocname;
 	}
+	
 	public void setSublocname(String sublocname) {
 		this.sublocname = sublocname;
 	}
+	
 	public int getMainlocid() {
 		return mainlocid;
 	}
+	
 	public void setMainlocid(int mainlocid) {
 		this.mainlocid = mainlocid;
 	}
 	
-	
+	public boolean isSubLocName(int sublocid) {
+		if (this.sublocid==sublocid) {
+            return true;
+        } else {return false;}
+	}
 }

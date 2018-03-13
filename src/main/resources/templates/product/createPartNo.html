@@ -14,19 +14,25 @@
       <h3>Create Part No</h3>
 
 	 
-      <form id="create_partno" method="POST" th:action="@{createPartNo}"  onsubmit="return partnoForm('create_partno');">
+      <form id="create_partno" method="POST" th:action="@{createPartNos}"  onsubmit="return partnoForm('create_partno');">
       <p class="error" style="color: red;" th:text="${errorString}" ></p>
       <input type="hidden" class="partnoid" name="partnoid" th:value="${partnoid}" />
-         <table th:border="0">
-<!--             <tr> -->
-<!--                <td>Part No Code</td> -->
-<!--                <td><input type="text" class="partnocode" name="partnocode" th:value="${partnocode}" onkeyup="partnoCode('create_partno');"/></td> -->
-<!-- 			   <td class="partnocode_status"></td> -->
-<!-- 			   <td style="visibility:hidden;" class="partnocode_flag" th:text="true"></td> -->
-<!--             </tr> -->
+<!--       <div id="duplicate_table"> -->
+         <table class="create_partno_table" th:border="0">
+         
+            <tr>
+               <td>Product</td>
+               <td>
+               <select name="productid">
+               	   <option value="0">Select Product</option>
+	               <option th:each="list: ${products}" th:value="${list.productid}" th:text="${list.productname}"></option>
+               </select></td>
+			   <td class="productid_status"></td>
+            </tr>
 			<tr>
                <td>Serial No</td>
-               <td><input type="text" class="serialno" name="serialno" th:value="${serialno}" onkeyup="partnoSerialNo('create_partno');"/></td>
+               <td><textarea class="serialno" name="serialno" rows="4" cols="50" placeholder="Seperate each serial number with newline or space"></textarea><td>
+<!--                <td><input type="text" class="serialno" name="serialno" th:value="${serialno}" onkeyup="partnoSerialNo('create_partno');"/></td> -->
 			   <td class="serialno_status"></td>
 			   <td style="visibility:hidden;" class="serialno_flag" th:text="true"></td>
             </tr>
@@ -43,14 +49,17 @@
 			   <td class="upccode_status"></td>
 			   <td style="visibility:hidden;" class="upccode_flag" th:text="true"></td>
             </tr>
+            
             <tr>
-               <td colspan="2">                   
-                <input type="submit" value="Submit" />
+               <td colspan="2">       
+               	  <button class="remove_partno" >Remove</button>        
                </td>
             </tr>  
          </table>
+<!--          </div> -->
+          <input type="submit" value="Submit" />
+          <button onclick="addmorepartno();">Add More</button> 
       </form>
-
      <script src="../js/validation.js"></script>
    </body>
 </html>

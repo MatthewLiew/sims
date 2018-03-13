@@ -4,71 +4,38 @@
 		<meta charset="UTF-8">
 	</head>
 		
-		<p class="error" style="color: red;" th:text="${errorString}" ></p>
-		<input type="hidden" class="orgid" name="orgid" th:value="${org.orgid}" />
-	  	<input type="hidden" name="referer" th:value="${referer}" />
+	<p class="error" style="color: red;" th:text="${errorString}" ></p>
+	<input type="hidden" class="orgid" name="orgid" th:value="${org.orgid}" />
+  	<input type="hidden" name="referer" th:value="${referer}" />
 	  	
 	  	
-		<div class="form-group">
-            <div class="form-row">
-                <div class="col-md-3">
-                    <label for="OrganizationCodeLabel">Organization Code</label>
-                </div>
-                <div class="col-md-6">                    
-                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
-                    <input class="form-control orgcode" id="orgcode" name="orgcode" type="text" data-error="Please Enter Organization Code" aria-describedby="OrganizationCode" placeholder="Enter Organization Code" th:value="${org.orgcode}" onkeyup="orgCode('EditOrganization');" required>
-                </div>
-                <div class="col-md-3">
-                	<span class="orgcode_status"></span>
-                    <span style="visibility:hidden;"class="orgcode_flag" th:text="true"></span>
-                </div>
+	<div class="form-group">
+        <div class="form-row">
+            <div class="col-md-3">
+                <label for="OrganizationCodeLabel">Organization Code</label>
+            </div>
+            <div class="col-md-6">
+            	<input class="form-control orgcode" id="orgcode" name="orgcode" type="text" data-error="Please Enter Organization Code" aria-describedby="OrganizationCode" placeholder="Enter Organization Code" th:value="${org.orgcode}" onkeyup="orgCode('EditOrganization');" required>
+            </div>
+            <div class="col-md-3">
+            	<span class="orgcode_status"></span>
+                <span style="visibility:hidden;"class="orgcode_flag" th:text="true"></span>
             </div>
         </div>
+    </div>
         
-       	<div class="form-group">
-            <div class="form-row">
-                <div class="col-md-3">
-                    <label for="OrganizationNameLabel">Organization Name</label>
-                </div>
-                <div class="col-md-6">                    
-                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
-                    <input class="form-control orgname" id="orgname" name="orgname" type="text" data-error="Please Enter Organization Name" aria-describedby="OrganizationName" placeholder="Enter Organization Name" th:value="${org.orgname}" onkeyup="orgName('EditOrganization');" required>
-                </div>
-                <div class="col-md-3">
-                	<span class="orgname_status"></span>
-                    <span style="visibility:hidden;"class="orgname_flag" th:text="true"></span>
-                </div>
+   	<div class="form-group">
+        <div class="form-row">
+            <div class="col-md-3">
+                <label for="OrganizationNameLabel">Organization Name</label>
+            </div>
+            <div class="col-md-6">
+            	<input class="form-control orgname" id="orgname" name="orgname" type="text" data-error="Please Enter Organization Name" aria-describedby="OrganizationName" placeholder="Enter Organization Name" th:value="${org.orgname}" onkeyup="orgName('EditOrganization');" required>
+            </div>
+            <div class="col-md-3">
+            	<span class="orgname_status"></span>
+                <span style="visibility:hidden;"class="orgname_flag" th:text="true"></span>
             </div>
         </div>
-     
-<!--  	  Include _menu.html -->
-<!--       <th:block th:include="/_menu"></th:block> -->
-<!--       <h3>Edit Organization</h3> -->
- 	  
-<!--          <form id=edit_org method="POST" th:action="@{editOrganization}" onsubmit="return orgForm('edit_org');" > -->
-<!--          <p class="error" style="color: red;" th:text="${errorString}"></p> -->
-<!--             <input type="hidden" class="orgid" name="orgid" th:value="${org.orgid}" /> -->
-<!--             <table border="0"> -->
-<!--                <tr> -->
-<!--                   <td>Organization Code</td> -->
-                  
-<!--                   <td><input type="text" class="orgcode" name="orgcode" th:value="${org.orgcode}" onkeyup="orgCode('edit_org');"/> -->
-<!--                    <td class="orgcode_status"></td> -->
-<!--                    <td style="visibility:hidden;" class="orgcode_flag" th:text="true"></td> -->
-<!--                </tr> -->
-<!--                <tr> -->
-<!--                   <td>Organization Name</td> -->
-                  
-<!--                   <td><input type="text" class="orgname" name="orgname" th:value="${org.orgname}" onkeyup="orgName('edit_org');"/></td> -->
-<!--                   <td class="orgname_status"></td> -->
-<!--                   <td style="visibility:hidden;" class="orgname_flag" th:text="true"></td> -->
-<!--                </tr> -->
-<!--                <tr> -->
-<!--                   <td colspan = "2"> -->
-<!--                       <input type="submit" value="Submit" /> -->
-<!--                   </td> -->
-<!--                </tr> -->
-<!--             </table> -->
-<!--          </form> -->
-<!--    </body> -->
+    </div>
 </html>

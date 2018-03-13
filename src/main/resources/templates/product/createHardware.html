@@ -3,66 +3,37 @@
 	<head>
 		<meta charset="UTF-8">
     </head>
-   		<p class="error" style="color: red;" th:text="${errorString}" ></p>
-	  	<input type="hidden" name="referer" th:value="${referer}" />
+    
+	<p class="error" style="color: red;" th:text="${errorString}" ></p>
+  	<input type="hidden" name="referer" th:value="${referer}" />
 	  	
-	  	<div class="form-group">
-            <div class="form-row">
-                <div class="col-md-3">
-                    <label for="HardwareCodeLabel">Hardware Code</label>
-                </div>
-                <div class="col-md-6">                    
-                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
-                    <input class="form-control hardwarecode" id="hardwarecode" name="hardwarecode" type="text" data-error="Please Enter Hardware Code" aria-describedby="HardwareCode" placeholder="Enter Hardware Code" value="" onkeyup="hardwareCode('CreateHardware');" required>
-                </div>
-                <div class="col-md-3">
-                	<span class="hardwarecode_status"></span>
-                    <span style="visibility:hidden;"class="hardwarecode_flag" th:text="true"></span>
-                </div>
-            </div>
-        </div>
+  	<div class="form-group">
+	    <div class="form-row">
+	        <div class="col-md-3">
+	            <label for="HardwareCodeLabel">Hardware Code</label>
+	        </div>
+	        <div class="col-md-6"> 
+	        	<input class="form-control hardwarecode" id="hardwarecode" name="hardwarecode" type="text" data-error="Please Enter Hardware Code" aria-describedby="HardwareCode" placeholder="Enter Hardware Code" value="" onkeyup="hardwareCode('CreateHardware');" required>
+	        </div>
+	        <div class="col-md-3">
+	        	<span class="hardwarecode_status"></span>
+	            <span style="visibility:hidden;"class="hardwarecode_flag" th:text="true"></span>
+	        </div>
+	    </div>
+    </div>
         
-        <div class="form-group">
-            <div class="form-row">
-                <div class="col-md-3">
-                    <label for="HardwareTypeLabel">Hardware Type</label>
-                </div>
-                <div class="col-md-6">                    
-                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
-                    <input class="form-control hardwaretype" id="hardwaretype" name="hardwaretype" type="text" data-error="Please Enter Hardware Type" aria-describedby="HardwareType" placeholder="Enter Hardware Type" value="" onkeyup="hardwareType('CreateHardware');" required>
-                </div>
-                <div class="col-md-3">
-                	<span class="hardwaretype_status"></span>
-                    <span style="visibility:hidden;"class="hardwaretype_flag" th:text="true"></span>
-                </div>
+    <div class="form-group">
+        <div class="form-row">
+            <div class="col-md-3">
+                <label for="HardwareTypeLabel">Hardware Type</label>
+            </div>
+            <div class="col-md-6">
+            	<input class="form-control hardwaretype" id="hardwaretype" name="hardwaretype" type="text" data-error="Please Enter Hardware Type" aria-describedby="HardwareType" placeholder="Enter Hardware Type" value="" onkeyup="hardwareType('CreateHardware');" required>
+            </div>
+            <div class="col-md-3">
+            	<span class="hardwaretype_status"></span>
+                <span style="visibility:hidden;"class="hardwaretype_flag" th:text="true"></span>
             </div>
         </div>
-<!--       <form id="create_hardware" method="POST" th:action="@{createHardware}"  onsubmit="return hardwareForm('create_hardware');"> -->
-<!--       <p class="error" style="color: red;" th:text="${errorString}" ></p> -->
-<!--       <input type="hidden" class="hardwareid" name="hardwareid" th:value="${hardwareid}" /> -->
-<!--          <table th:border="0"> -->
-<!--             <tr> -->
-<!--                <td>Hardware Code</td> -->
-               
-<!--                <td><input type="text" class="hardwarecode" name="hardwarecode" th:value="${hardwarecode}" onkeyup="hardwareCode('create_hardware');"/></td> -->
-<!-- 			   <td class="hardwarecode_status"></td> -->
-<!-- 			   <td style="visibility:hidden;" class="hardwarecode_flag" th:text="true"></td> -->
-<!--             </tr> -->
-<!--             <tr> -->
-<!--                <td>Hardware Type</td> -->
-               
-<!--                <td><input type="text" class="hardwaretype" name="hardwaretype" th:value="${hardwaretype}" onkeyup="hardwareType('create_hardware');"/></td> -->
-<!-- 			   <td class="hardwaretype_status"></td> -->
-<!-- 			   <td style="visibility:hidden;" class="hardwaretype_flag" th:text="true"></td> -->
-<!--             </tr> -->
-<!--             <tr> -->
-<!--                <td colspan="2">                    -->
-<!--                 <input type="submit" value="Submit" /> -->
-<!--                </td> -->
-<!--             </tr>   -->
-<!--          </table> -->
-<!--       </form> -->
-
-<!--      <script src="../js/validation.js"></script> -->
-<!--    </body> -->
+    </div>
 </html>

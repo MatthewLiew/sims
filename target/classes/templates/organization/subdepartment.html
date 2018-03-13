@@ -18,7 +18,6 @@
 	      	<div class="card mb-3">
 	      		<div class="card-header">
 	      			<i class="fa fa-table"></i> Sub Department &nbsp;&nbsp;
-<!-- 	      			<a th:href="@{createUser}"> -->
 	      			<a onclick="doAction('new', 0);">
 	      				<button class="btn btn-primary" data-toggle="modal" >Create Sub Department</button>
 	      			</a>
@@ -52,8 +51,6 @@
 				          		 	<td th:text="${subdept.subdeptname}"></td> 					             	
 						            <td>
 						                <a th:onclick="'doAction(\'edit\',\''+ ${subdept.subdeptid} + '\');'" ><button class="btn btn-primary" title="Edit Sub Department"><i class="fa fa-edit" title="Edit Sub Department"></i></button></a>
-					            
-<!-- 									<a th:href="@{deleteUser(userid=${user.userid})}"> -->
 						            	<a th:onclick="'doAction(\'delete\',\''+ ${subdept.subdeptid} +'\');'"><button class="btn btn-primary" title="Delete Sub Department"><i class="fa fa-trash" title="Delete Sub Department"></i></button></a>
 					            	</td>
 					            </tr>
@@ -143,29 +140,7 @@
 	                    </div>
 	                </div>
 	            </form>
-	        </div>
-	        
-<!-- 			<h3>Sub Department</h3> -->
-<!-- 			<table border="1" cellpadding="5" cellspacing="1"> -->
-<!-- 	       		<tr> -->
-<!-- 	       	  		<th>Organization Name</th> -->
-<!-- 	     	  		<th>Department Name</th> -->
-<!-- 		       	  	<th>Sub Department Code</th> -->
-<!-- 		          	<th>Sub Department Name</th> -->
-<!-- 		         	 <th>Edit</th> -->
-<!-- 		          	<th>Delete</th> -->
-<!-- 	       		</tr> -->
-<!-- 	          	<tr th:each="subdept : ${subdepts}"> -->
-<!-- 	             	<td th:each="dept : ${depts}" th:if="${dept.isDeptname(subdept.deptid)}"><span th:each="org : ${orgs}" th:if="${org.isOrgname(dept.orgid)}" th:text="${org.orgname}"></span></td>         -->
-<!-- 	          	 	<td th:each="dept : ${depts}" th:if="${dept.isDeptname(subdept.deptid)}" th:text="${dept.deptname}"></td> -->
-<!-- 	             	<td th:text="${subdept.subdeptcode}"></td> -->
-<!--           		 	<td th:text="${subdept.subdeptname}"></td> -->
-<!-- 	             	<td><a th:href="@{editSubDepartment(subdeptid=${subdept.subdeptid})}">Edit</a></td> -->
-<!-- 	             	<td><a th:href="@{deleteSubDepartment(subdeptid=${subdept.subdeptid})}">Delete</a></td> -->
-<!-- 	          	</tr> -->
-<!-- 		    </table> -->
-<!-- 		    <a th:href="@{createSubDepartment}" >Create Sub Department</a> -->
-		    
+	        </div>  
 	   	</div><!-- end of .container-fluid-->
    	</div><!-- end of .content-wrapper-->
 	<div class="footer_ref" th:include="/footer"></div> 

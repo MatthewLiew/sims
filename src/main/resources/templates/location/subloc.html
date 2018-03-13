@@ -18,7 +18,6 @@
 	      	<div class="card mb-3">
 	      		<div class="card-header">
 	      			<i class="fa fa-table"></i> Sub Location &nbsp;&nbsp;
-<!-- 	      			<a th:href="@{createUser}"> -->
 	      			<a onclick="doAction('new', 0);">
 	      				<button class="btn btn-primary" data-toggle="modal" >Create Sub Location</button>
 	      			</a>
@@ -46,8 +45,6 @@
 	             					<td th:text="${sub.sublocname}"></td>
 						            <td>
 						                <a th:onclick="'doAction(\'edit\',\''+ ${sub.sublocid} + '\');'" ><button class="btn btn-primary" title="Edit Sub Location"><i class="fa fa-edit" title="Edit Sub Location"></i></button></a>
-					            
-<!-- 									<a th:href="@{deleteUser(userid=${user.userid})}"> -->
 						            	<a th:onclick="'doAction(\'delete\',\''+ ${sub.sublocid} +'\');'"><button class="btn btn-primary" title="Delete Sub Location"><i class="fa fa-trash" title="Delete Sub Location"></i></button></a>
 					            	</td>
 					            </tr>
@@ -138,24 +135,6 @@
 	                </div>
 	            </form>
 	        </div>
-	        
-<!-- 		    <h3>Sub Location</h3> -->
-<!-- 		    <table border="1" cellpadding="5" cellspacing="1" > -->
-<!-- 		    	<tr> -->
-<!-- 		       	  	<th>Main Location</th> -->
-<!-- 		          	<th>Sub Location</th> -->
-<!-- 		          	<th>Edit</th> -->
-<!-- 		          	<th>Delete</th> -->
-<!-- 		       	</tr> -->
-<!-- 	          	<tr th:each="sub : ${sublocs}"> -->
-<!-- 	             	<td th:each="main : ${mainlocs}" th:if="${main.isMainLocName(sub.mainlocid)}" th:text="${main.mainlocname}"></td> -->
-<!-- 	             	<td th:text="${sub.sublocname}"></td> -->
-<!-- 	             	<td><a th:href="@{editSubLoc(sublocid=${sub.sublocid})}">Edit</a></td> -->
-<!-- 	             	<td><a th:href="@{deleteSubLoc(sublocid=${sub.sublocid})}">Delete</a></td> -->
-<!-- 	          	</tr> -->
-<!-- 		    </table> -->
-<!-- 		    <a th:href="@{createSubLoc}" >Create Sub Location</a> -->
-    
 		</div><!-- end of .container-fluid-->
     </div><!-- end of .content-wrapper-->
 	<div class="footer_ref" th:include="/footer"></div>

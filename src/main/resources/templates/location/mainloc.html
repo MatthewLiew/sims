@@ -18,7 +18,6 @@
       		<div class="card mb-3">
 	      		<div class="card-header">
 	      			<i class="fa fa-table"></i> Main Location &nbsp;&nbsp;
-<!-- 	      			<a th:href="@{createUser}"> -->
 	      			<a onclick="doAction('new', 0);">
 	      				<button class="btn btn-primary" data-toggle="modal" >Create Main Location</button>
 	      			</a>
@@ -39,12 +38,10 @@
 			                  	</tr>
 		                  	</tfoot>
 		                  	<tbody>
-		                		<tr  th:each="mainloc : ${mainlocs}">
+		                		<tr th:each="mainloc : ${mainlocs}">
 		                			<td th:text="${mainloc.mainlocname}"></td>
 						            <td>
-						                <a th:onclick="'doAction(\'edit\',\''+ ${mainloc.mainlocid} + '\');'" ><button class="btn btn-primary" title="Edit Main Location"><i class="fa fa-edit" title="Edit Main Location"></i></button></a>
-					            
-<!-- 									<a th:href="@{deleteUser(userid=${user.userid})}"> -->
+						                <a th:onclick="'doAction(\'edit\',\''+ ${mainloc.mainlocid} + '\');'" ><button class="btn btn-primary" title="Edit Main Location"><i class="fa fa-edit" title="Edit Main Location"></i></button></a>				          
 						            	<a th:onclick="'doAction(\'delete\',\''+ ${mainloc.mainlocid} +'\');'"><button class="btn btn-primary" title="Delete Main Location"><i class="fa fa-trash" title="Delete Main Location"></i></button></a>
 					            	</td>
 					            </tr>
@@ -135,21 +132,6 @@
 	                </div>
 	            </form>
 	        </div>
-<!-- 			<h3>Main Location</h3> -->
-<!-- 			<table border="1" cellpadding="5" cellspacing="1" > -->
-<!-- 				<tr> -->
-<!-- 					<th>Main Location</th> -->
-<!-- 		          	<th>Edit</th> -->
-<!-- 		          	<th>Delete</th> -->
-<!-- 		       	</tr> -->
-<!-- 	          	<tr th:each="mainloc : ${mainlocs}"> -->
-<!-- 	             	<td th:text="${mainloc.mainlocname}"></td> -->
-<!-- 	             	<td><a th:href="@{editMainLoc(mainlocid=${mainloc.mainlocid})}">Edit</a></td> -->
-<!-- 	             	<td><a th:href="@{deleteMainLoc(mainlocid=${mainloc.mainlocid})}">Delete</a></td> -->
-<!-- 	    		</tr> -->
-<!-- 		    </table> -->
-<!-- 		    <a th:href="@{createMainLoc}" >Create Main Location</a> -->
-    
 		</div><!-- end of .container-fluid-->
     </div><!-- end of .content-wrapper-->
 	<div class="footer_ref" th:include="/footer"></div>

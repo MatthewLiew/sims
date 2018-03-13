@@ -18,7 +18,6 @@
      		<div class="card mb-3">
       			<div class="card-header">
       				<i class="fa fa-table"></i> Settings &nbsp;&nbsp;
-<!-- 	      			<a th:href="@{createUser}"> -->
       				<a onclick="doAction('new', 0);">
       					<button class="btn btn-primary" data-toggle="modal" >Add Reason</button>
 	      			</a>
@@ -45,10 +44,9 @@
 				          			<td th:each="st : ${stocktypes}" th:if="${st.isStockType(r.stocktypeid)}" th:text="${st.stocktype}"></td>
 					             	<td th:text="${r.reason}"></td>
 					             	<td>
-					             	<!-- <a th:href="@{editReason(reasonid=${r.reasonid})}"> -->
-					             	<a th:onclick="'doAction(\'edit\',\''+ ${r.reasonid} +'\');'"><button class="btn btn-primary" title="Edit Reason"><i class="fa fa-edit" title="Edit Reason"></i></button></a>
-					             	<!-- <a th:href="@{deleteReason(reasonid=${r.reasonid})}"> -->
-					             	<a th:onclick="'doAction(\'delete\',\''+ ${r.reasonid} +'\');'"><button class="btn btn-primary" title="Delete Reason"><i class="fa fa-trash" title="Delete Reason"></i></button></a></td>
+						             	<a th:onclick="'doAction(\'edit\',\''+ ${r.reasonid} +'\');'"><button class="btn btn-primary" title="Edit Reason"><i class="fa fa-edit" title="Edit Reason"></i></button></a>
+						             	<a th:onclick="'doAction(\'delete\',\''+ ${r.reasonid} +'\');'"><button class="btn btn-primary" title="Delete Reason"><i class="fa fa-trash" title="Delete Reason"></i></button></a>
+					             	</td>
 				             	</tr>
 				          	</tbody>
 		          		</table>
@@ -136,31 +134,7 @@
 	                    </div>
 	                </div>
 	            </form>
-	        </div>
-		        
-<!-- 		    <h3>Reason</h3> -->
-		    
-<!-- 		    <table border="1" cellpadding="5" cellspacing="1" > -->
-			
-<!-- 		       <tr> -->
-<!-- 		       	  <th>Stock Type</th> -->
-<!-- 		          <th>Reason</th> -->
-<!-- 		          <th>Edit</th> -->
-<!-- 		          <th>Delete</th> -->
-<!-- 		       </tr> -->
-<!-- 		          <tr th:each="r : ${reasons}"> -->
-<!-- 		          	 <td th:each="st : ${stocktypes}" th:if="${st.isStockType(r.stocktypeid)}" th:text="${st.stocktype}"></td> -->
-<!-- 		             <td th:text="${r.reason}"></td> -->
-<!-- 		             <td> -->
-<!-- 		                <a th:href="@{editReason(reasonid=${r.reasonid})}">Edit</a> -->
-<!-- 		             </td> -->
-<!-- 		             <td> -->
-<!-- 		                <a th:href="@{deleteReason(reasonid=${r.reasonid})}">Delete</a> -->
-<!-- 		             </td> -->
-<!-- 		          </tr> -->
-<!-- 		    </table> -->
-<!-- 		    <a th:href="@{createReason}" >Create Reason</a> -->
-		    
+	        </div>		    
 	   	</div><!-- end of .container-fluid-->
     </div><!-- end of .content-wrapper-->
 	<div class="footer_ref" th:include="/footer"></div>

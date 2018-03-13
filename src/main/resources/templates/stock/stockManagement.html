@@ -18,7 +18,6 @@
 	     	<div class="card mb-3">
       			<div class="card-header">
       				<i class="fa fa-table"></i> Stock Management &nbsp;&nbsp;
-<!-- 	      			<a th:href="@{createUser}"> -->
       				<a onclick="doAction('new', 0);">
       					<button class="btn btn-primary" data-toggle="modal" >Add Product</button>
 	      			</a>
@@ -60,11 +59,9 @@
 					             	<td th:text="${prod.quantity}"></td>
 					             	<td th:text="${prod.lbvalue}"></td>
 					             	<td>
-					                <!-- <a th:href="@{/editStock(productid=${prod.productid})}"> -->
-					                <a th:onclick="'doAction(\'edit\',\''+ ${prod.productid} +'\');'"><button class="btn btn-primary" title="Edit Product"><i class="fa fa-edit" title="Edit Product"></i></button></a>
-					                <!-- <a th:href="@{/deleteStock(productid=${prod.productid})}"> -->
-					                <a th:onclick="'doAction(\'delete\',\''+ ${prod.productid} +'\');'"><button class="btn btn-primary" title="Delete Product"><i class="fa fa-trash" title="Delete Product"></i></button></a>
-					            	 </td>
+						                <a th:onclick="'doAction(\'edit\',\''+ ${prod.productid} +'\');'"><button class="btn btn-primary" title="Edit Product"><i class="fa fa-edit" title="Edit Product"></i></button></a>
+						                <a th:onclick="'doAction(\'delete\',\''+ ${prod.productid} +'\');'"><button class="btn btn-primary" title="Delete Product"><i class="fa fa-trash" title="Delete Product"></i></button></a>
+				            	 	</td>
 				            	 </tr>
 				          	</tbody>
 			          	</table>
@@ -152,36 +149,7 @@
 		                    </div>
 		                </div>
 		            </form>
-		        </div>
-<!-- 		       <tr> -->
-<!-- 		          <th>Product Code</th> -->
-<!-- 		          <th>Product Name</th> -->
-<!-- 		          <th>Brand</th> -->
-<!-- 		          <th>Hardware</th> -->
-<!-- 				  <th>Stock Status</th> -->
-<!-- 				  <th>Quantity</th> -->
-<!-- 		          <th>Low Balance Threshold</th> -->
-<!-- 		          <th>Edit</th> -->
-<!-- 		          <th>Delete</th> -->
-<!-- 		       </tr> -->
-<!-- 		          <tr th:each="prod : ${products}"> -->
-<!-- 		             <td th:text="${prod.productcode}"></td> -->
-<!-- 		             <td th:text="${prod.productname}"></td> -->
-<!-- 		             <td th:each="brand : ${brands}" th:if="${brand.isBrand(prod.brandid)}" th:text="${brand.brandname}"></td> -->
-<!-- 		             <td th:each="hardware : ${hardwares}" th:if="${hardware.isHardware(prod.hardwareid)}" th:text="${hardware.hardwaretype}"></td> -->
-<!-- 		             <td th:style="(${prod.quantity} <= 0) ? 'color:red;' : 'color:green;'" th:text="(${prod.quantity} <= 0) ? 'Out of Stock' : 'In Stock'">Stock Status</td> -->
-<!-- 		             <td th:text="${prod.quantity}"></td> -->
-<!-- 		             <td th:text="${prod.lbvalue}"></td> -->
-<!-- 		             <td> -->
-<!-- 		                <a th:href="@{/editProducts(productid=${prod.productid})}"><button class="btn btn-primary" title="Edit Product"><i class="fa fa-edit" title="Edit Product"></i></button></a> -->
-<!-- 		             </td> -->
-<!-- 		             <td> -->
-<!-- 		                <a th:href="@{/deleteProducts(productid=${prod.productid})}"><button class="btn btn-primary" title="Delete Product"><i class="fa fa-trash" title="Delete Product"></i></button></a> -->
-<!-- 		             </td> -->
-<!-- 		          </tr> -->
-<!-- 		    </table> -->
-<!-- 		    <a th:href="@{/createProduct}" >Create Product</a> -->
-		      
+		        </div>		      
 	   	</div><!-- end of .container-fluid-->
     </div><!-- end of .content-wrapper-->
 	<div class="footer_ref" th:include="/footer"></div>

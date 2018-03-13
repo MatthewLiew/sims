@@ -18,7 +18,6 @@
 	      	<div class="card mb-3">
       			<div class="card-header">
       				<i class="fa fa-table"></i> Serial Management &nbsp;&nbsp;
-<!-- 	      			<a th:href="@{createUser}"> -->
       				<a onclick="doAction('new', 0);">
       					<button class="btn btn-primary" data-toggle="modal" >Add Serial No</button>
 	      			</a>
@@ -60,10 +59,8 @@
 					             	<td th:text="${pn.customername}"></td>
 					             	<td th:text="${pn.invoiceno}"></td>
 					             	<td>
-					             	<!-- <a th:href="@{/editPartNos(partnoid=${pn.partnoid})}"> -->
-				              	 	<a th:onclick="'doAction(\'edit\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Edit Serial No"><i class="fa fa-edit" title="Edit Serial No"></i></button></a>
-					             	<!-- <a th:href="@{/deletePartNos(partnoid=${pn.partnoid})}"> -->
-					             	<a th:onclick="'doAction(\'delete\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Delete Serial No"><i class="fa fa-trash" title="Delete Serial No"></i></button></a>
+					              	 	<a th:onclick="'doAction(\'edit\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Edit Serial No"><i class="fa fa-edit" title="Edit Serial No"></i></button></a>
+						             	<a th:onclick="'doAction(\'delete\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Delete Serial No"><i class="fa fa-trash" title="Delete Serial No"></i></button></a>
 					             	</td>
 					          	</tr>
 				          	</tbody>
@@ -73,7 +70,7 @@
 	          	<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
 			</div>    	
 	      	<div class="modal clickable" id="CreatePartNo" tabindex="-1" role="dialog" aria-labelledby="CreatePartNo" aria-hidden="true">
-	            <form method="POST" th:action="@{/createPartNos}" id="CreatePartNo">
+	            <form method="POST" th:action="@{/createPartNo}" id="CreatePartNo">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -100,7 +97,7 @@
 	        </div>
 	        
 	        <div class="modal clickable" id="EditPartNo" tabindex="-1" role="dialog" aria-labelledby="EditPartNo" aria-hidden="true">
-	            <form method="POST" th:action="@{/editPartNos}" id="EditPartNo">
+	            <form method="POST" th:action="@{/editPartNo}" id="EditPartNo">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -151,36 +148,7 @@
 	                    </div>
 	                </div>
 	            </form>
-	        </div> 
-<!-- 		    <h3>Part No</h3> -->
-		     
-<!-- 		    <table border="1" cellpadding="5" cellspacing="1" > -->
-			
-<!-- 		       <tr> -->
-<!-- 		       	  <th>Serial No</th> -->
-<!-- 		          <th>Model No</th> -->
-<!-- 		          <th>UPC Code</th> -->
-<!-- 		          <th>Product</th> -->
-<!-- 		          <th>Status</th> -->
-<!-- 		          <th>Edit</th> -->
-<!-- 		          <th>Delete</th> -->
-<!-- 		       </tr> -->
-<!-- 		          <tr th:each="pn : ${partnos}"> -->
-<!-- 		          	 <td th:text="${pn.serialno}"></td> -->
-<!-- 		             <td th:text="${pn.modelno}"></td> -->
-<!-- 		             <td th:text="${pn.upccode}"></td> -->
-<!-- 		             <td th:each="list: ${products}" th:if="${list.isProduct(pn.productid)}" th:text="${list.productname}"></td> -->
-<!-- 		             <td style="color:green;">Available</td> -->
-<!-- 		             <td> -->
-<!-- 		             <a th:href="@{/editPartNos(partnoid=${pn.partnoid})}"> -->
-<!-- 	              	 <a th:onclick="'doAction(\'edit\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Edit Serial No"><i class="fa fa-edit" title="Edit Serial No"></i></button></a> -->
-<!-- 		             <a th:href="@{/deletePartNos(partnoid=${pn.partnoid})}"> -->
-<!-- 		             <a th:onclick="'doAction(\'delete\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Delete Serial No"><i class="fa fa-trash" title="Delete Serial No"></i></button></a> -->
-<!-- 		             </td> -->
-<!-- 		          </tr> -->
-<!-- 		    </table> -->
-<!-- 		    <a th:href="@{/createPartNos}" >Create Part No</a> -->
-		    
+	        </div> 		    
     	</div><!-- end of .container-fluid-->
     </div><!-- end of .content-wrapper-->
 	<div class="footer_ref" th:include="/footer"></div>
@@ -190,13 +158,13 @@
             if (action == 'new') {
                 $('#CreatePartNo .modal-body').empty();
                 $('#CreatePartNo .modal-title').text("Add Serial No");
-                $('#CreatePartNo .modal-body').load('createPartNos', function () {
+                $('#CreatePartNo .modal-body').load('createPartNo', function () {
                     $('#CreatePartNo').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditPartNo .modal-body').empty();
                 $('#EditPartNo .modal-title').text("Edit Serial No");
-                $('#EditPartNo .modal-body').load('editPartNos?partnoid=' + id, function () {
+                $('#EditPartNo .modal-body').load('editPartNo?partnoid=' + id, function () {
                     $('#EditPartNo').modal({show: true});
                 });
             } else if (action == 'change') {

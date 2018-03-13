@@ -70,42 +70,8 @@ public class MainController {
 	
 	@Autowired
 	private SubDeptDAO subDeptDAO;
-
-	@Autowired
-	private UserRoleDAO userRoleDAO;
-	
-	@Autowired
-	private AppRoleDAO appRoleDAO;
-	
-	@Autowired
-	private MainLocDAO mainLocDAO;
-	
-	@Autowired
-	private SubLocDAO subLocDAO;
-	
-	@Autowired
-	private HardwareDAO hardwareDAO;
-	
-	@Autowired
-	private BrandDAO brandDAO;
-	
-	@Autowired
-	private PartNoDAO partNoDAO;
-	
-	@Autowired
-	private ProductDAO productDAO;
-	
-	@Autowired
-	private ReasonDAO reasonDAO;
-	
-	@Autowired
-	private StockHistoryDAO stockHistoryDAO;
-	
-	@Autowired
-	private StockTypeDAO stockTypeDAO;
 	
 	@GetMapping(value= {"/"/*,"/welcome"*/})
-	
 	public String welcomePage(Model model) {
 		model.addAttribute("title", "In House Inventory System");
 		return "index";
@@ -122,11 +88,11 @@ public class MainController {
         return "adminPage";
     }
  
-	@GetMapping(value = "/login")
-    public String loginPage(Model model) {
- 
-        return "loginPage";
-    }
+//	@GetMapping(value = "/login")
+//    public String loginPage(Model model) {
+// 
+//        return "loginPage";
+//    }
 	
 	@GetMapping(value = "/login2")
     public String login2Page(Model model) {

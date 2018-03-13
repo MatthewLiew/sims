@@ -2,11 +2,14 @@ package com.sbinventory.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.sbinventory.dao.AppRoleDAO;
@@ -55,11 +58,13 @@ public class UserController {
 	/**************** INFORMATION PORTAL ***********************/
 	@GetMapping(value= "/useraccount")
 	public String getUserAccount(Model model) {
+		
 		List<UserAccount> useraccs=userAccountDAO.getAllUserAccount();
 		List<AppRole> approles = appRoleDAO.getAllRoleNames();
 		List<Organization> orgs= organizationDAO.getAllOrganization();
 		List<Dept> depts= deptDAO.getAllDept();
 		List<SubDept> subdepts = subDeptDAO.getAllSubDept();
+		
 		model.addAttribute("useraccs",useraccs);
 		model.addAttribute("approles",approles);
         model.addAttribute("orgs",orgs);
@@ -71,51 +76,43 @@ public class UserController {
 	
 	/**************** USER ACCOUNT ACTION ***********************/
 	@GetMapping(value= "/editUser")
-	public String getEditUser(@RequestParam int userid,Model model ) {
+	public String getEditUser(@RequestParam int userid, 
+							  Model model, 
+							  HttpServletRequest request) {
+		
+		String referer = request.getHeader("Referer");
 		UserAccount useracc= userAccountDAO.getUserAccount(userid);
 		UserRole userrole=userRoleDAO.getUserRole(userid);
 		List<AppRole> approles = appRoleDAO.getAllRoleNames();
 		List<Organization> orgs= organizationDAO.getAllOrganization();
 		List<Dept> depts= deptDAO.getAllDept(useracc.getOrgid());
 		List<SubDept> subdepts = subDeptDAO.getAllSubDept(useracc.getDeptid());
+		
         model.addAttribute("useracc",useracc);
         model.addAttribute("userrole",userrole);
         model.addAttribute("approles",approles);
         model.addAttribute("orgs",orgs);
         model.addAttribute("depts",depts);
         model.addAttribute("subdepts",subdepts);
-        model.addAttribute("errorString",null);
-        
-		return "userAccount/editUser";
-	}
-	
-	@PostMapping(value= "/editUser2")
-	public String postEditUser2(@RequestParam int userid,Model model ) {
-		UserAccount useracc= userAccountDAO.getUserAccount(userid);
-		UserRole userrole=userRoleDAO.getUserRole(userid);
-		List<AppRole> approles = appRoleDAO.getAllRoleNames();
-		List<Organization> orgs= organizationDAO.getAllOrganization();
-		List<Dept> depts= deptDAO.getAllDept(useracc.getOrgid());
-		List<SubDept> subdepts = subDeptDAO.getAllSubDept(useracc.getDeptid());
-        model.addAttribute("useracc",useracc);
-        model.addAttribute("userrole",userrole);
-        model.addAttribute("approles",approles);
-        model.addAttribute("orgs",orgs);
-        model.addAttribute("depts",depts);
-        model.addAttribute("subdepts",subdepts);
+        model.addAttribute("referer", referer);
         model.addAttribute("errorString",null);
         
 		return "userAccount/editUser";
 	}
 	
 	@PostMapping(value= "/editUser")
-	public String getEditUser(@RequestParam int userid, @RequestParam String username, 
-			@RequestParam int userrole, @RequestParam int orgid, @RequestParam int deptid, @RequestParam int subdeptid, 
-			Model model ) {
-	
+	public String postEditUser(@RequestParam int userid, 
+							   @RequestParam String username, 
+							   @RequestParam int userrole, 
+							   @RequestParam int orgid, 
+							   @RequestParam int deptid, 
+							   @RequestParam int subdeptid, 
+							   Model model, 
+							   @RequestParam String referer ) {
+
 //			String errorString=userAccountDAO.updateUserAccount(userid, username);
 //			if(errorString==null) {
-		return "redirect:/useraccount";
+		return "redirect:"+referer;
 //			} else {
 //				UserAccount useracc= userAccountDAO.getUserAccount(userid);
 //				model.addAttribute("useracc",useracc);
@@ -126,35 +123,54 @@ public class UserController {
 	}
 	
 	@GetMapping(value= "/deleteUser")
-	public String getDeleteUser(@RequestParam int userid,Model model ) {
+	public String getDeleteUser(@RequestParam int userid, 
+								Model model, 
+								HttpServletRequest request) {
+		
+		String referer = request.getHeader("Referer");
 		UserAccount useracc= userAccountDAO.getUserAccount(userid);
 		System.out.println(useracc.getUsername());
 		model.addAttribute("useracc",useracc);
+		model.addAttribute("referer", referer);
 //			System.out.println(userid);
 		return "userAccount/deleteUser";
 	}
 	
 	@PostMapping(value= "/deleteUser")
-	public String postDeleteUser(@RequestParam int userid,Model model ) {
+	public String postDeleteUser(@RequestParam int userid,
+								 Model model, 
+								 @RequestParam String referer) {
 //			userRoleDAO.deleteUserRole(userid);
 		//userAccountDAO.deleteUserAccount(userid);
 		System.out.println(userid);
-		return "redirect:/useraccount";
+		return "redirect:"+referer;
 	}
 	
 	@GetMapping(value= "/createUser")
-	public String getCreateUser(Model model ) {
+	public String getCreateUser(Model model, 
+								HttpServletRequest request ) {
+		
+		String referer = request.getHeader("Referer");
 		List<Organization> orgs= organizationDAO.getAllOrganization();
 		List<AppRole> approles = appRoleDAO.getAllRoleNames();
 		model.addAttribute("errorString",null);
 		model.addAttribute("orgs",orgs);
 		model.addAttribute("approles",approles);
+		model.addAttribute("referer", referer);
+		
 		return "userAccount/createUser";
 	}
 	
 	@PostMapping(value= "/createUser")
-	public String postCreateUser(/*@RequestParam int usercode,*/ @RequestParam String username,@RequestParam String password,
-			@RequestParam int orgid, @RequestParam int deptid, @RequestParam int subdeptid, @RequestParam int userrole, Model model ) {
+	public String postCreateUser(/*@RequestParam int usercode,*/ 
+								 @RequestParam String username,
+								 @RequestParam String password,
+								 @RequestParam int orgid, 
+								 @RequestParam int deptid, 
+								 @RequestParam int subdeptid, 
+								 @RequestParam int userrole, 
+								 Model model, 
+								 @RequestParam String referer) {
 //			String errorString=userAccountDAO.createUserAccount(usercode, username, password, orgid, deptid, subdeptid);
 //			UserAccount user=userAccountDAO.getUserName(username);
 //
@@ -164,7 +180,7 @@ public class UserController {
 		System.out.println(/*"User: "+usercode+" */"UserName: "+username+" Pw: "+password
 				+" Org: "+orgid+" Dept: "+deptid+" Sub Dept:"+subdeptid);
 //			if(errorString==null) {
-			return "redirect:/useraccount";
+			return "redirect:"+referer;
 //			} else {
 //				model.addAttribute("errorString",errorString);
 //				return "userAccount/createUser";
@@ -175,14 +191,22 @@ public class UserController {
 	}
 	
 	@GetMapping(value= "/changePassword")
-	public String getChangePassword(@RequestParam int userid, Model model ) {
+	public String getChangePassword(@RequestParam int userid, 
+									Model model, 
+									HttpServletRequest request) {
+		String referer = request.getHeader("Referer");
 		model.addAttribute("userid",userid);
+		model.addAttribute("referer", referer);
 		return "userAccount/changePassword";
 	}
 	
 	@PostMapping(value= "/changePassword")
-	public String postChangePassword(@RequestParam int userid, @RequestParam String password, @RequestParam String repassword,Model model ) {
-		userAccountDAO.changeUserPassword(userid, password, repassword);
-		return "redirect:/useraccount";
+	public String postChangePassword(@RequestParam int userid, 
+									 @RequestParam String password, 
+									 @RequestParam String repassword,
+									 Model model, 
+									 @RequestParam String referer  ) {
+//		userAccountDAO.changeUserPassword(userid, password, repassword);
+		return "redirect:"+referer;
 	}
 }

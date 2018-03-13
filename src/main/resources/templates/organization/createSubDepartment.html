@@ -3,119 +3,64 @@
 	<head>
 		<meta charset="UTF-8">
     </head>
-   <body>
       	
-      	<p class="error" style="color: red;" th:text="${errorString}" ></p>
-	  	<input type="hidden" name="referer" th:value="${referer}" />
+   	<p class="error" style="color: red;" th:text="${errorString}" ></p>
+  	<input type="hidden" name="referer" th:value="${referer}" />
 	  	
-		<div class="form-group">
-            <div class="form-row">
-                <div class="col-md-3">
-                    <label for="OrganizationLabel">Organization</label>
-                </div>
-                <div class="col-md-6">                    
-                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
-                    <select class="form-control" name="orgid" onchange="department_select('CreateSubDepartment',this.value);" required>
-			            <option value="">Select Organization</option>
-			            <option th:each="list: ${orgs}" th:value="${list.orgid}" th:text="${list.orgname}"></option>
-			        </select>
-                </div>
+	<div class="form-group">
+        <div class="form-row">
+            <div class="col-md-3">
+                <label for="OrganizationLabel">Organization</label>
+            </div>
+            <div class="col-md-6">
+	            <select class="form-control" name="orgid" onchange="department_select('CreateSubDepartment',this.value);" required>
+		          	<option value="">Select Organization</option>
+		           	<option th:each="list: ${orgs}" th:value="${list.orgid}" th:text="${list.orgname}"></option>
+	       		</select>
             </div>
         </div>
+    </div>
 	    
-	    <div class="form-group">
-            <div class="form-row">
-                <div class="col-md-3">
-                    <label for="OrganizationLabel">Department</label>
-                </div>
-                <div class="col-md-6">                    
-                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
-                    <select class="form-control dept_select" name="subdeptid" required>
-			            <option value="">Select Department</option>
-<!-- 			            <option th:each="list: ${depts}" th:value="${list.deptid}" th:text="${list.deptname}"></option> -->
-			        </select>
-                </div>
+    <div class="form-group">
+        <div class="form-row">
+            <div class="col-md-3">
+                <label for="OrganizationLabel">Department</label>
+            </div>
+            <div class="col-md-6">
+	            <select class="form-control dept_select" name="subdeptid" required>
+	          		<option value="">Select Department</option>
+	       		</select>
             </div>
         </div>
+    </div>
             
-	 	<div class="form-group">
-            <div class="form-row">
-                <div class="col-md-3">
-                    <label for="SubDepartmentCodeLabel">Sub Department Code</label>
-                </div>
-                <div class="col-md-6">                    
-                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
-                    <input class="form-control subdeptcode" id="subdeptcode" name="subdeptcode" type="text" data-error="Please Enter Sub Department Code" aria-describedby="SubDepartmentCode" placeholder="Enter Sub Department Code" value="" onkeyup="subdeptCode('CreateSubDepartment');" required>
-                </div>
-                <div class="col-md-3">
-                	<span class="subdeptcode_status"></span>
-                    <span style="visibility:hidden;"class="subdeptcode_flag" th:text="true"></span>
-                </div>
+ 	<div class="form-group">
+        <div class="form-row">
+            <div class="col-md-3">
+                <label for="SubDepartmentCodeLabel">Sub Department Code</label>
+            </div>
+            <div class="col-md-6"> 
+            	<input class="form-control subdeptcode" id="subdeptcode" name="subdeptcode" type="text" data-error="Please Enter Sub Department Code" aria-describedby="SubDepartmentCode" placeholder="Enter Sub Department Code" value="" onkeyup="subdeptCode('CreateSubDepartment');" required>
+            </div>
+            <div class="col-md-3">
+            	<span class="subdeptcode_status"></span>
+                <span style="visibility:hidden;"class="subdeptcode_flag" th:text="true"></span>
             </div>
         </div>
+    </div>
         
-       	<div class="form-group">
-            <div class="form-row">
-                <div class="col-md-3">
-                    <label for="SubDepartmentNameLabel">Sub Department Name</label>
-                </div>
-                <div class="col-md-6">                    
-                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
-                    <input class="form-control subdeptname" id="subdeptname" name="subdeptname" type="text" data-error="Please Enter Sub Department Name" aria-describedby="SubDepartmentName" placeholder="Enter Sub Department Name" value="" onkeyup="subdeptName('CreateSubDepartment');" required>
-                </div>
-                <div class="col-md-3">
-                	<span class="subdeptname_status"></span>
-                    <span style="visibility:hidden;"class="subdeptname_flag" th:text="true"></span>
-                </div>
+   	<div class="form-group">
+        <div class="form-row">
+            <div class="col-md-3">
+                <label for="SubDepartmentNameLabel">Sub Department Name</label>
+            </div>
+            <div class="col-md-6">
+            	<input class="form-control subdeptname" id="subdeptname" name="subdeptname" type="text" data-error="Please Enter Sub Department Name" aria-describedby="SubDepartmentName" placeholder="Enter Sub Department Name" value="" onkeyup="subdeptName('CreateSubDepartment');" required>
+            </div>
+            <div class="col-md-3">
+            	<span class="subdeptname_status"></span>
+                <span style="visibility:hidden;"class="subdeptname_flag" th:text="true"></span>
             </div>
         </div>
-        
-
-<!--       <form id="create_subdept" method="POST" th:action="@{createSubDepartment}"  onsubmit="return subdeptForm('create_subdept');"> -->
-<!--       <p class="error" style="color: red;" th:text="${errorString}" ></p> -->
-<!--       <input type="hidden" class="subdeptid" name="subdeptid" th:value="${subdeptid}" /> -->
-<!--          <table th:border="0"> -->
-         
-<!--          	<tr> -->
-<!--                <td>Organization</td> -->
-<!--                <td> -->
-<!--                <select name="orgid" onchange="department_select('create_subdept',this.value);"> -->
-<!--                	   <option value="0">Select Organization</option> -->
-<!-- 	               <option th:each="list: ${orgs}" th:value="${list.orgid}" th:text="${list.orgname}"></option> -->
-<!--                </select></td> -->
-<!-- 			   <td class="org_status"></td> -->
-<!--             </tr> -->
-<!--          	<tr> -->
-<!--                <td>Department</td> -->
-<!--                <td> -->
-<!--                <select name="deptid" class="dept_select" onchange="subdepartment_select('create_subdept',this.value);"> -->
-<!--                	   <option value="0">Select Department</option> -->
-<!-- 	               <option th:each="list: ${depts}" th:value="${list.deptid}" th:text="${list.deptname}"></option> -->
-<!--                </select></td> -->
-<!-- 			   <td class="dept_status"></td> -->
-<!--             </tr> -->
-<!--             <tr> -->
-<!--                <td>Sub Department Code</td> -->
-               
-<!--                <td><input type="text" class="subdeptcode" name="subdeptcode" th:value="${subdeptcode}" onkeyup="subdeptCode('create_subdept');"/></td> -->
-<!-- 			   <td class="subdeptcode_status"></td> -->
-<!-- 			   <td style="visibility:hidden;" class="subdeptcode_flag" th:text="true"></td> -->
-<!--             </tr> -->
-<!--             <tr> -->
-<!--                <td>Sub Department Name</td> -->
-              
-<!--                <td><input type="text" class="subdeptname" name="subdeptname" th:value="${subdeptname}" onkeyup="subdeptName('create_subdept');" /></td> -->
-<!-- 			   <td class="subdeptname_status"></td> -->
-<!-- 			   <td style="visibility:hidden;" class="subdeptname_flag" th:text="true"></td> -->
-<!--             </tr>        -->
-<!--             <tr> -->
-<!--                <td colspan="2">                    -->
-<!--                 <input type="submit" value="Submit" /> -->
-<!--                </td> -->
-<!--             </tr>   -->
-<!--          </table> -->
-<!--       </form> -->
-
-<!--      <script src="../js/validation.js"></script> -->
-<!--    </body> -->
+    </div>
 </html>

@@ -1,44 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
    <head>
-      <meta charset="UTF-8">
-      <title>Edit Brand</title>
+		<meta charset="UTF-8">
+    </head>
+    
+	<p class="error" style="color: red;" th:text="${errorString}" ></p>
+	<input type="hidden" class="brandid" name="brandid" th:value="${brand.brandid}" />
+ 	<input type="hidden" name="referer" th:value="${referer}" />
       
-<!--       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
-      
-   </head>
-   <body>
-      
-      <!-- Include _menu.html -->
-      <th:block th:include="/_menu"></th:block>
-      <h3>Edit Brand</h3>
-
-	 
-      <form id="edit_brand" method="POST" th:action="@{editBrand}"  onsubmit="return brandForm('edit_brand');">
-      <p class="error" style="color: red;" th:text="${errorString}" ></p>
-      <input type="hidden" class="brandid" name="brandid" th:value="${brand.brandid}" />
-         <table th:border="0">
-            <tr>
-               <td>Brand Code</td>
-               
-               <td><input type="text" class="brandcode" name="brandcode" th:value="${brand.brandcode}" onkeyup="brandCode('edit_brand');"/></td>
-			   <td class="brandcode_status"></td>
-			   <td style="visibility:hidden;" class="brandcode_flag" th:text="true"></td>
-            </tr>
-            <tr>
-               <td>Brand Name</td>
-               <td><input type="text" class="brandname" name="brandname" th:value="${brand.brandname}" onkeyup="brandName('edit_brand');"/></td>
-			   <td class="brandname_status"></td>
-			   <td style="visibility:hidden;" class="brandname_flag" th:text="true"></td>
-            </tr>
-            <tr>
-               <td colspan="2">                   
-                <input type="submit" value="Submit" />
-               </td>
-            </tr>  
-         </table>
-      </form>
-
-<!--      <script src="../js/validation.js"></script> -->
-   </body>
+  	<div class="form-group">
+        <div class="form-row">
+            <div class="col-md-3">
+                <label for="BrandCodeLabel">Brand Code</label>
+            </div>
+            <div class="col-md-6">
+            	<input class="form-control brandcode" id="brandcode" name="brandcode" type="text" data-error="Please Enter Brand Code" aria-describedby="BrandCode" placeholder="Enter Brand Code" th:value="${brand.brandcode}" onkeyup="brandCode('EditBrand');" required>
+            </div>
+            <div class="col-md-3">
+            	<span class="brandcode_status"></span>
+                <span style="visibility:hidden;"class="brandcode_flag" th:text="true"></span>
+            </div>
+        </div>
+    </div>
+        
+    <div class="form-group">
+        <div class="form-row">
+            <div class="col-md-3">
+                <label for="HardwareTypeLabel">Brand Name</label>
+            </div>
+            <div class="col-md-6">
+            	<input class="form-control brandname" id="brandname" name="brandname" type="text" data-error="Please Enter Brand Name" aria-describedby="BrandName" placeholder="Enter Brand Name" th:value="${brand.brandname}" onkeyup="brandName('EditBrand');" required>
+            </div>
+            <div class="col-md-3">
+            	<span class="brandname_status"></span>
+                <span style="visibility:hidden;"class="brandname_flag" th:text="true"></span>
+            </div>
+        </div>
+    </div>
 </html>

@@ -235,8 +235,8 @@ public class ProductController {
 	}
 	
 	/**************** PART NO ACTION ***********************/
-	@GetMapping(value= "/createPartNos")
-	public String getCreatePartNos(Model model, HttpServletRequest request) {
+	@GetMapping(value= "/createPartNo")
+	public String getCreatePartNo(Model model, HttpServletRequest request) {
 		
 		String referer = request.getHeader("Referer");
 		model.addAttribute("referer", referer);
@@ -246,10 +246,10 @@ public class ProductController {
 		model.addAttribute("errorString",null);
 		model.addAttribute("products",products);
 		
-		return "product/createPartNos";
+		return "product/createPartNo";
 	}
 	
-	@PostMapping(value= "/createPartNos")
+	@PostMapping(value= "/createPartNo")
 	public String postCreatePartNos(@RequestParam String[] serialno,
 			@RequestParam String[] modelno, @RequestParam String[] upccode, int[] productid, 
 			@RequestParam String customername, @RequestParam String invoiceno, Model model, @RequestParam String referer) {
@@ -271,18 +271,18 @@ public class ProductController {
 			return "redirect:"+referer;
 //			} else {
 //				model.addAttribute("errorString",errorString);
-//				return "product/createPartNos";
+//				return "product/createPartNo";
 //			}
 	}
 	
-	@GetMapping(value= "/deletePartNos")
-	public String getDeletePartNos(@RequestParam int partnoid, Model model ) {
-		partNoDAO.deletePartNo(partnoid);
-		
-		return "redirect:/stock";
-	}
+//	@GetMapping(value= "/deletePartNos")
+//	public String getDeletePartNos(@RequestParam int partnoid, Model model ) {
+//		partNoDAO.deletePartNo(partnoid);
+//		
+//		return "redirect:/stock";
+//	}
 	
-	@GetMapping(value= "/editPartNos")
+	@GetMapping(value= "/editPartNo")
 	public String getEditPartNos(/*@RequestParam*/ int partnoid, Model model, HttpServletRequest request) {
 		
 		String referer = request.getHeader("Referer");
@@ -294,10 +294,10 @@ public class ProductController {
 		model.addAttribute("partno",partno);
 		model.addAttribute("products",products);
 		    
-		return "product/editPartNos";
+		return "product/editPartNo";
 	}
 	
-	@PostMapping(value= "/editPartNos")
+	@PostMapping(value= "/editPartNo")
 	public String postEditPartNos(/*@RequestParam*/ int partnoid,
 			/*@RequestParam*/ String serialno, /*@RequestParam*/ String modelno, /*@RequestParam*/ String upccode/*, @RequestParam int productid*/, 
 			/*@RequestParam*/ String customername, /*@RequestParam*/ String invoiceno, Model model, /*@RequestParam*/ String referer) {
@@ -307,62 +307,61 @@ public class ProductController {
 			return "redirect:"+referer; 
 //			} else {
 //				model.addAttribute("errorString",errorString);
-//				return "product/editPartNos";
-//			}
-	}
-	
-	
-	@GetMapping(value= "/deleteStock")
-	public String getDeleteStock(@RequestParam int productid, Model model ) {
-		System.out.println(productid);
-//			productDAO.deleteProduct(productid);
-		
-		return "redirect:/stockmanagement";
-	}
-	
-	@GetMapping(value= "/createPartNo")
-	public String createPartNoGET(Model model ) {
-		model.addAttribute("errorString",null);
-			
-		return "product/createPartNo";
-	}
-	
-	
-	@PostMapping(value= "/createPartNo")
-	public String createPartNoPOST(@RequestParam String serialno,
-			@RequestParam String modelno, @RequestParam String upccode, int productid,
-			@RequestParam String customername, @RequestParam String invoiceno, Model model ) {
-		String errorString= partNoDAO.createPartNo(serialno, modelno, upccode, productid, customername, invoiceno);
-		if(errorString==null) {
-			return "redirect:/product";
-		} else {
-			model.addAttribute("errorString",errorString);
-			return "product/createPartNo";
-		}
-	}
-	
-	@GetMapping(value= "/editPartNo")
-	public String getEditPartNo(@RequestParam int partnoid, Model model ) {
-		
-		PartNo partno = partNoDAO.getPartNo(partnoid);
-		model.addAttribute("partno",partno);
-		    
-		return "product/editPartNo";
-	}
-	
-	
-	@PostMapping(value= "/editPartNo")
-	public String postEditPartNo(@RequestParam int partnoid,
-			@RequestParam String serialno, @RequestParam String modelno, @RequestParam String upccode, Model model ) {
-
-//			String errorString=partNoDAO.updatePartNo(partnoid, serialno, modelno, upccode);
-//			if(errorString==null) {
-			return "redirect:/product"; 
-//			} else {
-//				model.addAttribute("errorString",errorString);
 //				return "product/editPartNo";
 //			}
 	}
+	
+	
+//	@GetMapping(value= "/deleteStock")
+//	public String getDeleteStock(@RequestParam int productid, Model model ) {
+//		System.out.println(productid);
+////			productDAO.deleteProduct(productid);
+//		
+//		return "redirect:/stockmanagement";
+//	}
+	
+//	@GetMapping(value= "/createPartNo")
+//	public String createPartNoGET(Model model ) {
+//		model.addAttribute("errorString",null);
+//			
+//		return "product/createPartNo";
+//	}
+//	
+//	@PostMapping(value= "/createPartNo")
+//	public String createPartNoPOST(@RequestParam String serialno,
+//			@RequestParam String modelno, @RequestParam String upccode, int productid,
+//			@RequestParam String customername, @RequestParam String invoiceno, Model model ) {
+//		String errorString= partNoDAO.createPartNo(serialno, modelno, upccode, productid, customername, invoiceno);
+//		if(errorString==null) {
+//			return "redirect:/product";
+//		} else {
+//			model.addAttribute("errorString",errorString);
+//			return "product/createPartNo";
+//		}
+//	}
+	
+//	@GetMapping(value= "/editPartNo")
+//	public String getEditPartNo(@RequestParam int partnoid, Model model ) {
+//		
+//		PartNo partno = partNoDAO.getPartNo(partnoid);
+//		model.addAttribute("partno",partno);
+//		    
+//		return "product/editPartNo";
+//	}
+//	
+//	
+//	@PostMapping(value= "/editPartNo")
+//	public String postEditPartNo(@RequestParam int partnoid,
+//			@RequestParam String serialno, @RequestParam String modelno, @RequestParam String upccode, Model model ) {
+//
+////			String errorString=partNoDAO.updatePartNo(partnoid, serialno, modelno, upccode);
+////			if(errorString==null) {
+//			return "redirect:/product"; 
+////			} else {
+////				model.addAttribute("errorString",errorString);
+////				return "product/editPartNo";
+////			}
+//	}
 	
 	@GetMapping(value= "/deletePartNo")
 	public String getDeletePartNo(@RequestParam int partnoid, Model model, HttpServletRequest request ) {

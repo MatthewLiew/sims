@@ -3,68 +3,37 @@
 	<head>
 		<meta charset="UTF-8">
    	</head>
-		<p class="error" style="color: red;" th:text="${errorString}" ></p>
-		<input type="hidden" name="reasonid" th:value="${reason.reasonid}" />
-		<input type="hidden" name="referer" th:value="${referer}" />
+		
+	<p class="error" style="color: red;" th:text="${errorString}" ></p>
+	<input type="hidden" name="reasonid" th:value="${reason.reasonid}" />
+	<input type="hidden" name="referer" th:value="${referer}" />
       
-		<div class="form-group">
-            <div class="form-row">
-                <div class="col-md-3">
-                    <label for="StockTypeLabel">Stock Type</label>
-                </div>
-                <div class="col-md-6">                    
-                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
-                    <select name="stocktypeid" required>
-			            <option value="">Select Stock Type</option>
-			            <option th:each="list: ${stocktypes}" th:selected="${list.isStockType(reason.stocktypeid)}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option>
-			        </select>
-                </div>
+	<div class="form-group">
+        <div class="form-row">
+            <div class="col-md-3">
+                <label for="StockTypeLabel">Stock Type</label>
+            </div>
+            <div class="col-md-6">
+	            <select class="form-control" name="stocktypeid" required>
+		           	<option value="">Select Stock Type</option>
+		          	<option th:each="list: ${stocktypes}" th:selected="${list.isStockType(reason.stocktypeid)}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option>
+	       		</select>
             </div>
         </div>
-        
-	 	<div class="form-group">
-            <div class="form-row">
-                <div class="col-md-3">
-                    <label for="ReasonLabel">Reason</label>
-                </div>
-                <div class="col-md-6">                    
-                    <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
-                    <input class="form-control reason" id="reason" name="reason" type="text" data-error="Please Ener Reason" aria-describedby="Reason" placeholder="Enter Reason" th:value="${reason.reason}" onkeyup="checkreason('EditReason');" required>
-                </div>
-                <div class="col-md-3">
-                	<span class="reason_status"></span>
-                    <span style="visibility:hidden;"class="reason_flag" th:text="true"></span>
-                </div>
+    </div>
+       
+ 	<div class="form-group">
+        <div class="form-row">
+            <div class="col-md-3">
+                <label for="ReasonLabel">Reason</label>
+            </div>
+            <div class="col-md-6">
+            	<input class="form-control reason" id="reason" name="reason" type="text" data-error="Please Ener Reason" aria-describedby="Reason" placeholder="Enter Reason" th:value="${reason.reason}" onkeyup="checkreason('EditReason');" required>
+            </div>
+            <div class="col-md-3">
+            	<span class="reason_status"></span>
+                <span style="visibility:hidden;"class="reason_flag" th:text="true"></span>
             </div>
         </div>
-        
-<!--       <form id="edit_reason" method="POST" th:action="@{editReason}"  onsubmit="return reasonForm('edit_reason');"> -->
-<!--       <p class="error" style="color: red;" th:text="${errorString}" ></p> -->
-<!--       <input type="hidden" class="reasonid" name="reasonid" th:value="${reason.reasonid}" /> -->
-<!--          <table th:border="0"> -->
-<!--          	<tr> -->
-<!--                <td>StockType</td> -->
-<!--                <td> -->
-<!--                <select name="stocktypeid"> -->
-<!--                	   <option value="0">Select Stock Type</option> -->
-<!-- 	               <option th:each="list: ${stocktypes}" th:selected="${list.isStockType(reason.stocktypeid)}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option> -->
-<!--                </select></td> -->
-<!-- <!-- 			   <td class="org_status"></td> --> 
-<!--             </tr> -->
-<!--             <tr> -->
-<!--                <td>Reason</td> -->
-<!--                <td><input type="text" class="reason" name="reason" th:value="${reason.reason}" onkeyup="checkreason('edit_reason');"/></td> -->
-<!-- 			   <td class="reason_status"></td> -->
-<!-- 			   <td style="visibility:hidden;" class="reason_flag" th:text="true"></td> -->
-<!--             </tr> -->
-<!--             <tr> -->
-<!--                <td colspan="2">                    -->
-<!--                 <input type="submit" value="Submit" /> -->
-<!--                </td> -->
-<!--             </tr>   -->
-<!--          </table> -->
-<!--       </form> -->
-
-<!--      <script src="../js/validation.js"></script> -->
-<!--    </body> -->
+    </div>
 </html>

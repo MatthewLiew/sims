@@ -1,56 +1,96 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-   <head>
-      <meta charset="UTF-8">
-      <title>Create Part No</title>
-      
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-      
-   </head>
-   <body>
-      
-      <!-- Include _menu.html -->
-      <th:block th:include="/_menu"></th:block>
-      <h3>Create Part No</h3>
+	<head>
+		<meta charset="UTF-8">
+	</head>
+	
+	<p class="error" style="color: red;" th:text="${errorString}" ></p>
+  	<input type="hidden" name="referer" th:value="${referer}" />
+  	
+   	<div class="form">
+		<div class="form-group">
+        	<div class="form-row">
+            	<div class="col-md-3">
+                	<label for="ProductLabel">Product</label>
+               	</div>
+               	<div class="col-md-6">
+               		<select class="form-control" name="productid" required>
+			            <option value="">Select Product</option>
+			            <option th:each="list: ${products}" th:value="${list.productid}" th:text="${list.productname}"></option>
+		        	</select>
+               	</div>
+       		</div>
+       	</div>
 
-	 
-      <form id="create_partno" method="POST" th:action="@{createPartNo}"  onsubmit="return partnoForm('create_partno');">
-      <p class="error" style="color: red;" th:text="${errorString}" ></p>
-      <input type="hidden" class="partnoid" name="partnoid" th:value="${partnoid}" />
-         <table th:border="0">
-<!--             <tr> -->
-<!--                <td>Part No Code</td> -->
-<!--                <td><input type="text" class="partnocode" name="partnocode" th:value="${partnocode}" onkeyup="partnoCode('create_partno');"/></td> -->
-<!-- 			   <td class="partnocode_status"></td> -->
-<!-- 			   <td style="visibility:hidden;" class="partnocode_flag" th:text="true"></td> -->
-<!--             </tr> -->
-			<tr>
-               <td>Serial No</td>
-               <td><input type="text" class="serialno" name="serialno" th:value="${serialno}" onkeyup="partnoSerialNo('create_partno');"/></td>
-			   <td class="serialno_status"></td>
-			   <td style="visibility:hidden;" class="serialno_flag" th:text="true"></td>
-            </tr>
-            <tr>
-               <td>Model No</td>
-               <td><input type="text" class="modelno" name="modelno" th:value="${modelno}" onkeyup="partnoModelNo('create_partno');"/></td>
-			   <td class="modelno_status"></td>
-			   <td style="visibility:hidden;" class="modelno_flag" th:text="true"></td>
-            </tr>
-            <tr>
-               <td>UPC Code</td>
-<!--                onkeyup="partnoUpcCode('create_partno');" -->
-               <td><input type="text" class="upccode" name="upccode" th:value="${upccode}" /></td>
-			   <td class="upccode_status"></td>
-			   <td style="visibility:hidden;" class="upccode_flag" th:text="true"></td>
-            </tr>
-            <tr>
-               <td colspan="2">                   
-                <input type="submit" value="Submit" />
-               </td>
-            </tr>  
-         </table>
-      </form>
-
-     <script src="../js/validation.js"></script>
-   </body>
+		<div class="form-group">
+        	<div class="form-row">
+            	<div class="col-md-3">
+                	<label for="SerialNoLabel">Serial No</label>
+           		</div>
+               	<div class="col-md-6">
+           			<textarea class="form-control serialno" id="serialno"name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space" required></textarea>
+               	</div>
+               	<div class="col-md-3">
+               	</div>
+           	</div>
+   		</div>
+       
+       	<div class="form-group">
+           	<div class="form-row">
+               	<div class="col-md-3">
+                   	<label for="ModelNoLabel">Model No</label>
+               	</div>
+               	<div class="col-md-6">
+               		<input class="form-control modelno" id="modelno" name="modelno" type="text" data-error="Please Enter Model No" aria-describedby="ModelNo" placeholder="Enter Model No" value="">
+               	</div>
+               	<div class="col-md-3">
+               	</div>
+           	</div>
+       	</div>
+       
+       	<div class="form-group">
+           	<div class="form-row">
+               	<div class="col-md-3">
+                   	<label for="UPCCodeLabel">UPC Code</label>
+               	</div>
+               	<div class="col-md-6">
+               		<input class="form-control upccode" id="upccode" name="upccode" type="text" data-error="Please Enter UPC Code" aria-describedby="UPCCode" placeholder="Enter UPC Code" value="">
+               	</div>
+               	<div class="col-md-3">
+               	</div>
+           	</div>
+       	</div>
+       
+       	<div class="form-group">
+           	<div class="form-row">
+               	<div class="col-md-3">
+                   	<label for="CustomerNameLabel">Customer Name</label>
+               	</div>
+               	<div class="col-md-6">
+               		<input class="form-control customername" id="customername" name="customername" type="text" data-error="Please Enter Customer Name" aria-describedby="CustomerName" placeholder="Enter Customer Name" value="">
+               	</div>
+               	<div class="col-md-3">
+               	</div>
+           	</div>
+       	</div>
+       
+       	<div class="form-group">
+           	<div class="form-row">
+               	<div class="col-md-3">
+                   	<label for="InvoiceNoLabel">Invoice No</label>
+               	</div>
+               	<div class="col-md-6">
+               		<input class="form-control invoiceno" id="invoiceno" name="invoiceno" type="text" data-error="Please Enter Invoice No" aria-describedby="InvoiceNo" placeholder="Enter Invoice No" value="">
+               	</div>
+               	<div class="col-md-3">
+               		<button type="button" class="btn btn-primary remove_partno">Remove</button>
+               	</div>
+           	</div>
+       	</div>
+       	<hr>
+    </div>
+   
+   	<div class="clone_form"></div>
+        
+    <button type="button" class="btn btn-primary" onclick="addmorepartno();">Add More</button>
 </html>

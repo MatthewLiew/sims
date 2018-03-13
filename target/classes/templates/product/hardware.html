@@ -18,7 +18,6 @@
       		<div class="card mb-3">
 	      		<div class="card-header">
 	      			<i class="fa fa-table"></i> Hardware &nbsp;&nbsp;
-<!-- 	      			<a th:href="@{createUser}"> -->
 	      			<a onclick="doAction('new', 0);">
 	      				<button class="btn btn-primary" data-toggle="modal" >Add Hardware</button>
 	      			</a>
@@ -41,14 +40,12 @@
 			                  	</tr>
 		                  	</tfoot>
 		                  	<tbody>
-		                		<tr  th:each="hw : ${hardwares}">
+		                		<tr th:each="hw : ${hardwares}">
 		                			<td th:text="${hw.hardwarecode}"></td>
 		             				<td th:text="${hw.hardwaretype}"></td>
 						            <td>
 						                <a th:onclick="'doAction(\'edit\',\''+ ${hw.hardwareid} + '\');'" ><button class="btn btn-primary" title="Edit Hardware"><i class="fa fa-edit" title="Edit Hardware"></i></button></a>
-					            
-<!-- 									<a th:href="@{deleteUser(userid=${user.userid})}"> -->
-						            	<a th:onclick="'doAction(\'delete\',\''+ ${hw.hardwareid} +'\');'"><button class="btn btn-primary" title="Delete Hardware"><i class="fa fa-trash" title="Delete Hardware"></i></button></a>
+						                <a th:onclick="'doAction(\'delete\',\''+ ${hw.hardwareid} +'\');'"><button class="btn btn-primary" title="Delete Hardware"><i class="fa fa-trash" title="Delete Hardware"></i></button></a>
 					            	</td>
 					            </tr>
 		              		</tbody>
@@ -137,31 +134,7 @@
 	                    </div>
 	                </div>
 	            </form>
-	        </div>
-	        
-<!-- 			<h3>Hardware</h3> -->
-			
-<!-- 			<table border="1" cellpadding="5" cellspacing="1" > -->
-			
-<!-- 		       <tr> -->
-<!-- 		          <th>Hardware Code</th> -->
-<!-- 		          <th>Hardware Type</th> -->
-<!-- 		          <th>Edit</th> -->
-<!-- 		          <th>Delete</th> -->
-<!-- 		       </tr> -->
-<!-- 		          <tr th:each="hw : ${hardwares}"> -->
-<!-- 		             <td th:text="${hw.hardwarecode}"></td> -->
-<!-- 		             <td th:text="${hw.hardwaretype}"></td> -->
-<!-- 		             <td> -->
-<!-- 		                <a th:href="@{/editHardware(hardwareid=${hw.hardwareid})}">Edit</a> -->
-<!-- 		             </td> -->
-<!-- 		             <td> -->
-<!-- 		                <a th:href="@{/deleteHardware(hardwareid=${hw.hardwareid})}">Delete</a> -->
-<!-- 		             </td> -->
-<!-- 		          </tr> -->
-<!-- 		    </table> -->
-<!-- 		    <a th:href="@{/createHardware}" >Create Hardware</a> -->
-		    
+	        </div>		    
 		</div><!-- end of .container-fluid-->
     </div><!-- end of .content-wrapper-->
 	<div class="footer_ref" th:include="/footer"></div>

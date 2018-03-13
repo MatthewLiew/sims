@@ -18,7 +18,6 @@
 		    <div class="card mb-3">
 	      		<div class="card-header">
 	      			<i class="fa fa-table"></i> Brand &nbsp;&nbsp;
-<!-- 	      			<a th:href="@{createUser}"> -->
 	      			<a onclick="doAction('new', 0);">
 	      				<button class="btn btn-primary" data-toggle="modal" >Add Brand</button>
 	      			</a>
@@ -46,9 +45,7 @@
 		             				<td th:text="${brand.brandname}"></td>
 						            <td>
 						                <a th:onclick="'doAction(\'edit\',\''+ ${brand.brandid} + '\');'" ><button class="btn btn-primary" title="Edit Hardware"><i class="fa fa-edit" title="Edit Hardware"></i></button></a>
-					            
-<!-- 									<a th:href="@{deleteUser(userid=${user.userid})}"> -->
-						            	<a th:onclick="'doAction(\'delete\',\''+ ${brand.brandid} +'\');'"><button class="btn btn-primary" title="Delete Hardware"><i class="fa fa-trash" title="Delete Hardware"></i></button></a>
+						                <a th:onclick="'doAction(\'delete\',\''+ ${brand.brandid} +'\');'"><button class="btn btn-primary" title="Delete Hardware"><i class="fa fa-trash" title="Delete Hardware"></i></button></a>
 					            	</td>
 					            </tr>
 		              		</tbody>
@@ -138,30 +135,6 @@
 	                </div>
 	            </form>
 	        </div>
-	        
-<!-- 		    <h3>Brand</h3> -->
-		    
-<!-- 		    <table border="1" cellpadding="5" cellspacing="1" > -->
-			
-<!-- 		       <tr> -->
-<!-- 		          <th>Brand Code</th> -->
-<!-- 		          <th>Brand Name</th> -->
-<!-- 		          <th>Edit</th> -->
-<!-- 		          <th>Delete</th> -->
-<!-- 		       </tr> -->
-<!-- 		          <tr th:each="brand : ${brands}"> -->
-<!-- 		             <td th:text="${brand.brandcode}"></td> -->
-<!-- 		             <td th:text="${brand.brandname}"></td> -->
-<!-- 		             <td> -->
-<!-- 		                <a th:href="@{/editBrand(brandid=${brand.brandid})}">Edit</a> -->
-<!-- 		             </td> -->
-<!-- 		             <td> -->
-<!-- 		                <a th:href="@{/deleteBrand(brandid=${brand.brandid})}">Delete</a> -->
-<!-- 		             </td> -->
-<!-- 		          </tr> -->
-<!-- 		    </table> -->
-<!-- 		    <a th:href="@{/createBrand}" >Create Brand</a> -->
-		    
 	  	</div><!-- end of .container-fluid-->
     </div><!-- end of .content-wrapper-->
 	<div class="footer_ref" th:include="/footer"></div>
