@@ -44,9 +44,9 @@
             </div>
             <div class="col-md-6"> 
             	<select class="form-control" name="orgid" onchange="department_select('EditUser',this.value);" required>
-             	<option value="">Select Organization</option>
-           <option th:each="list: ${orgs}" th:selected="${list.isSelected(useracc.orgid)}" th:value="${list.orgid}" th:text="${list.orgname}" ></option>
-             </select>
+	             	<option value="">Select Organization</option>
+	           		<option th:each="list: ${orgs}" th:selected="${list.isSelected(useracc.orgid)}" th:value="${list.orgid}" th:text="${list.orgname}" ></option>
+             	</select>
             </div>
         </div>
     </div>
@@ -58,9 +58,9 @@
             </div>
             <div class="col-md-6">  
             	<select class="form-control dept_select" name="deptid" onchange="subdepartment_select('EditUser', this.value);" required>
-          	<option value="">Select Department</option>
-          	<option th:each="list: ${depts}" th:selected="${list.isSelected(useracc.deptid)}" th:value="${list.deptid}" th:text="${list.deptname}" ></option>
-         	</select>
+		          	<option value="">Select Department</option>
+		          	<option th:each="list: ${depts}" th:selected="${list.isSelected(useracc.deptid)}" th:value="${list.deptid}" th:text="${list.deptname}" ></option>
+         		</select>
             </div>
         </div>
     </div>
@@ -72,9 +72,9 @@
             </div>
             <div class="col-md-6"> 
             	<select class="form-control subdept_select" name="subdeptid" required>
-       	<option value="">Select Sub Department</option>
-       	<option th:each="list: ${subdepts}" th:selected="${list.isSelected(useracc.subdeptid)}" th:value="${list.subdeptid}" th:text="${list.subdeptname}" ></option>
-          </select>
+			       	<option value="">Select Sub Department</option>
+			       	<option th:each="list: ${subdepts}" th:selected="${list.isSelected(useracc.subdeptid)}" th:value="${list.subdeptid}" th:text="${list.subdeptname}" ></option>
+          		</select>
             </div>
         </div>
     </div>

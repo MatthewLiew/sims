@@ -16,7 +16,7 @@
             <div class="col-md-6">
 	            <select class="form-control" name="productid" required>
 		            <option value="">Select Product</option>
-		            <option th:each="list: ${products}" th:value="${list.productid}" th:text="${list.productname}"></option>
+		            <option th:each="list: ${products}" th:selected="${list.isProduct(index)}" th:value="${list.productid}" th:text="${list.productname}"></option>
 	       		</select>
             </div>
         </div>

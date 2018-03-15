@@ -10,9 +10,9 @@
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		        <li class="breadcrumb-item">
-		          <a th:href="@{/}">Stock Management</a>
+		          <!-- <a th:href="''#"> -->Inventory<!-- </a> -->
 		        </li>
-		        <li class="breadcrumb-item active">Stock Movement</li>
+		        <li class="breadcrumb-item active">Stock Transaction Records</li>
 	      	</ol>
 	      	
 	      	<div class="card mb-3">
@@ -65,9 +65,9 @@
 							        <th>Reason</th>
 							        <th>Reason Details</th>
 							        <th>Approval</th>
-							        <th>Main Location</th>
-							        <th>Sub Location</th>
-<!-- 						          	<th>Action</th> -->
+							        <!-- <th>Main Location</th>
+							        <th>Sub Location</th> -->
+						          	<th>Action</th>
 	               			 	</tr>
 		              		</thead>
 		              		<tfoot>
@@ -82,9 +82,9 @@
 							        <th>Reason</th>
 							        <th>Reason Details</th>
 							        <th>Approval</th>
-							        <th>Main Location</th>
-							        <th>Sub Location</th>
-<!-- 						          	<th>Action</th> -->
+							        <!-- <th>Main Location</th>
+							        <th>Sub Location</th> -->
+						          	<th>Action</th>
 					          	</tr>
 				          	</tfoot>
 				          	<tbody>
@@ -97,17 +97,17 @@
 						             <td th:text="${sh.loguser}"></td>
 						             <td th:each="st : ${stocktypes}" th:if="${st.isStockType(sh.stocktypeid)}" th:text="${st.stocktype}"></td>
 						             <td th:each="r : ${reasons}" th:if="${r.isReason(sh.reasonid)}" th:text="${r.reason}"></td>
-						             <td th:text="${sh.reasondesc}"></td>
+						             <td th:text="${sh.remark}"></td>
 						             <td th:if="${sh.approval}=='pending'"><a th:href="@{/approval(stockhistoryid=${sh.stockhistoryid},approve='approved',productid=${sh.productid})}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/approval(stockhistoryid=${sh.stockhistoryid},approve='cancelled',productid=${sh.productid})}"><i class="fa fa-close" title="Not Approve"></i></a></td>
 						             <td th:unless="${sh.approval}=='pending'" th:text="(${sh.approval}=='approved') ? 'Approved' : 'Not Approve'"></td>
-						             <td th:each="m : ${mainlocs}" th:if="${m.isMainLocName(sh.mainlocid)}" th:text="${m.mainlocname}"></td>
-						             <td th:each="s : ${sublocs}" th:if="${s.isSubLocName(sh.sublocid)}" th:text="${s.sublocname}"></td>
-<!-- 						             <td> -->
+						             <!-- <td th:each="m : ${mainlocs}" th:if="${m.isMainLocName(sh.mainlocid)}" th:text="${m.mainlocname}"></td>
+						             <td th:each="s : ${sublocs}" th:if="${s.isSubLocName(sh.sublocid)}" th:text="${s.sublocname}"></td> -->
+						             <td>
 <!-- 						                <a th:href="@{editStockHistory(stockhistoryid=${sh.stockhistoryid})}"> -->
-<!-- 						                <a th:onclick="'doAction(\'edit\',\''+ ${sh.stockhistoryid} +'\');'"><button  title="Edit"><i class="fa fa-edit" title="Edit"></i></button></a> -->
+						                <a th:onclick="'doAction(\'edit\',\''+ ${sh.stockhistoryid} +'\');'"><button class="btn btn-primary" title="Edit Stock Transaction"><i class="fa fa-edit"></i></button></a>
 <!-- 						           		<a th:href="@{deleteStockHistory(stockhistoryid=${sh.stockhistoryid})}"> -->
-<!-- 						           		<a th:onclick="'doAction(\'delete\',\''+ ${sh.stockhistoryid} +'\');'"><button  title="Delete"><i class="fa fa-trash" title="Delete"></i></button></a> -->
-<!-- 						             </td> -->
+						           		<a th:onclick="'doAction(\'delete\',\''+ ${sh.stockhistoryid} +'\');'"><button class="btn btn-primary" title="Delete Stock Transaction"><i class="fa fa-trash"></i></button></a>
+						             </td>
 					             </tr>
 				          	</tbody>
 			          	</table>
@@ -244,14 +244,14 @@
             } else if (action == 'edit') {
             	console.log("change");
                 $('#EditStockHistory .modal-body').empty();
-                $('#EditStockHistory .modal-title').text("Edit Stock Movement");
+                $('#EditStockHistory .modal-title').text("Edit Stock Transaction");
                 $('#EditStockHistory .modal-body').load('editStockHistory?stockhistoryid=' + id, function () {
                     $('#EditStockHistory').modal({show: true});
                 });
             } else if (action == 'delete') {
                 $('#DeleteStockHistory .modal-body').empty();
-                $('#DeleteStockHistory .modal-title').text("Delete");
-                $('#DeleteStockHistory .modal-body').load('deleteProduct?productid=' + id, function () {
+                $('#DeleteStockHistory .modal-title').text("Delete Stock Transaction");
+                $('#DeleteStockHistory .modal-body').load('deleteStockHistory?stockhistoryid=' + id, function () {
                     $('#DeleteStockHistory').modal({show: true});
                 });
             }

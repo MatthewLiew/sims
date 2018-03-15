@@ -24,7 +24,9 @@ import com.sbinventory.dao.ProductDAO;
 import com.sbinventory.dao.ReasonDAO;
 import com.sbinventory.dao.StockHistoryDAO;
 import com.sbinventory.dao.StockTypeDAO;
+import com.sbinventory.dao.StorageDAO;
 import com.sbinventory.dao.SubLocDAO;
+import com.sbinventory.dao.TransferHistoryDAO;
 import com.sbinventory.model.Brand;
 import com.sbinventory.model.Hardware;
 import com.sbinventory.model.MainLoc;
@@ -33,12 +35,17 @@ import com.sbinventory.model.Product;
 import com.sbinventory.model.Reason;
 import com.sbinventory.model.StockHistory;
 import com.sbinventory.model.StockType;
+import com.sbinventory.model.Storage;
 import com.sbinventory.model.SubLoc;
+import com.sbinventory.model.TransferHistory;
 import com.sbinventory.utils.DateTime;
 import com.sbinventory.utils.StockQuantity;
 
 @Controller
 public class StockController {
+	
+	@Autowired
+	private StockQuantity stockquantity;
 	
 	@Autowired
 	private MainLocDAO mainLocDAO;
@@ -67,32 +74,17 @@ public class StockController {
 	@Autowired
 	private StockTypeDAO stockTypeDAO;
 	
-//	public void updateStockQuantity() {
-//		
-//		List<Product> products = productDAO.getAllProduct();
-//		for(Product p: products){
-//			
-//			int totalquantity=0;
-//			List<StockHistory> stockquantity = stockHistoryDAO.getStockQuantity(p.getProductid());
-//			for(StockHistory s: stockquantity) {
-//				if(s.getApproval().equalsIgnoreCase("approved")) {
-//					if(s.getStocktypeid()==1) {
-//						totalquantity+=s.getQuantity();
-//					} else {
-//						totalquantity-=s.getQuantity();
-//					}
-//				}
-//			}
-//			System.out.println(p.getProductname()+" Total: "+totalquantity);
-//			productDAO.updateQuantity(p.getProductid(), totalquantity);
-//		}
-//	}
+	@Autowired
+	private StorageDAO storageDAO;
 	
+	@Autowired
+	private TransferHistoryDAO transferHistoryDAO;
+		
 	/**************** INFORMATION PORTAL ***********************/
 	@GetMapping(value= "/stockmanagement")
 	public String getStockManagement(Model model) {
 		
-		StockQuantity.update(productDAO, stockHistoryDAO);
+		stockquantity.update();
 		
 		List<Product> products = productDAO.getAllProduct();
 		model.addAttribute("products", products);
@@ -233,6 +225,40 @@ public class StockController {
 		return "stock/settings";
 	}
 	
+	@GetMapping(value= "/storage")
+	public String getStorage(Model model) {
+		
+		stockquantity.update();
+
+		List<Storage> storages = storageDAO.getAllStorage();
+		model.addAttribute("storages", storages);
+		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		model.addAttribute("mainlocs", mainlocs);
+		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		model.addAttribute("sublocs", sublocs);
+		List<Product> products = productDAO.getAllProduct();
+		model.addAttribute("products", products);
+		
+		
+		return "stock/storage";
+	}
+	
+	@GetMapping(value= "/transferhistory")
+	public String getTransferHistory(Model model) {
+
+		List<TransferHistory> transferhistories = transferHistoryDAO.getAllTransferHistory();
+		model.addAttribute("transferhistories", transferhistories);
+		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		model.addAttribute("mainlocs", mainlocs);
+		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		model.addAttribute("sublocs", sublocs);
+		List<Product> products = productDAO.getAllProduct();
+		model.addAttribute("products", products);
+		
+		
+		return "stock/transferHistory";
+	}
+	
 	/**************** REASON ACTION ***********************/
 	@GetMapping(value= "/createReason")
 	public String getCreateReason(Model model, HttpServletRequest request) {
@@ -310,7 +336,7 @@ public class StockController {
 	
 	/**************** STOCK ACTION ***********************/
 	@GetMapping(value= "/stockIn")
-	public String getStockIn(@RequestParam int stocktypeid, Model model, HttpServletRequest request) {
+	public String getStockIn(@RequestParam(defaultValue="0") int productid, @RequestParam int stocktypeid, Model model, HttpServletRequest request) {
 		
 		String referer = request.getHeader("Referer");
 		model.addAttribute("referer", referer);
@@ -319,6 +345,8 @@ public class StockController {
 		List<Reason> reasons = reasonDAO.getReasonStockInAndOut(stocktypeid);
 		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
 		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		
+		model.addAttribute("index",productid);
 		model.addAttribute("products",products);
 		model.addAttribute("reasons",reasons);
 		model.addAttribute("errorString",null);
@@ -340,23 +368,6 @@ public class StockController {
 		
 		String logdatetime = DateTime.Now();
 		
-//			String historydate, historytime;
-		
-//		try {
-//			SimpleDateFormat  dateformatter = new SimpleDateFormat ("yyyy-MM-dd");
-//			date = dateformatter.format(dateformatter.parse(date));
-//		} catch (ParseException e) {
-//			e.printStackTrace();
-//		}
-//
-//		try {
-//			time=time.concat(":00");
-//			SimpleDateFormat  timeformatter = new SimpleDateFormat ("HH:mm:ss");
-//			time = timeformatter.format(timeformatter.parse(time));
-//		} catch (ParseException e) {
-//			e.printStackTrace();
-//		}
-		
 		
 			String errorString= stockHistoryDAO.createStockHistory(productid, mainlocid, sublocid, quantity, date, time, stocktypeid, reasonid, remark, logdatetime, null, "pending");
 		
@@ -370,7 +381,7 @@ public class StockController {
 	}
 	
 	@GetMapping(value= "/stockOut")
-	public String getStockOut(@RequestParam int stocktypeid, Model model, HttpServletRequest request) {
+	public String getStockOut(@RequestParam(defaultValue="0") int productid, @RequestParam int stocktypeid, Model model, HttpServletRequest request) {
 		
 		String referer = request.getHeader("Referer");
 		model.addAttribute("referer", referer);
@@ -380,6 +391,7 @@ public class StockController {
 		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
 		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
 		
+		model.addAttribute("index",productid);
 		model.addAttribute("products",products);
 		model.addAttribute("reasons",reasons);
 		model.addAttribute("errorString",null);
@@ -469,17 +481,24 @@ public class StockController {
 	}
 	
 	@GetMapping(value= "/editStockHistory")
-	public String getEditStockHistory(@RequestParam int stockhistoryid, Model model) {
+	public String getEditStockHistory(@RequestParam int stockhistoryid, Model model, HttpServletRequest request) {
+		
+		String referer = request.getHeader("Referer");
+		model.addAttribute("referer", referer);
 		
 		StockHistory stockhistory= stockHistoryDAO.getStockHistory(stockhistoryid);
 		List<Product> products = productDAO.getAllProduct();
 		List<Reason> reasons = reasonDAO.getAllReason();
 		List<StockType> stocktypes = stockTypeDAO.getAllStockType();
+		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
 		
 		model.addAttribute("products",products);
 		model.addAttribute("reasons",reasons);
 		model.addAttribute("stocktypes",stocktypes);
 		model.addAttribute("stockhistory",stockhistory);
+		model.addAttribute("mainlocs",mainlocs);
+		model.addAttribute("sublocs",sublocs);
 		model.addAttribute("errorString",null);
 		
 		return "stock/editStockHistory";
@@ -487,7 +506,8 @@ public class StockController {
 	
 	@PostMapping(value= "/editStockHistory")
 	public String postEditStockHistory(@RequestParam int stockhistoryid, @RequestParam int productid, @RequestParam int quantity,  @RequestParam int stocktypeid,
-			@RequestParam String date, @RequestParam String time, @RequestParam int reasonid, @RequestParam String reasondesc, Model model) {
+			@RequestParam String date, @RequestParam String time, @RequestParam int reasonid, @RequestParam String remark, @RequestParam int mainlocid,
+			@RequestParam int sublocid, Model model, @RequestParam String referer) {
 		
 //			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 //			ZoneId sg = ZoneId.of("Asia/Singapore");
@@ -511,9 +531,9 @@ public class StockController {
 			e.printStackTrace();
 		}
 		
-		String errorString= stockHistoryDAO.updateStockHistory(stockhistoryid, productid, quantity, date, time, stocktypeid, reasonid, reasondesc);
+		String errorString= stockHistoryDAO.updateStockHistory(stockhistoryid, productid, quantity, date, time, stocktypeid, reasonid, remark, mainlocid, sublocid);
 		if(errorString==null) {
-			return "redirect:/stockmanagement";
+			return "redirect:"+referer;
 		} else {
 			model.addAttribute("errorString",errorString);
 			return "stock/editStockHistory";
@@ -521,10 +541,140 @@ public class StockController {
 	}
 	
 	@GetMapping(value= "/deleteStockHistory")
-	public String getDeleteStockHistory(@RequestParam int stockhistoryid, Model model ) {
-			System.out.println(stockhistoryid);
-//			stockHistoryDAO.deleteStockHistory(stockhistoryid);
-				
-			return "redirect:/stockmanagement";
-		}
+	public String getDeleteStockHistory(@RequestParam int stockhistoryid, Model model, HttpServletRequest request) {
+		
+		String referer = request.getHeader("Referer");
+		model.addAttribute("referer", referer);
+		
+		StockHistory stockhistory = stockHistoryDAO.getStockHistory(stockhistoryid);
+		Product product = productDAO.getProduct(stockhistory.getProductid());
+		
+		model.addAttribute("stockhistory", stockhistory);		
+		model.addAttribute("product", product);	
+		
+		return "stock/deleteStockHistory";
+	}
+	
+	@PostMapping(value= "/deleteStockHistory")
+	public String postDeleteStockHistory(@RequestParam int stockhistoryid, Model model, @RequestParam String referer ) {
+		System.out.println(stockhistoryid);
+//			reasonDAO.deleteReason(reasonid);
+			
+		return "redirect:"+referer;
+	}
+	
+	/**************** TRANSFER ACTION ***********************/
+	@GetMapping(value= "/transferStock")
+	public String getTransferStock(Model model, HttpServletRequest request) {
+	
+		String referer = request.getHeader("Referer");
+		model.addAttribute("referer", referer);
+		
+		List<Product> products = productDAO.getAllProduct();
+		model.addAttribute("products", products);
+		
+//		List<Storage> storages = storageDAO.getAllStorage();
+//		model.addAttribute("storages", storages);
+		
+		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		model.addAttribute("mainlocs", mainlocs);
+		
+		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		model.addAttribute("sublocs", sublocs);
+		
+		model.addAttribute("errorString",null);
+			
+		return "stock/transferStock";
+	}
+	
+	@PostMapping(value= "/transferStock")
+	public String postTransferStock(@RequestParam int productid, 
+			@RequestParam int orimainlocid,
+			@RequestParam int orisublocid,
+			@RequestParam int desmainlocid,
+			@RequestParam int dessublocid,
+			@RequestParam int quantity,  
+			Model model,
+			@RequestParam String referer) {
+		
+//		System.out.println(productid+" "+orimainlocid+" "+orisublocid+" "+desmainlocid+" "+dessublocid+" "+quantity);
+		String errorString = transferHistoryDAO.createTransferHistory(null, DateTime.Now(), productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid);		
+//		
+//		if(errorString==null) {
+			return "redirect:"+referer;
+//			} else {
+//				model.addAttribute("errorString",errorString);
+//				return "stock/stockIn";
+//			}
+//		}
+	}
+	
+	@GetMapping(value= "/editTransferHistory")
+	public String getEditTransferHistory(@RequestParam int transferhistoryid, Model model, HttpServletRequest request) {
+	
+		String referer = request.getHeader("Referer");
+		model.addAttribute("referer", referer);
+		
+		TransferHistory transferhistory= transferHistoryDAO.getTransferHistory(transferhistoryid);
+		model.addAttribute("transferhistory", transferhistory);
+		
+		List<Product> products = productDAO.getAllProduct();
+		model.addAttribute("products", products);
+		
+		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		model.addAttribute("mainlocs", mainlocs);
+		
+		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		model.addAttribute("sublocs", sublocs);
+		
+		model.addAttribute("errorString",null);
+			
+		return "stock/editTransferHistory";
+	}
+	
+	@PostMapping(value= "/editTransferHistory")
+	public String postEditTransferHistory(@RequestParam int transferhistoryid,
+			@RequestParam int productid, 
+			@RequestParam int orimainlocid,
+			@RequestParam int orisublocid,
+			@RequestParam int desmainlocid,
+			@RequestParam int dessublocid,
+			@RequestParam int quantity,  
+			Model model,
+			@RequestParam String referer) {
+		
+//		System.out.println(productid+" "+orimainlocid+" "+orisublocid+" "+desmainlocid+" "+dessublocid+" "+quantity);
+//		String errorString = transferHistoryDAO.createTransferHistory(null, DateTime.Now(), productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid);		
+//		
+//		if(errorString==null) {
+			return "redirect:"+referer;
+//			} else {
+//				model.addAttribute("errorString",errorString);
+//				return "stock/editTransferHistory";
+//			}
+//		}
+	}
+	
+	@GetMapping(value= "/deleteTransferHistory")
+	public String getDeleteTransferHistory(@RequestParam int transferhistoryid, Model model, HttpServletRequest request) {
+		
+		String referer = request.getHeader("Referer");
+		model.addAttribute("referer", referer);
+		
+		TransferHistory transferhistory = transferHistoryDAO.getTransferHistory(transferhistoryid);
+		Product product = productDAO.getProduct(transferhistory.getProductid());
+		
+		model.addAttribute("transferhistory", transferhistory);		
+		model.addAttribute("product", product);	
+		
+		return "stock/deleteTransferHistory";
+	}
+	
+	@PostMapping(value= "/deleteTransferHistory")
+	public String postDeleteTransferHistory(@RequestParam int transferhistoryid, Model model, @RequestParam String referer ) {
+		System.out.println(transferhistoryid);
+//			reasonDAO.deleteReason(reasonid);
+			
+		return "redirect:"+referer;
+	}
 }

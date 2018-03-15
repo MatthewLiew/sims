@@ -16,7 +16,7 @@
            <div class="col-md-6">
 	           <select class="form-control" name="productid" required>
 		           <option value="">Select Product</option>
-		           <option th:each="list: ${products}" th:value="${list.productid}" th:text="${list.productname}"></option>
+		           <option th:each="list: ${products}" th:selected="${list.isProduct(index)}" th:value="${list.productid}" th:text="${list.productname}"></option>
 	      	   </select>
            </div>
        </div>
@@ -42,7 +42,7 @@
                 <label for="SubLocationLabel">Sub Location</label>
             </div>
             <div class="col-md-6">                    
-	            <select class="form-control subloc_select" name="sublocid">
+	            <select class="form-control subloc_select" name="sublocid" required>
 	            	<option value="">Select Sub Location</option>
 	        	</select>
             </div>

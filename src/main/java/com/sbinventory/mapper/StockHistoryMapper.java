@@ -24,7 +24,7 @@ public class StockHistoryMapper implements RowMapper<StockHistory>{
 		historytime = formatDateTime(historytime, "time");
 		int stocktypeid = rs.getInt("STOCK_TYPE_ID");
 		int reasonid = rs.getInt("REASON_ID");
-		String reasondesc = rs.getString("REASON_DESC");
+		String remark = rs.getString("REMARK");
 		String logdatetime = rs.getString("LOG_DATETIME");
 		logdatetime = formatDateTime(logdatetime, "datetime");
 		String loguser = rs.getString("LOG_USER");
@@ -33,7 +33,7 @@ public class StockHistoryMapper implements RowMapper<StockHistory>{
 		int sublocid = rs.getInt("SUB_LOC_ID");
 		
 		return new StockHistory(stockhistoryid, productid, quantity, historydate, historytime, stocktypeid, 
-				reasonid, reasondesc, logdatetime, loguser, approval, mainlocid, sublocid);
+				reasonid, remark, logdatetime, loguser, approval, mainlocid, sublocid);
 	}
 	// reformat time
 	public String formatDateTime(String datetime, String type){

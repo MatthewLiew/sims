@@ -52,6 +52,30 @@ function subloc_select(id, val) {
 	});
 }
 
+function id_subloc_select(id, val) {
+
+	var data={ mainlocid:val }
+	$.ajax({
+		type: "POST",
+		url: BASE_URL + "api/getSubLoc",
+		contentType: "application/json",
+		data: JSON.stringify (data),
+		dataType: 'json',
+		
+		success: function (response) {
+
+//			$("#"+id+" .dept_select").empty();
+//			$("#"+id+" .dept_select").append("<option value='0'>Select Department</option>");
+			$("."+id+" .subloc_select").empty();
+			$("."+id+" .subloc_select").append("<option value='0'>Select Sub Location</option>");
+			for(var i of response) {
+				$("."+id+" .subloc_select").append("<option value='"+i["sublocid"]+"'>"+i["sublocname"]+"</option>");
+			}
+
+		}
+	});
+}
+
 function reason_option(val) {
 
 	var data={ stocktypeid:val }

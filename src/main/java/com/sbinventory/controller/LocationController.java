@@ -150,11 +150,11 @@ public class LocationController {
 	}
 		
 	@PostMapping(value= "/createSubLoc")
-	public String postCreateSubLoc(@RequestParam int mainlocid, @RequestParam String sublocname, Model model ) {
+	public String postCreateSubLoc(@RequestParam int mainlocid, @RequestParam String sublocname, Model model, @RequestParam String referer ) {
 //			String errorString=subLocDAO.createSubLoc(sublocname, mainlocid);
 //			System.out.println(deptid+" "+subdeptcode+" "+subdeptname);
 //			if(errorString==null) {
-			return "redirect:/location";
+			return "redirect:"+referer;
 //			} else {
 //				model.addAttribute("errorString",errorString);
 //				return "location/createSubLoc";

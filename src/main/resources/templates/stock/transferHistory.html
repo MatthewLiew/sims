@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Storage</title>
+	</head>
+	
+	<div class="header_ref" th:include="/header"></div>
+	<div class="content-wrapper">
+    	<div class="container-fluid">
+	   		<!-- Breadcrumbs -->
+	    	<ol class="breadcrumb">
+		        <li class="breadcrumb-item">
+		          <!-- <a th:href="''#"> -->Transfer<!-- </a> -->
+		        </li>
+		        <li class="breadcrumb-item active">Transfer Records</li>
+	      	</ol>  
+		    
+	     	<div class="card mb-3">
+      			<div class="card-header">
+      				<i class="fa fa-table"></i> Transfer History &nbsp;&nbsp;
+      				<a onclick="doAction('transfer', 0);">
+      					<button class="btn btn-primary" data-toggle="modal" >Stock Transfer</button>
+	      			</a>
+	      		</div>	
+	      		<div class="card-body">
+		        	<div class="table-responsive">
+		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+		        			<thead>
+		        				<tr>
+		        					<th>Product</th>
+		        					<th>Quantity</th>
+						          	<th>From</th>
+						          	<th></th>
+						          	<th>To</th>
+						          	<th></th>
+						          	<th>Log User</th>
+						          	<th>Log Datetime</th>
+						          	<th>Action</th>
+	               			 	</tr>
+		              		</thead>
+		              		<tfoot>
+		                		<tr>
+		                			<th>Product</th>
+		        					<th>Quantity</th>
+						          	<th>From</th>
+						          	<th></th>
+						          	<th>To</th>
+						          	<th></th>
+						          	<th>Log User</th>
+						          	<th>Log Datetime</th>
+						          	<th>Action</th>
+					          	</tr>
+				          	</tfoot>
+				          	<tbody>
+				          		<tr th:each="trans : ${transferhistories}">
+				          			<td th:each="p : ${products}" th:if="${p.isProduct(trans.productid)}" th:text="${p.productname}"></td>
+				          			<td th:text="${trans.quantity}"></td>
+				          			<td th:each="m : ${mainlocs}" th:if="${m.isMainLocName(trans.orimainlocid)}" th:text="${m.mainlocname}"></td>
+				          			<td th:each="sub : ${sublocs}" th:if="${sub.isSubLocName(trans.orisublocid)}" th:text="${sub.sublocname}"></td>
+				          			<td th:if="${trans.orisublocid}==0" th:text="'-'"></td>
+				          			<td th:each="m : ${mainlocs}" th:if="${m.isMainLocName(trans.desmainlocid)}" th:text="${m.mainlocname}"></td>
+				          			<td th:each="sub : ${sublocs}" th:if="${sub.isSubLocName(trans.dessublocid)}" th:text="${sub.sublocname}"></td>
+				          			<td th:if="${trans.dessublocid}==0" th:text="'-'"></td>
+				          			<td th:text="${trans.loguser}"></td>
+				          			<td th:text="${trans.logdatetime}"></td>
+					             	<td>
+						                <a th:onclick="'doAction(\'edit\',\''+ ${trans.transferhistoryid} +'\');'"><button class="btn btn-primary" title="Edit Transfer Transaction"><i class="fa fa-edit"></i></button></a>
+						                <a th:onclick="'doAction(\'delete\',\''+ ${trans.transferhistoryid} +'\');'"><button class="btn btn-primary" title="Delete Transfer Transaction"><i class="fa fa-trash" ></i></button></a>
+				            	 	</td>
+				            	 </tr>
+				          	</tbody>
+			          	</table>
+		          	</div>
+	          	</div>
+	          	<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+          	</div>
+      		
+      		<div class="modal clickable" id="TransferStock" tabindex="-1" role="dialog" aria-labelledby="TransferStock" aria-hidden="true">
+		            <form method="POST" th:action="@{/transferStock}" id="TransferStock">
+		                <div class="vertical-alignment-helper">
+		                    <div class="modal-dialog  modal-lg vertical-align-center">
+		                        <!-- Modal content-->
+		                        <div class="modal-content">
+		                            <div class="modal-header">
+		                                <h4 class="modal-title">Stock Transfer</h4>
+		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                            </div>
+		                            
+		                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+		
+		                            <div class="modal-body">
+		
+		                            </div>
+		
+		                            <div class="modal-footer">
+		                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		                                <button type="submit" class="btn btn-primary">Save</button>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </form>
+		        </div>
+		        
+		        <div class="modal clickable" id="EditTransferHistory" tabindex="-1" role="dialog" aria-labelledby="EditTransferHistory" aria-hidden="true">
+		            <form method="POST" th:action="@{/editTransferHistory}" id="EditTransferHistory">
+		                <div class="vertical-alignment-helper">
+		                    <div class="modal-dialog  modal-lg vertical-align-center">
+		                        <!-- Modal content-->
+		                        <div class="modal-content">
+		                            <div class="modal-header">
+		                                <h4 class="modal-title">Edit Transfer History</h4>
+		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                            </div>
+		                            
+		                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+		
+		                            <div class="modal-body">
+		
+		                            </div>
+		
+		                            <div class="modal-footer">
+		                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		                                <button type="submit" class="btn btn-primary">Save</button>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </form>
+		        </div>
+				
+				<div class="modal clickable" id="DeleteTransferHistory" tabindex="-1" role="dialog" aria-labelledby="DeleteTransferHistory" aria-hidden="true">
+		            <form method="POST" th:action="@{/deleteTransferHistory}" id="DeleteTransferHistory">
+		                <div class="vertical-alignment-helper">
+		                    <div class="modal-dialog  modal-lg vertical-align-center">
+		                        <!-- Modal content-->
+		                        <div class="modal-content">
+		                            <div class="modal-header">
+		                                <h4 class="modal-title">Delete Transfer History</h4>
+		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                            </div>
+		                            
+		                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+		
+		                            <div class="modal-body">
+		
+		                            </div>
+		
+		                            <div class="modal-footer">
+		                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		                                <button type="submit" class="btn btn-primary">Delete</button>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </form>
+		        </div>		      
+	   	</div><!-- end of .container-fluid-->
+    </div><!-- end of .content-wrapper-->
+	<div class="footer_ref" th:include="/footer"></div>
+	
+	<script type="text/javascript">
+        function doAction(action, id) {
+            if (action == 'transfer') {
+                $('#TransferStock .modal-body').empty();
+                $('#TransferStock .modal-title').text("Stock Transfer");
+                $('#TransferStock .modal-body').load('transferStock', function () {
+                    $('#TransferStock').modal({show: true});
+                });
+            } else if (action == 'edit') {
+                $('#EditTransferHistory .modal-body').empty();
+                $('#EditTransferHistory .modal-title').text("Edit Transfer History");
+                $('#EditTransferHistory .modal-body').load('editTransferHistory?transferhistoryid=' + id, function () {
+                    $('#EditTransferHistory').modal({show: true});
+                });
+            } else if (action == 'change') {
+            	console.log("change");
+                $('#ChangePwd .modal-body').empty();
+                $('#ChangePwd .modal-title').text("Change Password");
+                $('#ChangePwd .modal-body').load('changePassword?userid=' + id, function () {
+                    $('#ChangePwd').modal({show: true});
+                });
+            } else if (action == 'delete') {
+                $('#DeleteTransferHistory .modal-body').empty();
+                $('#DeleteTransferHistory .modal-title').text("Delete Transfer History");
+                $('#DeleteTransferHistory .modal-body').load('deleteTransferHistory?transferhistoryid=' + id, function () {
+                    $('#DeleteTransferHistory').modal({show: true});
+                });
+            }
+        }
+    </script>
+</html>

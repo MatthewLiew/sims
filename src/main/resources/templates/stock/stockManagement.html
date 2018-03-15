@@ -10,17 +10,17 @@
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		        <li class="breadcrumb-item">
-		          <a th:href="@{/}">Stock Management</a>
+		          <!-- <a th:href="''#"> -->Inventory<!-- </a> -->
 		        </li>
-		        <li class="breadcrumb-item active">Stock Management</li>
+		        <li class="breadcrumb-item active">All Stock</li>
 	      	</ol>  
 		    
 	     	<div class="card mb-3">
       			<div class="card-header">
       				<i class="fa fa-table"></i> Stock Management &nbsp;&nbsp;
-      				<a onclick="doAction('new', 0);">
-      					<button class="btn btn-primary" data-toggle="modal" >Add Product</button>
-	      			</a>
+<!--       				<a onclick="doAction('new', 0);"> -->
+<!--       					<button class="btn btn-primary" data-toggle="modal" >Add Product</button> -->
+<!-- 	      			</a> -->
 	      		</div>	
 	      		<div class="card-body">
 		        	<div class="table-responsive">
@@ -59,8 +59,9 @@
 					             	<td th:text="${prod.quantity}"></td>
 					             	<td th:text="${prod.lbvalue}"></td>
 					             	<td>
-						                <a th:onclick="'doAction(\'edit\',\''+ ${prod.productid} +'\');'"><button class="btn btn-primary" title="Edit Product"><i class="fa fa-edit" title="Edit Product"></i></button></a>
-						                <a th:onclick="'doAction(\'delete\',\''+ ${prod.productid} +'\');'"><button class="btn btn-primary" title="Delete Product"><i class="fa fa-trash" title="Delete Product"></i></button></a>
+					             		<a th:onclick="'doAction(\'in\',\''+ ${prod.productid} +'\');'"><button class="btn btn-primary" title="Stock In"><i class="fa fa-plus-square"></i></button></a>
+						                <a th:onclick="'doAction(\'out\',\''+ ${prod.productid} +'\');'"><button class="btn btn-primary" title="Stock Out"><i class="fa fa-minus-square"></i></button></a>
+						                <a th:onclick="'doAction(\'sm\',\''+ 0 +'\');'"><button class="btn btn-primary" title="Add Serial No"><i class="fa fa-cog"></i></button></a>
 				            	 	</td>
 				            	 </tr>
 				          	</tbody>
@@ -70,14 +71,14 @@
 	          	<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
           	</div>
       		
-      		<div class="modal clickable" id="CreateProduct" tabindex="-1" role="dialog" aria-labelledby="CreateProduct" aria-hidden="true">
-		            <form method="POST" th:action="@{/createProduct}" id="CreateProduct">
+      		<div class="modal clickable" id="StockIn" tabindex="-1" role="dialog" aria-labelledby="StockIn" aria-hidden="true">
+		            <form method="POST" th:action="@{/stockIn}" id="StockIn">
 		                <div class="vertical-alignment-helper">
 		                    <div class="modal-dialog  modal-lg vertical-align-center">
 		                        <!-- Modal content-->
 		                        <div class="modal-content">
 		                            <div class="modal-header">
-		                                <h4 class="modal-title">Add Product</h4>
+		                                <h4 class="modal-title">Stock In</h4>
 		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
 		                            </div>
 		                            
@@ -97,14 +98,14 @@
 		            </form>
 		        </div>
 		        
-		        <div class="modal clickable" id="EditProduct" tabindex="-1" role="dialog" aria-labelledby="EditProduct" aria-hidden="true">
-		            <form method="POST" th:action="@{/editProduct}" id="EditProduct">
+		        <div class="modal clickable" id="StockOut" tabindex="-1" role="dialog" aria-labelledby="StockOut" aria-hidden="true">
+		            <form method="POST" th:action="@{/stockOut}" id="StockOut">
 		                <div class="vertical-alignment-helper">
 		                    <div class="modal-dialog  modal-lg vertical-align-center">
 		                        <!-- Modal content-->
 		                        <div class="modal-content">
 		                            <div class="modal-header">
-		                                <h4 class="modal-title">Edit Product</h4>
+		                                <h4 class="modal-title">Stock Out</h4>
 		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
 		                            </div>
 		                            
@@ -124,14 +125,14 @@
 		            </form>
 		        </div>
 				
-				<div class="modal clickable" id="DeleteProduct" tabindex="-1" role="dialog" aria-labelledby="DeleteProduct" aria-hidden="true">
-		            <form method="POST" th:action="@{/deleteProduct}" id="DeleteProduct">
+				<div class="modal clickable" id="CreatePartNo" tabindex="-1" role="dialog" aria-labelledby="CreatePartNo" aria-hidden="true">
+		            <form method="POST" th:action="@{/createPartNo}" id="CreatePartNo">
 		                <div class="vertical-alignment-helper">
 		                    <div class="modal-dialog  modal-lg vertical-align-center">
 		                        <!-- Modal content-->
 		                        <div class="modal-content">
 		                            <div class="modal-header">
-		                                <h4 class="modal-title">Delete Product</h4>
+		                                <h4 class="modal-title">Add Serial No</h4>
 		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
 		                            </div>
 		                            
@@ -156,17 +157,17 @@
 	
 	<script type="text/javascript">
         function doAction(action, id) {
-            if (action == 'new') {
-                $('#CreateProduct .modal-body').empty();
-                $('#CreateProduct .modal-title').text("Add Product");
-                $('#CreateProduct .modal-body').load('createProduct', function () {
-                    $('#CreateProduct').modal({show: true});
+            if (action == 'in') {
+                $('#StockIn .modal-body').empty();
+                $('#StockIn .modal-title').text("Stock In");
+                $('#StockIn .modal-body').load('stockIn?stocktypeid=1&productid='+id, function () {
+                    $('#StockIn').modal({show: true});
                 });
-            } else if (action == 'edit') {
-                $('#EditProduct .modal-body').empty();
-                $('#EditProduct .modal-title').text("Edit Product");
-                $('#EditProduct .modal-body').load('editProduct?productid=' + id, function () {
-                    $('#EditProduct').modal({show: true});
+            } else if (action == 'out') {
+                $('#StockOut .modal-body').empty();
+                $('#StockOut .modal-title').text("Stock Out");
+                $('#StockOut .modal-body').load('stockOut?stocktypeid=2&productid='+id, function () {
+                    $('#StockOut').modal({show: true});
                 });
             } else if (action == 'change') {
             	console.log("change");
@@ -175,11 +176,11 @@
                 $('#ChangePwd .modal-body').load('changePassword?userid=' + id, function () {
                     $('#ChangePwd').modal({show: true});
                 });
-            } else if (action == 'delete') {
-                $('#DeleteProduct .modal-body').empty();
-                $('#DeleteProduct .modal-title').text("Delete Product");
-                $('#DeleteProduct .modal-body').load('deleteProduct?productid=' + id, function () {
-                    $('#DeleteProduct').modal({show: true});
+            } else if (action == 'sm') {
+                $('#CreatePartNo .modal-body').empty();
+                $('#CreatePartNo .modal-title').text("Add Serial No");
+                $('#CreatePartNo .modal-body').load('createPartNo', function () {
+                    $('#CreatePartNo').modal({show: true});
                 });
             }
         }

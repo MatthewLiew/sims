@@ -9,7 +9,7 @@ public class StockHistory {
 	private String historytime;
 	private int stocktypeid;
 	private int reasonid;
-	private String reasondesc;
+	private String remark;
 	private String logdatetime;
 	private String loguser;
 	private String approval;
@@ -19,7 +19,7 @@ public class StockHistory {
 	public StockHistory () {}
 
 	public StockHistory(int stockhistoryid, int productid, int quantity, String historydate, String historytime, int stocktypeid,
-			int reasonid, String reasondesc, String logdatetime, String loguser, String approval, int mainlocid, int sublocid) {
+			int reasonid, String remark, String logdatetime, String loguser, String approval, int mainlocid, int sublocid) {
 		this.stockhistoryid = stockhistoryid;
 		this.productid = productid;
 		this.quantity = quantity;
@@ -27,7 +27,7 @@ public class StockHistory {
 		this.historytime = historytime;
 		this.stocktypeid = stocktypeid;
 		this.reasonid = reasonid;
-		this.reasondesc = reasondesc;
+		this.remark = remark;
 		this.logdatetime = logdatetime;
 		this.loguser = loguser;
 		this.approval = approval; 
@@ -91,12 +91,12 @@ public class StockHistory {
 		this.reasonid = reasonid;
 	}
 
-	public String getReasondesc() {
-		return reasondesc;
+	public String getRemark() {
+		return remark;
 	}
 
-	public void setReasondesc(String reasondesc) {
-		this.reasondesc = reasondesc;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
 	
 	public String getLogdatetime() {

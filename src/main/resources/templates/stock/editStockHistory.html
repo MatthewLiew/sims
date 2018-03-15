@@ -14,9 +14,9 @@
                 <label for="ProductLabel">Product</label>
             </div>
             <div class="col-md-6">
-	            <select name="productid" required>
+	            <select class="form-control" name="productid" required>
 		           	<option value="">Select Product</option>
-		           	<option th:each="list: ${products}" th:value="${list.productid}" th:text="${list.productname}"></option>
+		           	<option th:each="list: ${products}" th:selected="${list.isProduct(stockhistory.productid)}" th:value="${list.productid}" th:text="${list.productname}"></option>
 	       		</select>
             </div>
         </div>
@@ -41,7 +41,7 @@
                 <label for="StockTypeLabel">Stock Type</label>
             </div>
             <div class="col-md-6">
-            	<select name="stocktypeid" required>
+            	<select class="form-control" name="stocktypeid" required>
 	            	<option value="">Select StockType</option>
 		            <option th:each="list: ${stocktypes}" th:selected="${list.isStockType(stockhistory.stocktypeid)}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option>
       			</select>
@@ -78,10 +78,38 @@
     <div class="form-group">
         <div class="form-row">
             <div class="col-md-3">
+                <label for="MainLocationLabel">Main Location</label>
+            </div>
+            <div class="col-md-6">
+	            <select class="form-control" name="mainlocid" required onchange="subloc_select('StockIn',this.value);">
+		            <option value="">Select Main Location</option>
+		            <option th:each="list: ${mainlocs}" th:selected="${list.isMainLocName(stockhistory.mainlocid)}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option>
+	       		</select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        <div class="form-row">
+            <div class="col-md-3">
+                <label for="SubLocationLabel">Sub Location</label>
+            </div>
+            <div class="col-md-6">                    
+	            <select class="form-control subloc_select" name="sublocid" required>
+	            	<option value="">Select Sub Location</option>
+	            	<option th:each="list: ${sublocs}" th:selected="${list.isSubLocName(stockhistory.sublocid)}" th:value="${list.sublocid}" th:text="${list.sublocname}"></option>
+	        	</select>
+            </div>
+         </div>
+     </div>
+     
+    <div class="form-group">
+        <div class="form-row">
+            <div class="col-md-3">
                 <label for="ReasonLabel">Reason</label>
             </div>
             <div class="col-md-6">
-	            <select name="reasonid" required>
+	            <select class="form-control" name="reasonid" required>
 		            <option value="">Select Reason</option>
 		            <option th:each="list: ${reasons}" th:selected="${list.isReason(stockhistory.reasonid)}" th:value="${list.reasonid}" th:text="${list.reason}"></option>
 	       		</select>
@@ -95,7 +123,7 @@
                 <label for="RemarkLabel">Remark</label>
             </div>
             <div class="col-md-6">
-            	<textarea class="form-control remark" id="remark" name="remark" rows="4" cols="50" data-error="Please Enter Remark" aria-describedby="Remark" placeholder="Remark" th:inline="text">[[${stockhistory.reasondesc}]]</textarea>
+            	<textarea class="form-control remark" id="remark" name="remark" rows="2" cols="50" data-error="Please Enter Remark" aria-describedby="Remark" placeholder="Remark" th:inline="text">[[${stockhistory.remark}]]</textarea>
             </div>
             <div class="col-md-3">
             </div>

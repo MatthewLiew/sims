@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+   	</head>
+   	
+	<p class="error" style="color: red;" th:text="${errorString}" ></p>
+	<input type="hidden" name="transferhistoryid" th:value="${transferhistory.transferhistoryid}" />
+	<input type="hidden" name="referer" th:value="${referer}" />
+      
+	<div class="form-group">
+    	<div class="form-row">
+        	<div class="col-md-3">
+            	<label for="StockTypeLabel">Product</label>
+            </div>
+            <div class="col-md-6">
+            	<select class="form-control" name="productid" required>
+           			<option value="">Select Product</option>
+           			<option th:each="elem: ${products}" th:selected="${elem.isProduct(transferhistory.productid)}" th:value="${elem.productid}" th:text="${elem.productname}"></option>
+       			</select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+    	<div class="form-row">
+        	<div class="col-md-3">
+            	<label for="StockTypeLabel">From</label>
+            </div>
+            <div class="col-md-6">
+            	<select class="form-control" name="orimainlocid" onchange="subloc_select('From',this.value);" required>
+           			<option value="">Select Main Location</option>
+           			<option th:each="elem: ${mainlocs}" th:selected="${elem.isMainLocName(transferhistory.orimainlocid)}" th:value="${elem.mainlocid}" th:text="${elem.mainlocname}">
+           			</option>
+       			</select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group" id="From">
+    	<div class="form-row">
+        	<div class="col-md-3">
+            	<label for="StockTypeLabel"></label>
+            </div>
+            <div class="col-md-6">
+            	<select class="form-control subloc_select" name="orisublocid" required>
+           			<option value="">Select Sub Location</option>
+           			<option th:each="elem: ${sublocs}" th:selected="${elem.isSubLocName(transferhistory.orisublocid)}" th:value="${elem.sublocid}" th:text="${elem.sublocname}">
+       			</select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+    	<div class="form-row">
+        	<div class="col-md-3">
+            	<label for="StockTypeLabel">To</label>
+            </div>
+            <div class="col-md-6">
+            	<select class="form-control" name="desmainlocid" onchange="subloc_select('To',this.value);" required>
+           			<option value="">Select Main Location</option>
+           			<option th:each="elem: ${mainlocs}" th:selected="${elem.isMainLocName(transferhistory.desmainlocid)}" th:value="${elem.mainlocid}" th:text="${elem.mainlocname}">
+       			</select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group" id="To">
+    	<div class="form-row">
+        	<div class="col-md-3">
+            	<label for="StockTypeLabel"></label>
+            </div>
+            <div class="col-md-6">
+            	<select class="form-control subloc_select" name="dessublocid" required>
+           			<option value="">Select Sub Location</option>
+           			<option th:each="elem: ${sublocs}" th:selected="${elem.isSubLocName(transferhistory.dessublocid)}" th:value="${elem.sublocid}" th:text="${elem.sublocname}">
+       			</select>
+            </div>
+        </div>
+    </div>
+        
+	<div class="form-group">
+    	<div class="form-row">
+        	<div class="col-md-3">
+            	<label for="ReasonLabel">Quantity</label>
+            </div>
+            <div class="col-md-6">
+           		<input class="form-control quantity" id="quantity" name="quantity" type="text" data-error="Please Enter Quantity" aria-describedby="Quantity" placeholder="Enter Quantity" th:value="${transferhistory.quantity}" required>
+       	 	</div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
+</html>
