@@ -21,8 +21,9 @@ public class TransferHistoryMapper implements RowMapper<TransferHistory> {
 		int orisublocid = rs.getInt("ORI_SUB_LOC");		
 		int desmainlocid = rs.getInt("DES_MAIN_LOC");
 		int dessublocid = rs.getInt("DES_SUB_LOC");	
+		String approval = rs.getString("APPROVAL");
 		
-		return new TransferHistory(transferhistoryid, loguser, logdatetime, productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid);
+		return new TransferHistory(transferhistoryid, loguser, logdatetime, productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid, approval);
 	}
 
 }

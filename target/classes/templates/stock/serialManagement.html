@@ -55,7 +55,10 @@
 					             	<td th:text="${pn.modelno}"></td>
 					             	<td th:text="${pn.upccode}"></td>
 					             	<td th:each="list: ${products}" th:if="${list.isProduct(pn.productid)}" th:text="${list.productname}"></td>
-					             	<td style="color:green;">Available</td>
+					             	<td th:text="${pn.status}"></td>
+<!-- 					             	<td th:if="${pn.status}=='Available'" style="color:green;" th:text="${pn.status}"></td> -->
+<!-- 					             	<td th:if="${pn.status}=='Sold'" style="color:red;" th:text="${pn.status}"></td> -->
+<!-- 					             	<td th:if="${pn.status}!='Available'" style="color:green;" th:text="${pn.status}"></td> -->
 					             	<td th:text="${pn.customername}"></td>
 					             	<td th:text="${pn.invoiceno}"></td>
 					             	<td>

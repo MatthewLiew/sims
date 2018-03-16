@@ -76,6 +76,15 @@ function id_subloc_select(id, val) {
 	});
 }
 
+function countSerialNo(form) {
+
+	let serialno= $("#"+form+" .serialno").val();
+	
+	var token = serialno.split(/\W+\w/);
+	
+	$("#"+form+" .quantity").val(token.length);
+}
+
 function reason_option(val) {
 
 	var data={ stocktypeid:val }

@@ -35,6 +35,7 @@
 						          	<th></th>
 						          	<th>Log User</th>
 						          	<th>Log Datetime</th>
+						          	<th>Approval</th>
 						          	<th>Action</th>
 	               			 	</tr>
 		              		</thead>
@@ -48,6 +49,7 @@
 						          	<th></th>
 						          	<th>Log User</th>
 						          	<th>Log Datetime</th>
+						          	<th>Approval</th>
 						          	<th>Action</th>
 					          	</tr>
 				          	</tfoot>
@@ -63,6 +65,8 @@
 				          			<td th:if="${trans.dessublocid}==0" th:text="'-'"></td>
 				          			<td th:text="${trans.loguser}"></td>
 				          			<td th:text="${trans.logdatetime}"></td>
+				          			<td th:if="${trans.approval}=='pending'"><a th:href="@{/approval(transferhistoryid=${trans.transferhistoryid},approve='approved')}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/approval(transferhistoryid=${trans.transferhistoryid},approve='cancelled')}"><i class="fa fa-close" title="Not Approve"></i></a></td>
+						             <td th:unless="${trans.approval}=='pending'" th:text="(${trans.approval}=='approved') ? 'Approved' : 'Not Approve'"></td>
 					             	<td>
 						                <a th:onclick="'doAction(\'edit\',\''+ ${trans.transferhistoryid} +'\');'"><button class="btn btn-primary" title="Edit Transfer Transaction"><i class="fa fa-edit"></i></button></a>
 						                <a th:onclick="'doAction(\'delete\',\''+ ${trans.transferhistoryid} +'\');'"><button class="btn btn-primary" title="Delete Transfer Transaction"><i class="fa fa-trash" ></i></button></a>

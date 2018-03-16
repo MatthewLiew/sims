@@ -9,10 +9,13 @@ public class PartNo {
 	private int productid;
 	private String customername;
 	private String invoiceno;
+	private int mainlocid;
+	private int sublocid;
+	private String status;
 	
 	public PartNo() {}
 	
-	public PartNo(int partnoid, String serialno, String modelno, String upccode, int productid, String customername, String invoiceno) {
+	public PartNo(int partnoid, String serialno, String modelno, String upccode, int productid, String customername, String invoiceno, int mainlocid, int sublocid, String status) {
 		
 		this.partnoid = partnoid;
 		this.serialno = serialno;
@@ -21,6 +24,9 @@ public class PartNo {
 		this.productid = productid;
 		this.customername = customername;
 		this.invoiceno = invoiceno;
+		this.mainlocid = mainlocid;
+		this.sublocid = sublocid;
+		this.status = status;
 	}
 	
 	public int getPartnoid() {
@@ -77,6 +83,30 @@ public class PartNo {
 
 	public void setInvoiceno(String invoiceno) {
 		this.invoiceno = invoiceno;
+	}
+	
+	public int getMainlocid() {
+		return mainlocid;
+	}
+
+	public void setMainlocid(int mainlocid) {
+		this.mainlocid = mainlocid;
+	}
+
+	public int getSublocid() {
+		return sublocid;
+	}
+
+	public void setSublocid(int sublocid) {
+		this.sublocid = sublocid;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public boolean isPartNo(int partnoid){

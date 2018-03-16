@@ -29,9 +29,11 @@ import com.sbinventory.dao.UserAccountDAO;
 import com.sbinventory.dao.UserRoleDAO;
 import com.sbinventory.model.Brand;
 import com.sbinventory.model.Hardware;
+import com.sbinventory.model.MainLoc;
 import com.sbinventory.model.PartNo;
 import com.sbinventory.model.Product;
 import com.sbinventory.model.StockType;
+import com.sbinventory.model.SubLoc;
 
 @Controller
 public class ProductController {
@@ -50,6 +52,12 @@ public class ProductController {
 	
 	@Autowired
 	private StockTypeDAO stockTypeDAO;
+	
+	@Autowired
+	private MainLocDAO mainLocDAO;
+	
+	@Autowired
+	private SubLocDAO subLocDAO;
 
 	/**************** INFORMATION PORTAL ***********************/
 	@GetMapping(value= "/hardware")
@@ -236,15 +244,20 @@ public class ProductController {
 	
 	/**************** PART NO ACTION ***********************/
 	@GetMapping(value= "/createPartNo")
-	public String getCreatePartNo(Model model, HttpServletRequest request) {
+	public String getCreatePartNo(@RequestParam(defaultValue="0") int productid, Model model, HttpServletRequest request) {
 		
 		String referer = request.getHeader("Referer");
 		model.addAttribute("referer", referer);
 		
 		List<Product> products = productDAO.getAllProduct();
+		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
 		
+		model.addAttribute("index", productid);
 		model.addAttribute("errorString",null);
 		model.addAttribute("products",products);
+		model.addAttribute("mainlocs",mainlocs);
+		model.addAttribute("sublocs",sublocs);
 		
 		return "product/createPartNo";
 	}
@@ -252,7 +265,8 @@ public class ProductController {
 	@PostMapping(value= "/createPartNo")
 	public String postCreatePartNos(@RequestParam String[] serialno,
 			@RequestParam String[] modelno, @RequestParam String[] upccode, int[] productid, 
-			@RequestParam String customername, @RequestParam String invoiceno, Model model, @RequestParam String referer) {
+			@RequestParam String customername, @RequestParam String invoiceno, @RequestParam int mainlocid, @RequestParam int sublocid, 
+			Model model, @RequestParam String referer) {
 		String delims = ", \r\n\t\f";
 //			String splitString = "one,two,,three,four,,five";
  
@@ -260,8 +274,8 @@ public class ProductController {
 		for(int i=0;i<serialno.length; i++) {
 			StringTokenizer st = new StringTokenizer(serialno[i],delims);
 			while (st.hasMoreElements()) {
-	//			String errorString= partNoDAO.createPartNo(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno, upccode, productid, customername, invoiceno);
-				System.out.println(" Token: "+st.nextElement()+" "+productid[i]);
+//				String errorString= partNoDAO.createPartNo(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], productid[i], customername, invoiceno, mainlocid, sublocid, "Available");
+				System.out.println(productid[i]+" "+modelno[i]+" "+" Token: "+st.nextElement());
 			}
 		}
 //			for(int b:productid){
@@ -275,13 +289,6 @@ public class ProductController {
 //			}
 	}
 	
-//	@GetMapping(value= "/deletePartNos")
-//	public String getDeletePartNos(@RequestParam int partnoid, Model model ) {
-//		partNoDAO.deletePartNo(partnoid);
-//		
-//		return "redirect:/stock";
-//	}
-	
 	@GetMapping(value= "/editPartNo")
 	public String getEditPartNos(/*@RequestParam*/ int partnoid, Model model, HttpServletRequest request) {
 		
@@ -290,9 +297,15 @@ public class ProductController {
 		
 		List <Product> products = productDAO.getAllProduct();
 		PartNo partno = partNoDAO.getPartNo(partnoid);
+		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<SubLoc> sublocs = subLocDAO.getAllSubLoc(partno.getMainlocid());
+		Product product = productDAO.getProduct(partno.getProductid());
 		
 		model.addAttribute("partno",partno);
 		model.addAttribute("products",products);
+		model.addAttribute("mainlocs",mainlocs);
+		model.addAttribute("sublocs",sublocs);
+		model.addAttribute("product",product);
 		    
 		return "product/editPartNo";
 	}
@@ -300,9 +313,9 @@ public class ProductController {
 	@PostMapping(value= "/editPartNo")
 	public String postEditPartNos(/*@RequestParam*/ int partnoid,
 			/*@RequestParam*/ String serialno, /*@RequestParam*/ String modelno, /*@RequestParam*/ String upccode/*, @RequestParam int productid*/, 
-			/*@RequestParam*/ String customername, /*@RequestParam*/ String invoiceno, Model model, /*@RequestParam*/ String referer) {
+			/*@RequestParam*/ String customername, /*@RequestParam*/ String invoiceno, int mainlocid, int sublocid, Model model, /*@RequestParam*/ String referer) {
 
-			String errorString=partNoDAO.updatePartNo(partnoid, serialno, modelno, upccode, /*productid,*/ customername, invoiceno);
+			String errorString=partNoDAO.updatePartNo(partnoid, serialno, modelno, upccode, /*productid,*/ customername, invoiceno, mainlocid, sublocid);
 //			if(errorString==null) {
 			return "redirect:"+referer; 
 //			} else {
@@ -310,58 +323,6 @@ public class ProductController {
 //				return "product/editPartNo";
 //			}
 	}
-	
-	
-//	@GetMapping(value= "/deleteStock")
-//	public String getDeleteStock(@RequestParam int productid, Model model ) {
-//		System.out.println(productid);
-////			productDAO.deleteProduct(productid);
-//		
-//		return "redirect:/stockmanagement";
-//	}
-	
-//	@GetMapping(value= "/createPartNo")
-//	public String createPartNoGET(Model model ) {
-//		model.addAttribute("errorString",null);
-//			
-//		return "product/createPartNo";
-//	}
-//	
-//	@PostMapping(value= "/createPartNo")
-//	public String createPartNoPOST(@RequestParam String serialno,
-//			@RequestParam String modelno, @RequestParam String upccode, int productid,
-//			@RequestParam String customername, @RequestParam String invoiceno, Model model ) {
-//		String errorString= partNoDAO.createPartNo(serialno, modelno, upccode, productid, customername, invoiceno);
-//		if(errorString==null) {
-//			return "redirect:/product";
-//		} else {
-//			model.addAttribute("errorString",errorString);
-//			return "product/createPartNo";
-//		}
-//	}
-	
-//	@GetMapping(value= "/editPartNo")
-//	public String getEditPartNo(@RequestParam int partnoid, Model model ) {
-//		
-//		PartNo partno = partNoDAO.getPartNo(partnoid);
-//		model.addAttribute("partno",partno);
-//		    
-//		return "product/editPartNo";
-//	}
-//	
-//	
-//	@PostMapping(value= "/editPartNo")
-//	public String postEditPartNo(@RequestParam int partnoid,
-//			@RequestParam String serialno, @RequestParam String modelno, @RequestParam String upccode, Model model ) {
-//
-////			String errorString=partNoDAO.updatePartNo(partnoid, serialno, modelno, upccode);
-////			if(errorString==null) {
-//			return "redirect:/product"; 
-////			} else {
-////				model.addAttribute("errorString",errorString);
-////				return "product/editPartNo";
-////			}
-//	}
 	
 	@GetMapping(value= "/deletePartNo")
 	public String getDeletePartNo(@RequestParam int partnoid, Model model, HttpServletRequest request ) {

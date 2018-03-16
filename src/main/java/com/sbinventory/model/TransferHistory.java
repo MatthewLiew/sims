@@ -11,11 +11,12 @@ public class TransferHistory {
 	private int orisublocid;
 	private int desmainlocid;
 	private int dessublocid;
+	private String approval;
 	
 	public TransferHistory () {}
 
 	public TransferHistory(int transferhistoryid, String loguser, String logdatetime, int productid, int quantity,
-			int orimainlocid, int orisublocid, int desmainlocid, int dessublocid) {
+			int orimainlocid, int orisublocid, int desmainlocid, int dessublocid, String approval) {
 		
 		this.transferhistoryid = transferhistoryid;
 		this.loguser = loguser;
@@ -26,6 +27,7 @@ public class TransferHistory {
 		this.orisublocid = orisublocid;
 		this.desmainlocid = desmainlocid;
 		this.dessublocid = dessublocid;
+		this.approval = approval;
 	}
 
 	public int getTransferhistoryid() {
@@ -98,6 +100,14 @@ public class TransferHistory {
 
 	public void setDessublocid(int dessublocid) {
 		this.dessublocid = dessublocid;
+	}
+
+	public String getApproval() {
+		return approval;
+	}
+
+	public void setApproval(String approval) {
+		this.approval = approval;
 	}
 
 }

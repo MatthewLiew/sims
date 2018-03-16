@@ -7,6 +7,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.StringTokenizer;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,43 +138,10 @@ public class StockController {
 	}
 	
 	@GetMapping(value= "/serialmanagement")
-//		, int stocktypeid, int reasonid
-	public String getSerialManagement(Model model, String startdate, String enddate, Integer stocktypeid, Integer reasonid) {
-		List<StockHistory> stockhistories;
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		ZoneId sg = ZoneId.of("Asia/Singapore");
-		String endDate = formatter.format(ZonedDateTime.now(sg));
-		String startDate = formatter.format(ZonedDateTime.now(sg).minusDays(14));
-		
-		List<Reason> reasons = reasonDAO.getAllReason();
-		if((startdate==null)&&(enddate==null)&&(stocktypeid==null)&&(reasonid==null)) {
-//				stockhistories = stockHistoryDAO.getAllStockHistory();
-			stockhistories = stockHistoryDAO.getAllStockHistory(startDate, endDate, 0, 0);
-			
-			model.addAttribute("startdate", startDate);
-			model.addAttribute("enddate", endDate);
-		} else {
-			stockhistories = stockHistoryDAO.getAllStockHistory(startdate, enddate, stocktypeid, reasonid);
-			
-			model.addAttribute("startdate", startdate);
-			model.addAttribute("enddate", enddate);
-		}
+	public String getSerialManagement(Model model) {
+
 		List<Product> products = productDAO.getAllProduct();
-		List<StockType> stocktypes = stockTypeDAO.getAllStockType();
-		
-		model.addAttribute("reasons", reasons);
-		model.addAttribute("stockhistories", stockhistories);
 		model.addAttribute("products", products);
-		model.addAttribute("stocktypes", stocktypes);
-		
-		
-		
-		List<Hardware> hardwares = hardwareDAO.getAllHardware();
-		List<Brand> brands = brandDAO.getAllBrand();
-		
-		model.addAttribute("hardwares",hardwares);
-		model.addAttribute("brands",brands);
 		
 		List<PartNo> partnos = partNoDAO.getAllPartNo();
 		model.addAttribute("partnos",partnos);
@@ -182,45 +151,13 @@ public class StockController {
 	
 	@GetMapping(value= "/settings")
 //		, int stocktypeid, int reasonid
-	public String getSettings(Model model, String startdate, String enddate, Integer stocktypeid, Integer reasonid) {
-		List<StockHistory> stockhistories;
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-		ZoneId sg = ZoneId.of("Asia/Singapore");
-		String endDate = formatter.format(ZonedDateTime.now(sg));
-		String startDate = formatter.format(ZonedDateTime.now(sg).minusDays(14));
+	public String getSettings(Model model) {
 		
 		List<Reason> reasons = reasonDAO.getAllReason();
-		if((startdate==null)&&(enddate==null)&&(stocktypeid==null)&&(reasonid==null)) {
-//				stockhistories = stockHistoryDAO.getAllStockHistory();
-			stockhistories = stockHistoryDAO.getAllStockHistory(startDate, endDate, 0, 0);
-			
-			model.addAttribute("startdate", startDate);
-			model.addAttribute("enddate", endDate);
-		} else {
-			stockhistories = stockHistoryDAO.getAllStockHistory(startdate, enddate, stocktypeid, reasonid);
-			
-			model.addAttribute("startdate", startdate);
-			model.addAttribute("enddate", enddate);
-		}
-		List<Product> products = productDAO.getAllProduct();
 		List<StockType> stocktypes = stockTypeDAO.getAllStockType();
 		
 		model.addAttribute("reasons", reasons);
-		model.addAttribute("stockhistories", stockhistories);
-		model.addAttribute("products", products);
 		model.addAttribute("stocktypes", stocktypes);
-		
-		
-		
-		List<Hardware> hardwares = hardwareDAO.getAllHardware();
-		List<Brand> brands = brandDAO.getAllBrand();
-		
-		model.addAttribute("hardwares",hardwares);
-		model.addAttribute("brands",brands);
-		
-		List<PartNo> partnos = partNoDAO.getAllPartNo();
-		model.addAttribute("partnos",partnos);
 
 		return "stock/settings";
 	}
@@ -336,7 +273,7 @@ public class StockController {
 	
 	/**************** STOCK ACTION ***********************/
 	@GetMapping(value= "/stockIn")
-	public String getStockIn(@RequestParam(defaultValue="0") int productid, @RequestParam int stocktypeid, Model model, HttpServletRequest request) {
+	public String getStockIn(@RequestParam(defaultValue="0") int productid, @RequestParam(defaultValue="1") int stocktypeid, Model model, HttpServletRequest request) {
 		
 		String referer = request.getHeader("Referer");
 		model.addAttribute("referer", referer);
@@ -346,7 +283,7 @@ public class StockController {
 		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
 		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
 		
-		model.addAttribute("index",productid);
+		model.addAttribute("index", productid);
 		model.addAttribute("products",products);
 		model.addAttribute("reasons",reasons);
 		model.addAttribute("errorString",null);
@@ -358,10 +295,19 @@ public class StockController {
 	
 	@PostMapping(value= "/stockIn")
 	public String postStockIn(@RequestParam int productid, @RequestParam int mainlocid, @RequestParam int sublocid, @RequestParam int quantity,  @RequestParam int stocktypeid,
-			@RequestParam String date, @RequestParam String time, @RequestParam int reasonid, @RequestParam String remark,
+			@RequestParam String date, @RequestParam String time, @RequestParam int reasonid, @RequestParam String remark, String serialno,
 			Model model, Principal principal, @RequestParam String referer) {
 		
-		System.out.println(mainlocid+" "+sublocid);
+		String delims = ", \r\n\t\f";
+
+		System.out.println("StringTokenizer Example: \n");
+
+			StringTokenizer st = new StringTokenizer(serialno,delims);
+			while (st.hasMoreElements()) {
+	//			String errorString= partNoDAO.createPartNo(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], productid[i], customername, invoiceno, mainlocid, sublocid, "Available");
+				System.out.println("Token: "+st.nextElement());
+			}
+
 //			if(principal!=null){
 //				String loguser = principal.getName();
 //			}
@@ -369,7 +315,7 @@ public class StockController {
 		String logdatetime = DateTime.Now();
 		
 		
-			String errorString= stockHistoryDAO.createStockHistory(productid, mainlocid, sublocid, quantity, date, time, stocktypeid, reasonid, remark, logdatetime, null, "pending");
+//			String errorString= stockHistoryDAO.createStockHistory(productid, mainlocid, sublocid, quantity, date, time, stocktypeid, reasonid, remark, logdatetime, null, "pending");
 		
 //			
 //			if(errorString==null) {
@@ -381,7 +327,7 @@ public class StockController {
 	}
 	
 	@GetMapping(value= "/stockOut")
-	public String getStockOut(@RequestParam(defaultValue="0") int productid, @RequestParam int stocktypeid, Model model, HttpServletRequest request) {
+	public String getStockOut(@RequestParam(defaultValue="0") int productid, @RequestParam(defaultValue="2") int stocktypeid, Model model, HttpServletRequest request) {
 		
 		String referer = request.getHeader("Referer");
 		model.addAttribute("referer", referer);
@@ -403,11 +349,21 @@ public class StockController {
 	
 	@PostMapping(value= "/stockOut")
 	public String postStockOut(@RequestParam int productid, int mainlocid, int sublocid, @RequestParam int quantity,  @RequestParam int stocktypeid,
-			@RequestParam String date, @RequestParam String time, @RequestParam int reasonid, @RequestParam String remark, 
+			@RequestParam String date, @RequestParam String time, @RequestParam int reasonid, @RequestParam String remark, String serialno,
 			Model model, Principal principal, @RequestParam String referer) {
-		System.out.println(mainlocid+" "+sublocid);
+
 //			String loguser = principal.getName();
 		
+		String delims = ", \r\n\t\f";
+
+		System.out.println("StringTokenizer Example: \n");
+
+		StringTokenizer st = new StringTokenizer(serialno,delims);
+		while (st.hasMoreElements()) {
+//			String errorString= partNoDAO.createPartNo(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], productid[i], customername, invoiceno, mainlocid, sublocid, "Available");
+			System.out.println("Token: "+st.nextElement());
+		}
+			
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		ZoneId sg = ZoneId.of("Asia/Singapore");
 		String logdatetime = formatter.format(ZonedDateTime.now(sg));
@@ -453,30 +409,12 @@ public class StockController {
 //			}
 	}
 	
-	@GetMapping(value= "/approval")
-	public String getApproval(@RequestParam int stockhistoryid, @RequestParam String approve, @RequestParam int productid, Model model, HttpServletRequest request) {
+	@GetMapping(value= "/stockioapproval")
+	public String getStockIOApproval(@RequestParam int stockhistoryid, @RequestParam String approve,/*, @RequestParam int productid,*/ Model model, HttpServletRequest request) {
 		
 		String referer = request.getHeader("Referer");
 		stockHistoryDAO.approval(stockhistoryid, approve);
 		
-//		int totalquantity=0;
-//		List<StockHistory> stockquantity = stockHistoryDAO.getStockQuantity(productid);
-//		for(StockHistory a: stockquantity) {
-////				System.out.println(a.getApproval());
-//			if(a.getApproval().equalsIgnoreCase("approved")) {
-////					System.out.println("1"+a.getStockhistoryid());
-//				if(a.getStocktypeid()==1) {
-//					totalquantity+=a.getQuantity();
-//				} else {
-//					totalquantity-=a.getQuantity();
-//				}
-//			}
-//		}
-//		System.out.println("Total: "+totalquantity);
-//		productDAO.updateQuantity(productid, totalquantity);
-		
-		
-//			return "";C
 		return "redirect:"+referer;
 	}
 	
@@ -491,7 +429,7 @@ public class StockController {
 		List<Reason> reasons = reasonDAO.getAllReason();
 		List<StockType> stocktypes = stockTypeDAO.getAllStockType();
 		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		List<SubLoc> sublocs = subLocDAO.getAllSubLoc(stockhistory.getMainlocid());
 		
 		model.addAttribute("products",products);
 		model.addAttribute("reasons",reasons);
@@ -588,7 +526,7 @@ public class StockController {
 	}
 	
 	@PostMapping(value= "/transferStock")
-	public String postTransferStock(@RequestParam int productid, 
+	public String postTransferStock(@RequestParam int productid,
 			@RequestParam int orimainlocid,
 			@RequestParam int orisublocid,
 			@RequestParam int desmainlocid,
@@ -598,7 +536,7 @@ public class StockController {
 			@RequestParam String referer) {
 		
 //		System.out.println(productid+" "+orimainlocid+" "+orisublocid+" "+desmainlocid+" "+dessublocid+" "+quantity);
-		String errorString = transferHistoryDAO.createTransferHistory(null, DateTime.Now(), productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid);		
+		String errorString = transferHistoryDAO.createTransferHistory(null, DateTime.Now(), productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid, "pending");		
 //		
 //		if(errorString==null) {
 			return "redirect:"+referer;
@@ -609,6 +547,14 @@ public class StockController {
 //		}
 	}
 	
+	@GetMapping(value= "/transferapproval")
+	public String getApproval(@RequestParam int transferhistoryid, @RequestParam String approve, Model model, HttpServletRequest request) {
+		
+		String referer = request.getHeader("Referer");
+		transferHistoryDAO.approval(transferhistoryid, approve);
+		
+		return "redirect:"+referer;
+	}
 	@GetMapping(value= "/editTransferHistory")
 	public String getEditTransferHistory(@RequestParam int transferhistoryid, Model model, HttpServletRequest request) {
 	
@@ -643,8 +589,7 @@ public class StockController {
 			Model model,
 			@RequestParam String referer) {
 		
-//		System.out.println(productid+" "+orimainlocid+" "+orisublocid+" "+desmainlocid+" "+dessublocid+" "+quantity);
-//		String errorString = transferHistoryDAO.createTransferHistory(null, DateTime.Now(), productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid);		
+		String errorString = transferHistoryDAO.updateTransferHistory(transferhistoryid, productid, orimainlocid, orisublocid, desmainlocid, dessublocid, quantity);
 //		
 //		if(errorString==null) {
 			return "redirect:"+referer;
@@ -673,7 +618,7 @@ public class StockController {
 	@PostMapping(value= "/deleteTransferHistory")
 	public String postDeleteTransferHistory(@RequestParam int transferhistoryid, Model model, @RequestParam String referer ) {
 		System.out.println(transferhistoryid);
-//			reasonDAO.deleteReason(reasonid);
+//		transferHistoryDAO.deleteStockHistory(transferhistoryid);
 			
 		return "redirect:"+referer;
 	}

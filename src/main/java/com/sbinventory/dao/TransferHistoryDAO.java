@@ -20,7 +20,7 @@ import com.sbinventory.model.TransferHistory;
 @Transactional
 public class TransferHistoryDAO extends JdbcDaoSupport{
 
-	private static final String CREATE_SQL="INSERT INTO TRANSFER_HISTORY (LOG_USER, LOG_DATETIME, PRODUCT_ID, QUANTITY, ORI_MAIN_LOC, ORI_SUB_LOC, DES_MAIN_LOC, DES_SUB_LOC) VALUES (?,?,?,?,?,?,?,?)";
+	private static final String CREATE_SQL="INSERT INTO TRANSFER_HISTORY (LOG_USER, LOG_DATETIME, PRODUCT_ID, QUANTITY, ORI_MAIN_LOC, ORI_SUB_LOC, DES_MAIN_LOC, DES_SUB_LOC, APPROVAL) VALUES (?,?,?,?,?,?,?,?,?)";
 //	private static final String CREATE_SQL="INSERT INTO TRANSFER_HISTORY (LOG_USER ) VALUES (?)";
 	private static final String READ_SQL="SELECT * FROM TRANSFER_HISTORY";
 	private static final String UPDATE_SQL="UPDATE TRANSFER_HISTORY";
@@ -38,9 +38,10 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
 									 int orimainlocid, 
 									 int orisublocid,
 									 int desmainlocid,
-									 int dessublocid) {
+									 int dessublocid,
+									 String approval) {
 
-		Object[] params=new Object[]{loguser, logdatetime, productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid};
+		Object[] params=new Object[]{loguser, logdatetime, productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid, approval};
 //		Object[] params=new Object[]{"null",logdatetime, productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid};
 		String sql=CREATE_SQL;
 		
@@ -83,29 +84,45 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
             return null;
         }
 	}
-//	public String updateStockHistory(int stockhistoryid, int productid, int quantity, String historydate, String historytime, int stocktypeid, int reasonid, String reasondesc ){
-//		String sql=UPDATE_SQL+" set PRODUCT_ID = ?, QUANTITY = ?, HISTORY_DATE = ?, HISTORY_TIME = ? , STOCK_TYPE_ID = ? , REASON_ID = ? , REASON_DESC = ?  where ID= ?";
-//		Object[] params=new Object[]{productid, quantity, historydate, historytime, stocktypeid, reasonid, reasondesc, stockhistoryid};
-//		try {
-//			int rows=this.getJdbcTemplate().update(sql, params);
-//			System.out.println(rows + " row(s) updated.");
-//			return null;
-//		}catch(EmptyResultDataAccessException e) {
-//			e.printStackTrace();
-//			return e.getMessage();
-//		}catch(DataAccessException  e) {
-//			return e.getMessage();
-//		}
-//	}
 	
-//	public void deleteStockHistory(int stockhistoryid){
-//		String sql=DELETE_SQL+" where ID= ?";
-//		Object[] params= new Object[] {stockhistoryid};
-//		try {
-//			int rows=this.getJdbcTemplate().update(sql, params);
-//			System.out.println(rows + " row(s) updated.");
-//		}catch(EmptyResultDataAccessException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public String updateTransferHistory(int transferhistoryid, int productid, int orimainlocid, int orisublocid, int desmainlocid, int dessublocid, int quantity ){
+		String sql=UPDATE_SQL+" set PRODUCT_ID = ?, ORI_MAIN_LOC = ?, ORI_SUB_LOC = ?, DES_MAIN_LOC = ?, DES_SUB_LOC = ?, QUANTITY = ? where ID= ?";
+		Object[] params=new Object[]{productid, orimainlocid, orisublocid, desmainlocid, dessublocid, quantity, transferhistoryid};
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+		}catch(EmptyResultDataAccessException e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}catch(DataAccessException  e) {
+			return e.getMessage();
+		}
+	}
+	
+	public void deleteStockHistory(int transferhistoryid){
+		String sql=DELETE_SQL+" where ID= ?";
+		Object[] params= new Object[] {transferhistoryid};
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+		}catch(EmptyResultDataAccessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public String approval(int transferhistoryid, String approve ){
+		String sql=UPDATE_SQL+" set APPROVAL = ? where ID= ?";
+		Object[] params=new Object[]{approve, transferhistoryid};
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+		}catch(EmptyResultDataAccessException e) {
+			e.printStackTrace();
+			return e.getMessage();
+		}catch(DataAccessException  e) {
+			return e.getMessage();
+		}
+	}
 }

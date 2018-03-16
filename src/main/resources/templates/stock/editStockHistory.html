@@ -81,7 +81,7 @@
                 <label for="MainLocationLabel">Main Location</label>
             </div>
             <div class="col-md-6">
-	            <select class="form-control" name="mainlocid" required onchange="subloc_select('StockIn',this.value);">
+	            <select class="form-control" name="mainlocid" required onchange="subloc_select('EditStockHistory',this.value);">
 		            <option value="">Select Main Location</option>
 		            <option th:each="list: ${mainlocs}" th:selected="${list.isMainLocName(stockhistory.mainlocid)}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option>
 	       		</select>
