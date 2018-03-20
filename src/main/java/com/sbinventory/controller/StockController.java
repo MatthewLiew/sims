@@ -1,11 +1,15 @@
 package com.sbinventory.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -14,9 +18,14 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sbinventory.dao.BrandDAO;
 import com.sbinventory.dao.HardwareDAO;
@@ -29,6 +38,7 @@ import com.sbinventory.dao.StockTypeDAO;
 import com.sbinventory.dao.StorageDAO;
 import com.sbinventory.dao.SubLocDAO;
 import com.sbinventory.dao.TransferHistoryDAO;
+import com.sbinventory.fileio.ReadCSVFileExample;
 import com.sbinventory.model.Brand;
 import com.sbinventory.model.Hardware;
 import com.sbinventory.model.MainLoc;
@@ -40,8 +50,10 @@ import com.sbinventory.model.StockType;
 import com.sbinventory.model.Storage;
 import com.sbinventory.model.SubLoc;
 import com.sbinventory.model.TransferHistory;
+import com.sbinventory.model.UploadForm;
 import com.sbinventory.utils.DateTime;
 import com.sbinventory.utils.StockQuantity;
+import com.sbinventory.validator.CustomFileValidator;
 
 @Controller
 public class StockController {
@@ -81,7 +93,70 @@ public class StockController {
 	
 	@Autowired
 	private TransferHistoryDAO transferHistoryDAO;
-		
+	
+	@Autowired
+	CustomFileValidator customFileValidator;
+	
+	private String doUpload(HttpServletRequest request, Model model, //
+			   UploadForm myUploadForm, BindingResult bindingResult) {
+	 
+	      String description = myUploadForm.getDescription();
+	      System.out.println("Description: " + description);
+	 
+	      // Root Directory.
+	      String uploadRootPath = request.getServletContext().getRealPath("upload");
+	      System.out.println("uploadRootPath=" + uploadRootPath);
+	 
+	      File uploadRootDir = new File(uploadRootPath);
+	      // Create directory if it not exists.
+	      if (!uploadRootDir.exists()) {
+	         uploadRootDir.mkdirs();
+	      }
+	      MultipartFile[] fileDatas = myUploadForm.getFileDatas();
+	      
+	      customFileValidator.validate(myUploadForm, bindingResult);
+	      if (bindingResult.hasErrors()) {
+	    	  System.out.println("error");
+	          return "stock/serialManagement";
+	      }
+//	      
+	      //
+	      List<File> uploadedFiles = new ArrayList<File>();
+	      List<String> failedFiles = new ArrayList<String>();
+	      
+	      
+	      for (MultipartFile fileData : fileDatas) {
+	 
+	         // Client File Name
+	         String name = fileData.getOriginalFilename();
+	         System.out.println("Client File Name = " + name);
+	 
+	         if (name != null && name.length() > 0) {
+	            try {
+	               // Create the file at server
+	               File serverFile = new File(uploadRootDir.getAbsolutePath() + File.separator + name);
+	               
+	               BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
+	               stream.write(fileData.getBytes());
+	               stream.close();
+	               //
+	               uploadedFiles.add(serverFile);
+	               System.out.println("Write file: " + serverFile);
+	               ReadCSVFileExample.readCSVFile(serverFile);
+	            } catch (Exception e) {
+	               System.out.println("Error Write file: " + name);
+	               failedFiles.add(name);
+	            }
+	         }
+	      }
+	      
+	      
+	       
+	      model.addAttribute("description", description);
+	      model.addAttribute("uploadedFiles", uploadedFiles);
+	      model.addAttribute("failedFiles", failedFiles);
+	      return "stock/serialManagement";
+	   }
 	/**************** INFORMATION PORTAL ***********************/
 	@GetMapping(value= "/stockmanagement")
 	public String getStockManagement(Model model) {
@@ -145,8 +220,20 @@ public class StockController {
 		
 		List<PartNo> partnos = partNoDAO.getAllPartNo();
 		model.addAttribute("partnos",partnos);
+		
+		UploadForm UploadForm = new UploadForm();
+	    model.addAttribute("UploadForm", UploadForm);
 
 		return "stock/serialManagement";
+	}
+	
+	@RequestMapping(value = "/uploadOneFile", method = RequestMethod.POST)
+	public String uploadOneFileHandlerPOST(HttpServletRequest request, //
+			Model model, //
+			@ModelAttribute("UploadForm") UploadForm myUploadForm, BindingResult bindingResult) {
+ 
+		return this.doUpload(request, model, myUploadForm, bindingResult);
+ 
 	}
 	
 	@GetMapping(value= "/settings")
@@ -555,6 +642,7 @@ public class StockController {
 		
 		return "redirect:"+referer;
 	}
+	
 	@GetMapping(value= "/editTransferHistory")
 	public String getEditTransferHistory(@RequestParam int transferhistoryid, Model model, HttpServletRequest request) {
 	

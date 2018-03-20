@@ -1,0 +1,4 @@
+CustomerId,CustomerName,Country,PinCode,Email
+1,Lokesh,India,12345,howtodoinjava@gmail.com
+2,Mukesh,India,34234,mukesh@gmail.com
+3,Paul,USA,52345345,paul@gmail.com

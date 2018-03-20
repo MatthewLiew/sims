@@ -1,4 +1,5 @@
 var BASE_URL = window.location.origin+"/";
+var count=0;
 
 //function addmorepartno(){
 ////	var $element=$(".create_partno_table").data();
@@ -9,25 +10,80 @@ var BASE_URL = window.location.origin+"/";
 //}
 
 function addmorepartno(){
-//	var $element=$(".create_partno_table").data();
-//	var cln = $element.clone(true);
-//    $(".create_partno").appendChild(cln);
-//	$(".form").clone().insertAfter(".clone_form");
-	$(".form:first").clone().appendTo(".clone_form");
+	
+	var source = $(".form:first");
+	var clone = source.clone();
+//	clone.find(".serialno").attr('id',count);
+//	clone.find(".get_csv").attr("onchange", "parseCSV('" + count + "')");
+	clone.appendTo(".clone_form");
+	count++;
 	return false;
 }
 
 $(document).on("click", ".remove_partno", function() {
+//	console.log(this.closest(".clone_form .form"));
     $(this).closest(".clone_form .form").remove();
     return false;
 });
-//function removepartno(){
-////	var $element=$(".create_partno_table").data();
-////	var cln = $element.clone(true);
-////    $(".create_partno").appendChild(cln);
-//	$("this").closest(".create_partno_table").remove();
+
+//function parseCSV(id){
+$(document).on("click", ".get_csv", function() {
+	
+	var name=$(this).closest("div").find(".serialno").val();
+	
+	console.log(name);
+
+	$(this).parse({
+		 config: {
+//			 header:"true",
+		 delimiter: "auto",
+		 complete: function(results){
+			 $(".serialno").val(results.data);
+//			 name.val("hell");
+//			 console.log(this);
+//			 $(this).closest("div").find(".serialno").val(results.data);
+//			 $(this).closest(".form-row").find("#serialno").remove();
+		 	},
+		 },
+		 before: function(file, inputElem)
+		 {
+		 //console.log("Parsing file...", file);
+		 },
+		 error: function(err, file)
+		 {
+		 //console.log("ERROR:", err, file);
+		 },
+		 complete: function(results)
+		 {
+//			 console.log("Done with all files");
+		 }
+		 });
+});
 //}
 
+function displayHTMLTable(results){
+//	 var table = "<table class='table'>";
+	console.log("Done with all files111");
+	 var data = results.data;
+	 $(".serialno").val(data);
+//	 for(i=0;i<data.length;i++){
+//		 
+////	 table+= "<tr>";
+//	 var row = data[i];
+//	 var cells = row.join(",").split(",");
+//		 
+//		 for(j=0;j<cells.length;j++){
+////			 table+= "<td>";
+////			 table+= cells[j];
+//			 
+////			 console.log(cells[j]);
+////			 table+= "</th>";
+//		 }
+////		 table+= "</tr>";
+//	 }
+//	 table+= "</table>";
+//	 $("#parsed_csv_list").html(table);
+}
 function subloc_select(id, val) {
 
 	var data={ mainlocid:val }

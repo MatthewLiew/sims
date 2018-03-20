@@ -55,9 +55,26 @@
                 	<label for="SerialNoLabel">Serial No</label>
            		</div>
                	<div class="col-md-6">
-           			<textarea class="form-control serialno" id="serialno"name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space" required></textarea>
+           			<textarea class="form-control serialno" id="serialno" name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space" required></textarea>
+           			<button type=button class="btn btn-primary">
+				      	<label for="file_upload" style="margin-bottom:0;">Upload
+				      	</label>
+				      	<input class="get_csv" id="file_upload" type="file" accept=".csv" style="display:none;" required/>
+			      </button>
                	</div>
                	<div class="col-md-3">
+               		<!-- <form method="POST" th:action="@{/uploadOneFile}" th:object="${UploadForm}" enctype="multipart/form-data" style="display:inline-block;">
+
+					&nbsp;&nbsp;
+			         File to upload: 
+			         <input th:field="*{fileDatas}" type="file" accept=".csv" required/>
+			         <div th:if="${#fields.hasErrors('global')}" th:errors="*{file}"></div>
+			         <th:errors path="file" style="color:red;"></>
+			         <br />
+						<input type="submit" value="Upload">
+			         <button class="btn btn-primary">Upload</button>
+			      </form> -->
+			      
                	</div>
            	</div>
    		</div>
