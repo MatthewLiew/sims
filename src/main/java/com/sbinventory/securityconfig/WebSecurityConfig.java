@@ -1,13 +1,20 @@
 package com.sbinventory.securityconfig;
 import com.sbinventory.service.UserDetailsServiceImpl;
+
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ConversionServiceFactoryBean;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 
 @Configuration
@@ -18,8 +25,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		
 	}
 	
+	public void addFormatters(FormatterRegistry registry) {
+	    registry.removeConvertible(String.class,String[].class);
+	}
+	
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
+	
+//	@Bean(name="conversionService")
+//	public ConversionService getConversionService() {
+//	    ConversionServiceFactoryBean bean = new ConversionServiceFactoryBean();
+//	    bean.setConverters(Collections.singleton(new CustomStringToCollectionConverter()));
+//	    bean.afterPropertiesSet();
+//	    return bean.getObject();
+//	}
 	
 	@Bean
     public BCryptPasswordEncoder passwordEncoder() {

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>ITF</title>
+	</head>
+	
+	<div class="header_ref" th:include="/header"></div>
+	<div class="content-wrapper">
+    	<div class="container-fluid">
+	   		<!-- Breadcrumbs -->
+	    	<ol class="breadcrumb">
+		        <li class="breadcrumb-item">
+		          <!-- <a th:href="''#"> -->ITF<!-- </a> -->
+		        </li>
+		        <li class="breadcrumb-item active">ITF Records</li>
+	      	</ol>  
+		    
+	     	<div class="card mb-3">
+      			<div class="card-header">
+      				<i class="fa fa-table"></i> ITF History &nbsp;&nbsp;
+      				<a onclick="doAction('new', 0);">
+      					<button class="btn btn-primary" data-toggle="modal" >Add ITF</button>
+	      			</a>
+	      		</div>	
+	      		<div class="card-body">
+		        	<div class="table-responsive">
+		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+		        			<thead>
+		        				<tr>
+		        					<th>Product</th>
+		        					<th>Quantity</th>
+						          	<th>Main Location</th>
+						          	<th>Sub Location</th>
+						          	<th>Log User</th>
+						          	<th>Log Datetime</th>
+						          	<th>Approval</th>
+						          	<th>Action</th>
+	               			 	</tr>
+		              		</thead>
+		              		<tfoot>
+		                		<tr>
+		                			<th>Product</th>
+		        					<th>Quantity</th>
+						          	<th>Main Location</th>
+						          	<th>Sub Location</th>
+						          	<th>Log User</th>
+						          	<th>Log Datetime</th>
+						          	<th>Approval</th>
+						          	<th>Action</th>
+					          	</tr>
+				          	</tfoot>
+				          	<tbody>
+				          		<tr th:each="itf : ${itfs}">
+				          			<td th:each="p : ${products}" th:if="${p.isProduct(itf.productid)}" th:text="${p.productname}"></td>
+				          			<td th:text="${itf.quantity}"></td>
+				          			<td th:each="m : ${mainlocs}" th:if="${m.isMainLocName(itf.mainlocid)}" th:text="${m.mainlocname}"></td>
+				          			<td th:each="sub : ${sublocs}" th:if="${sub.isSubLocName(itf.sublocid)}" th:text="${sub.sublocname}"></td>
+				          			<td th:if="${itf.sublocid}==0" th:text="'-'"></td>
+				          			<td th:text="${itf.loguser}"></td>
+				          			<td th:text="${itf.logdatetime}"></td>
+				          			<td th:if="${itf.approval}=='pending'"><a th:href="@{/itfapproval(itfid=${itf.itfid},approve='approved')}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/itfapproval(itfid=${itf.itfid},approve='cancelled')}"><i class="fa fa-close" title="Not Approve"></i></a></td>
+						             <td th:unless="${itf.approval}=='pending'" th:text="(${itf.approval}=='approved') ? 'Approved' : 'Not Approve'"></td>
+					             	<td>
+						                <a th:onclick="'doAction(\'edit\',\''+ ${itf.itfid} +'\');'"><button class="btn btn-primary" title="Edit ITF Transaction"><i class="fa fa-edit"></i></button></a>
+						                <a th:onclick="'doAction(\'delete\',\''+ ${itf.itfid} +'\');'"><button class="btn btn-primary" title="Delete ITF Transaction"><i class="fa fa-trash" ></i></button></a>
+				            	 	</td>
+				            	 </tr>
+				          	</tbody>
+			          	</table>
+		          	</div>
+	          	</div>
+	          	<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+          	</div>
+      		
+      		<div class="modal clickable" id="CreateITF" tabindex="-1" role="dialog" aria-labelledby="CreateITF" aria-hidden="true">
+		            <form method="POST" th:action="@{/createITF}" id="CreateITF">
+		                <div class="vertical-alignment-helper">
+		                    <div class="modal-dialog  modal-lg vertical-align-center">
+		                        <!-- Modal content-->
+		                        <div class="modal-content">
+		                            <div class="modal-header">
+		                                <h4 class="modal-title">Add ITF</h4>
+		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                            </div>
+		                            
+		                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+		
+		                            <div class="modal-body">
+		
+		                            </div>
+		
+		                            <div class="modal-footer">
+		                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		                                <button type="submit" class="btn btn-primary">Save</button>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </form>
+		        </div>
+		        
+		        <div class="modal clickable" id="EditITF" tabindex="-1" role="dialog" aria-labelledby="EditITF" aria-hidden="true">
+		            <form method="POST" th:action="@{/editITF}" id="EditITF">
+		                <div class="vertical-alignment-helper">
+		                    <div class="modal-dialog  modal-lg vertical-align-center">
+		                        <!-- Modal content-->
+		                        <div class="modal-content">
+		                            <div class="modal-header">
+		                                <h4 class="modal-title">Edit ITF History</h4>
+		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                            </div>
+		                            
+		                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+		
+		                            <div class="modal-body">
+		
+		                            </div>
+		
+		                            <div class="modal-footer">
+		                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		                                <button type="submit" class="btn btn-primary">Save</button>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </form>
+		        </div>
+				
+				<div class="modal clickable" id="DeleteITF" tabindex="-1" role="dialog" aria-labelledby="DeleteITF" aria-hidden="true">
+		            <form method="POST" th:action="@{/deleteITF}" id="DeleteITF">
+		                <div class="vertical-alignment-helper">
+		                    <div class="modal-dialog  modal-lg vertical-align-center">
+		                        <!-- Modal content-->
+		                        <div class="modal-content">
+		                            <div class="modal-header">
+		                                <h4 class="modal-title">Delete ITF History</h4>
+		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                            </div>
+		                            
+		                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+		
+		                            <div class="modal-body">
+		
+		                            </div>
+		
+		                            <div class="modal-footer">
+		                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		                                <button type="submit" class="btn btn-primary">Delete</button>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </form>
+		        </div>		      
+	   	</div><!-- end of .container-fluid-->
+    </div><!-- end of .content-wrapper-->
+	<div class="footer_ref" th:include="/footer"></div>
+	
+	<script type="text/javascript">
+        function doAction(action, id) {
+            if (action == 'new') {
+                $('#CreateITF .modal-body').empty();
+                $('#CreateITF .modal-title').text("Add ITF");
+                $('#CreateITF .modal-body').load('createITF', function () {
+                    $('#CreateITF').modal({show: true});
+                });
+            } else if (action == 'edit') {
+                $('#EditITF .modal-body').empty();
+                $('#EditITF .modal-title').text("Edit ITF History");
+                $('#EditITF .modal-body').load('editITF?itfid=' + id, function () {
+                    $('#EditITF').modal({show: true});
+                });
+            } else if (action == 'change') {
+            	console.log("change");
+                $('#ChangePwd .modal-body').empty();
+                $('#ChangePwd .modal-title').text("Change Password");
+                $('#ChangePwd .modal-body').load('changePassword?userid=' + id, function () {
+                    $('#ChangePwd').modal({show: true});
+                });
+            } else if (action == 'delete') {
+                $('#DeleteITF .modal-body').empty();
+                $('#DeleteITF .modal-title').text("Delete ITF History");
+                $('#DeleteITF .modal-body').load('deleteITF?itfid=' + id, function () {
+                    $('#DeleteITF').modal({show: true});
+                });
+            }
+        }
+    </script>
+</html>

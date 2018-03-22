@@ -98,7 +98,7 @@
 						             <td th:each="st : ${stocktypes}" th:if="${st.isStockType(sh.stocktypeid)}" th:text="${st.stocktype}"></td>
 						             <td th:each="r : ${reasons}" th:if="${r.isReason(sh.reasonid)}" th:text="${r.reason}"></td>
 						             <td th:text="${sh.remark}"></td>
-						             <td th:if="${sh.approval}=='pending'"><a th:href="@{/approval(stockhistoryid=${sh.stockhistoryid},approve='approved',productid=${sh.productid})}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/approval(stockhistoryid=${sh.stockhistoryid},approve='cancelled',productid=${sh.productid})}"><i class="fa fa-close" title="Not Approve"></i></a></td>
+						             <td th:if="${sh.approval}=='pending'"><a th:href="@{/stockioapproval(stockhistoryid=${sh.stockhistoryid},approve='approved')}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/stockioapproval(stockhistoryid=${sh.stockhistoryid},approve='cancelled')}"><i class="fa fa-close" title="Not Approve"></i></a></td>
 						             <td th:unless="${sh.approval}=='pending'" th:text="(${sh.approval}=='approved') ? 'Approved' : 'Not Approve'"></td>
 						             <!-- <td th:each="m : ${mainlocs}" th:if="${m.isMainLocName(sh.mainlocid)}" th:text="${m.mainlocname}"></td>
 						             <td th:each="s : ${sublocs}" th:if="${s.isSubLocName(sh.sublocid)}" th:text="${s.sublocname}"></td> -->

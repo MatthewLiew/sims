@@ -1,5 +1,6 @@
 package com.sbinventory.controller;
 
+import java.io.File;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -264,14 +265,16 @@ public class ProductController {
 	
 	@PostMapping(value= "/createPartNo")
 	public String postCreatePartNos(@RequestParam String[] serialno,
-			@RequestParam String[] modelno, @RequestParam String[] upccode, int[] productid, 
+			@RequestParam (defaultValue=" ")String[] modelno, @RequestParam String[] upccode, int[] productid, 
 			@RequestParam String customername, @RequestParam String invoiceno, @RequestParam int mainlocid, @RequestParam int sublocid, 
 			Model model, @RequestParam String referer) {
+//		String delims = ",";
 		String delims = ", \r\n\t\f";
 //			String splitString = "one,two,,three,four,,five";
- 
+		System.out.println(serialno);
+		System.out.println(serialno.length);
 		System.out.println("StringTokenizer Example: \n");
-		for(int i=0;i<serialno.length; i++) {
+		for(int i=0; i < serialno.length; i++) {
 			StringTokenizer st = new StringTokenizer(serialno[i],delims);
 			while (st.hasMoreElements()) {
 //				String errorString= partNoDAO.createPartNo(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], productid[i], customername, invoiceno, mainlocid, sublocid, "Available");

@@ -13,8 +13,8 @@ function addmorepartno(){
 	
 	var source = $(".form:first");
 	var clone = source.clone();
-//	clone.find(".serialno").attr('id',count);
-//	clone.find(".get_csv").attr("onchange", "parseCSV('" + count + "')");
+	clone.find(".btn_csv").attr('for',count);
+	clone.find(".get_csv").attr("id", count);
 	clone.appendTo(".clone_form");
 	count++;
 	return false;
@@ -22,44 +22,97 @@ function addmorepartno(){
 
 $(document).on("click", ".remove_partno", function() {
 //	console.log(this.closest(".clone_form .form"));
+	console.log(this);
+//	$(this).hide();
     $(this).closest(".clone_form .form").remove();
     return false;
 });
 
 //function parseCSV(id){
-$(document).on("click", ".get_csv", function() {
+$(document).on("change", ".get_csv", function(e) {
 	
-	var name=$(this).closest("div").find(".serialno").val();
+//	var name=$(this).closest("div").find(".serialno").val();
 	
-	console.log(name);
+//	console.log(name);
+	console.log(this);
+	
+	
+//	$(this).show();
+	var object=this;
+	var files;
+	files = event.target.files;
 
-	$(this).parse({
-		 config: {
-//			 header:"true",
-		 delimiter: "auto",
-		 complete: function(results){
-			 $(".serialno").val(results.data);
-//			 name.val("hell");
-//			 console.log(this);
-//			 $(this).closest("div").find(".serialno").val(results.data);
-//			 $(this).closest(".form-row").find("#serialno").remove();
-		 	},
-		 },
-		 before: function(file, inputElem)
-		 {
-		 //console.log("Parsing file...", file);
-		 },
-		 error: function(err, file)
-		 {
-		 //console.log("ERROR:", err, file);
-		 },
-		 complete: function(results)
-		 {
-//			 console.log("Done with all files");
-		 }
-		 });
+	var file = e.target.files[0];
+	  if (!file) {
+	    return;
+	  }
+	  var reader = new FileReader();
+	  reader.onload = function(e) {
+		console.log(object);
+	    var contents = e.target.result;
+	    let replace = contents.replace(/\W+/g,"\n");
+	    $(object).closest("div").find(".serialno").val(replace);
+	    
+	    var token = contents.split(/\W+\w/);
+	    $(object).closest(".modal-body").find(".quantity").val(token.length);
+	    console.log(token.length);
+	  };
+	  reader.readAsText(file);
+	  
+	  $(this).val("");
+//	return false; 
+	
+	
+//	var a=$(this).find(".get_csv");
+//	console.log(a);
+//	$(this).hide();
+	
+//	  return false;
+	
+//	$(this).parse({
+//		 config: {
+////			 header:"true",
+//		 delimiter: "auto",
+//		 complete: function(results){
+////			 $(".serialno").val(results.data);
+////			 name.val("hell");
+////			 console.log(object);
+//			 console.log(typeof results);
+//			 console.log(results.data);
+//			 var contents="";
+//			 var data=results.data;
+//			 console.log(data);
+//			 for(i=0;i<data.length;i++){
+////				 console.log(typeof data[i]);
+////				 console.log(data[i][0]);
+//				 contents+=data[i][0];
+//				 contents+=" ";
+//				 
+//			 }
+//			 console.log(contents);
+////			 let abc=results.data;
+//			 let replace = contents.replace(/\W+/g,"\n");
+//			 $(object).closest("div").find(".serialno").val(replace);
+////			 $(this).closest("div").find(".serialno").val(results.data);
+////			 $(this).closest(".form-row").find("#serialno").remove();
+//			 
+//		 	},
+//		 },
+//		 before: function(file, inputElem)
+//		 {
+//		 //console.log("Parsing file...", file);
+//		 },
+//		 error: function(err, file)
+//		 {
+//		 //console.log("ERROR:", err, file);
+//		 },
+//		 complete: function(results)
+//		 {
+////			 console.log("Done with all files");
+//		 }
+//		 });
+	
 });
-//}
 
 function displayHTMLTable(results){
 //	 var table = "<table class='table'>";
@@ -132,14 +185,51 @@ function id_subloc_select(id, val) {
 	});
 }
 
-function countSerialNo(form) {
-
-	let serialno= $("#"+form+" .serialno").val();
+$(document).on("input", ".serialno", function() {
+//	console.log(this.closest(".clone_form .form"));
+//	console.log(this);
+	let serialno= $(this).val();
+	
+	let replace = serialno.replace(","," ");
+	
+	$(this).val(replace);
 	
 	var token = serialno.split(/\W+\w/);
 	
-	$("#"+form+" .quantity").val(token.length);
-}
+//	$("#"+form+" .quantity").val(token.length);
+	$(this).closest(".modal-body").find(".quantity").val(token.length);
+//	$(this).hide();
+//    $(this).closest(".clone_form .form").remove();
+    return false;
+});
+
+//function countSerialNo(form) {
+//	
+////	let serialno= $("#"+form+" .serialno").val();
+//	let serialno= $("#"+form+" .serialno").val();
+//	
+//	var token = serialno.split(/\W+\w/);
+//	
+//	$("#"+form+" .quantity").val(token.length);
+//	
+//	let replace = serialno.replace(","," ");
+//	
+//	$("#"+form+" .serialno").val(replace);
+//}
+
+//function countSerialNo2() {
+//
+//	let serialno= $(this).val();
+//	console.log(this);
+//	
+//	var token = serialno.split(/\W+\w/);
+//	
+//	$("#"+form+" .quantity").val(token.length);
+//	
+//	let replace = serialno.replace(","," ");
+//	
+//	$(this).val(replace);
+//}
 
 function reason_option(val) {
 

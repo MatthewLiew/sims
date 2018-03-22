@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+   	</head>
+   	
+	<p class="error" style="color: red;" th:text="${errorString}" ></p>
+	<input type="hidden" name="referer" th:value="${referer}" />
+      
+	<div class="form-group">
+    	<div class="form-row">
+        	<div class="col-md-3">
+            	<label for="StockTypeLabel">Product</label>
+            </div>
+            <div class="col-md-6">
+            	<select class="form-control" name="productid" required>
+           			<option value="">Select Product</option>
+           			<option th:each="elem: ${products}" th:value="${elem.productid}" th:text="${elem.productname}"></option>
+       			</select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+    	<div class="form-row">
+        	<div class="col-md-3">
+            	<label for="ReasonLabel">Quantity</label>
+            </div>
+            <div class="col-md-6">
+           		<input class="form-control quantity" id="quantity" name="quantity" type="text" data-error="Please Enter Quantity" aria-describedby="Quantity" placeholder="Enter Quantity" value="" required>
+       	 	</div>
+            <div class="col-md-3">
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+    	<div class="form-row">
+        	<div class="col-md-3">
+            	<label for="SerialNoLabel">Serial No</label>
+       		</div>
+           	<div class="col-md-6">
+       			<textarea class="form-control serialno" id="serialno" name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space" onkeyup="countSerialNo('CreateRMA');"></textarea>
+           	</div>
+           	<div class="col-md-3">
+           	</div>
+       	</div>
+	</div>
+    <div class="form-group">
+    	<div class="form-row">
+        	<div class="col-md-3">
+            	<label for="StockTypeLabel">Main Location</label>
+            </div>
+            <div class="col-md-6">
+            	<select class="form-control" name="mainlocid" onchange="subloc_select('CreateITF',this.value);" required>
+           			<option value="">Select Main Location</option>
+           			<option th:each="elem: ${mainlocs}" th:value="${elem.mainlocid}" th:text="${elem.mainlocname}">
+           			</option>
+       			</select>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group">
+    	<div class="form-row">
+        	<div class="col-md-3">
+            	<label for="StockTypeLabel">Sub Location</label>
+            </div>
+            <div class="col-md-6">
+            	<select class="form-control subloc_select" name="sublocid" required>
+           			<option value="">Select Sub Location</option>
+       			</select>
+            </div>
+        </div>
+    </div>
+        
+</html>

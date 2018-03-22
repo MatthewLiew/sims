@@ -31,15 +31,8 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
 		this.setDataSource(dataSource);
 	}
 	
-	public String createTransferHistory(String loguser, 
-										String logdatetime, 
-									 int productid, 
-									 int quantity, 
-									 int orimainlocid, 
-									 int orisublocid,
-									 int desmainlocid,
-									 int dessublocid,
-									 String approval) {
+	public String createTransferHistory(String loguser, String logdatetime, int productid, int quantity, int orimainlocid, int orisublocid, 
+			int desmainlocid, int dessublocid, String approval) {
 
 		Object[] params=new Object[]{loguser, logdatetime, productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid, approval};
 //		Object[] params=new Object[]{"null",logdatetime, productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid};
