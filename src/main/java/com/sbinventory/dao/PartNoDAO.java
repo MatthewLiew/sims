@@ -42,6 +42,20 @@ public class PartNoDAO extends JdbcDaoSupport{
         }
 	}
 	
+	public List<PartNo> getAllProductID(int productid){
+		
+		String sql=READ_SQL+ " where PRODUCT_ID = ?";
+		Object[] params =new Object[] {productid};
+		PartNoMapper mapper=new PartNoMapper();
+		
+		try {
+            List<PartNo> partnos =  this.getJdbcTemplate().query(sql, params, mapper);
+            return partnos;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+	
 	public PartNo getPartNo(int partnoid){
 		
 		String sql=READ_SQL+ " where ID = ?";

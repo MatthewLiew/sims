@@ -50,19 +50,19 @@
 					          	</tr>
 				          	</tfoot>
 				          	<tbody>
-				          		<tr th:each="itf : ${itfs}">
-				          			<td th:each="p : ${products}" th:if="${p.isProduct(itf.productid)}" th:text="${p.productname}"></td>
-				          			<td th:text="${itf.quantity}"></td>
-				          			<td th:each="m : ${mainlocs}" th:if="${m.isMainLocName(itf.mainlocid)}" th:text="${m.mainlocname}"></td>
-				          			<td th:each="sub : ${sublocs}" th:if="${sub.isSubLocName(itf.sublocid)}" th:text="${sub.sublocname}"></td>
-				          			<td th:if="${itf.sublocid}==0" th:text="'-'"></td>
-				          			<td th:text="${itf.loguser}"></td>
-				          			<td th:text="${itf.logdatetime}"></td>
-				          			<td th:if="${itf.approval}=='pending'"><a th:href="@{/itfapproval(itfid=${itf.itfid},approve='approved')}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/itfapproval(itfid=${itf.itfid},approve='cancelled')}"><i class="fa fa-close" title="Not Approve"></i></a></td>
-						             <td th:unless="${itf.approval}=='pending'" th:text="(${itf.approval}=='approved') ? 'Approved' : 'Not Approve'"></td>
+				          		<tr th:each="ar : ${assetreqs}">
+				          			<td th:each="p : ${products}" th:if="${p.isProduct(ar.productid)}" th:text="${p.productname}"></td>
+				          			<td th:text="${ar.quantity}"></td>
+				          			<td th:each="m : ${mainlocs}" th:if="${m.isMainLocName(ar.mainlocid)}" th:text="${m.mainlocname}"></td>
+				          			<td th:each="sub : ${sublocs}" th:if="${sub.isSubLocName(ar.sublocid)}" th:text="${sub.sublocname}"></td>
+				          			<td th:if="${ar.sublocid}==0" th:text="'-'"></td>
+				          			<td th:text="${ar.loguser}"></td>
+				          			<td th:text="${ar.logdatetime}"></td>
+				          			<td th:if="${ar.approval}=='pending'"><a th:href="@{/arapproval(assetreqsid=${ar.assetreqsid},approve='approved')}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/arapproval(assetreqsid=${ar.assetreqsid},approve='cancelled')}"><i class="fa fa-close" title="Not Approve"></i></a></td>
+						             <td th:unless="${ar.approval}=='pending'" th:text="(${ar.approval}=='approved') ? 'Approved' : 'Not Approve'"></td>
 					             	<td>
-						                <a th:onclick="'doAction(\'edit\',\''+ ${itf.itfid} +'\');'"><button class="btn btn-primary" title="Edit ITF Transaction"><i class="fa fa-edit"></i></button></a>
-						                <a th:onclick="'doAction(\'delete\',\''+ ${itf.itfid} +'\');'"><button class="btn btn-primary" title="Delete ITF Transaction"><i class="fa fa-trash" ></i></button></a>
+						                <a th:onclick="'doAction(\'edit\',\''+ ${ar.assetreqsid} +'\');'"><button class="btn btn-primary" title="Edit Asset Requisition Transaction"><i class="fa fa-edit"></i></button></a>
+						                <a th:onclick="'doAction(\'delete\',\''+ ${ar.assetreqsid} +'\');'"><button class="btn btn-primary" title="Delete Asset Requisition Transaction"><i class="fa fa-trash" ></i></button></a>
 				            	 	</td>
 				            	 </tr>
 				          	</tbody>
@@ -72,14 +72,14 @@
 	          	<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
           	</div>
       		
-      		<div class="modal clickable" id="CreateITF" tabindex="-1" role="dialog" aria-labelledby="CreateITF" aria-hidden="true">
-		            <form method="POST" th:action="@{/createITF}" id="CreateITF">
+      		<div class="modal clickable" id="CreateAssetReqs" tabindex="-1" role="dialog" aria-labelledby="CreateAssetReqs" aria-hidden="true">
+		            <form method="POST" th:action="@{/createAssetReqs}" id="CreateAssetReqs">
 		                <div class="vertical-alignment-helper">
 		                    <div class="modal-dialog  modal-lg vertical-align-center">
 		                        <!-- Modal content-->
 		                        <div class="modal-content">
 		                            <div class="modal-header">
-		                                <h4 class="modal-title">Add ITF</h4>
+		                                <h4 class="modal-title">Add Asset Requisition</h4>
 		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
 		                            </div>
 		                            
@@ -99,14 +99,14 @@
 		            </form>
 		        </div>
 		        
-		        <div class="modal clickable" id="EditITF" tabindex="-1" role="dialog" aria-labelledby="EditITF" aria-hidden="true">
-		            <form method="POST" th:action="@{/editITF}" id="EditITF">
+		        <div class="modal clickable" id="EditAssetReqs" tabindex="-1" role="dialog" aria-labelledby="EditAssetReqs" aria-hidden="true">
+		            <form method="POST" th:action="@{/editAssetReqs}" id="EditAssetReqs">
 		                <div class="vertical-alignment-helper">
 		                    <div class="modal-dialog  modal-lg vertical-align-center">
 		                        <!-- Modal content-->
 		                        <div class="modal-content">
 		                            <div class="modal-header">
-		                                <h4 class="modal-title">Edit ITF History</h4>
+		                                <h4 class="modal-title">Edit Asset Requisition History</h4>
 		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
 		                            </div>
 		                            
@@ -126,14 +126,14 @@
 		            </form>
 		        </div>
 				
-				<div class="modal clickable" id="DeleteITF" tabindex="-1" role="dialog" aria-labelledby="DeleteITF" aria-hidden="true">
-		            <form method="POST" th:action="@{/deleteITF}" id="DeleteITF">
+				<div class="modal clickable" id="DeleteAssetReqs" tabindex="-1" role="dialog" aria-labelledby="DeleteAssetReqs" aria-hidden="true">
+		            <form method="POST" th:action="@{/deleteAssetReqs}" id="DeleteAssetReqs">
 		                <div class="vertical-alignment-helper">
 		                    <div class="modal-dialog  modal-lg vertical-align-center">
 		                        <!-- Modal content-->
 		                        <div class="modal-content">
 		                            <div class="modal-header">
-		                                <h4 class="modal-title">Delete ITF History</h4>
+		                                <h4 class="modal-title">Delete Asset Requisition History</h4>
 		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
 		                            </div>
 		                            
@@ -159,16 +159,16 @@
 	<script type="text/javascript">
         function doAction(action, id) {
             if (action == 'new') {
-                $('#CreateITF .modal-body').empty();
-                $('#CreateITF .modal-title').text("Add ITF");
-                $('#CreateITF .modal-body').load('createITF', function () {
-                    $('#CreateITF').modal({show: true});
+                $('#CreateAssetReqs .modal-body').empty();
+                $('#CreateAssetReqs .modal-title').text("Add Asset Requisition");
+                $('#CreateAssetReqs .modal-body').load('createAssetReqs', function () {
+                    $('#CreateAssetReqs').modal({show: true});
                 });
             } else if (action == 'edit') {
-                $('#EditITF .modal-body').empty();
-                $('#EditITF .modal-title').text("Edit ITF History");
-                $('#EditITF .modal-body').load('editITF?itfid=' + id, function () {
-                    $('#EditITF').modal({show: true});
+                $('#EditAssetReqs .modal-body').empty();
+                $('#EditAssetReqs .modal-title').text("Edit Asset Requisition History");
+                $('#EditAssetReqs .modal-body').load('editAssetReqs?assetreqsid=' + id, function () {
+                    $('#EditAssetReqs').modal({show: true});
                 });
             } else if (action == 'change') {
             	console.log("change");
@@ -178,10 +178,10 @@
                     $('#ChangePwd').modal({show: true});
                 });
             } else if (action == 'delete') {
-                $('#DeleteITF .modal-body').empty();
-                $('#DeleteITF .modal-title').text("Delete ITF History");
-                $('#DeleteITF .modal-body').load('deleteITF?itfid=' + id, function () {
-                    $('#DeleteITF').modal({show: true});
+                $('#DeleteAssetReqs .modal-body').empty();
+                $('#DeleteAssetReqs .modal-title').text("Delete Asset Requisition History");
+                $('#DeleteAssetReqs .modal-body').load('deleteAssetReqs?assetreqsid=' + id, function () {
+                    $('#DeleteAssetReqs').modal({show: true});
                 });
             }
         }

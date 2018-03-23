@@ -14,10 +14,13 @@
                 	<label for="ProductLabel">Product</label>
                	</div>
                	<div class="col-md-6">
-               		<select class="form-control" name="productid" required>
+               		<select class="form-control productid" name="productid" required>
 			            <option value="">Select Product</option>
 			            <option th:each="list: ${products}" th:selected="${list.isProduct(index)}" th:value="${list.productid}" th:text="${list.productname}"></option>
 		        	</select>
+               	</div>
+               	<div class="col-md-3">
+                	<span class="serialno_status"></span>
                	</div>
        		</div>
        	</div>
@@ -78,6 +81,8 @@
 			         <button class="btn btn-primary">Upload</button>
 			      </form> -->
 			      
+               		<span class="quantity"></span>
+               		<span class="outstanding"></span>
                	</div>
            	</div>
    		</div>

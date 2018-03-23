@@ -1,14 +1,6 @@
 var BASE_URL = window.location.origin+"/";
 var count=0;
 
-//function addmorepartno(){
-////	var $element=$(".create_partno_table").data();
-////	var cln = $element.clone(true);
-////    $(".create_partno").appendChild(cln);
-//	$(".create_partno_table:first").clone().insertAfter(".create_partno_table:last");
-//	return false;
-//}
-
 function addmorepartno(){
 	
 	var source = $(".form:first");
@@ -36,8 +28,6 @@ $(document).on("change", ".get_csv", function(e) {
 //	console.log(name);
 	console.log(this);
 	
-	
-//	$(this).show();
 	var object=this;
 	var files;
 	files = event.target.files;
@@ -48,26 +38,23 @@ $(document).on("change", ".get_csv", function(e) {
 	  }
 	  var reader = new FileReader();
 	  reader.onload = function(e) {
-		console.log(object);
+//		console.log(object);
 	    var contents = e.target.result;
+	    console.log(typeof contents);
 	    let replace = contents.replace(/\W+/g,"\n");
 	    $(object).closest("div").find(".serialno").val(replace);
 	    
 	    var token = contents.split(/\W+\w/);
 	    $(object).closest(".modal-body").find(".quantity").val(token.length);
-	    console.log(token.length);
+	    $(object).closest(".form-row").find(".quantity").html(token.length);
+
 	  };
 	  reader.readAsText(file);
 	  
 	  $(this).val("");
+	  
 //	return false; 
 	
-	
-//	var a=$(this).find(".get_csv");
-//	console.log(a);
-//	$(this).hide();
-	
-//	  return false;
 	
 //	$(this).parse({
 //		 config: {
@@ -114,29 +101,6 @@ $(document).on("change", ".get_csv", function(e) {
 	
 });
 
-function displayHTMLTable(results){
-//	 var table = "<table class='table'>";
-	console.log("Done with all files111");
-	 var data = results.data;
-	 $(".serialno").val(data);
-//	 for(i=0;i<data.length;i++){
-//		 
-////	 table+= "<tr>";
-//	 var row = data[i];
-//	 var cells = row.join(",").split(",");
-//		 
-//		 for(j=0;j<cells.length;j++){
-////			 table+= "<td>";
-////			 table+= cells[j];
-//			 
-////			 console.log(cells[j]);
-////			 table+= "</th>";
-//		 }
-////		 table+= "</tr>";
-//	 }
-//	 table+= "</table>";
-//	 $("#parsed_csv_list").html(table);
-}
 function subloc_select(id, val) {
 
 	var data={ mainlocid:val }
@@ -198,38 +162,58 @@ $(document).on("input", ".serialno", function() {
 	
 //	$("#"+form+" .quantity").val(token.length);
 	$(this).closest(".modal-body").find(".quantity").val(token.length);
+	$(this).closest(".form-row").find(".quantity").html(token.length);
+	
+	if(serialno=="")
+		$(this).closest(".form-row").find(".quantity").html(" ");
 //	$(this).hide();
 //    $(this).closest(".clone_form .form").remove();
     return false;
 });
 
-//function countSerialNo(form) {
-//	
-////	let serialno= $("#"+form+" .serialno").val();
-//	let serialno= $("#"+form+" .serialno").val();
-//	
-//	var token = serialno.split(/\W+\w/);
-//	
-//	$("#"+form+" .quantity").val(token.length);
-//	
-//	let replace = serialno.replace(","," ");
-//	
-//	$("#"+form+" .serialno").val(replace);
-//}
-
-//function countSerialNo2() {
-//
-//	let serialno= $(this).val();
-//	console.log(this);
-//	
-//	var token = serialno.split(/\W+\w/);
-//	
-//	$("#"+form+" .quantity").val(token.length);
-//	
-//	let replace = serialno.replace(","," ");
-//	
-//	$(this).val(replace);
-//}
+function trial(form){
+	
+	let a=$("#"+form+" .serialno_status").text();
+	let b=$("#"+form+" .quantity").text();
+	
+	console.log(this);
+	if(parseInt(b)>parseInt(a)){
+//		alert(0);
+		var num=parseInt(b)-parseInt(a);
+		$("#"+form+" .outstanding").html("outstanding "+num+" S/N");
+//		$("#OutstandingS/N").modal({show: true});
+		return false;
+		
+	} else {
+//		alert(1);
+		return true;
+	}
+}
+$(document).on("change", ".productid", function() {
+	
+	var current=this;
+	var data={ productid: this.value };
+	console.log(data);
+	$.ajax({
+		type: "POST",
+		url: BASE_URL + "api/checkSerialAvailability",
+		contentType: "application/json",
+		data: JSON.stringify (data),
+		dataType: 'json',
+		
+		success: function (response) {
+			$(current).closest(".form-row").find(".serialno_status").html(response.status);
+//			$("#"+id+" .subdept_select").empty();
+//			$("#"+id+" .subdept_select").append("<option value='0'>Select Sub Department</option>");
+//			if(!jQuery.isEmptyObject(response)){
+//				$("#"+id+" .subdept_select").append("<option value='0'>No Sub Department</option>");
+//			}
+//			for(var i of response) {
+//				$("#"+id+" .subdept_select").append("<option value='"+i["subdeptid"]+"'>"+i["subdeptname"]+"</option>");
+//			}
+		}
+	});
+});
 
 function reason_option(val) {
 
