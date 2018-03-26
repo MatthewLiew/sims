@@ -4,10 +4,17 @@ var count=0;
 function addmorepartno(){
 	
 	var source = $(".form:first");
+//	var cloneform=$(".clone_form");
+	var clone = source.html();
 	var clone = source.clone();
 	clone.find(".btn_csv").attr('for',count);
 	clone.find(".get_csv").attr("id", count);
+	clone.find(".autostockin").hide();
+	clone.find(".serialno").val("");
+	clone.find(".serialno_status").text("");
+//	clone.find(".get_csv").attr("id", count);
 	clone.appendTo(".clone_form");
+//	cloneform.append(clone);
 	count++;
 	return false;
 }
@@ -173,21 +180,53 @@ $(document).on("input", ".serialno", function() {
 
 function trial(form){
 	
-	let a=$("#"+form+" .serialno_status").text();
-	let b=$("#"+form+" .quantity").text();
-	
-	console.log(this);
-	if(parseInt(b)>parseInt(a)){
-//		alert(0);
-		var num=parseInt(b)-parseInt(a);
-		$("#"+form+" .outstanding").html("outstanding "+num+" S/N");
-//		$("#OutstandingS/N").modal({show: true});
-		return false;
+	let a=$("#"+form+" .serialno_status");
+	let b=$("#"+form+" .quantity");
+	let d=$("#"+form+" .serialno");
+	let e=$("#"+form+" .addstockcheck");
+	let f=$("#"+form+" .outstanding");
+	let g=$("#"+form+" .autostockin");
+//	$(".autostockin").show();
+	let gotcha = true;
+//	console.log(d.length);
+	for(var i=0; i < d.length; i++){
+//		console.log("d"+i+": "+d[i].value);
+//		console.log(b[i].innerHTML);
+//		console.log(a[i].innerHTML);
 		
-	} else {
-//		alert(1);
-		return true;
+		if(parseInt(b[i].innerHTML)>parseInt(a[i].innerHTML)){
+			var num=parseInt(b[i].innerHTML)-parseInt(a[i].innerHTML);
+			$(f[i]).html("Add "+num+" Stock?");
+			$(g[i]).show();
+			$(e[i]).prop("value", num);
+		} else {
+			$(g[i]).hide();
+			$(e[i]).prop("checked", true);
+			$(e[i]).prop("value", 0);
+		}
+		
+		if(e[i].checked==false){
+			console.log(i);
+			gotcha=false;
+		}
 	}
+	
+	if(gotcha){
+		return true;
+	} else {
+		return false;
+	}
+//	if((parseInt(b)>parseInt(a))&&(c==0)){
+////		console.log(0);
+//		var num=parseInt(b)-parseInt(a);
+//		$("#"+form+" .outstanding").html("Require "+num+" stock to upload all serial number <br>Add Stock Automatically?");
+////		$("#OutstandingS/N").modal({show: true});
+//		return false;
+//		
+//	} else {
+////		console.log(1);
+//		return true;
+//	}
 }
 $(document).on("change", ".productid", function() {
 	
@@ -213,6 +252,8 @@ $(document).on("change", ".productid", function() {
 //			}
 		}
 	});
+	
+	
 });
 
 function reason_option(val) {

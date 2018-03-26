@@ -516,10 +516,10 @@ public class MainRESTController {
 	@PostMapping(value="/api/checkSerialAvailability")
 	public Response checkSerialAvailability(@RequestBody Product product) {
 		Product productd = productDAO.getProduct(product.getProductid());
-		System.out.println(productd.getQuantity());
+//		System.out.println(productd.getQuantity());
 		
 		List<PartNo> partnos = partNoDAO.getAllProductID(product.getProductid());
-		System.out.println(partnos.size());
+//		System.out.println(partnos.size());
 //		List<SubLoc> sublocs=subLocDAO.getAllSubLoc(subloc.getMainlocid());
 		int amount = (productd.getQuantity())-(partnos.size());
 		

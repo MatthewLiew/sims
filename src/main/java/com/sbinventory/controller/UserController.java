@@ -171,7 +171,7 @@ public class UserController {
 								 @RequestParam int userrole, 
 								 Model model, 
 								 @RequestParam String referer) {
-//			String errorString=userAccountDAO.createUserAccount(usercode, username, password, orgid, deptid, subdeptid);
+			String errorString=userAccountDAO.createUserAccount( username, password, orgid, deptid, subdeptid);
 //			UserAccount user=userAccountDAO.getUserName(username);
 //
 //			userRoleDAO.createUserRole(user.getUserid(), userrole);

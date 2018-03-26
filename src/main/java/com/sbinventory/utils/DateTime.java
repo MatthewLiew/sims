@@ -16,6 +16,11 @@ public class DateTime {
 		return ZonedDateTime.now(ZoneId.of("Asia/Singapore")).minusDays(30).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	}
 	
+	public static String TimeNow(){
+		
+		return ZonedDateTime.now(ZoneId.of("Asia/Singapore")).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+	}
+	
 	public static String Now(){
 		
 		return ZonedDateTime.now(ZoneId.of("Asia/Singapore")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));

@@ -244,6 +244,12 @@ public class StockController {
 		
 		UploadForm UploadForm = new UploadForm();
 	    model.addAttribute("UploadForm", UploadForm);
+	    
+	    List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		model.addAttribute("mainlocs", mainlocs);
+		
+		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		model.addAttribute("sublocs", sublocs);
 
 		return "stock/serialManagement";
 	}
@@ -789,7 +795,7 @@ public class StockController {
 	@PostMapping(value= "/deleteTransferHistory")
 	public String postDeleteTransferHistory(@RequestParam int transferhistoryid, Model model, @RequestParam String referer ) {
 		System.out.println(transferhistoryid);
-//		transferHistoryDAO.deleteStockHistory(transferhistoryid);
+		transferHistoryDAO.deleteStockHistory(transferhistoryid);
 			
 		return "redirect:"+referer;
 	}

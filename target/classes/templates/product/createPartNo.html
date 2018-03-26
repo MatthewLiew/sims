@@ -66,7 +66,7 @@
 				      	</label>
 
 				      	<input class="btn btn-primary get_csv" name=file id="file_upload" type="file" accept=".csv" style="display:none;" />
-			      	
+               			
                	</div>
                	<div class="col-md-3">
                		<!-- <form method="POST" th:action="@{/uploadOneFile}" th:object="${UploadForm}" enctype="multipart/form-data" style="display:inline-block;">
@@ -80,9 +80,14 @@
 						<input type="submit" value="Upload">
 			         <button class="btn btn-primary">Upload</button>
 			      </form> -->
+			      	<div class="autostockin" style="display:none;">
+           				<span class="outstanding"></span><br>
+			           	<label class="radio-inline">
+			               	<input class="addstockcheck" type="checkbox" name="addstock" value="1" />Add
+			           	</label>
+		           	</div>
 			      
-               		<span class="quantity"></span>
-               		<span class="outstanding"></span>
+               		<span class="quantity" style="visibility:hidden;"></span>
                	</div>
            	</div>
    		</div>

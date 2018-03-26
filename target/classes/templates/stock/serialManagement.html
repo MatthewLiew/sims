@@ -46,6 +46,8 @@
 						          	<th>Status</th>
 						          	<th>Customer Name</th>
 						          	<th>Invoice</th>
+						          	<th>Main Location</th>
+						          	<th>Sub Location</th>
 						          	<th>Action</th>
 	               			 	</tr>
 		              		</thead>
@@ -58,6 +60,8 @@
 						          	<th>Status</th>
 						          	<th>Customer Name</th>
 						          	<th>Invoice</th>
+						          	<th>Main Location</th>
+						          	<th>Sub Location</th>
 						          	<th>Action</th>
 					          	</tr>
 				          	</tfoot>
@@ -73,6 +77,8 @@
 <!-- 					             	<td th:if="${pn.status}!='Available'" style="color:green;" th:text="${pn.status}"></td> -->
 					             	<td th:text="${pn.customername}"></td>
 					             	<td th:text="${pn.invoiceno}"></td>
+					             	<td th:each="list: ${mainlocs}" th:if="${list.isMainLocName(pn.mainlocid)}" th:text="${list.mainlocname}"></td>
+					             	<td th:each="list: ${sublocs}" th:if="${list.isSubLocName(pn.sublocid)}" th:text="${list.sublocname}"></td>
 					             	<td>
 					              	 	<a th:onclick="'doAction(\'edit\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Edit Serial No"><i class="fa fa-edit" title="Edit Serial No"></i></button></a>
 						             	<a th:onclick="'doAction(\'delete\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Delete Serial No"><i class="fa fa-trash" title="Delete Serial No"></i></button></a>
@@ -104,9 +110,9 @@
 	                            <div class="modal-footer">
 	                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 	                                <button type="submit" class="btn btn-primary">Save</button>
-	                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#OutstandingS/N">
+	                                <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#OutstandingS/N">
 									  Launch another demo modal b
-									</button>
+									</button> -->
 	                            </div>
 	                        </div>
 	                    </div>

@@ -33,12 +33,12 @@ public class UserAccountDAO extends JdbcDaoSupport {
 		this.setDataSource(dataSource);
 	}
 	
-	public String createUserAccount(int usercode, String username, String enPW, 
+	public String createUserAccount( String username, String enPW, 
 			int orgid, int deptid, int subdeptid) {
 		int enabled=1;
 		enPW= pwencoder.encrytePassword(enPW);
 		
-		Object[] params=new Object[]{usercode, username, enPW, enabled, orgid, deptid, subdeptid};
+		Object[] params=new Object[]{username, enPW, enabled, orgid, deptid, subdeptid};
 		String sql=CREATE_SQL;
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);

@@ -24,33 +24,33 @@
    		</div>
    	</div>
     
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="MainLocationLabel">Main Location</label>
-            </div>
-            <div class="col-md-6">
-	            <select class="form-control" name="mainlocid" required onchange="subloc_select('CreatePartNo',this.value);">
-		            <option value="">Select Main Location</option>
-		            <option th:each="list: ${mainlocs}" th:selected="${list.isMainLocName(partno.mainlocid)}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option>
-	       		</select>
-            </div>
-        </div>
-    </div>
+<!--     <div class="form-group"> -->
+<!--         <div class="form-row"> -->
+<!--             <div class="col-md-3"> -->
+<!--                 <label for="MainLocationLabel">Main Location</label> -->
+<!--             </div> -->
+<!--             <div class="col-md-6"> -->
+<!-- 	            <select class="form-control" name="mainlocid" required onchange="subloc_select('EditPartNo',this.value);"> -->
+<!-- 		            <option value="">Select Main Location</option> -->
+<!-- 		            <option th:each="list: ${mainlocs}" th:selected="${list.isMainLocName(partno.mainlocid)}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option> -->
+<!-- 	       		</select> -->
+<!--             </div> -->
+<!--         </div> -->
+<!--     </div> -->
 	    
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="SubLocationLabel">Sub Location</label>
-            </div>
-            <div class="col-md-6">                    
-	            <select class="form-control subloc_select" name="sublocid" required>
-	            	<option value="">Select Sub Location</option>
-	            	<option th:each="list: ${sublocs}" th:selected="${list.isSubLocName(partno.sublocid)}" th:value="${list.sublocid}" th:text="${list.sublocname}"></option>
-	        	</select>
-            </div>
-         </div>
-     </div>
+<!-- 	<div class="form-group"> -->
+<!--         <div class="form-row"> -->
+<!--             <div class="col-md-3"> -->
+<!--                 <label for="SubLocationLabel">Sub Location</label> -->
+<!--             </div> -->
+<!--             <div class="col-md-6">                     -->
+<!-- 	            <select class="form-control subloc_select" name="sublocid" required> -->
+<!-- 	            	<option value="">Select Sub Location</option> -->
+<!-- 	            	<option th:each="list: ${sublocs}" th:selected="${list.isSubLocName(partno.sublocid)}" th:value="${list.sublocid}" th:text="${list.sublocname}"></option> -->
+<!-- 	        	</select> -->
+<!--             </div> -->
+<!--          </div> -->
+<!--      </div> -->
      
      <div class="form-group">
          <div class="form-row">

@@ -35,6 +35,8 @@ import com.sbinventory.model.PartNo;
 import com.sbinventory.model.Product;
 import com.sbinventory.model.StockType;
 import com.sbinventory.model.SubLoc;
+import com.sbinventory.utils.DateTime;
+import com.sbinventory.utils.StockQuantity;
 
 @Controller
 public class ProductController {
@@ -59,6 +61,12 @@ public class ProductController {
 	
 	@Autowired
 	private SubLocDAO subLocDAO;
+	
+	@Autowired
+	private StockHistoryDAO stockHistoryDAO;
+	
+	@Autowired
+	private StockQuantity stockquantity;
 
 	/**************** INFORMATION PORTAL ***********************/
 	@GetMapping(value= "/hardware")
@@ -254,6 +262,8 @@ public class ProductController {
 		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
 		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
 		
+		stockquantity.update();
+		
 		model.addAttribute("index", productid);
 		model.addAttribute("errorString",null);
 		model.addAttribute("products",products);
@@ -267,20 +277,34 @@ public class ProductController {
 	public String postCreatePartNos(@RequestParam String[] serialno,
 			@RequestParam (defaultValue=" ")String[] modelno, @RequestParam String[] upccode, int[] productid, 
 			@RequestParam String customername, @RequestParam String invoiceno, @RequestParam int mainlocid, @RequestParam int sublocid, 
-			Model model, @RequestParam String referer) {
+			@RequestParam int[] addstock, Model model, @RequestParam String referer ) {
 //		String delims = ",";
 		String delims = ", \r\n\t\f";
 //			String splitString = "one,two,,three,four,,five";
-		System.out.println(serialno);
-		System.out.println(serialno.length);
-		System.out.println("StringTokenizer Example: \n");
+		
+//		System.out.println(serialno.length);
+//		System.out.println("StringTokenizer Example: \n");
 		for(int i=0; i < serialno.length; i++) {
-			StringTokenizer st = new StringTokenizer(serialno[i],delims);
-			while (st.hasMoreElements()) {
-//				String errorString= partNoDAO.createPartNo(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], productid[i], customername, invoiceno, mainlocid, sublocid, "Available");
-				System.out.println(productid[i]+" "+modelno[i]+" "+" Token: "+st.nextElement());
+			
+//			StringTokenizer st = new StringTokenizer(serialno[i],delims);
+//			while (st.hasMoreElements()) {
+////				String errorString= partNoDAO.createPartNo(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], productid[i], customername, invoiceno, mainlocid, sublocid, "Available");
+//				System.out.println(productid[i]+" "+modelno[i]+" "+" Token: "+st.nextElement());
+//			}
+			if(addstock[i]!=0) {
+				String date = DateTime.DateNow();
+				String time = DateTime.TimeNow();
+				String logdatetime = DateTime.Now();
+				int stocktypeid = 1;
+				int reasonid= 1;
+				String remark=" ";
+//				System.out.println("Im here");
+				String errorString= stockHistoryDAO.createStockHistory(productid[i], mainlocid, sublocid, addstock[i], date, time, stocktypeid, reasonid, remark, logdatetime, null, "approved");
+				
+				
 			}
 		}
+		stockquantity.update();
 //			for(int b:productid){
 //				System.out.println(b);
 //			}
@@ -314,10 +338,10 @@ public class ProductController {
 	}
 	
 	@PostMapping(value= "/editPartNo")
-	public String postEditPartNos(/*@RequestParam*/ int partnoid,
+	public String postEditPartNo(/*@RequestParam*/ int partnoid,
 			/*@RequestParam*/ String serialno, /*@RequestParam*/ String modelno, /*@RequestParam*/ String upccode/*, @RequestParam int productid*/, 
 			/*@RequestParam*/ String customername, /*@RequestParam*/ String invoiceno, int mainlocid, int sublocid, Model model, /*@RequestParam*/ String referer) {
-
+			System.out.println(mainlocid+" "+sublocid);
 			String errorString=partNoDAO.updatePartNo(partnoid, serialno, modelno, upccode, /*productid,*/ customername, invoiceno, mainlocid, sublocid);
 //			if(errorString==null) {
 			return "redirect:"+referer; 

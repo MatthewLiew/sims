@@ -173,7 +173,7 @@ public class PartNoDAO extends JdbcDaoSupport{
 	
 	public String updatePartNo(int partnoid, String serialno, String modelno, String upccode, /*int productid,*/ String customername, String invoiceno, int mainlocid, int sublocid){
 		String sql=UPDATE_SQL+" set SERIAL_NO = ?, MODEL_NO = ?, UPC_CODE = ?, CUSTOMER_NAME = ?, INVOICE_NO = ?, MAIN_LOC_ID = ?, SUB_LOC_ID = ? where ID= ?";
-		Object[] params=new Object[] { serialno, modelno, upccode, /*productid,*/ customername, invoiceno, partnoid, mainlocid, sublocid };
+		Object[] params=new Object[] { serialno, modelno, upccode, /*productid,*/ customername, invoiceno, mainlocid, sublocid, partnoid };
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
