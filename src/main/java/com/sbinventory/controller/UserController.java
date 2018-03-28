@@ -7,10 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sbinventory.dao.AppRoleDAO;
 import com.sbinventory.dao.BrandDAO;
@@ -59,29 +62,76 @@ public class UserController {
 	@GetMapping(value= "/useraccount")
 	public String getUserAccount(Model model) {
 		
-		List<UserAccount> useraccs=userAccountDAO.getAllUserAccount();
+		List<UserAccount> useraccs=userAccountDAO.findAll();
 		List<AppRole> approles = appRoleDAO.getAllRoleNames();
 		List<Organization> orgs= organizationDAO.getAllOrganization();
 		List<Dept> depts= deptDAO.getAllDept();
 		List<SubDept> subdepts = subDeptDAO.getAllSubDept();
+		
+		String message = (String)model.asMap().get("message");
 		
 		model.addAttribute("useraccs",useraccs);
 		model.addAttribute("approles",approles);
         model.addAttribute("orgs",orgs);
         model.addAttribute("depts",depts);
         model.addAttribute("subdepts",subdepts);
+        model.addAttribute("message", message);
 		
 		return "userAccount/index";
 	}
 	
 	/**************** USER ACCOUNT ACTION ***********************/
+	@GetMapping(value= "/createUser")
+	public String getCreateUser(Model model, HttpServletRequest request ) {
+		
+		String sourceURL = request.getHeader("Referer");
+		List<Organization> orgs= organizationDAO.getAllOrganization();
+		List<AppRole> approles = appRoleDAO.getAllRoleNames();
+		model.addAttribute("errorString",null);
+		
+		UserAccount useracc = new UserAccount();
+		
+		model.addAttribute("useracc", useracc);
+		model.addAttribute("orgs",orgs);
+		model.addAttribute("approles",approles);
+		model.addAttribute("sourceURL", sourceURL);
+		
+		return "userAccount/createUser";
+	}
+	
+	@PostMapping(value= "/createUser")
+	public String postCreateUser(@ModelAttribute UserAccount useracc, @RequestParam int userrole, Model model, @RequestParam String sourceURL, RedirectAttributes redirectAttributes  ) {
+		
+//		System.out.println(useracc.getUsername());
+//		System.out.println(useracc.getPassword());
+//		System.out.println(useracc.getOrgid());
+//		System.out.println(useracc.getDeptid());
+//		System.out.println(useracc.getSubdeptid());
+		
+		String errorString=userAccountDAO.create(useracc.getUsername(), useracc.getPassword(), useracc.getOrgid(), useracc.getDeptid(), useracc.getSubdeptid());
+//			UserAccount user=userAccountDAO.getUserName(useracc.getUsername());
+//			userRoleDAO.createUserRole(user.getUserid(), userrole);
+
+		if(errorString==null) {
+			
+			String message="User Name - "+ useracc.getUsername()+" created succussfully";
+			redirectAttributes.addFlashAttribute("message", message);
+			
+			return "redirect:"+sourceURL;
+		} else {
+			System.out.println(errorString);
+			model.addAttribute("errorString",errorString);
+			return "userAccount/createUser";
+		}
+	}
+	
 	@GetMapping(value= "/editUser")
 	public String getEditUser(@RequestParam int userid, 
 							  Model model, 
 							  HttpServletRequest request) {
 		
 		String referer = request.getHeader("Referer");
-		UserAccount useracc= userAccountDAO.getUserAccount(userid);
+		UserAccount useracc= userAccountDAO.findOne(userid);
 		UserRole userrole=userRoleDAO.getUserRole(userid);
 		List<AppRole> approles = appRoleDAO.getAllRoleNames();
 		List<Organization> orgs= organizationDAO.getAllOrganization();
@@ -110,16 +160,16 @@ public class UserController {
 							   Model model, 
 							   @RequestParam String referer ) {
 
-//			String errorString=userAccountDAO.updateUserAccount(userid, username);
-//			if(errorString==null) {
+			String errorString=userAccountDAO.update(userid, username);
+			if(errorString==null) {
 		return "redirect:"+referer;
-//			} else {
-//				UserAccount useracc= userAccountDAO.getUserAccount(userid);
-//				model.addAttribute("useracc",useracc);
-//				model.addAttribute("errorString",errorString);
-//				
-//				return "userAccount/editUser";
-//			}
+			} else {
+				UserAccount useracc= userAccountDAO.findOne(userid);
+				model.addAttribute("useracc",useracc);
+				model.addAttribute("errorString",errorString);
+				
+				return "userAccount/editUser";
+			}
 	}
 	
 	@GetMapping(value= "/deleteUser")
@@ -128,7 +178,7 @@ public class UserController {
 								HttpServletRequest request) {
 		
 		String referer = request.getHeader("Referer");
-		UserAccount useracc= userAccountDAO.getUserAccount(userid);
+		UserAccount useracc= userAccountDAO.findOne(userid);
 		System.out.println(useracc.getUsername());
 		model.addAttribute("useracc",useracc);
 		model.addAttribute("referer", referer);
@@ -137,58 +187,13 @@ public class UserController {
 	}
 	
 	@PostMapping(value= "/deleteUser")
-	public String postDeleteUser(@RequestParam int userid,
-								 Model model, 
-								 @RequestParam String referer) {
+	public String postDeleteUser(@RequestParam int userid, Model model, @RequestParam String referer) {
 //			userRoleDAO.deleteUserRole(userid);
-		//userAccountDAO.deleteUserAccount(userid);
+		userAccountDAO.delete(userid);
 		System.out.println(userid);
 		return "redirect:"+referer;
 	}
-	
-	@GetMapping(value= "/createUser")
-	public String getCreateUser(Model model, 
-								HttpServletRequest request ) {
-		
-		String referer = request.getHeader("Referer");
-		List<Organization> orgs= organizationDAO.getAllOrganization();
-		List<AppRole> approles = appRoleDAO.getAllRoleNames();
-		model.addAttribute("errorString",null);
-		model.addAttribute("orgs",orgs);
-		model.addAttribute("approles",approles);
-		model.addAttribute("referer", referer);
-		
-		return "userAccount/createUser";
-	}
-	
-	@PostMapping(value= "/createUser")
-	public String postCreateUser(/*@RequestParam int usercode,*/ 
-								 @RequestParam String username,
-								 @RequestParam String password,
-								 @RequestParam int orgid, 
-								 @RequestParam int deptid, 
-								 @RequestParam int subdeptid, 
-								 @RequestParam int userrole, 
-								 Model model, 
-								 @RequestParam String referer) {
-			String errorString=userAccountDAO.createUserAccount( username, password, orgid, deptid, subdeptid);
-//			UserAccount user=userAccountDAO.getUserName(username);
-//
-//			userRoleDAO.createUserRole(user.getUserid(), userrole);
 
-//			System.out.println("Userid: "+userid);
-		System.out.println(/*"User: "+usercode+" */"UserName: "+username+" Pw: "+password
-				+" Org: "+orgid+" Dept: "+deptid+" Sub Dept:"+subdeptid);
-//			if(errorString==null) {
-			return "redirect:"+referer;
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "userAccount/createUser";
-//			}
-		
-//			System.out.println("User role: "+userrole);
-//			return "redirect:/userAcc";
-	}
 	
 	@GetMapping(value= "/changePassword")
 	public String getChangePassword(@RequestParam int userid, 
@@ -206,7 +211,7 @@ public class UserController {
 									 @RequestParam String repassword,
 									 Model model, 
 									 @RequestParam String referer  ) {
-//		userAccountDAO.changeUserPassword(userid, password, repassword);
+		userAccountDAO.changePsw(userid, password, repassword);
 		return "redirect:"+referer;
 	}
 }

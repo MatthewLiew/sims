@@ -69,43 +69,19 @@ public class MainRESTController {
 	@Autowired
     private ReasonDAO reasonDAO;
 
-	
-	//******* USERACCOUNT ********//
-	@PostMapping(value="/api/checkUserCode")
-	public Response getUserCodeResponse(@RequestBody UserAccount user ) {
-
-		UserAccount result;
-		if(user.getUserid()==0){
-			result= userAccountDAO.getUserCode(user.getUsercode());
-		} else {
-			result= userAccountDAO.getUserCode(user.getUsercode(),user.getUserid());
-		}
-		if(result==null) {
-			Response response = new Response("OK", "true");
-			return response;
-		} else {
-			Response response = new Response("User Code Exist", "false");
-			return response;
-		}
-	}	
+	//******* USER ACCOUNT ********//
 	@PostMapping(value="/api/checkUserName")
 	public Response getUserNameResponse(@RequestBody UserAccount user ) {
-		
-		UserAccount result;
-		if(user.getUserid()==0) {
-			result= userAccountDAO.getUserName(user.getUsername());
-		} else {
-			result= userAccountDAO.getUserName(user.getUsername(), user.getUserid());
-		}
+
+		UserAccount result = userAccountDAO.findOneByUsername(user.getUsername(), user.getUserid());
+
 		if(result==null) {
-			Response response = new Response("OK", "true");
+			Response response = new Response("Valid", "true");
 			return response;
-		}
-		else {
+		} else {
 			Response response = new Response("User Name Exist", "false");
 			return response;
 		}
-		
 	}
 	
 	//******* ORGANIZATION ********//

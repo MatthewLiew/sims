@@ -3,6 +3,8 @@ import com.sbinventory.service.UserDetailsServiceImpl;
 
 import java.util.Collections;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
 
 
 @Configuration
@@ -25,20 +28,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		
 	}
 	
-	public void addFormatters(FormatterRegistry registry) {
-	    registry.removeConvertible(String.class,String[].class);
-	}
-	
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
 	
-//	@Bean(name="conversionService")
-//	public ConversionService getConversionService() {
-//	    ConversionServiceFactoryBean bean = new ConversionServiceFactoryBean();
-//	    bean.setConverters(Collections.singleton(new CustomStringToCollectionConverter()));
-//	    bean.afterPropertiesSet();
-//	    return bean.getObject();
-//	}
+//	@Autowired
+//    private RequestMappingHandlerAdapter requestMappingHandlerAdapter;
+//
+//    @PostConstruct
+//    public void init() {
+//       requestMappingHandlerAdapter.setIgnoreDefaultModelOnRedirect(true);
+//    }
 	
 	@Bean
     public BCryptPasswordEncoder passwordEncoder() {

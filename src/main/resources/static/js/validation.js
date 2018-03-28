@@ -1,6 +1,30 @@
 var BASE_URL = window.location.origin+"/";
 var count=0;
 
+$(document).ready (function(){
+//    $("#success-alert").hide();
+//    $("#myWish").click(function showAlert() {
+        $(".alert-info").fadeTo(2000, 500).slideUp(500, function(){
+       $(".alert-info").slideUp(500);
+        });   
+//    });
+});
+//$(document).on("submit", "#CreateUserForm", function(e) {
+	  
+//	  console.log(this);
+	  
+	
+//	$("#CreateUser").modal("toggle")
+//	$('#myModal').modal('show');
+//	e.preventDefault(); //stop submit
+	  
+//});
+
+//function Submit(){
+////	console.log(this);
+////	return false;
+//	
+//}
 function addmorepartno(){
 	
 	var source = $(".form:first");
@@ -331,42 +355,49 @@ function subdepartment_select(id, val) {
 	});
 }
 
-function userCode(form) {
-	var data= { 
-			userid: $("#"+form+" .userid").val(),
-			usercode: $("#"+form+" .usercode").val()
-			}
-	
-	if(!$.isEmptyObject($("#"+form+" .usercode").val())){
- 		$.ajax({
- 		type: "POST",
- 		contentType: "application/json",
- 		url: BASE_URL + "api/checkUserCode",
- 		data: JSON.stringify (data),
- 		dataType: 'json',
- 		
- 		success: function (response) {
- 				$("#"+form+" .usercode_flag").html(response.flag);
- 				$("#"+form+" .usercode_status").html(response.status);
-  		},
- 		error : function(e) {
- 			$("#"+form+" .usercode_status" ).html("Error");
- 			$("#"+form+" .usercode_flag").html("false");
-			}
- 		});
-	} else {
-		$("#"+form+" .usercode_status").html("Field is required");
-		$("#"+form+" .usercode_flag").html("false");
-	}
-}
+//$(document).on("keyup",".username", function() {
+//	let current = this;
+//	let form = "#"+this.form.id;
+//	console.log(form);
+//	var data= { 
+//			userid: $(form+" .userid").val(),
+//			username: $(form+" .username").val()
+//			}
+//	
+//	$.ajax({
+// 		type: "POST",
+// 		contentType: "application/json",
+// 		url: BASE_URL + "api/checkUserName",
+// 		data: JSON.stringify (data),
+// 		dataType: 'json',
+// 		success: function (response) {
+// 			
+// 			if(response.flag=="true"){
+// 				
+// 				$(current).closest(".form-group").addClass("has-success");
+// 				$(form+" .username_status" ).removeClass("text-danger");
+// 				$(form+" .username_status" ).addClass("text-success");
+// 			} else {
+// 				$(form+" .username_status" ).removeClass("text-success");
+// 				$(form+" .username_status" ).addClass("text-danger");
+// 			}
+// 			$(form+" .username_status" ).html(response.status);
+// 			$(form+" .username_flag").html(response.flag);
+//  		},
+// 		error : function(e) {
+// 			$("#"+form+" .username_status" ).html("Error");
+// 			$("#"+form+" .username_flag").html("false");
+//			}
+// 		});
+//});
 
 function userName(form) {
 	var data= { 
 			userid: $("#"+form+" .userid").val(),
 			username: $("#"+form+" .username").val()
 			}
-		console.log("userName");
- 		if(!$.isEmptyObject($("#"+form+" .username").val())) {
+		console.log(data);
+	if(!$.isEmptyObject($("#"+form+" .username").val())) {
  		$.ajax({
  		type: "POST",
  		contentType: "application/json",
@@ -376,44 +407,43 @@ function userName(form) {
  		success: function (response) {
  			
  			if(response.flag=="true"){
+ 				$("#"+form+" .username" ).removeClass("is-invalid");
+ 				$("#"+form+" .username" ).addClass("is-valid");
  				$("#"+form+" .username_status" ).removeClass("text-danger");
  				$("#"+form+" .username_status" ).addClass("text-success");
  			} else {
+ 				$("#"+form+" .username" ).removeClass("is-valid");
+ 				$("#"+form+" .username" ).addClass("is-invalid");
  				$("#"+form+" .username_status" ).removeClass("text-success");
  				$("#"+form+" .username_status" ).addClass("text-danger");
  			}
  			$("#"+form+" .username_status" ).html(response.status);
- 			
  			$("#"+form+" .username_flag").html(response.flag);
   		},
  		error : function(e) {
  			$("#"+form+" .username_status" ).html("Error");
  			$("#"+form+" .username_flag").html("false");
 			}
- 		});
- 		} else {
- 			$("#"+form+" .username_status").html("");
- 			$("#"+form+" .username_flag").html("false");
- 		}
+ 		});}else {
+ 			$("#"+form+" .username" ).removeClass("is-valid");
+			$("#"+form+" .username" ).removeClass("is-invalid");
+ 	 		$("#"+form+" .username_status").html("");
+ 	 		$("#"+form+" .username_flag" ).html("false");
+ 	 	}
+
 }
 
 function userForm(form) {
 	
-	var usercodeinput= $.isEmptyObject($("#"+form+" .usercode").val());
-	var usernameinput= $.isEmptyObject($("#"+form+" .username").val());
-	var usercodeflag= $("#"+form+" .usercode_flag").text();
 	var usernameflag= $("#"+form+" .username_flag").text();
-	
-	if(usercodeinput){
-		$("#"+form+" .usercode_status").html("Field is required");
-	}
-	if(usernameinput){
-		$("#"+form+" .username_status").html("Field is required");
-	}
-	if(((usercodeinput)||(usercodeflag=="false"))||((usernameinput)||(usernameflag=="false"))){
-		$("#"+form+" .error").html("Please complete the form");
+	let username=$("#"+form+" .username").val();
+
+	if(usernameflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("User Name - "+username+" Exists.");
 		return false;
 	} else {
+		$("#"+form+" #modal_error").hide();
 		return true;
 	}
 }
@@ -491,6 +521,8 @@ function orgForm(form) {
 		$("#"+form+" .error").html("Please complete the form");
 		return false;
 	} else {
+		$("#CreateUser").modal("toggle")
+		$('#myModal').modal('show');
 		return true;
 	}
 }

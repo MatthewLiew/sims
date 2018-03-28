@@ -3,12 +3,11 @@ package com.sbinventory.model;
 public class UserAccount {
 
 	private int userid;
-	private int usercode;
 	private String username;
 	private String password;
-	private int orgid;
-	private int deptid;
-	private int subdeptid;
+	private Integer orgid;
+	private Integer deptid;
+	private Integer subdeptid;
 	
 	public UserAccount() {
 		
@@ -17,16 +16,14 @@ public class UserAccount {
 		this.userid = userid;
 	}
 	
-	public UserAccount (int userid, int usercode, String username, String password) {
+	public UserAccount (int userid, String username, String password) {
 		this.userid = userid;
-		this.usercode = usercode;
 		this.username = username;
 		this.password = password;
 	}
 	
-	public UserAccount(int userid, int usercode, String username, String password, int orgid, int deptid, int subdeptid) {
+	public UserAccount(int userid, String username, String password, Integer orgid, Integer deptid, Integer subdeptid) {
 		this.userid = userid;
-		this.usercode=usercode;
 		this.username = username;
 		this.password = password;
 		this.orgid = orgid;
@@ -40,13 +37,6 @@ public class UserAccount {
 
 	public void setUserid(int userid) {
 		this.userid = userid;
-	}
-	
-	public int getUsercode() {
-		return usercode;
-	}
-	public void setUsercode(int usercode) {
-		this.usercode = usercode;
 	}
 	
 	public String getUsername() {
@@ -64,22 +54,28 @@ public class UserAccount {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public int getOrgid() {
+	
+	public Integer getOrgid() {
 		return orgid;
 	}
-	public void setOrgid(int orgid) {
+	
+	public void setOrgid(Integer orgid) {
 		this.orgid = orgid;
 	}
-	public int getDeptid() {
+	
+	public Integer getDeptid() {
 		return deptid;
 	}
-	public void setDeptid(int deptid) {
+	
+	public void setDeptid(Integer deptid) {
 		this.deptid = deptid;
 	}
-	public int getSubdeptid() {
+	
+	public Integer getSubdeptid() {
 		return subdeptid;
 	}
-	public void setSubdeptid(int subdeptid) {
+	
+	public void setSubdeptid(Integer subdeptid) {
 		this.subdeptid = subdeptid;
 	}
 	

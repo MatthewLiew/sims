@@ -5,85 +5,87 @@
     </head>
     
    	<p class="error" style="color: red;" th:text="${errorString}" ></p>
-   	<input type="hidden" name="referer" th:value="${referer}" />
-		
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="UserNameLabel">User Name</label>
-            </div>
-            <div class="col-md-6">  
-                <input class="form-control username" id="username" name="username" type="text" data-error="Please Ener User Name" aria-describedby="UserName" placeholder="Enter User Name" value="" onkeyup="userName('CreateUser');" required>
-            </div>
-            <div class="col-md-3">
-            	<span class="username_status"></span>
-                <span style="visibility:hidden;"class="username_flag" th:text="true"></span>
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="PasswordLabel">Password</label>
-            </div>
-            <div class="col-md-6"> 
-                <input class="form-control password" id="password" name="password" type="password" data-error="Please Enter Password" aria-describedby="Password" placeholder="Enter Password" value="" required>
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="UserRoleLabel">Role</label>
-            </div>
-            <div class="col-md-6">
-                <select class="form-control"name="userrole" required>
-           <option value="">Select User Role</option>
-           <option th:each="list: ${approles}" th:selected="${list.roleid}==2" th:value="${list.roleid}" th:text="${list.rolename}">
-       </select>
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="OrganizationLabel">Organization</label>
-            </div>
-            <div class="col-md-6"> 
-            	<select class="form-control" name="orgid" onchange="department_select('CreateUser',this.value);" required>
-	             	<option value="">Select Organization</option>
-	           		<option th:each="list: ${orgs}" th:value="${list.orgid}" th:text="${list.orgname}"></option>
-             	</select>
-            </div>
-        </div>
-    </div>
-    
-     <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="DepartmentLabel">Department</label>
-            </div>
-            <div class="col-md-6"> 
-            	<select  class="form-control dept_select" name="deptid" onchange="subdepartment_select('CreateUser', this.value);" required>
-          			<option value="">Select Department</option>
-         		</select>
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="SubDepartmentLabel">Sub Department</label>
-            </div>
-            <div class="col-md-6"> 
-            	<select class="form-control subdept_select" name="subdeptid" required>
-       				<option value="">Select Sub Department</option>
-          		</select>
-            </div>
-        </div>
+   	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
+   	
+	<div th:object="${useracc}">
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="username">User Name</label>
+	            </div>
+	            <div class="col-md-6" >  
+	                <input class="form-control username" id="username" name="username" type="text" data-error="Please Enter User Name" placeholder="Enter User Name" th:field="*{username}" onkeyup="userName('CreateUser');" required>
+	            </div>
+	            <div class="col-md-3">
+	            	<span class="username_status"></span>
+	                <span style="visibility:hidden;"class="username_flag" th:text="true"></span>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="password">Password</label>
+	            </div>
+	            <div class="col-md-6"> 
+	                <input class="form-control password" id="password" name="password" type="password" data-error="Please Enter Password" placeholder="Enter Password" th:field="*{password}" required>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="userrole">Role</label>
+	            </div>
+	            <div class="col-md-6">
+	                <select class="form-control" id="userrole" name="userrole" required>
+			        	<option value="">Select User Role</option>
+			           	<option th:each="list: ${approles}" th:selected="${list.roleid}==2" th:value="${list.roleid}" th:text="${list.rolename}">
+			       	</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="orgid">Organization</label>
+	            </div>
+	            <div class="col-md-6"> 
+	            	<select class="form-control" id="orgid" name="orgid" th:field="*{orgid}" onchange="department_select('CreateUser',this.value);" required>
+		             	<option value="0">Select Organization</option>
+		           		<option th:each="list: ${orgs}" th:value="${list.orgid}" th:text="${list.orgname}"></option>
+	             	</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	     <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="DepartmentLabel">Department</label>
+	            </div>
+	            <div class="col-md-6"> 
+	            	<select  class="form-control dept_select" name="deptid" th:field="*{deptid}" onchange="subdepartment_select('CreateUser', this.value);" required>
+	          			<option value="0">Select Department</option>
+	         		</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="SubDepartmentLabel">Sub Department</label>
+	            </div>
+	            <div class="col-md-6"> 
+	            	<select class="form-control subdept_select" name="subdeptid" th:field="*{subdeptid}" required>
+	       				<option value="0">Select Sub Department</option>
+	          		</select>
+	            </div>
+	        </div>
+	    </div>
     </div>
 </html>

@@ -124,7 +124,7 @@ public class MainController {
         String userInfo = WebUtils.toString(loginedUser);
         model.addAttribute("myAccInfo", userInfo);
  
-        UserAccount user=userAccountDAO.getUserName(loginedUser.getUsername());
+        UserAccount user=userAccountDAO.findOneByUsername(loginedUser.getUsername(),0);
         Organization org=organizationDAO.getOrganization(user.getOrgid());
         Dept dept=deptDAO.getDept(user.getDeptid());
         SubDept subdept=subDeptDAO.getSubDept(user.getSubdeptid());
@@ -151,7 +151,7 @@ public class MainController {
                     + "<br> You do not have permission to access this page!";
             model.addAttribute("message", message);
             
-            UserAccount user=userAccountDAO.getUserName(loginedUser.getUsername());
+            UserAccount user=userAccountDAO.findOneByUsername(loginedUser.getUsername(),0);
             Organization org=organizationDAO.getOrganization(user.getOrgid());
             Dept dept=deptDAO.getDept(user.getDeptid());
             SubDept subdept=subDeptDAO.getSubDept(user.getSubdeptid());

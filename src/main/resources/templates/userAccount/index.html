@@ -5,8 +5,14 @@
 	</head>
 
 	<div class="header_ref" th:include="/header"></div>
+	
 	<div class="content-wrapper">
    		<div class="container-fluid">
+   		
+   			<div th:if="${message!= null}" class="alert alert-info alert-dismissible">
+		    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+			<span  th:text="${message}"></span>
+		  	</div>
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		        <li class="breadcrumb-item">
@@ -66,7 +72,8 @@
 		       </div>
 		       
 		       <div class="modal clickable" id="CreateUser" tabindex="-1" role="dialog" aria-labelledby="CreateUser" aria-hidden="true">
-		            <form method="POST" th:action="@{/createUser}" id="CreateUser">
+<!-- 		       		<form method="POST" th:action="@{/createUser}" th:object="${useracc}" id="CreateUser" onsubmit="return userForm('CreateUser');"> -->
+		            <form method="POST" th:action="@{/createUser}" th:object="${useracc}" id="CreateUser">
 		                <div class="vertical-alignment-helper">
 		                    <div class="modal-dialog  modal-lg vertical-align-center">
 		                        <!-- Modal content-->
@@ -79,7 +86,7 @@
 		                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
 		
 		                            <div class="modal-body">
-		
+										
 		                            </div>
 		
 		                            <div class="modal-footer">
@@ -172,6 +179,20 @@
 		                </div>
 		            </form>
 		        </div>
+		        
+		        <div class="modal fade" id="myModal" role="dialog">
+		        	<div class="modal-dialog">
+		        		<div class="modal-content">
+		        			<div class="modal-header">
+				        		<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+							
+				        	<div class="modal-footer">
+				          		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				        	</div>
+			        	</div>
+		        	</div>
+			 	</div>
 
 	    </div><!-- end of .container-fluid-->
    	</div><!-- end of .content-wrapper-->
@@ -182,6 +203,7 @@
             if (action == 'new') {
                 $('#CreateUser .modal-body').empty();
                 $('#CreateUser .modal-title').text("New User");
+                $('#CreateUser #modal_error').hide();
                 $('#CreateUser .modal-body').load('createUser', function () {
                     $('#CreateUser').modal({show: true});
                 });
