@@ -6,6 +6,8 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -30,6 +32,64 @@ private static final String DELETE_SQL="DELETE FROM DEPT";
 		this.setDataSource(dataSource);
 	}
 	
+	public String create(int orgid, int deptcode, String deptname) {
+		
+		Object[] params=new Object[]{deptcode, deptname, orgid};
+		String sql=CREATE_SQL;
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+		} catch (DuplicateKeyException e) {
+			return "Organization "+deptname+" Exist. Organization Creation Failed.";
+			
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityViolationException("Entity is tied. Please clear the parent.", e);
+			
+		} catch (DataAccessException e) {
+			return e.getMessage();
+		}
+	}
+	public String update(int deptid, int deptcode, String deptname ){
+		
+		String sql=UPDATE_SQL+" set DEPT_CODE = ?, DEPT_NAME = ? where ID= ?";
+		Object[] params=new Object[]{deptcode, deptname, deptid};
+		
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataAccessException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public String deleteDepartment(int deptid){
+		
+		String sql=DELETE_SQL+" where ID= ?";
+		Object[] params= new Object[] {deptid};
+		
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+			
+		}  catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityViolationException("Entity is tied. Please clear the parent.", e);
+			
+		} catch (DataAccessException e) {
+			return e.getMessage();
+		}
+	}
 	public List<Dept> getAllDept(){
 		
 		String sql=READ_SQL;
@@ -132,50 +192,4 @@ private static final String DELETE_SQL="DELETE FROM DEPT";
         }
 	}
 	
-	public String createDepartment(int orgid, int deptcode, String deptname) {
-		
-		Object[] params=new Object[]{deptcode, deptname, orgid};
-		String sql=CREATE_SQL;
-		try {
-			int rows=this.getJdbcTemplate().update(sql, params);
-			System.out.println(rows + " row(s) updated.");
-			return null;
-		}catch(EmptyResultDataAccessException e ) {
-			return e.getMessage();
-			
-		}catch(DataAccessException  e) {
-//			throw new DataAccessException("Something error", e);
-			return e.getMessage();
-		}
-	}
-	
-	public String updateDepartment(int deptid, int deptcode, String deptname ){
-		
-		String sql=UPDATE_SQL+" set DEPT_CODE = ?, DEPT_NAME = ? where ID= ?";
-		Object[] params=new Object[]{deptcode, deptname, deptid};
-		
-		try {
-			int rows=this.getJdbcTemplate().update(sql, params);
-			System.out.println(rows + " row(s) updated.");
-			return null;
-		} catch (EmptyResultDataAccessException e) {
-			e.printStackTrace();
-			return e.getMessage();
-		} catch (DataAccessException  e) {
-			return e.getMessage();
-		}
-	}
-	
-	public void deleteDepartment(int deptid){
-		
-		String sql=DELETE_SQL+" where ID= ?";
-		Object[] params= new Object[] {deptid};
-		
-		try {
-			int rows=this.getJdbcTemplate().update(sql, params);
-			System.out.println(rows + " row(s) updated.");
-		} catch (EmptyResultDataAccessException e) {
-			e.printStackTrace();
-		}
-	}
 }

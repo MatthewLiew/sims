@@ -7,6 +7,12 @@
 	<div class="header_ref" th:include="/header"></div>
 	<div class="content-wrapper">
    		<div class="container-fluid">
+   			
+   			<div th:if="${message!= null}" class="alert alert-info alert-dismissible">
+			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<span  th:text="${message}"></span>
+		  	</div>
+		  	
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		        <li class="breadcrumb-item">
@@ -60,7 +66,7 @@
            	</div>
            	
            	<div class="modal clickable" id="CreateDepartment" tabindex="-1" role="dialog" aria-labelledby="CreateDepartment" aria-hidden="true">
-	            <form method="POST" th:action="@{/createDepartment}" id="CreateDepartment">
+	            <form method="POST" th:action="@{/createDepartment}" id="CreateDepartment" onsubmit="return deptForm('CreateDepartment')">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -87,7 +93,7 @@
 	        </div>
 	        
 	        <div class="modal clickable" id="EditDepartment" tabindex="-1" role="dialog" aria-labelledby="EditDepartment" aria-hidden="true">
-	            <form method="POST" th:action="@{/editDepartment}" id="EditDepartment">
+	            <form method="POST" th:action="@{/editDepartment}" id="EditDepartment" onsubmit="return deptForm('EditDepartment')">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -148,12 +154,14 @@
             if (action == 'new') {
                 $('#CreateDepartment .modal-body').empty();
                 $('#CreateDepartment .modal-title').text("New Department");
+                $('#CreateDepartment #modal_error').hide();
                 $('#CreateDepartment .modal-body').load('createDepartment', function () {
                     $('#CreateDepartment').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditDepartment .modal-body').empty();
                 $('#EditDepartment .modal-title').text("Edit Department");
+                $('#EditDepartment #modal_error').hide();
                 $('#EditDepartment .modal-body').load('editDepartment?deptid=' + id, function () {
                     $('#EditDepartment').modal({show: true});
                 });

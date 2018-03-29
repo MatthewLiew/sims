@@ -7,6 +7,12 @@
 	<div class="header_ref" th:include="/header"></div>
 	<div class="content-wrapper">
    		<div class="container-fluid">
+   		
+   			<div th:if="${message!= null}" class="alert alert-info alert-dismissible">
+			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<span  th:text="${message}"></span>
+		  	</div>
+		  	
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		        <li class="breadcrumb-item">
@@ -56,7 +62,7 @@
        		</div>
        		
        		<div class="modal clickable" id="CreateOrganization" tabindex="-1" role="dialog" aria-labelledby="CreateOrganization" aria-hidden="true">
-	            <form method="POST" th:action="@{/createOrganization}" id="CreateOrganization">
+	            <form method="POST" th:action="@{/createOrganization}" id="CreateOrganization" onsubmit="return orgForm('CreateOrganization')">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -83,7 +89,7 @@
 	        </div>
 	        
 	        <div class="modal clickable" id="EditOrganization" tabindex="-1" role="dialog" aria-labelledby="EditOrganization" aria-hidden="true">
-	            <form method="POST" th:action="@{/editOrganization}" id="EditOrganization">
+	            <form method="POST" th:action="@{/editOrganization}" id="EditOrganization" onsubmit="return orgForm('EditOrganization')">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -144,12 +150,14 @@
             if (action == 'new') {
                 $('#CreateOrganization .modal-body').empty();
                 $('#CreateOrganization .modal-title').text("New Organization");
+                $('#CreateOrganization #modal_error').hide();
                 $('#CreateOrganization .modal-body').load('createOrganization', function () {
                     $('#CreateOrganization').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditOrganization .modal-body').empty();
                 $('#EditOrganization .modal-title').text("Edit Organization");
+                $('#EditOrganization #modal_error').hide();
                 $('#EditOrganization .modal-body').load('editOrganization?orgid=' + id, function () {
                     $('#EditOrganization').modal({show: true});
                 });

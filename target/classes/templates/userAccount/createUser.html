@@ -40,7 +40,7 @@
 	                <label for="userrole">Role</label>
 	            </div>
 	            <div class="col-md-6">
-	                <select class="form-control" id="userrole" name="userrole" required>
+	                <select class="form-control" id="roleid" name="roleid" th:field="*{roleid}" required>
 			        	<option value="">Select User Role</option>
 			           	<option th:each="list: ${approles}" th:selected="${list.roleid}==2" th:value="${list.roleid}" th:text="${list.rolename}">
 			       	</select>

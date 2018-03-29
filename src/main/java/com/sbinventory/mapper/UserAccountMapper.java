@@ -18,7 +18,8 @@ public class UserAccountMapper implements RowMapper<UserAccount> {
         Integer orgid=rs.getInt("ORG_ID");
         Integer deptid=rs.getInt("DEPT_ID");
         Integer subdeptid=rs.getInt("SUB_DEPT_ID");
+        Integer roleid=rs.getInt("ROLE_ID");
         
-        return new UserAccount(userid, username, price, orgid, deptid, subdeptid);
+        return new UserAccount(userid, username, price, orgid, deptid, subdeptid, roleid);
 	}
 }

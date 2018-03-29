@@ -12,9 +12,10 @@ public class UserRoleMapper implements RowMapper<UserRole>{
 	@Override
 	public UserRole mapRow(ResultSet rs, int rowNum) throws SQLException {
 		
-		int userid=rs.getInt("USER_ID");
-		int roleid=rs.getInt("ROLE_ID");
+		int userroleid = rs.getInt("ID");
+		int userid = rs.getInt("USER_ID");
+		int roleid = rs.getInt("ROLE_ID");
 		
-		return new UserRole(userid, roleid);
+		return new UserRole(userroleid, userid, roleid);
 	}
 }

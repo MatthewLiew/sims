@@ -2,14 +2,24 @@ package com.sbinventory.model;
 
 public class UserRole {
 	
+	private int userroleid;
 	private int userid;
 	private int roleid;
 	
 	public UserRole() {}
 
-	public UserRole(int userid, int roleid) {
+	public UserRole(int userroleid, int userid, int roleid) {
+		this.userroleid = userroleid;
 		this.userid = userid;
 		this.roleid = roleid;
+	}
+
+	public int getUserroleid() {
+		return userroleid;
+	}
+
+	public void setUserroleid(int userroleid) {
+		this.userroleid = userroleid;
 	}
 
 	public int getUserid() {
@@ -27,7 +37,5 @@ public class UserRole {
 	public void setRoleid(int roleid) {
 		this.roleid = roleid;
 	}
-	
-	
 	
 }

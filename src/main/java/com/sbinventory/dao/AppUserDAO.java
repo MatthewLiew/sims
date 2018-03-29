@@ -22,7 +22,7 @@ public class AppUserDAO extends JdbcDaoSupport {
 	
 	public AppUser findUserAccount(String userName) {
 		
-		String sql=AppUserMapper.BASE_SQL+" where u.User_Name = ? ";
+		String sql=AppUserMapper.BASE_SQL+" WHERE USER_NAME = ? ";
 		Object[] params = new Object[] { userName };
         AppUserMapper mapper = new AppUserMapper();
         

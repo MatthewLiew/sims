@@ -5,77 +5,81 @@
    	</head>
    	
 	<p class="error" style="color: red;" th:text="${errorString}" ></p>
-	<input type="hidden" class="userid" name="userid" th:value="${useracc.userid}" />
-	<input type="hidden" name="referer" th:value="${referer}" />
- 		
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="UserNameLabel">User Name</label>
-            </div>
-            <div class="col-md-6">
-            	<input class="form-control username" id="username" name="username" type="text" data-error="Please Enter User Name" aria-describedby="UserName" placeholder="Enter User Name" th:value="${useracc.username}" onkeyup="userName('EditUser');" required>
-            </div>
-            <div class="col-md-3">
-            	<span class="username_status"></span>
-                <span style="visibility:hidden;"class="username_flag" th:text="true"></span>
-            </div>
-        </div>
-    </div>
-    
-     <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="UserRoleLabel">Role</label>
-            </div>
-            <div class="col-md-6">
-            	<select class="form-control" name="userrole" required>
-           <option value="">Select User Role</option>
-           <option th:each="list: ${approles}" th:selected="${list.isSelected(userrole.roleid)}" th:value="${list.roleid}" th:text="${list.rolename}">
-       </select>
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="OrganizationLabel">Organization</label>
-            </div>
-            <div class="col-md-6"> 
-            	<select class="form-control" name="orgid" onchange="department_select('EditUser',this.value);" required>
-	             	<option value="">Select Organization</option>
-	           		<option th:each="list: ${orgs}" th:selected="${list.isSelected(useracc.orgid)}" th:value="${list.orgid}" th:text="${list.orgname}" ></option>
-             	</select>
-            </div>
-        </div>
-    </div>
-    
-     <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="DepartmentLabel">Department</label>
-            </div>
-            <div class="col-md-6">  
-            	<select class="form-control dept_select" name="deptid" onchange="subdepartment_select('EditUser', this.value);" required>
-		          	<option value="">Select Department</option>
-		          	<option th:each="list: ${depts}" th:selected="${list.isSelected(useracc.deptid)}" th:value="${list.deptid}" th:text="${list.deptname}" ></option>
-         		</select>
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="SubDepartmentLabel">Sub Department</label>
-            </div>
-            <div class="col-md-6"> 
-            	<select class="form-control subdept_select" name="subdeptid" required>
-			       	<option value="">Select Sub Department</option>
-			       	<option th:each="list: ${subdepts}" th:selected="${list.isSelected(useracc.subdeptid)}" th:value="${list.subdeptid}" th:text="${list.subdeptname}" ></option>
-          		</select>
-            </div>
-        </div>
+	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
+ 	
+ 	<div th:object="${useracc}">	
+ 	
+	 	<input type="hidden" class="userid" name="userid" th:field="*{userid}" />
+	 	
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="UserNameLabel">User Name</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<input class="form-control username" id="username" name="username" type="text" data-error="Please Enter User Name" aria-describedby="UserName" placeholder="Enter User Name" th:field="*{username}" onkeyup="userName('EditUser');" required>
+	            </div>
+	            <div class="col-md-3">
+	            	<span class="username_status"></span>
+	                <span style="visibility:hidden;"class="username_flag" th:text="true"></span>
+	            </div>
+	        </div>
+	    </div>
+	    
+	     <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="UserRoleLabel">Role</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<select class="form-control" name="roleid" required>
+	           <option value="">Select User Role</option>
+	           <option th:each="list: ${approles}" th:selected="${list.isSelected(useracc.roleid)}" th:value="${list.roleid}" th:text="${list.rolename}">
+	       </select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="OrganizationLabel">Organization</label>
+	            </div>
+	            <div class="col-md-6"> 
+	            	<select class="form-control" name="orgid" onchange="department_select('EditUser',this.value);" required>
+		             	<option value="">Select Organization</option>
+		           		<option th:each="list: ${orgs}" th:selected="${list.isSelected(useracc.orgid)}" th:field="*{orgid}" th:value="${list.orgid}" th:text="${list.orgname}" ></option>
+	             	</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	     <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="DepartmentLabel">Department</label>
+	            </div>
+	            <div class="col-md-6">  
+	            	<select class="form-control dept_select" name="deptid" onchange="subdepartment_select('EditUser', this.value);" required>
+			          	<option value="">Select Department</option>
+			          	<option th:each="list: ${depts}" th:selected="${list.isSelected(useracc.deptid)}" th:field="*{deptid}" th:value="${list.deptid}" th:text="${list.deptname}" ></option>
+	         		</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="SubDepartmentLabel">Sub Department</label>
+	            </div>
+	            <div class="col-md-6"> 
+	            	<select class="form-control subdept_select" name="subdeptid" required>
+				       	<option value="">Select Sub Department</option>
+				       	<option th:each="list: ${subdepts}" th:selected="${list.isSelected(useracc.subdeptid)}" th:field="*{subdeptid}" th:value="${list.subdeptid}" th:text="${list.subdeptname}" ></option>
+	          		</select>
+	            </div>
+	        </div>
+	    </div>
     </div>
 </html>

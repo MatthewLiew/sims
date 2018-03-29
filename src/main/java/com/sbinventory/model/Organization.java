@@ -3,14 +3,14 @@ package com.sbinventory.model;
 public class Organization {
 
 	private int orgid;
-	private int orgcode;
+	private Integer orgcode;
 	private String orgname;
 	
 	public Organization() {
 		 
     }
 
-	public Organization(int orgid, int orgcode, String orgname) {
+	public Organization(int orgid, Integer orgcode, String orgname) {
 		this.orgid = orgid;
 		this.orgcode = orgcode;
 		this.orgname = orgname;
@@ -24,11 +24,11 @@ public class Organization {
 		this.orgid = orgid;
 	}
 
-	public int getOrgcode() {
+	public Integer getOrgcode() {
 		return orgcode;
 	}
 
-	public void setOrgcode(int orgcode) {
+	public void setOrgcode(Integer orgcode) {
 		this.orgcode = orgcode;
 	}
 

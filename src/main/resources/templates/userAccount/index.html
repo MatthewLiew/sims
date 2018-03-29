@@ -10,9 +10,10 @@
    		<div class="container-fluid">
    		
    			<div th:if="${message!= null}" class="alert alert-info alert-dismissible">
-		    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-			<span  th:text="${message}"></span>
+			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<span  th:text="${message}"></span>
 		  	</div>
+		  	
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		        <li class="breadcrumb-item">
@@ -53,7 +54,7 @@
 		              		<tbody>
 		                		<tr th:each="user : ${useraccs}">
 						            <td th:text="${user.username}"></td>
-						            <td>Role</td>
+						            <td th:each="list: ${approles}" th:if="${list.isSelected(user.roleid)}" th:text="${list.rolename}" ></td>
 <!-- 						            <td th:each="list: ${approles}" th:selected="${list.isSelected(userrole.roleid)}" th:text="${list.rolename}"></td> -->
 						            <td th:each="list: ${orgs}" th:if="${list.isSelected(user.orgid)}" th:text="${list.orgname}" ></td>
 						            <td th:each="list: ${depts}" th:if="${list.isSelected(user.deptid)}" th:text="${list.deptname}" ></td>
@@ -72,8 +73,8 @@
 		       </div>
 		       
 		       <div class="modal clickable" id="CreateUser" tabindex="-1" role="dialog" aria-labelledby="CreateUser" aria-hidden="true">
-<!-- 		       		<form method="POST" th:action="@{/createUser}" th:object="${useracc}" id="CreateUser" onsubmit="return userForm('CreateUser');"> -->
-		            <form method="POST" th:action="@{/createUser}" th:object="${useracc}" id="CreateUser">
+		       		<form method="POST" th:action="@{/createUser}" id="CreateUser" onsubmit="return userForm('CreateUser');">
+<!-- 		            <form method="POST" th:action="@{/createUser}" th:object="${useracc}" id="CreateUser"> -->
 		                <div class="vertical-alignment-helper">
 		                    <div class="modal-dialog  modal-lg vertical-align-center">
 		                        <!-- Modal content-->
@@ -100,7 +101,7 @@
 		        </div>
 		        
 		        <div class="modal clickable" id="EditUser" tabindex="-1" role="dialog" aria-labelledby="EditUser" aria-hidden="true">
-		            <form method="POST" th:action="@{/editUser}" id="EditUser">
+		            <form method="POST" th:action="@{/editUser}" id="EditUser" onsubmit="return userForm('EditUser');">
 		                <div class="vertical-alignment-helper">
 		                    <div class="modal-dialog  modal-lg vertical-align-center">
 		                        <!-- Modal content-->
@@ -210,6 +211,7 @@
             } else if (action == 'edit') {
                 $('#EditUser .modal-body').empty();
                 $('#EditUser .modal-title').text("Edit User");
+                $('#EditUser #modal_error').hide();
                 $('#EditUser .modal-body').load('editUser?userid=' + id, function () {
                     $('#EditUser').modal({show: true});
                 });

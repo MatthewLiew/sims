@@ -7,6 +7,12 @@
 	<div class="header_ref" th:include="/header"></div>
 	<div class="content-wrapper">
    		<div class="container-fluid">
+   		
+   			<div th:if="${message!= null}" class="alert alert-info alert-dismissible">
+			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<span  th:text="${message}"></span>
+		  	</div>
+		  	
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		        <li class="breadcrumb-item">
@@ -63,7 +69,7 @@
            	</div>
            	
            	<div class="modal clickable" id="CreateSubDepartment" tabindex="-1" role="dialog" aria-labelledby="CreateSubDepartment" aria-hidden="true">
-	            <form method="POST" th:action="@{/createSubDepartment}" id="CreateSubDepartment">
+	            <form method="POST" th:action="@{/createSubDepartment}" id="CreateSubDepartment" onsubmit="return subdeptForm('CreateSubDepartment')">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -90,7 +96,7 @@
 	        </div>
 	        
 	        <div class="modal clickable" id="EditSubDepartment" tabindex="-1" role="dialog" aria-labelledby="EditSubDepartment" aria-hidden="true">
-	            <form method="POST" th:action="@{/editSubDepartment}" id="EditSubDepartment">
+	            <form method="POST" th:action="@{/editSubDepartment}" id="EditSubDepartment" onsubmit="return subdeptForm('EditSubDepartment')">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -151,12 +157,14 @@
             if (action == 'new') {
                 $('#CreateSubDepartment .modal-body').empty();
                 $('#CreateSubDepartment .modal-title').text("New Sub Department");
+                $('#CreateSubDepartment #modal_error').hide();
                 $('#CreateSubDepartment .modal-body').load('createSubDepartment', function () {
                     $('#CreateSubDepartment').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditSubDepartment .modal-body').empty();
                 $('#EditSubDepartment .modal-title').text("Edit Sub Department");
+                $('#EditSubDepartment #modal_error').hide();
                 $('#EditSubDepartment .modal-body').load('editSubDepartment?subdeptid=' + id, function () {
                     $('#EditSubDepartment').modal({show: true});
                 });

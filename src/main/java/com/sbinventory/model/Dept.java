@@ -3,13 +3,13 @@ package com.sbinventory.model;
 public class Dept {
 
 	private int deptid;
-	private int deptcode;
+	private Integer deptcode;
 	private String deptname;
-	private int orgid;
+	private Integer orgid;
 	
 	public Dept() {}
 
-	public Dept(int deptid, int deptcode, String deptname, int orgid) {
+	public Dept(int deptid, Integer deptcode, String deptname, Integer orgid) {
 		this.deptid = deptid;
 		this.deptcode = deptcode;
 		this.deptname = deptname;
@@ -24,11 +24,11 @@ public class Dept {
 		this.deptid = deptid;
 	}
 
-	public int getDeptcode() {
+	public Integer getDeptcode() {
 		return deptcode;
 	}
 
-	public void setDeptcode(int deptcode) {
+	public void setDeptcode(Integer deptcode) {
 		this.deptcode = deptcode;
 	}
 
@@ -40,11 +40,11 @@ public class Dept {
 		this.deptname = deptname;
 	}
 
-	public int getOrgid() {
+	public Integer getOrgid() {
 		return orgid;
 	}
 
-	public void setOrgid(int orgid) {
+	public void setOrgid(Integer orgid) {
 		this.orgid = orgid;
 	}
 	

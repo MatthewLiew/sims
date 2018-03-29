@@ -4,15 +4,19 @@
 		<meta charset="UTF-8">
    	</head>
 	
-	<input type="hidden" name="userid" th:value="${useracc.userid}" />
-	<input type="hidden" name="referer" th:value="${referer}" />
+	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
 	
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-12">
-                Are you sure to Delete Following User ? <br/>
-                User Name - <b><span th:text="${useracc.username}"></span></b>
-            </div>
-        </div>
-    </div>   
+	<div th:object="${useracc}">
+		<input type="hidden" name="userid" th:field="*{userid}" />
+		<input type="hidden" name="username" th:field="*{username}" />
+		
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-12">
+	                Are you sure to Delete Following User ? <br/>
+	                User Name - <b><span th:text="*{username}"></span></b>
+	            </div>
+	        </div>
+	    </div>   
+    </div>
 </html>

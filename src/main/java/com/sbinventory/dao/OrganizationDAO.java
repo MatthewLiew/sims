@@ -6,6 +6,8 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -30,7 +32,7 @@ public class OrganizationDAO extends JdbcDaoSupport {
 		this.setDataSource(dataSource);
 	}
 	
-	public String createOrganization(int orgcode, String orgname) {
+	public String create(int orgcode, String orgname) {
 		
 		Object[] params=new Object[]{orgcode, orgname};
 		String sql=CREATE_SQL;
@@ -38,11 +40,52 @@ public class OrganizationDAO extends JdbcDaoSupport {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
 			return null;
-		}catch(EmptyResultDataAccessException e ) {
-			return e.getMessage();
 			
-		}catch(DataAccessException  e) {
-//			throw new DataAccessException("Something error", e);
+		} catch (DuplicateKeyException e) {
+			return "Organization "+orgname+" Exist. Organization Creation Failed.";
+			
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityViolationException("Entity is tied. Please clear the parent.", e);
+			
+		} catch (DataAccessException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public String updateOrganization(int orgid, int orgcode, String orgname ){
+		String sql=UPDATE_SQL+" set ORG_CODE = ?, ORG_NAME = ? where ID= ?";
+		Object[] params=new Object[]{orgcode, orgname, orgid};
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+			
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataAccessException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public String deleteOrganization(int orgid){
+		String sql=DELETE_SQL+" where ID= ?";
+		Object[] params= new Object[] {orgid};
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null; 
+			
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityViolationException("Entity is tied. Please clear the parent.", e);
+			
+		} catch (DataAccessException e) {
 			return e.getMessage();
 		}
 	}
@@ -127,29 +170,4 @@ public class OrganizationDAO extends JdbcDaoSupport {
 		}
 	}
 	
-	public String updateOrganization(int userid, int usercode, String username ){
-		String sql=UPDATE_SQL+" set ORG_CODE = ?, ORG_NAME = ? where ID= ?";
-		Object[] params=new Object[]{usercode, username, userid};
-		try {
-			int rows=this.getJdbcTemplate().update(sql, params);
-			System.out.println(rows + " row(s) updated.");
-			return null;
-		}catch(EmptyResultDataAccessException e) {
-			e.printStackTrace();
-			return e.getMessage();
-		}catch(DataAccessException  e) {
-			return e.getMessage();
-		}
-	}
-	
-	public void deleteOrganization(int userid){
-		String sql=DELETE_SQL+" where ID= ?";
-		Object[] params= new Object[] {userid};
-		try {
-			int rows=this.getJdbcTemplate().update(sql, params);
-			System.out.println(rows + " row(s) updated.");
-		}catch(EmptyResultDataAccessException e) {
-			e.printStackTrace();
-		}
-	}
 }

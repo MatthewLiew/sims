@@ -11,9 +11,8 @@ public class AppUser {
  
     }
  
-    public AppUser(int userId, int userCode, String userName, String encrytedPassword) {
+    public AppUser(int userId, String userName, String encrytedPassword) {
         this.userId = userId;
-        this.userCode = userCode;
         this.userName = userName;
         this.encrytedPassword = encrytedPassword;
     }

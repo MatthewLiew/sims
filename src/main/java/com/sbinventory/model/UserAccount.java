@@ -8,6 +8,7 @@ public class UserAccount {
 	private Integer orgid;
 	private Integer deptid;
 	private Integer subdeptid;
+	private Integer roleid;
 	
 	public UserAccount() {
 		
@@ -22,13 +23,14 @@ public class UserAccount {
 		this.password = password;
 	}
 	
-	public UserAccount(int userid, String username, String password, Integer orgid, Integer deptid, Integer subdeptid) {
+	public UserAccount(int userid, String username, String password, Integer orgid, Integer deptid, Integer subdeptid, Integer roleid) {
 		this.userid = userid;
 		this.username = username;
 		this.password = password;
 		this.orgid = orgid;
 		this.deptid = deptid;
 		this.subdeptid = subdeptid;
+		this.roleid = roleid;
 	}
 
 	public int getUserid() {
@@ -77,6 +79,14 @@ public class UserAccount {
 	
 	public void setSubdeptid(Integer subdeptid) {
 		this.subdeptid = subdeptid;
+	}
+	
+	public Integer getRoleid() {
+		return roleid;
+	}
+	
+	public void setRoleid(Integer roleid) {
+		this.roleid = roleid;
 	}
 	
 }

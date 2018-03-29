@@ -462,6 +462,17 @@ function orgCode(form) {
  		dataType: 'json',
  		
  		success: function (response) {
+ 			if(response.flag=="true"){
+	 			$("#"+form+" .orgcode" ).removeClass("is-invalid");
+				$("#"+form+" .orgcode" ).addClass("is-valid");
+				$("#"+form+" .orgcode_status" ).removeClass("text-danger");
+ 				$("#"+form+" .orgcode_status" ).addClass("text-success");
+ 			} else {
+ 				$("#"+form+" .orgcode" ).removeClass("is-valid");
+ 				$("#"+form+" .orgcode" ).addClass("is-invalid");
+ 				$("#"+form+" .orgcode_status" ).removeClass("text-success");
+ 				$("#"+form+" .orgcode_status" ).addClass("text-danger");
+ 			}
  			$("#"+form+" .orgcode_status").html(response.status);
  			$("#"+form+" .orgcode_flag").html(response.flag);
   		},
@@ -471,7 +482,9 @@ function orgCode(form) {
 			}
  		});
 		} else {
-			$("#"+form+" .orgcode_status").html("Field is required");
+			$("#"+form+" .orgcode").removeClass("is-valid");
+			$("#"+form+" .orgcode").removeClass("is-invalid");
+			$("#"+form+" .orgcode_status").html("");
 			$("#"+form+" .orgcode_flag").html("false");
 		}
 }
@@ -490,6 +503,17 @@ function orgName(form) {
  		dataType: 'json',
  		
  		success: function (response) {
+ 			if(response.flag=="true"){
+	 			$("#"+form+" .orgname" ).removeClass("is-invalid");
+				$("#"+form+" .orgname" ).addClass("is-valid");
+				$("#"+form+" .orgname_status" ).removeClass("text-danger");
+ 				$("#"+form+" .orgname_status" ).addClass("text-success");
+ 			} else {
+ 				$("#"+form+" .orgname" ).removeClass("is-valid");
+ 				$("#"+form+" .orgname" ).addClass("is-invalid");
+ 				$("#"+form+" .orgname_status" ).removeClass("text-success");
+ 				$("#"+form+" .orgname_status" ).addClass("text-danger");
+ 			}
  			$("#"+form+" .orgname_status" ).html(response.status);
  			$("#"+form+" .orgname_flag" ).html(response.flag);
   		},
@@ -499,30 +523,30 @@ function orgName(form) {
 			}
  		});
 	} else {
-		$("#"+form+" .orgname_status").html("Field is required");
+		$("#"+form+" .orgname").removeClass("is-valid");
+		$("#"+form+" .orgname").removeClass("is-invalid");
+		$("#"+form+" .orgname_status").html("");
 		$("#"+form+" .orgname_falg").html("false");
 	}
 }
 
 function orgForm(form) {
 	
-	var orgcodeinput= $.isEmptyObject($("#"+form+" .orgcode").val());
-	var orgnameinput= $.isEmptyObject($("#"+form+" .orgname").val());
 	var orgcodeflag=$("#"+form+" .orgcode_flag" ).text();
 	var orgnameflag=$("#"+form+" .orgname_flag" ).text();
+	let orgcode=$("#"+form+" .orgcode").val();
+	let orgname=$("#"+form+" .orgname").val();
 
-	if(orgcodeinput){
-		$("#"+form+" .orgcode_status").html("Field is required");
-	}
-	if(orgnameinput){
-		$("#"+form+" .orgname_status").html("Field is required");
-	}
-	if(((orgcodeinput)||(orgcodeflag=="false"))||((orgnameinput)||(orgnameflag=="false"))){
-		$("#"+form+" .error").html("Please complete the form");
+	if(orgcodeflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("Organization Code - "+orgcode+" Exists.");
+		return false;
+	} else if(orgnameflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("Organization Name - "+orgname+" Exists.");
 		return false;
 	} else {
-		$("#CreateUser").modal("toggle")
-		$('#myModal').modal('show');
+		$("#"+form+" #modal_error").hide();
 		return true;
 	}
 }
@@ -543,6 +567,17 @@ function deptCode(form) {
  		dataType: 'json',
  		
  		success: function (response) {
+ 			if(response.flag=="true"){
+	 			$("#"+form+" .deptcode" ).removeClass("is-invalid");
+				$("#"+form+" .deptcode" ).addClass("is-valid");
+				$("#"+form+" .deptcode_status" ).removeClass("text-danger");
+ 				$("#"+form+" .deptcode_status" ).addClass("text-success");
+ 			} else {
+ 				$("#"+form+" .deptcode" ).removeClass("is-valid");
+ 				$("#"+form+" .deptcode" ).addClass("is-invalid");
+ 				$("#"+form+" .deptcode_status" ).removeClass("text-success");
+ 				$("#"+form+" .deptcode_status" ).addClass("text-danger");
+ 			}
  			$("#"+form+" .deptcode_status").html(response.status);
  			$("#"+form+" .deptcode_flag").html(response.flag);
   		},
@@ -552,7 +587,9 @@ function deptCode(form) {
 			}
  		});
  	} else {
- 		$("#"+form+" .deptcode_status").html("Field is Required");
+ 		$("#"+form+" .deptcode").removeClass("is-valid");
+		$("#"+form+" .deptcode").removeClass("is-invalid");
+ 		$("#"+form+" .deptcode_status").html("");
  		$("#"+form+" .deptcode_flag" ).html("false");
  	}
 }
@@ -573,6 +610,17 @@ function deptName(form) {
  		dataType: 'json',
  		
  		success: function (response) {
+ 			if(response.flag=="true"){
+	 			$("#"+form+" .deptname" ).removeClass("is-invalid");
+				$("#"+form+" .deptname" ).addClass("is-valid");
+				$("#"+form+" .deptname_status" ).removeClass("text-danger");
+ 				$("#"+form+" .deptname_status" ).addClass("text-success");
+ 			} else {
+ 				$("#"+form+" .deptname" ).removeClass("is-valid");
+ 				$("#"+form+" .deptname" ).addClass("is-invalid");
+ 				$("#"+form+" .deptname_status" ).removeClass("text-success");
+ 				$("#"+form+" .deptname_status" ).addClass("text-danger");
+ 			}
  			$("#"+form+" .deptname_status" ).html(response.status);
  			$("#"+form+" .deptname_flag" ).html(response.flag);
   		},
@@ -582,28 +630,30 @@ function deptName(form) {
 			}
  		});
  	} else {
- 		$( "#"+form+" .deptname_status" ).html("Field is Required");
- 		$("#"+form+" .deptname_flag" ).html("false");
+ 		$("#"+form+" .deptname").removeClass("is-valid");
+		$("#"+form+" .deptname").removeClass("is-invalid");
+ 		$("#"+form+" .deptname_status" ).html("");
+ 		$("#"+form+" .deptname_flag").html("false");
  	}
 }
 
 function deptForm(form) {
 	
-	var deptcodeinput= $.isEmptyObject($("#"+form+" .deptcode").val());
-	var deptnameinput= $.isEmptyObject($("#"+form+" .deptname").val());
 	var deptcodeflag=$("#"+form+" .deptcode_flag" ).text();
 	var deptnameflag=$("#"+form+" .deptname_flag" ).text();
+	let deptcode=$("#"+form+" .deptcode").val();
+	let deptname=$("#"+form+" .deptname").val();
 
-	if(deptcodeinput){
-		$("#"+form+" .deptcode_status").html("Field is required");
-	}
-	if(deptnameinput){
-		$("#"+form+" .deptname_status").html("Field is required");
-	}
-	if(((deptcodeinput)||(deptcodeflag=="false"))||((deptnameinput)||(deptnameflag=="false"))){
-		$("#"+form+" .error").html("Please complete the form");
+	if(deptcodeflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("Department Code - "+deptcode+" Exists.");
+		return false;
+	} else if(deptnameflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("Department Name - "+deptname+" Exists.");
 		return false;
 	} else {
+		$("#"+form+" #modal_error").hide();
 		return true;
 	}
 }
@@ -624,6 +674,17 @@ function subdeptCode(form) {
  		dataType: 'json',
  		
  		success: function (response) {
+ 			if(response.flag=="true"){
+	 			$("#"+form+" .subdeptcode" ).removeClass("is-invalid");
+				$("#"+form+" .subdeptcode" ).addClass("is-valid");
+				$("#"+form+" .subdeptcode_status" ).removeClass("text-danger");
+ 				$("#"+form+" .subdeptcode_status" ).addClass("text-success");
+ 			} else {
+ 				$("#"+form+" .subdeptcode" ).removeClass("is-valid");
+ 				$("#"+form+" .subdeptcode" ).addClass("is-invalid");
+ 				$("#"+form+" .subdeptcode_status" ).removeClass("text-success");
+ 				$("#"+form+" .subdeptcode_status" ).addClass("text-danger");
+ 			}
  			$("#"+form+" .subdeptcode_status").html(response.status);
  			$("#"+form+" .subdeptcode_flag").html(response.flag);
   		},
@@ -633,6 +694,8 @@ function subdeptCode(form) {
 			}
  		});
  	} else {
+ 		$("#"+form+" .subdeptcode").removeClass("is-valid");
+		$("#"+form+" .subdeptcode").removeClass("is-invalid");
  		$("#"+form+" .subdeptcode_status").html("Field is Required");
  		$("#"+form+" .subdeptcode_flag").html("false");
  	}
@@ -654,6 +717,17 @@ function subdeptName(form) {
  		dataType: 'json',
  		
  		success: function (response) {
+ 			if(response.flag=="true"){
+	 			$("#"+form+" .subdeptname" ).removeClass("is-invalid");
+				$("#"+form+" .subdeptname" ).addClass("is-valid");
+				$("#"+form+" .subdeptname_status" ).removeClass("text-danger");
+ 				$("#"+form+" .subdeptname_status" ).addClass("text-success");
+ 			} else {
+ 				$("#"+form+" .subdeptname" ).removeClass("is-valid");
+ 				$("#"+form+" .subdeptname" ).addClass("is-invalid");
+ 				$("#"+form+" .subdeptname_status" ).removeClass("text-success");
+ 				$("#"+form+" .subdeptname_status" ).addClass("text-danger");
+ 			}
  			$("#"+form+" .subdeptname_status").html(response.status);
  			$("#"+form+" .subdeptname_flag").html(response.flag);
   		},
@@ -663,6 +737,8 @@ function subdeptName(form) {
 			}
  		});
  	} else {
+ 		$("#"+form+" .subdeptname").removeClass("is-valid");
+		$("#"+form+" .subdeptname").removeClass("is-invalid");
  		$("#"+form+" .subdeptname_status").html("Field is Required");
  		$("#"+form+" .subdeptname_flag").html("false");
  	}
@@ -670,21 +746,21 @@ function subdeptName(form) {
 
 function subdeptForm(form) {
 	
-	var subdeptcodeinput= $.isEmptyObject($("#"+form+" .subdeptcode").val());
-	var subdeptnameinput= $.isEmptyObject($("#"+form+" .subdeptname").val());
 	var subdeptcodeflag=$("#"+form+" .subdeptcode_flag" ).text();
 	var subdeptnameflag=$("#"+form+" .subdeptname_flag" ).text();
+	let subdeptcode=$("#"+form+" .subdeptcode").val();
+	let subdeptname=$("#"+form+" .subdeptname").val();
 
-	if(subdeptcodeinput){
-		$("#"+form+" .subdeptcode_status").html("Field is required");
-	}
-	if(subdeptnameinput){
-		$("#"+form+" .subdeptname_status").html("Field is required");
-	}
-	if(((subdeptcodeinput)||(subdeptcodeflag=="false"))||((subdeptnameinput)||(subdeptnameflag=="false"))){
-		$("#"+form+" .error").html("Please complete the form");
+	if(subdeptcodeflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("Sub Department Code - "+subdeptcode+" Exists.");
+		return false;
+	} else if(subdeptnameflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("Sub Department Name - "+subdeptname+" Exists.");
 		return false;
 	} else {
+		$("#"+form+" #modal_error").hide();
 		return true;
 	}
 }

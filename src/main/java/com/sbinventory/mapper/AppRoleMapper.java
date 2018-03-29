@@ -12,7 +12,7 @@ public class AppRoleMapper implements RowMapper<AppRole>{
 	@Override
 	public AppRole mapRow(ResultSet rs, int numRow) throws SQLException {
 
-		int roleid=rs.getInt("ROLE_ID");
+		int roleid=rs.getInt("ID");
 		String rolename=rs.getString("ROLE_NAME");
 		
 		return new AppRole(roleid, rolename);

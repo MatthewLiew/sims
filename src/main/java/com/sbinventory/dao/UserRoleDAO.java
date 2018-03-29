@@ -26,47 +26,71 @@ public class UserRoleDAO extends JdbcDaoSupport{
 		this.setDataSource(dataSource);
 	}
 	
-	public void createUserRole(int userid, int roleid) {
-
-		Object[] params=new Object[]{userid, roleid};
-		String sql=CREATE_SQL;
-	
-		int rows=this.getJdbcTemplate().update(sql, params);
-		System.out.println(rows + " row(s) updated.");
+	public UserRole findOne(int userroleid) {
 		
-	}
-	
-	public void updateUserRole(int new_userid, int userid){
-		String sql=UPDATE_SQL+" set USER_ID = ? where USER_ID= ?";
-		Object[] params= new Object[] {new_userid, userid};
-		try {
-			int rows=this.getJdbcTemplate().update(sql, params);
-			System.out.println(rows + " row(s) updated.");
-		}catch(EmptyResultDataAccessException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void deleteUserRole(int userid){
-		String sql=DELETE_SQL+" where USER_ID= ?";
-		Object[] params= new Object[] {userid};
-		try {
-			int rows=this.getJdbcTemplate().update(sql, params);
-			System.out.println(rows + " row(s) updated.");
-		}catch(EmptyResultDataAccessException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public UserRole getUserRole(int userid){
-		String sql=READ_SQL+" where USER_ID= ?";
-		Object[] params= new Object[] {userid};
+		String sql=READ_SQL+" where ID= ?";
+		Object[] params= new Object[] {userroleid};
+		
 		UserRoleMapper mapper=new UserRoleMapper();
 		try {
 			UserRole userrole=this.getJdbcTemplate().queryForObject(sql, params,mapper);
 			return userrole;
-		}catch(EmptyResultDataAccessException e) {
+		}catch(DataAccessException e) {
 			return null;
+		}
+	}
+
+	public UserRole findOneByUserid(int userid) {
+		
+		String sql=READ_SQL+" where USER_ID= ?";
+		Object[] params= new Object[] {userid};
+		
+		UserRoleMapper mapper=new UserRoleMapper();
+		try {
+			UserRole userrole=this.getJdbcTemplate().queryForObject(sql, params,mapper);
+			return userrole;
+		}catch(DataAccessException e) {
+			return null;
+		}
+	}
+	
+	public void create(int userid, int roleid) {
+		
+		String sql=CREATE_SQL;
+		Object[] params=new Object[]{userid, roleid};
+		
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");;
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	public void update(int new_userid, int userid) {
+		
+		String sql=UPDATE_SQL+" set USER_ID = ? where USER_ID = ?";
+		Object[] params= new Object[] {new_userid, userid};
+		
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void delete(int userid) {
+		
+		String sql=DELETE_SQL+" where USER_ID= ?";
+		Object[] params= new Object[] {userid};
+		
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+		} catch (DataAccessException e) {
+			e.printStackTrace();
 		}
 	}
 }

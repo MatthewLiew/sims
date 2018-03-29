@@ -4,17 +4,21 @@
 		<meta charset="UTF-8">
    	</head>
 	
-	<input type="hidden" name="orgid" th:value="${org.orgid}" />
-	<input type="hidden" name="referer" th:value="${referer}" />
 	
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-12">
-                Are you sure to Delete Following Organization ? <br/>
-                Organization Code - <b><span th:text="${org.orgcode}"></span></b>
-                										        <br/>
-                Organization Name - <b><span th:text="${org.orgname}"></span></b>
-            </div>
-        </div>
+	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
+	
+	<div th:object="${org}">
+		<input type="hidden" name="orgid" th:field="*{orgid}" />
+		<input type="hidden" name="orgid" th:field="*{orgname}" />
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-12">
+	                Are you sure to Delete Following Organization ? <br/>
+	                Organization Code - <b><span th:text="${org.orgcode}"></span></b>
+	                										        <br/>
+	                Organization Name - <b><span th:text="${org.orgname}"></span></b>
+	            </div>
+	        </div>
+	    </div>
     </div>
 </html>
