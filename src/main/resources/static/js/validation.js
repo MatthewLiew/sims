@@ -696,7 +696,7 @@ function subdeptCode(form) {
  	} else {
  		$("#"+form+" .subdeptcode").removeClass("is-valid");
 		$("#"+form+" .subdeptcode").removeClass("is-invalid");
- 		$("#"+form+" .subdeptcode_status").html("Field is Required");
+ 		$("#"+form+" .subdeptcode_status").html("");
  		$("#"+form+" .subdeptcode_flag").html("false");
  	}
 }
@@ -739,7 +739,7 @@ function subdeptName(form) {
  	} else {
  		$("#"+form+" .subdeptname").removeClass("is-valid");
 		$("#"+form+" .subdeptname").removeClass("is-invalid");
- 		$("#"+form+" .subdeptname_status").html("Field is Required");
+ 		$("#"+form+" .subdeptname_status").html("");
  		$("#"+form+" .subdeptname_flag").html("false");
  	}
 }

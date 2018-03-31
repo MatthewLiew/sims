@@ -55,7 +55,7 @@ public class OrganizationDAO extends JdbcDaoSupport {
 		}
 	}
 	
-	public String updateOrganization(int orgid, int orgcode, String orgname ){
+	public String update(int orgid, int orgcode, String orgname ){
 		String sql=UPDATE_SQL+" set ORG_CODE = ?, ORG_NAME = ? where ID= ?";
 		Object[] params=new Object[]{orgcode, orgname, orgid};
 		try {
@@ -71,7 +71,7 @@ public class OrganizationDAO extends JdbcDaoSupport {
 		}
 	}
 	
-	public String deleteOrganization(int orgid){
+	public String delete(int orgid){
 		String sql=DELETE_SQL+" where ID= ?";
 		Object[] params= new Object[] {orgid};
 		try {
@@ -90,7 +90,7 @@ public class OrganizationDAO extends JdbcDaoSupport {
 		}
 	}
 	
-	public List<Organization> getAllOrganization(){
+	public List<Organization> findAll(){
 		
 		String sql=READ_SQL;
 		OrganizationMapper mapper=new OrganizationMapper();
@@ -103,7 +103,7 @@ public class OrganizationDAO extends JdbcDaoSupport {
         }
 	}
 	
-	public Organization getOrganization(int orgid){
+	public Organization findOne(int orgid){
 		
 		String sql=READ_SQL+" where ID = ?";
 		Object[] params=new Object[] {orgid};
@@ -117,49 +117,31 @@ public class OrganizationDAO extends JdbcDaoSupport {
         }
 	}
 	
-	public Organization getOrganizationCode(int orgcode){
+	public Organization getOrganizationCode(int orgcode, int orgid){
 		
 		String sql=READ_SQL+" where ORG_CODE = ?";
 		Object[] params=new Object[] {orgcode};
-		OrganizationMapper mapper=new OrganizationMapper();
-		
-		try {
-            Organization org = this.getJdbcTemplate().queryForObject(sql, params, mapper);
-            return org;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-	}
-	
-	public Organization getOrganizationCode(int orgcode, int orgid){
-		
-		String sql=READ_SQL+" where ORG_CODE = ? AND ID!= ?";
-		Object[] params=new Object[] {orgcode, orgid};
-		OrganizationMapper mapper=new OrganizationMapper();
-		
-		try {
-            Organization org = this.getJdbcTemplate().queryForObject(sql, params, mapper);
-            return org;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-	}
-	public Organization getOrganizationName(String orgname){
-		String sql=READ_SQL+" where ORG_NAME = ?";
-		Object[] params= new Object[] {orgname};
-		OrganizationMapper mapper=new OrganizationMapper();
-		
-		try {
-			Organization org = this.getJdbcTemplate().queryForObject(sql,params,mapper);
-			return org;
-		}catch(EmptyResultDataAccessException e) {
-			return null;
+		if(orgid!=0) {
+			sql+="AND ID != ?";
+			params= new Object[] {orgcode, orgid};
 		}
+		OrganizationMapper mapper=new OrganizationMapper();
+		
+		try {
+            Organization org = this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            return org;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
 	}
 	
 	public Organization getOrganizationName(String orgname, int orgid){
-		String sql=READ_SQL+" where ORG_NAME = ? AND ID != ?";
+		String sql=READ_SQL+" where ORG_NAME = ? ";
 		Object[] params= new Object[] {orgname, orgid};
+		if(orgid!=0) {
+			sql+="AND ID != ?";
+			params= new Object[] {orgname, orgid};
+		}
 		OrganizationMapper mapper=new OrganizationMapper();
 		
 		try {

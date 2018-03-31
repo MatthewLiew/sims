@@ -64,9 +64,9 @@ public class UserController {
 		
 		List<UserAccount> useraccs=userAccountDAO.findAll();
 		List<AppRole> approles = appRoleDAO.getAllRoleNames();
-		List<Organization> orgs= organizationDAO.getAllOrganization();
-		List<Dept> depts= deptDAO.getAllDept();
-		List<SubDept> subdepts = subDeptDAO.getAllSubDept();
+		List<Organization> orgs= organizationDAO.findAll();
+		List<Dept> depts= deptDAO.findAll();
+		List<SubDept> subdepts = subDeptDAO.findAll();
 		
 		String message = (String)model.asMap().get("message");
 		
@@ -85,7 +85,7 @@ public class UserController {
 	public String getCreateUser(Model model, HttpServletRequest request ) {
 		
 		String sourceURL = request.getHeader("Referer");
-		List<Organization> orgs= organizationDAO.getAllOrganization();
+		List<Organization> orgs= organizationDAO.findAll();
 		List<AppRole> approles = appRoleDAO.getAllRoleNames();
 		model.addAttribute("errorString",null);
 		
@@ -134,9 +134,9 @@ public class UserController {
 //		UserRole userrole=userRoleDAO.findOneByUserid(userid);
 		
 		List<AppRole> approles = appRoleDAO.getAllRoleNames();
-		List<Organization> orgs= organizationDAO.getAllOrganization();
-		List<Dept> depts= deptDAO.getAllDept(useracc.getOrgid());
-		List<SubDept> subdepts = subDeptDAO.getAllSubDept(useracc.getDeptid());
+		List<Organization> orgs= organizationDAO.findAll();
+		List<Dept> depts= deptDAO.findAllByOrgid(useracc.getOrgid());
+		List<SubDept> subdepts = subDeptDAO.findAllByDeptid(useracc.getDeptid());
 		
         model.addAttribute("useracc",useracc);
 //        model.addAttribute("userrole",userrole);

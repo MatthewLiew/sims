@@ -4,17 +4,22 @@
 		<meta charset="UTF-8">
    	</head>
 	
-	<input type="hidden" name="orgid" th:value="${subdept.subdeptid}" />
-	<input type="hidden" name="referer" th:value="${referer}" />
+	<p class="error" style="color: red;" th:text="${errorString}" ></p>
+	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
 	
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-12">
-                Are you sure to Delete Following Sub Department ? <br/>
-                Sub Department Code - <b><span th:text="${subdept.subdeptcode}"></span></b>
-                										          <br/>
-                Sub Department Name - <b><span th:text="${subdept.subdeptname}"></span></b>
-            </div>
-        </div>
+	<div th:object="${subdept}">
+		<input type="hidden" name="subdeptid" th:field="*{subdeptid}" th:value="${subdept.subdeptid}" />
+		<input type="hidden" name="subdeptname" th:field="*{subdeptname}" th:value="${subdept.subdeptname}" />
+		
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-12">
+	                Are you sure to Delete Following Sub Department ? <br/>
+	                Sub Department Code - <b><span th:text="${subdept.subdeptcode}"></span></b>
+	                										          <br/>
+	                Sub Department Name - <b><span th:text="${subdept.subdeptname}"></span></b>
+	            </div>
+	        </div>
+	    </div>
     </div>
 </html>

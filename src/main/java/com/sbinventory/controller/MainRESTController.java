@@ -88,12 +88,8 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkOrgCode")
 	public Response getOrgCodeResponse(@RequestBody Organization org ) {
-		Organization result;
-		if(org.getOrgid()==0) {
-			result = organizationDAO.getOrganizationCode(org.getOrgcode());
-		} else {
-			result = organizationDAO.getOrganizationCode(org.getOrgcode(), org.getOrgid());
-		}
+		Organization result = organizationDAO.getOrganizationCode(org.getOrgcode(), org.getOrgid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -106,12 +102,8 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkOrgName")
 	public Response getOrgNameResponse(@RequestBody Organization org ) {
-		Organization result;
-		if(org.getOrgid()==0) {
-			result= organizationDAO.getOrganizationName(org.getOrgname());
-		} else {
-			result= organizationDAO.getOrganizationName(org.getOrgname(), org.getOrgid());
-		}
+		Organization result= organizationDAO.getOrganizationName(org.getOrgname(), org.getOrgid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -125,12 +117,8 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkDeptCode")
 	public Response getDeptCodeResponse(@RequestBody Dept dept ) {
-		Dept result;
-		if(dept.getDeptid()==0) {
-			result= deptDAO.getDeptCode(dept.getDeptcode());
-		} else {
-			result= deptDAO.getDeptCode(dept.getDeptcode(), dept.getDeptid());
-		}
+		Dept result= deptDAO.getDeptCode(dept.getDeptcode(), dept.getDeptid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -143,12 +131,8 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkDeptName")
 	public Response getDeptNameResponse(@RequestBody Dept dept ) {
-		Dept result;
-		if(dept.getDeptid()==0) {
-			result= deptDAO.getDeptName(dept.getDeptname());
-		} else {
-			result= deptDAO.getDeptName(dept.getDeptname(), dept.getDeptid());
-		}
+		Dept result= deptDAO.getDeptName(dept.getDeptname(), dept.getDeptid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -162,12 +146,8 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkSubDeptCode")
 	public Response getSubDeptCodeResponse(@RequestBody SubDept subdept ) {
-		SubDept result;
-		if(subdept.getSubdeptid()==0) {
-			result= subDeptDAO.getSubDeptCode(subdept.getSubdeptcode());
-		} else {
-			result= subDeptDAO.getSubDeptCode(subdept.getSubdeptcode(), subdept.getSubdeptid());
-		}
+		SubDept result= subDeptDAO.getSubDeptCode(subdept.getSubdeptcode(), subdept.getSubdeptid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -180,12 +160,8 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkSubDeptName")
 	public Response getSubDeptNameResponse(@RequestBody SubDept subdept ) {
-		SubDept result;
-		if(subdept.getSubdeptid()==0) {
-			result= subDeptDAO.getSubDeptName(subdept.getSubdeptname());
-		} else {
-			result= subDeptDAO.getSubDeptName(subdept.getSubdeptname(), subdept.getSubdeptid());
-		}
+		SubDept result= subDeptDAO.getSubDeptName(subdept.getSubdeptname(), subdept.getSubdeptid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -463,14 +439,14 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/getDept")
 	public List<Dept> getDept(@RequestBody Dept dept) {
-		List<Dept> depts=deptDAO.getAllDept(dept.getOrgid());
+		List<Dept> depts=deptDAO.findAllByOrgid(dept.getOrgid());
 		
 		return depts;
 	}
 	
 	@PostMapping(value="/api/getSubDept")
 	public List<SubDept> getSubDept(@RequestBody SubDept subdept) {
-		List<SubDept> subdepts=subDeptDAO.getAllSubDept(subdept.getDeptid());
+		List<SubDept> subdepts=subDeptDAO.findAllByDeptid(subdept.getDeptid());
 		
 		return subdepts;
 	}

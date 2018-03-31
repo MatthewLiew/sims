@@ -41,7 +41,7 @@ private static final String DELETE_SQL="DELETE FROM DEPT";
 			System.out.println(rows + " row(s) updated.");
 			return null;
 		} catch (DuplicateKeyException e) {
-			return "Organization "+deptname+" Exist. Organization Creation Failed.";
+			return "Department "+deptname+" Exist. Department Creation Failed.";
 			
 		} catch (EmptyResultDataAccessException e) {
 			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
@@ -53,6 +53,7 @@ private static final String DELETE_SQL="DELETE FROM DEPT";
 			return e.getMessage();
 		}
 	}
+	
 	public String update(int deptid, int deptcode, String deptname ){
 		
 		String sql=UPDATE_SQL+" set DEPT_CODE = ?, DEPT_NAME = ? where ID= ?";
@@ -70,7 +71,7 @@ private static final String DELETE_SQL="DELETE FROM DEPT";
 		}
 	}
 	
-	public String deleteDepartment(int deptid){
+	public String delete(int deptid){
 		
 		String sql=DELETE_SQL+" where ID= ?";
 		Object[] params= new Object[] {deptid};
@@ -90,7 +91,8 @@ private static final String DELETE_SQL="DELETE FROM DEPT";
 			return e.getMessage();
 		}
 	}
-	public List<Dept> getAllDept(){
+	
+	public List<Dept> findAll(){
 		
 		String sql=READ_SQL;
 		DeptMapper mapper=new DeptMapper();
@@ -103,21 +105,7 @@ private static final String DELETE_SQL="DELETE FROM DEPT";
         }
 	}
 
-	public List<Dept> getAllDept(int orgid){
-		
-		String sql=READ_SQL+ " where ORG_ID = ?";
-		Object[] params =new Object[] {orgid};
-		DeptMapper mapper=new DeptMapper();
-		
-		try {
-            List<Dept> depts =  this.getJdbcTemplate().query(sql, params, mapper);
-            return depts;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-	}
-	
-	public Dept getDept(int deptid){
+	public Dept findOne(int deptid){
 		
 		String sql=READ_SQL+ " where ID = ?";
 		Object[] params =new Object[] {deptid};
@@ -131,11 +119,29 @@ private static final String DELETE_SQL="DELETE FROM DEPT";
             return null;
         }
 	}
-	
-	public Dept getDeptCode(int deptcode){
+
+	public List<Dept> findAllByOrgid(int orgid){
+		
+		String sql=READ_SQL+ " where ORG_ID = ?";
+		Object[] params =new Object[] {orgid};
+		DeptMapper mapper=new DeptMapper();
+		
+		try {
+            List<Dept> depts =  this.getJdbcTemplate().query(sql, params, mapper);
+            return depts;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+		
+	public Dept getDeptCode(int deptcode, int deptid){
 		
 		String sql=READ_SQL+ " where DEPT_CODE = ?";
 		Object[] params =new Object[] {deptcode};
+		if(deptid!=0) {
+			sql+="AND ID != ?";
+			params= new Object[] {deptcode, deptid};
+		}
 		DeptMapper mapper=new DeptMapper();
 		
 		try {
@@ -146,41 +152,15 @@ private static final String DELETE_SQL="DELETE FROM DEPT";
             return null;
         }
 	}
-	
-	public Dept getDeptCode(int deptcode, int deptid){
-		
-		String sql=READ_SQL+ " where DEPT_CODE = ? AND ID != ?";
-		Object[] params =new Object[] {deptcode, deptid};
-		DeptMapper mapper=new DeptMapper();
-		
-		try {
-            Dept dept =  this.getJdbcTemplate().queryForObject(sql, params, mapper);
-            System.out.println(dept.getDeptname());
-            return dept;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-	}
-	
-	public Dept getDeptName(String deptname){
-		
-		String sql=READ_SQL+ " where DEPT_NAME = ?";
-		Object[] params =new Object[] {deptname};
-		DeptMapper mapper=new DeptMapper();
-		
-		try {
-            Dept dept =  this.getJdbcTemplate().queryForObject(sql, params, mapper);
-            System.out.println(dept.getDeptname());
-            return dept;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-	}
-	
+
 	public Dept getDeptName(String deptname, int deptid){
 		
-		String sql=READ_SQL+ " where DEPT_NAME = ? AND ID != ?";
-		Object[] params =new Object[] {deptname, deptid};
+		String sql=READ_SQL+ " where DEPT_NAME = ? ";
+		Object[] params =new Object[] {deptname};
+		if(deptid!=0) {
+			sql+="AND ID != ?";
+			params= new Object[] {deptname, deptid};
+		}
 		DeptMapper mapper=new DeptMapper();
 		
 		try {

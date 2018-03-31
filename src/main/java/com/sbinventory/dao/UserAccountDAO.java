@@ -117,6 +117,7 @@ public class UserAccountDAO extends JdbcDaoSupport {
 		}
 		return null;
 	}
+	
 	public List<UserAccount> findAll(){
 		
 		String sql=READ_SQL;

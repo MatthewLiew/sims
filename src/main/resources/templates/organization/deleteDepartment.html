@@ -4,6 +4,7 @@
 		<meta charset="UTF-8">
    	</head>
 	
+	<p class="error" style="color: red;" th:text="${errorString}" ></p>
 	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
 	
 	<div th:object="${dept}">

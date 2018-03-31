@@ -125,9 +125,9 @@ public class MainController {
         model.addAttribute("myAccInfo", userInfo);
  
         UserAccount user=userAccountDAO.findOneByUsername(loginedUser.getUsername(),0);
-        Organization org=organizationDAO.getOrganization(user.getOrgid());
-        Dept dept=deptDAO.getDept(user.getDeptid());
-        SubDept subdept=subDeptDAO.getSubDept(user.getSubdeptid());
+        Organization org=organizationDAO.findOne(user.getOrgid());
+        Dept dept=deptDAO.findOne(user.getDeptid());
+        SubDept subdept=subDeptDAO.findOne(user.getSubdeptid());
         
         model.addAttribute("user",user);
         model.addAttribute("org",org);
@@ -152,9 +152,9 @@ public class MainController {
             model.addAttribute("message", message);
             
             UserAccount user=userAccountDAO.findOneByUsername(loginedUser.getUsername(),0);
-            Organization org=organizationDAO.getOrganization(user.getOrgid());
-            Dept dept=deptDAO.getDept(user.getDeptid());
-            SubDept subdept=subDeptDAO.getSubDept(user.getSubdeptid());
+            Organization org=organizationDAO.findOne(user.getOrgid());
+            Dept dept=deptDAO.findOne(user.getDeptid());
+            SubDept subdept=subDeptDAO.findOne(user.getSubdeptid());
             
             model.addAttribute("user",user);
             model.addAttribute("org",org);
