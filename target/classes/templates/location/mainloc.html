@@ -7,6 +7,12 @@
 	<div class="header_ref" th:include="/header"></div>
 	<div class="content-wrapper">
     	<div class="container-fluid">
+    	
+    		<div th:if="${message!= null}" class="alert alert-info alert-dismissible">
+			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<span  th:text="${message}"></span>
+		  	</div>
+		  	
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		        <li class="breadcrumb-item">
@@ -54,7 +60,7 @@
            	</div>
            	
            	<div class="modal clickable" id="CreateMainLocation" tabindex="-1" role="dialog" aria-labelledby="CreateMainLocation" aria-hidden="true">
-	            <form method="POST" th:action="@{/createMainLoc}" id="CreateMainLocation">
+	            <form method="POST" th:action="@{/createMainLoc}" id="CreateMainLocation" onsubmit="return mainlocForm('CreateMainLocation');">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -81,7 +87,7 @@
 	        </div>
 	        
 	        <div class="modal clickable" id="EditMainLocation" tabindex="-1" role="dialog" aria-labelledby="EditMainLocation" aria-hidden="true">
-	            <form method="POST" th:action="@{/editMainLoc}" id="EditMainLocation">
+	            <form method="POST" th:action="@{/editMainLoc}" id="EditMainLocation" onsubmit="return mainlocForm('EditMainLocation');">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -142,12 +148,14 @@
             if (action == 'new') {
                 $('#CreateMainLocation .modal-body').empty();
                 $('#CreateMainLocation .modal-title').text("New Main Location");
+                $('#CreateMainLocation #modal_error').hide();
                 $('#CreateMainLocation .modal-body').load('createMainLoc', function () {
                     $('#CreateMainLocation').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditMainLocation .modal-body').empty();
                 $('#EditMainLocation .modal-title').text("Edit Main Location");
+                $('#EditMainLocation #modal_error').hide();
                 $('#EditMainLocation .modal-body').load('editMainLoc?mainlocid=' + id, function () {
                     $('#EditMainLocation').modal({show: true});
                 });

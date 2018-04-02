@@ -6,6 +6,8 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -28,7 +30,7 @@ public class MainLocDAO extends JdbcDaoSupport{
 		this.setDataSource(dataSource);
 	}
 	
-	public String createMainLoc(String mainlocname) {
+	public String create(String mainlocname) {
 		
 		Object[] params=new Object[]{mainlocname};
 		String sql=CREATE_SQL;
@@ -37,16 +39,58 @@ public class MainLocDAO extends JdbcDaoSupport{
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
 			return null;
-		} catch (EmptyResultDataAccessException e ) {
-			return e.getMessage();
+		} catch (DuplicateKeyException e) {
+			return "Main Location "+mainlocname+" Exist. Main Location Creation Failed.";
 			
-		} catch (DataAccessException  e) {
-//			throw new DataAccessException("Something error", e);
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityViolationException("Entity is tied. Please clear the parent.", e);
+			
+		} catch (DataAccessException e) {
 			return e.getMessage();
 		}
 	}
 	
-	public List<MainLoc> getAllMainLoc(){
+	public String update(int mainlocid, String mainlocname ){
+		
+		String sql=UPDATE_SQL+" set MAIN_LOC_NAME = ? where ID= ?";
+		Object[] params=new Object[]{ mainlocname, mainlocid};
+		
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataAccessException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public String delete(int mainlocid){
+		
+		String sql=DELETE_SQL+" where ID= ?";
+		Object[] params= new Object[] {mainlocid};
+		
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityViolationException("Entity is tied. Please clear the parent.", e);
+			
+		} catch (DataAccessException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public List<MainLoc> findAll(){
 		
 		String sql=READ_SQL + " ORDER BY MAIN_LOC_NAME";
 		MainLocMapper mapper=new MainLocMapper();
@@ -59,7 +103,7 @@ public class MainLocDAO extends JdbcDaoSupport{
         }
 	}
 	
-	public MainLoc getMainLoc(int mainlocid){
+	public MainLoc findOne(int mainlocid){
 		
 		String sql=READ_SQL+" where ID = ?";
 		Object[] params=new Object[] {mainlocid};
@@ -72,25 +116,15 @@ public class MainLocDAO extends JdbcDaoSupport{
             return null;
         }
 	}
-	
-	public MainLoc getMainLocName(String mainlocname){
-		
-		String sql=READ_SQL+" where MAIN_LOC_NAME = ?";
-		Object[] params= new Object[] {mainlocname};
-		MainLocMapper mapper=new MainLocMapper();
-		
-		try {
-			MainLoc mainloc = this.getJdbcTemplate().queryForObject(sql,params,mapper);
-			return mainloc;
-		} catch (EmptyResultDataAccessException e) {
-			return null;
-		}
-	}
-	
+
 	public MainLoc getMainLocName(String mainlocname, int mainlocid){
 		
-		String sql=READ_SQL+" where MAIN_LOC_NAME = ? AND ID != ?";
-		Object[] params= new Object[] {mainlocname, mainlocid};
+		String sql=READ_SQL+" where MAIN_LOC_NAME = ? ";
+		Object[] params= new Object[] {mainlocname};
+		if(mainlocid!=0) {
+			sql+="AND ID != ?";
+			params= new Object[] {mainlocname, mainlocid};
+		}
 		MainLocMapper mapper=new MainLocMapper();
 		
 		try {
@@ -101,33 +135,4 @@ public class MainLocDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public String updateMainLoc(int mainlocid, String mainlocname ){
-		
-		String sql=UPDATE_SQL+" set MAIN_LOC_NAME = ? where ID= ?";
-		Object[] params=new Object[]{ mainlocname, mainlocid};
-		
-		try {
-			int rows=this.getJdbcTemplate().update(sql, params);
-			System.out.println(rows + " row(s) updated.");
-			return null;
-		} catch (EmptyResultDataAccessException e) {
-			e.printStackTrace();
-			return e.getMessage();
-		} catch (DataAccessException  e) {
-			return e.getMessage();
-		}
-	}
-	
-	public void deleteMainLoc(int mainlocid){
-		
-		String sql=DELETE_SQL+" where ID= ?";
-		Object[] params= new Object[] {mainlocid};
-		
-		try {
-			int rows=this.getJdbcTemplate().update(sql, params);
-			System.out.println(rows + " row(s) updated.");
-		} catch (EmptyResultDataAccessException e) {
-			e.printStackTrace();
-		}
-	}
 }

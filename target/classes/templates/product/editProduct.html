@@ -5,79 +5,81 @@
   	</head>
       	
    	<p class="error" style="color: red;" th:text="${errorString}" ></p>
-   	<input type="hidden" name="productid" th:value="${product.productid}" />
- 	<input type="hidden" name="referer" th:value="${referer}" />
+ 	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
 
-	<div class="form-group">
-		<div class="form-row">
-       		<div class="col-md-3">
-            	<label for="ProductCodeLabel">Product Code</label>
-          	</div>
-            <div class="col-md-6">
-            	<input class="form-control productcode" id="productcode" name="productcode" type="text" data-error="Please Ener Product Code" aria-describedby="ProductCode" placeholder="Enter Product Code" th:value="${product.productcode}" onkeyup="productCode('EditProduct');" required>
-           	</div>
-            <div class="col-md-3">
-            	<span class="productcode_status"></span>
-                <span style="visibility:hidden;"class="productcode_flag" th:text="true"></span>
-            </div>
-        </div>
-    </div>
-        
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="ProductNameLabel">Product Name</label>
-            </div>
-            <div class="col-md-6">
-            	<input class="form-control productname" id="productname" name="productname" type="text" data-error="Please Enter Product Name" aria-describedby="ProductName" placeholder="Enter Product Name" th:value="${product.productname}" onkeyup="productName('EditProduct');" required>
-            </div>
-            <div class="col-md-3">
-            	<span class="productname_status"></span>
-                <span style="visibility:hidden;"class="productname_flag" th:text="true"></span>
-            </div>
-        </div>
-    </div>
-        
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="BrandLabel">Brand</label>
-            </div>
-            <div class="col-md-6">
-            	<select class="form-control" name="brandid" required>
-		           	<option value="">Select Brand</option>
-		           	<option th:each="list: ${brands}" th:selected="${list.isBrand(product.brandid)}" th:value="${list.brandid}" th:text="${list.brandname}">
-       			</select>
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="HardwareLabel">Hardware</label>
-            </div>
-            <div class="col-md-6">
-            	<select class="form-control" name="hardwareid" required>
-		           <option value="">Select Hardware</option>
-		           <option th:each="list: ${hardwares}" th:selected="${list.isHardware(product.hardwareid)}" th:value="${list.hardwareid}" th:text="${list.hardwaretype}"></option>
-       			</select>
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="LBThresholdLabel">Low Balance Threshold</label>
-            </div>
-            <div class="col-md-6">
-            	<input class="form-control lbvalue" id="lbvalue" name="lbvalue" type="text" data-error="Please Ener Low Balance Threshold" aria-describedby="LBThreshold" placeholder="Enter Low Balance Threshold Value" th:value="${product.lbvalue}" onkeyup="productLBValue('EditProduct');" required>
-            </div>
-            <div class="col-md-3">
-            	<span class="lbvalue_status"></span>
-                <span style="visibility:hidden;"class="lbvalue_flag" th:text="true"></span>
-            </div>
-        </div>
+	<div th:object="${product}">
+		<input type="hidden" name="productid" th:field="*{productid}" th:value="${product.productid}" />
+		<div class="form-group">
+			<div class="form-row">
+	       		<div class="col-md-3">
+	            	<label for="ProductCodeLabel">Product Code</label>
+	          	</div>
+	            <div class="col-md-6">
+	            	<input class="form-control productcode" id="productcode" name="productcode" type="text" data-error="Please Enter Product Code" aria-describedby="ProductCode" placeholder="Enter Product Code" th:field="*{productcode}" th:value="${product.productcode}" onkeyup="productCode('EditProduct');" required>
+	           	</div>
+	            <div class="col-md-3">
+	            	<span class="productcode_status"></span>
+	                <span style="visibility:hidden;"class="productcode_flag" th:text="true"></span>
+	            </div>
+	        </div>
+	    </div>
+	        
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="ProductNameLabel">Product Name</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<input class="form-control productname" id="productname" name="productname" type="text" data-error="Please Enter Product Name" aria-describedby="ProductName" placeholder="Enter Product Name" th:field="*{productname}" th:value="${product.productname}" onkeyup="productName('EditProduct');" required>
+	            </div>
+	            <div class="col-md-3">
+	            	<span class="productname_status"></span>
+	                <span style="visibility:hidden;"class="productname_flag" th:text="true"></span>
+	            </div>
+	        </div>
+	    </div>
+	        
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="BrandLabel">Brand</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<select class="form-control" name="brandid" required>
+			           	<option value="">Select Brand</option>
+			           	<option th:each="list: ${brands}" th:selected="${list.isBrand(product.brandid)}" th:field="*{brandid}" th:value="${list.brandid}" th:text="${list.brandname}">
+	       			</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="HardwareLabel">Hardware</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<select class="form-control" name="hardwareid" required>
+			           <option value="">Select Hardware</option>
+			           <option th:each="list: ${hardwares}" th:selected="${list.isHardware(product.hardwareid)}" th:field="*{hardwareid}" th:value="${list.hardwareid}" th:text="${list.hardwaretype}"></option>
+	       			</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="LBThresholdLabel">Low Balance Threshold</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<input class="form-control lbvalue" id="lbvalue" name="lbvalue" type="text" data-error="Please Enter Low Balance Threshold" aria-describedby="LBThreshold" placeholder="Enter Low Balance Threshold Value" th:field="*{lbvalue}" th:value="${product.lbvalue}" required>
+	            </div>
+	            <div class="col-md-3">
+	            	<span class="lbvalue_status"></span>
+	                <span style="visibility:hidden;"class="lbvalue_flag" th:text="true"></span>
+	            </div>
+	        </div>
+	    </div>
     </div>
 </html>

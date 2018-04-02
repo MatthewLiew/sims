@@ -5,36 +5,39 @@
     </head>
     
 	<p class="error" style="color: red;" th:text="${errorString}" ></p>
-	<input type="hidden" class="brandid" name="brandid" th:value="${brand.brandid}" />
- 	<input type="hidden" name="referer" th:value="${referer}" />
-      
-  	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="BrandCodeLabel">Brand Code</label>
-            </div>
-            <div class="col-md-6">
-            	<input class="form-control brandcode" id="brandcode" name="brandcode" type="text" data-error="Please Enter Brand Code" aria-describedby="BrandCode" placeholder="Enter Brand Code" th:value="${brand.brandcode}" onkeyup="brandCode('EditBrand');" required>
-            </div>
-            <div class="col-md-3">
-            	<span class="brandcode_status"></span>
-                <span style="visibility:hidden;"class="brandcode_flag" th:text="true"></span>
-            </div>
-        </div>
-    </div>
-        
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="HardwareTypeLabel">Brand Name</label>
-            </div>
-            <div class="col-md-6">
-            	<input class="form-control brandname" id="brandname" name="brandname" type="text" data-error="Please Enter Brand Name" aria-describedby="BrandName" placeholder="Enter Brand Name" th:value="${brand.brandname}" onkeyup="brandName('EditBrand');" required>
-            </div>
-            <div class="col-md-3">
-            	<span class="brandname_status"></span>
-                <span style="visibility:hidden;"class="brandname_flag" th:text="true"></span>
-            </div>
-        </div>
+	
+ 	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
+    
+    <div th:object="${brand}">
+    	<input type="hidden" class="brandid" name="brandid" th:field="*{brandid}" th:value="${brand.brandid}" />
+	  	<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="BrandCodeLabel">Brand Code</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<input class="form-control brandcode" id="brandcode" name="brandcode" type="text" data-error="Please Enter Brand Code" aria-describedby="BrandCode" placeholder="Enter Brand Code" th:field="*{brandcode}" th:value="${brand.brandcode}" onkeyup="brandCode('EditBrand');" required>
+	            </div>
+	            <div class="col-md-3">
+	            	<span class="brandcode_status"></span>
+	                <span style="visibility:hidden;"class="brandcode_flag" th:text="true"></span>
+	            </div>
+	        </div>
+	    </div>
+	        
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="HardwareTypeLabel">Brand Name</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<input class="form-control brandname" id="brandname" name="brandname" type="text" data-error="Please Enter Brand Name" aria-describedby="BrandName" placeholder="Enter Brand Name" th:field="*{brandname}" th:value="${brand.brandname}" onkeyup="brandName('EditBrand');" required>
+	            </div>
+	            <div class="col-md-3">
+	            	<span class="brandname_status"></span>
+	                <span style="visibility:hidden;"class="brandname_flag" th:text="true"></span>
+	            </div>
+	        </div>
+	    </div>
     </div>
 </html>

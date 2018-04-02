@@ -7,6 +7,12 @@
 	<div class="header_ref" th:include="/header"></div>
 	<div class="content-wrapper">
     	<div class="container-fluid">
+    		
+    		<div th:if="${message!= null}" class="alert alert-info alert-dismissible">
+			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<span  th:text="${message}"></span>
+		  	</div>
+		  	
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		        <li class="breadcrumb-item">
@@ -57,7 +63,7 @@
            	</div>
            	
            		<div class="modal clickable" id="CreateSubLocation" tabindex="-1" role="dialog" aria-labelledby="CreateSubLocation" aria-hidden="true">
-	            <form method="POST" th:action="@{/createSubLoc}" id="CreateSubLocation">
+	            <form method="POST" th:action="@{/createSubLoc}" id="CreateSubLocation" onsubmit="return sublocForm('CreateSubLocation');">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -84,7 +90,7 @@
 	        </div>
 	        
 	        <div class="modal clickable" id="EditSubLocation" tabindex="-1" role="dialog" aria-labelledby="EditSubLocation" aria-hidden="true">
-	            <form method="POST" th:action="@{/editSubLoc}" id="EditSubLocation">
+	            <form method="POST" th:action="@{/editSubLoc}" id="EditSubLocation" onsubmit="return sublocForm('EditSubLocation');">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -145,12 +151,14 @@
             if (action == 'new') {
                 $('#CreateSubLocation .modal-body').empty();
                 $('#CreateSubLocation .modal-title').text("New Sub Location");
+                $('#CreateSubLocation #modal_error').hide();
                 $('#CreateSubLocation .modal-body').load('createSubLoc', function () {
                     $('#CreateSubLocation').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditSubLocation .modal-body').empty();
                 $('#EditSubLocation .modal-title').text("Edit Sub Location");
+                $('#EditSubLocation #modal_error').hide();
                 $('#EditSubLocation .modal-body').load('editSubLoc?sublocid=' + id, function () {
                     $('#EditSubLocation').modal({show: true});
                 });

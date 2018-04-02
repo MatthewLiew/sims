@@ -3,12 +3,12 @@ package com.sbinventory.model;
 public class Product {
 	
 	private int productid;
-	private int productcode;
+	private Integer productcode;
 	private String productname;
-	private int hardwareid;
-	private int brandid;
+	private Integer hardwareid;
+	private Integer brandid;
 	private int partnoid;
-	private int lbvalue;
+	private Integer lbvalue;
 	private int quantity;
 	
 	public Product() {}
@@ -29,17 +29,15 @@ public class Product {
 		return productid;
 	}
 
-
 	public void setProductid(int productid) {
 		this.productid = productid;
 	}
 
-
-	public int getProductcode() {
+	public Integer getProductcode() {
 		return productcode;
 	}
 
-	public void setProductcode(int productcode) {
+	public void setProductcode(Integer productcode) {
 		this.productcode = productcode;
 	}
 
@@ -51,19 +49,19 @@ public class Product {
 		this.productname = productname;
 	}
 
-	public int getHardwareid() {
+	public Integer getHardwareid() {
 		return hardwareid;
 	}
 
-	public void setHardwareid(int hardwareid) {
+	public void setHardwareid(Integer hardwareid) {
 		this.hardwareid = hardwareid;
 	}
 
-	public int getBrandid() {
+	public Integer getBrandid() {
 		return brandid;
 	}
 
-	public void setBrandid(int brandid) {
+	public void setBrandid(Integer brandid) {
 		this.brandid = brandid;
 	}
 
@@ -75,7 +73,7 @@ public class Product {
 		this.partnoid = partnoid;
 	}
 
-	public int getLbvalue() {
+	public Integer getLbvalue() {
 		return lbvalue;
 	}
 

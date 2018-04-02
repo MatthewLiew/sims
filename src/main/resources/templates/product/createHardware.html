@@ -5,35 +5,37 @@
     </head>
     
 	<p class="error" style="color: red;" th:text="${errorString}" ></p>
-  	<input type="hidden" name="referer" th:value="${referer}" />
-	  	
-  	<div class="form-group">
-	    <div class="form-row">
-	        <div class="col-md-3">
-	            <label for="HardwareCodeLabel">Hardware Code</label>
-	        </div>
-	        <div class="col-md-6"> 
-	        	<input class="form-control hardwarecode" id="hardwarecode" name="hardwarecode" type="text" data-error="Please Enter Hardware Code" aria-describedby="HardwareCode" placeholder="Enter Hardware Code" value="" onkeyup="hardwareCode('CreateHardware');" required>
-	        </div>
-	        <div class="col-md-3">
-	        	<span class="hardwarecode_status"></span>
-	            <span style="visibility:hidden;"class="hardwarecode_flag" th:text="true"></span>
+  	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
+	
+	<div th:object="${hardware}">
+	  	<div class="form-group">
+		    <div class="form-row">
+		        <div class="col-md-3">
+		            <label for="HardwareCodeLabel">Hardware Code</label>
+		        </div>
+		        <div class="col-md-6"> 
+		        	<input class="form-control hardwarecode" id="hardwarecode" name="hardwarecode" type="text" data-error="Please Enter Hardware Code" aria-describedby="HardwareCode" placeholder="Enter Hardware Code" th:field="*{hardwarecode}" value="" onkeyup="hardwareCode('CreateHardware');" required>
+		        </div>
+		        <div class="col-md-3">
+		        	<span class="hardwarecode_status"></span>
+		            <span style="visibility:hidden;"class="hardwarecode_flag" th:text="true"></span>
+		        </div>
+		    </div>
+	    </div>
+	        
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="HardwareTypeLabel">Hardware Type</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<input class="form-control hardwaretype" id="hardwaretype" name="hardwaretype" type="text" data-error="Please Enter Hardware Type" aria-describedby="HardwareType" placeholder="Enter Hardware Type" th:field="*{hardwaretype}" value="" onkeyup="hardwareType('CreateHardware');" required>
+	            </div>
+	            <div class="col-md-3">
+	            	<span class="hardwaretype_status"></span>
+	                <span style="visibility:hidden;"class="hardwaretype_flag" th:text="true"></span>
+	            </div>
 	        </div>
 	    </div>
-    </div>
-        
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="HardwareTypeLabel">Hardware Type</label>
-            </div>
-            <div class="col-md-6">
-            	<input class="form-control hardwaretype" id="hardwaretype" name="hardwaretype" type="text" data-error="Please Enter Hardware Type" aria-describedby="HardwareType" placeholder="Enter Hardware Type" value="" onkeyup="hardwareType('CreateHardware');" required>
-            </div>
-            <div class="col-md-3">
-            	<span class="hardwaretype_status"></span>
-                <span style="visibility:hidden;"class="hardwaretype_flag" th:text="true"></span>
-            </div>
-        </div>
     </div>
 </html>

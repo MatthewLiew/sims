@@ -157,7 +157,7 @@ public class UserController {
 		String errorString = userAccountDAO.update(useracc.getUserid(), useracc.getUsername(), useracc.getOrgid(), useracc.getDeptid(), useracc.getSubdeptid(), useracc.getRoleid());
 		
 		if(errorString==null) {
-			String message="User Name - "+ useracc.getUsername() +" updated succussfully";
+			String message="User Name - "+ useracc.getUsername() +" updated successfully";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {

@@ -4,16 +4,19 @@
 		<meta charset="UTF-8">
    	</head>
 	
-	<input type="hidden" name="mainlocid" th:value="${mainloc.mainlocid}" />
-	<input type="hidden" name="referer" th:value="${referer}" />
+	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
 	
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-12">
-                Are you sure to Delete Following Main Location ? <br/>
-                Main Location - <b><span th:text="${mainloc.mainlocname}"></span></b>
-            </div>
-        </div>
+	<div th:object="${mainloc}">
+		<input type="hidden" name="mainlocid" th:field="*{mainlocid}" th:value="${mainloc.mainlocid}" />
+		<input type="hidden" name="mainlocname" th:field="*{mainlocname}" th:value="${mainloc.mainlocname}" />
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-12">
+	                Are you sure to Delete Following Main Location ? <br/>
+	                Main Location - <b><span th:text="${mainloc.mainlocname}"></span></b>
+	            </div>
+	        </div>
+	    </div>
     </div>
            
 </html>

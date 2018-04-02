@@ -5,22 +5,23 @@
 	</head>
   		
 	<p class="error" style="color: red;" th:text="${errorString}" ></p>
-	<input type="hidden" class="mainlocid" name="mainlocid" th:value="${mainloc.mainlocid}" />
- 	<input type="hidden" name="referer" th:value="${referer}" />
+ 	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
     
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="DepartmentCodeLabel">Main Location Name</label>
-            </div>
-            <div class="col-md-6">                    
-                <!-- <input disabled class="form-control" id="UserID" name="UserID_Disabled" type="number" aria-describedby="UserID_Disabled" placeholder="Enter ID" value="<?php echo $result['user_id']; ?>"> -->
-                <input class="form-control mainlocname" id="mainlocname" name="mainlocname" type="text" data-error="Please Enter Main Location Name" aria-describedby="MainLocationName" placeholder="Enter Main Location Name" th:value="${mainloc.mainlocname}" onkeyup="mainlocName('EditMainLocation');" required>
-            </div>
-            <div class="col-md-3">
-            	<span class="mainlocname_status"></span>
-                <span style="visibility:hidden;"class="mainlocname_flag" th:text="true"></span>
-            </div>
-        </div>
+    <div th:object="${mainloc}">
+    	<input type="hidden" class="mainlocid" name="mainlocid" th:field="*{mainlocid}" th:value="${mainloc.mainlocid}" />
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="DepartmentCodeLabel">Main Location Name</label>
+	            </div>
+	            <div class="col-md-6">    
+	                <input class="form-control mainlocname" id="mainlocname" name="mainlocname" type="text" data-error="Please Enter Main Location Name" aria-describedby="MainLocationName" placeholder="Enter Main Location Name" th:field="*{mainlocname}" th:value="${mainloc.mainlocname}" onkeyup="mainlocName('EditMainLocation');" required>
+	            </div>
+	            <div class="col-md-3">
+	            	<span class="mainlocname_status"></span>
+	                <span style="visibility:hidden;"class="mainlocname_flag" th:text="true"></span>
+	            </div>
+	        </div>
+	    </div>
     </div>
 </html>

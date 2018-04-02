@@ -4,16 +4,20 @@
 		<meta charset="UTF-8">
    	</head>
 	
-	<input type="hidden" name="hardwareid" th:value="${hardware.hardwareid}" />
-	<input type="hidden" name="referer" th:value="${referer}" />
 	
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-12">
-                Are you sure to Delete Following Hardware ? <br/>
-                Hardware - <b><span th:text="${hardware.hardwaretype}"></span></b>
-            </div>
-        </div>
+	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
+	
+	<div th:object="${hardware}">
+		<input type="hidden" name="hardwareid" th:field="*{hardwareid}" th:value="${hardware.hardwareid}" />
+		<input type="hidden" name="hardwaretype" th:field="*{hardwaretype}" th:value="${hardware.hardwaretype}" />
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-12">
+	                Are you sure to Delete Following Hardware ? <br/>
+	                Hardware - <b><span th:text="${hardware.hardwaretype}"></span></b>
+	            </div>
+	        </div>
+	    </div>
     </div>
            
 </html>

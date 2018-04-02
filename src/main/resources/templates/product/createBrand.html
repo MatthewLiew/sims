@@ -5,35 +5,36 @@
     </head>
     
 	<p class="error" style="color: red;" th:text="${errorString}" ></p>
-  	<input type="hidden" name="referer" th:value="${referer}" />
-      
-   	<div class="form-group">
-	    <div class="form-row">
-	        <div class="col-md-3">
-	            <label for="BrandCodeLabel">Brand Code</label>
-	        </div>
-	        <div class="col-md-6">
-	        	<input class="form-control brandcode" id="brandcode" name="brandcode" type="text" data-error="Please Enter Brand Code" aria-describedby="BrandCode" placeholder="Enter Brand Code" value="" onkeyup="brandCode('CreateBrand');" required>
-	        </div>
-	        <div class="col-md-3">
-	        	<span class="brandcode_status"></span>
-	            <span style="visibility:hidden;"class="brandcode_flag" th:text="true"></span>
+  	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
+    <div th:object="${brand}">
+	   	<div class="form-group">
+		    <div class="form-row">
+		        <div class="col-md-3">
+		            <label for="BrandCodeLabel">Brand Code</label>
+		        </div>
+		        <div class="col-md-6">
+		        	<input class="form-control brandcode" id="brandcode" name="brandcode" type="text" data-error="Please Enter Brand Code" aria-describedby="BrandCode" placeholder="Enter Brand Code" th:field="*{brandcode}" value="" onkeyup="brandCode('CreateBrand');" required>
+		        </div>
+		        <div class="col-md-3">
+		        	<span class="brandcode_status"></span>
+		            <span style="visibility:hidden;"class="brandcode_flag" th:text="true"></span>
+		        </div>
+		    </div>
+	    </div>
+	        
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="HardwareTypeLabel">Brand Name</label>
+	            </div>
+	            <div class="col-md-6">
+	            	 <input class="form-control brandname" id="brandname" name="brandname" type="text" data-error="Please Enter Brand Name" aria-describedby="BrandName" placeholder="Enter Brand Name" th:field="*{brandname}" value="" onkeyup="brandName('CreateBrand');" required>
+	            </div>
+	            <div class="col-md-3">
+	            	 <span class="brandname_status"></span>
+	                <span style="visibility:hidden;"class="brandname_flag" th:text="true"></span>
+	            </div>
 	        </div>
 	    </div>
-    </div>
-        
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="HardwareTypeLabel">Brand Name</label>
-            </div>
-            <div class="col-md-6">
-            	 <input class="form-control brandname" id="brandname" name="brandname" type="text" data-error="Please Enter Brand Name" aria-describedby="BrandName" placeholder="Enter Brand Name" value="" onkeyup="brandName('CreateBrand');" required>
-            </div>
-            <div class="col-md-3">
-            	 <span class="brandname_status"></span>
-                <span style="visibility:hidden;"class="brandname_flag" th:text="true"></span>
-            </div>
-        </div>
     </div>
 </html>

@@ -46,7 +46,7 @@ public class StockQuantity {
 		this.updatedisposal();
 		this.updaterma();
 		
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		for(Product prod: products){
 			
 			int totalquantity=0;

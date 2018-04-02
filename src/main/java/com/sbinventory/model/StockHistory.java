@@ -3,18 +3,18 @@ package com.sbinventory.model;
 public class StockHistory {
 	
 	private int stockhistoryid;
-	private int productid;
+	private Integer productid;
 	private int quantity;
 	private String historydate;
 	private String historytime;
-	private int stocktypeid;
-	private int reasonid;
+	private Integer stocktypeid;
+	private Integer reasonid;
 	private String remark;
 	private String logdatetime;
 	private String loguser;
 	private String approval;
-	private int mainlocid;
-	private int sublocid;
+	private Integer mainlocid;
+	private Integer sublocid;
 	
 	public StockHistory () {}
 
@@ -43,11 +43,11 @@ public class StockHistory {
 		this.stockhistoryid = stockhistoryid;
 	}
 
-	public int getProductid() {
+	public Integer getProductid() {
 		return productid;
 	}
 
-	public void setProductid(int productid) {
+	public void setProductid(Integer productid) {
 		this.productid = productid;
 	}
 	
@@ -75,19 +75,19 @@ public class StockHistory {
 		this.historytime = historytime;
 	}
 
-	public int getStocktypeid() {
+	public Integer getStocktypeid() {
 		return stocktypeid;
 	}
 
-	public void setStocktypeid(int stocktypeid) {
+	public void setStocktypeid(Integer stocktypeid) {
 		this.stocktypeid = stocktypeid;
 	}
 
-	public int getReasonid() {
+	public Integer getReasonid() {
 		return reasonid;
 	}
 
-	public void setReasonid(int reasonid) {
+	public void setReasonid(Integer reasonid) {
 		this.reasonid = reasonid;
 	}
 
@@ -123,19 +123,19 @@ public class StockHistory {
 		this.approval = approval;
 	}
 
-	public int getMainlocid() {
+	public Integer getMainlocid() {
 		return mainlocid;
 	}
 
-	public void setMainlocid(int mainlocid) {
+	public void setMainlocid(Integer mainlocid) {
 		this.mainlocid = mainlocid;
 	}
 
-	public int getSublocid() {
+	public Integer getSublocid() {
 		return sublocid;
 	}
 
-	public void setSublocid(int sublocid) {
+	public void setSublocid(Integer sublocid) {
 		this.sublocid = sublocid;
 	}
 

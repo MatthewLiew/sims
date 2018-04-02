@@ -3,7 +3,7 @@ package com.sbinventory.model;
 public class Hardware {
 
 	private int hardwareid;
-	private int hardwarecode;
+	private Integer hardwarecode;
 	private String hardwaretype;
 	
 	public Hardware() {}
@@ -22,15 +22,18 @@ public class Hardware {
 		this.hardwareid = hardwareid;
 	}
 
-	public int getHardwarecode() {
+	public Integer getHardwarecode() {
 		return hardwarecode;
 	}
-	public void setHardwarecode(int hardwarecode) {
+	
+	public void setHardwarecode(Integer hardwarecode) {
 		this.hardwarecode = hardwarecode;
 	}
+	
 	public String getHardwaretype() {
 		return hardwaretype;
 	}
+	
 	public void setHardwaretype(String hardwaretype) {
 		this.hardwaretype = hardwaretype;
 	}	

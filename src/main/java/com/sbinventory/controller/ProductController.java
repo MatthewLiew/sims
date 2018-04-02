@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sbinventory.dao.AppRoleDAO;
 import com.sbinventory.dao.BrandDAO;
@@ -31,6 +33,7 @@ import com.sbinventory.dao.UserRoleDAO;
 import com.sbinventory.model.Brand;
 import com.sbinventory.model.Hardware;
 import com.sbinventory.model.MainLoc;
+import com.sbinventory.model.Organization;
 import com.sbinventory.model.PartNo;
 import com.sbinventory.model.Product;
 import com.sbinventory.model.StockType;
@@ -71,31 +74,25 @@ public class ProductController {
 	/**************** INFORMATION PORTAL ***********************/
 	@GetMapping(value= "/hardware")
 	public String getHardware(Model model) {
-		List<Hardware> hardwares = hardwareDAO.getAllHardware();
-//		List<Brand> brands = brandDAO.getAllBrand();
-//		List<PartNo> partnos = partNoDAO.getAllPartNo();
-//		List<Product> products = productDAO.getAllProduct();
 		
+		List<Hardware> hardwares = hardwareDAO.findAll();
 		model.addAttribute("hardwares",hardwares);
-//		model.addAttribute("brands",brands);
-//		model.addAttribute("partnos",partnos);
-//        model.addAttribute("products",products);
+		        
+		String message = (String)model.asMap().get("message");
+		model.addAttribute("message", message);
 //        
 		return "product/hardware";
 	}
 	
 	@GetMapping(value= "/brand")
 	public String getBrand(Model model) {
-//		List<Hardware> hardwares = hardwareDAO.getAllHardware();
-		List<Brand> brands = brandDAO.getAllBrand();
-//		List<PartNo> partnos = partNoDAO.getAllPartNo();
-//		List<Product> products = productDAO.getAllProduct();
-//		
-//		model.addAttribute("hardwares",hardwares);
+
+		List<Brand> brands = brandDAO.findAll();
 		model.addAttribute("brands",brands);
-//		model.addAttribute("partnos",partnos);
-//        model.addAttribute("products",products);
-//        
+		
+		String message = (String)model.asMap().get("message");
+		model.addAttribute("message", message);
+     
 		return "product/brand";
 	}
 	
@@ -104,7 +101,7 @@ public class ProductController {
 //		List<Hardware> hardwares = hardwareDAO.getAllHardware();
 //		List<Brand> brands = brandDAO.getAllBrand();
 		List<PartNo> partnos = partNoDAO.getAllPartNo();
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		
 //		model.addAttribute("hardwares",hardwares);
 //		model.addAttribute("brands",brands);
@@ -116,139 +113,180 @@ public class ProductController {
 	
 	@GetMapping(value= "/product")
 	public String getProduct(Model model) {
-		List<Hardware> hardwares = hardwareDAO.getAllHardware();
-		List<Brand> brands = brandDAO.getAllBrand();
+		List<Hardware> hardwares = hardwareDAO.findAll();
+		List<Brand> brands = brandDAO.findAll();
 		List<PartNo> partnos = partNoDAO.getAllPartNo();
-		List<Product> products = productDAO.getAllProduct();
-//		List<StockType> stocktypes = stockTypeDAO.getAllStockType();
+		List<Product> products = productDAO.findAll();
 		
 		model.addAttribute("hardwares",hardwares);
 		model.addAttribute("brands",brands);
 		model.addAttribute("partnos",partnos);
         model.addAttribute("products",products);
-//        model.addAttribute("stocktypes",stocktypes);
+        
+        String message = (String)model.asMap().get("message");
+		model.addAttribute("message", message);
         
 		return "product/product";
 	}
 	
 	/**************** HARDWARE ACTION ***********************/
 	@GetMapping(value= "/createHardware")
-	public String getCreateHardware(Model model ) {
-		model.addAttribute("errorString",null);
+	public String getCreateHardware(Model model, HttpServletRequest request) {
+		
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
+		model.addAttribute("hardware",new Hardware());
 			
 		return "product/createHardware";
 	}
 	
 	@PostMapping(value= "/createHardware")
-	public String postCreateHardware(@RequestParam int hardwarecode, @RequestParam String hardwaretype, Model model ) {
-//			String errorString=hardwareDAO.createHardware(hardwarecode, hardwaretype);
-//			if(errorString==null) {
-			return "redirect:/product";
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "product/createHardware";
-//			}
+	public String postCreateHardware(@ModelAttribute Hardware hardware, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+		String errorString=hardwareDAO.create(hardware.getHardwarecode(), hardware.getHardwaretype());
+		
+		if(errorString==null) {
+			String message="Hardware - "+ hardware.getHardwaretype() +" created succussfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 	
 	@GetMapping(value= "/editHardware")
-	public String getEditHardware(@RequestParam int hardwareid, Model model ) {
+	public String getEditHardware(@RequestParam int hardwareid, Model model, HttpServletRequest request) {
 			
-		Hardware hardware = hardwareDAO.getHardware(hardwareid);
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
+		Hardware hardware = hardwareDAO.findOne(hardwareid);
 		model.addAttribute("hardware",hardware);
 		    
 		return "product/editHardware";
 	}	
 	
 	@PostMapping(value= "/editHardware")
-	public String postEditHardware(@RequestParam int hardwareid, @RequestParam int hardwarecode,
-			@RequestParam String hardwaretype, Model model ) {
-//			System.out.println(orgid+" "+deptid+" "+deptcode+" "+deptname);
-//			String errorString=hardwareDAO.updateDepartment(hardwareid, hardwarecode, hardwaretype);
-//			if(errorString==null) {
-			return "redirect:/product";
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "product/editHardware";
-//			}
+	public String postEditHardware(@ModelAttribute Hardware hardware, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+
+		String errorString=hardwareDAO.update(hardware.getHardwareid(), hardware.getHardwarecode(), hardware.getHardwaretype());
+		
+		if(errorString==null) {
+			String message="Hardware - "+ hardware.getHardwaretype() +" updated successfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 
 	@GetMapping(value= "/deleteHardware")
 	public String getDeleteHardware(@RequestParam int hardwareid, Model model, HttpServletRequest request ) {
 
-		String referer = request.getHeader("Referer");
-		Hardware hardware = hardwareDAO.getHardware(hardwareid);
-		
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+	
+		Hardware hardware = hardwareDAO.findOne(hardwareid);
 		model.addAttribute("hardware", hardware);
-		model.addAttribute("referer", referer);
+
 		return "product/deleteHardware";
 	}
 	
 	@PostMapping(value= "/deleteHardware")
-	public String postDeleteHardware(@RequestParam int hardwareid, Model model, @RequestParam String referer ) { 
-		System.out.println(hardwareid);
-//			productDAO.deleteProduct(productid);
+	public String postDeleteHardware(@ModelAttribute Hardware hardware, Model model, @RequestParam String sourceURL, RedirectAttributes ra) { 
+
+		String errorString = hardwareDAO.delete(hardware.getHardwareid());
 		
-		return "redirect:"+referer;
+		if(errorString==null) {
+			String message="Hardware - "+ hardware.getHardwaretype() +" has deleted";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 	
 	/**************** BRAND ACTION ***********************/
 	@GetMapping(value= "/createBrand")
-	public String getCreateBrand(Model model ) {
-		model.addAttribute("errorString",null);
+	public String getCreateBrand(Model model, HttpServletRequest request) {
+		
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
+		model.addAttribute("brand",new Brand());
 			
 		return "product/createBrand";
 	}
 	
 	@PostMapping(value= "/createBrand")
-	public String postCreateBrand(@RequestParam int brandcode, @RequestParam String brandname, Model model ) {
-//			String errorString= brandDAO.createBrand(brandcode, brandname);
-//			if(errorString==null) {
-			return "redirect:/product";
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "product/createBrand";
-//			}
+	public String postCreateBrand(@ModelAttribute Brand brand, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+		String errorString= brandDAO.create(brand.getBrandcode(), brand.getBrandname());
+		
+		if(errorString==null) {
+			String message = "Brand - "+ brand.getBrandname() +" created succussfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 	
 	@GetMapping(value= "/editBrand")
-	public String getEditBrand(@RequestParam int brandid, Model model ) {
-			
-		Brand brand = brandDAO.getBrand(brandid);
+	public String getEditBrand(@RequestParam int brandid, Model model, HttpServletRequest request) {
+		
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
+		Brand brand = brandDAO.findOne(brandid);
 		model.addAttribute("brand",brand);
 		    
 		return "product/editBrand";
 	}
 	
 	@PostMapping(value= "/editBrand")
-	public String postEditBrand(@RequestParam int brandid, @RequestParam int brandcode,
-			@RequestParam String brandname, Model model ) {
-		System.out.println(brandid+" "+brandcode);
-//			String errorString=brandDAO.updateBrand(brandid, brandcode, brandname);
-//			if(errorString==null) {
-			return "redirect:/product";
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "product/editBrand";
-//			}
+	public String postEditBrand(@ModelAttribute Brand brand, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+
+		String errorString=brandDAO.update(brand.getBrandid(), brand.getBrandcode(), brand.getBrandname());
+		
+		if(errorString==null) {
+			String message="Brand - "+  brand.getBrandname() +" updated successfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 	
 	@GetMapping(value= "/deleteBrand")
 	public String getDeleteBrand(@RequestParam int brandid, Model model, HttpServletRequest request ) {
 
-		String referer = request.getHeader("Referer");
-		Brand brand = brandDAO.getBrand(brandid);
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
 		
+		Brand brand = brandDAO.findOne(brandid);
 		model.addAttribute("brand", brand);
-		model.addAttribute("referer", referer);
+
 		return "product/deleteBrand";
 	}
 	
 	@PostMapping(value= "/deleteBrand")
-	public String postDeleteBrand(@RequestParam int brandid, Model model, @RequestParam String referer ) { 
-		System.out.println(brandid);
-//			productDAO.deleteProduct(productid);
+	public String postDeleteBrand(@ModelAttribute Brand brand, Model model, @RequestParam String sourceURL, RedirectAttributes ra) { 
+
+		String errorString = brandDAO.delete(brand.getBrandid());
 		
-		return "redirect:"+referer;
+		if(errorString==null) {
+			String message="Hardware - "+ brand.getBrandname() +" has deleted";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 	
 	/**************** PART NO ACTION ***********************/
@@ -258,9 +296,9 @@ public class ProductController {
 		String referer = request.getHeader("Referer");
 		model.addAttribute("referer", referer);
 		
-		List<Product> products = productDAO.getAllProduct();
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		List<Product> products = productDAO.findAll();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<SubLoc> sublocs = subLocDAO.findAll();
 		
 		stockquantity.update();
 		
@@ -322,11 +360,11 @@ public class ProductController {
 		String referer = request.getHeader("Referer");
 		model.addAttribute("referer", referer);
 		
-		List <Product> products = productDAO.getAllProduct();
+		List <Product> products = productDAO.findAll();
 		PartNo partno = partNoDAO.getPartNo(partnoid);
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc(partno.getMainlocid());
-		Product product = productDAO.getProduct(partno.getProductid());
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(partno.getMainlocid());
+		Product product = productDAO.findOne(partno.getProductid());
 		
 		model.addAttribute("partno",partno);
 		model.addAttribute("products",products);
@@ -372,95 +410,103 @@ public class ProductController {
 		return "redirect:"+referer;
 	}
 
-	
 	/**************** PRODUCT ACTION ***********************/
 	@GetMapping(value= "/createProduct")
 	public String getCreateProduct(Model model, HttpServletRequest request) {
 		
-		String referer = request.getHeader("Referer");
-		model.addAttribute("referer", referer);
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
 		
-		List<Hardware> hardwares = hardwareDAO.getAllHardware();
-		List<Brand> brands = brandDAO.getAllBrand();
-		List<PartNo> partnos = partNoDAO.getAllPartNo();
-
-		model.addAttribute("errorString",null);
+		List<Hardware> hardwares = hardwareDAO.findAll();
 		model.addAttribute("hardwares",hardwares);
+		
+		List<Brand> brands = brandDAO.findAll();
 		model.addAttribute("brands",brands);
+		
+		List<PartNo> partnos = partNoDAO.getAllPartNo();
 		model.addAttribute("partnos",partnos);
 		
+		model.addAttribute("product",new Product());
+
 		return "product/createProduct";
 	}
 	
 	@PostMapping(value= "/createProduct")
-	public String postCreateProduct(/*@RequestParam int productcode, @RequestParam String productname, @RequestParam int hardwareid,
-			@RequestParam int brandid, @RequestParam int partnoid, @RequestParam int lbvalue,*/ Model model, @RequestParam String referer ) {
+	public String postCreateProduct(@ModelAttribute Product product, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 
-//			String errorString=productDAO.createProduct(productcode, productname, hardwareid, brandid, partnoid, lbvalue);
-//			System.out.println(productcode+" "+productname+" "+hardwareid+" "+brandid+" "+partnoid+" "+lbvalue);
-//			if(errorString==null) {
-			return "redirect:"+referer;
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "product/createProduct";
-//			}
+		String errorString=productDAO.create(product.getProductcode(), product.getProductname(), product.getHardwareid(), 
+				product.getBrandid(), product.getPartnoid(), product.getLbvalue());
+
+		if(errorString==null) {
+			String message = "Product - "+ product.getProductname() +" created succussfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 	
 	@GetMapping(value= "/editProduct")
-	public String getEditProduct(@RequestParam int productid,Model model, HttpServletRequest request ) {
+	public String getEditProduct(@RequestParam int productid,Model model, HttpServletRequest request) {
 		
-		String referer = request.getHeader("Referer");
-//			System.out.println(referer);
-//		    return "redirect:"+ referer;
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
 	    
-		Product product= productDAO.getProduct(productid);
-		List<Hardware> hardwares=hardwareDAO.getAllHardware();
-		List<Brand> brands = brandDAO.getAllBrand();
-		List<PartNo> partnos= partNoDAO.getAllPartNo();
-
-        model.addAttribute("product",product);
-        model.addAttribute("hardwares",hardwares);
-        model.addAttribute("brands",brands);
-        model.addAttribute("partnos",partnos);
-        model.addAttribute("errorString",null);
-        model.addAttribute("referer", referer);
+		Product product= productDAO.findOne(productid);
+		model.addAttribute("product",product);
+		
+		List<Hardware> hardwares=hardwareDAO.findAll();
+		model.addAttribute("hardwares",hardwares);
+		
+		List<Brand> brands = brandDAO.findAll();
+		model.addAttribute("brands",brands);
+		
+//		List<PartNo> partnos= partNoDAO.getAllPartNo();
+//		model.addAttribute("partnos",partnos);
         
 		return "product/editProduct";
 	}
 	
 	@PostMapping(value= "/editProduct")
-	public String postEditProduct(@RequestParam int productid, @RequestParam int productcode, @RequestParam String productname, 
-			@RequestParam int brandid, @RequestParam int hardwareid, @RequestParam int lbvalue, 
-			Model model, @RequestParam String referer) {
+	public String postEditProduct(@ModelAttribute Product product, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 
-//			String errorString=productDAO.updateProduct(productid, productcode, productname);
-//			if(errorString==null) {
-//			return "redirect:/product";
+		String errorString=productDAO.update(product.getProductid(), product.getProductcode(), product.getProductname(),
+				product.getBrandid(), product.getHardwareid(), product.getLbvalue());
 		
-//			String referer = request.getHeader("Referer");
-//			System.out.println(referer);
-	    return "redirect:"+ referer;
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "product/editProduct";
-//			}
+		if(errorString==null) {
+			String message="Product - "+  product.getProductname() +" updated successfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 	
 	@GetMapping(value= "/deleteProduct")
 	public String getDeleteProduct(@RequestParam int productid, Model model, HttpServletRequest request ) {
-		String referer = request.getHeader("Referer");
-		Product product= productDAO.getProduct(productid);
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
 		
+		Product product= productDAO.findOne(productid);
 		model.addAttribute("product", product);
-		model.addAttribute("referer", referer);
+
 		return "product/deleteProduct";
 	}
 	
 	@PostMapping(value= "/deleteProduct")
-	public String postDeleteProduct(@RequestParam int productid, Model model, @RequestParam String referer ) {
-		System.out.println(productid);
-//			productDAO.deleteProduct(productid);
+	public String postDeleteProduct(@ModelAttribute Product product, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+
+		String errorString = productDAO.delete(product.getProductid());
 		
-		return "redirect:"+referer;
+		if(errorString==null) {
+			String message="Hardware - "+ product.getProductid() +" has deleted";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 }

@@ -4,16 +4,20 @@
 		<meta charset="UTF-8">
    	</head>
 	
-	<input type="hidden" name="brandid" th:value="${brand.brandid}" />
-	<input type="hidden" name="referer" th:value="${referer}" />
 	
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-12">
-                Are you sure to Delete Following Brand ? <br/>
-                Brand - <b><span th:text="${brand.brandname}"></span></b>
-            </div>
-        </div>
+	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
+	
+	<div th:object="${brand}">
+		<input type="hidden" name="brandid" th:field="*{brandid}" th:value="${brand.brandid}" />
+		<input type="hidden" name="brandid" th:field="*{brandname}" th:value="${brand.brandid}" />
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-12">
+	                Are you sure to Delete Following Brand ? <br/>
+	                Brand - <b><span th:text="${brand.brandname}"></span></b>
+	            </div>
+	        </div>
+	    </div>
     </div>
            
 </html>

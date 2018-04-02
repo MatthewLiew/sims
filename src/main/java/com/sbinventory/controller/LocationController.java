@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sbinventory.dao.AppRoleDAO;
 import com.sbinventory.dao.BrandDAO;
@@ -43,172 +45,198 @@ public class LocationController {
 	/**************** INFORMATION PORTAL ***********************/
 	@GetMapping(value= "/mainlocation")
 	public String getMainlocation(Model model, Principal principal) {
-		List<MainLoc> mainlocs=mainLocDAO.getAllMainLoc();
+		
+		List<MainLoc> mainlocs=mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
 		
-//			User loginedUser = (User) ((Authentication) principal).getPrincipal();
-//			UserAccount useracc = userAccountDAO.getUserName(loginedUser.getUsername());
-//			System.out.println("User ID: "+useracc.getUserid());
+//		User loginedUser = (User) ((Authentication) principal).getPrincipal();
+//		UserAccount useracc = userAccountDAO.getUserName(loginedUser.getUsername());
+//		System.out.println("User ID: "+useracc.getUserid());
 			
-		List<SubLoc> sublocs=subLocDAO.getAllSubLoc();
-		model.addAttribute("sublocs",sublocs);
-			
+//		List<SubLoc> sublocs=subLocDAO.getAllSubLoc();
+//		model.addAttribute("sublocs",sublocs);
+		String message = (String)model.asMap().get("message");
+		model.addAttribute("message", message);
+		
 		return "location/mainloc";
 	}
 	
 	@GetMapping(value= "/sublocation")
 	public String getSublocation(Model model, Principal principal) {
-		List<MainLoc> mainlocs=mainLocDAO.getAllMainLoc();
+		List<MainLoc> mainlocs=mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
 		
-//			User loginedUser = (User) ((Authentication) principal).getPrincipal();
-//			UserAccount useracc = userAccountDAO.getUserName(loginedUser.getUsername());
-//			System.out.println("User ID: "+useracc.getUserid());
+//		User loginedUser = (User) ((Authentication) principal).getPrincipal();
+//		UserAccount useracc = userAccountDAO.getUserName(loginedUser.getUsername());
+//		System.out.println("User ID: "+useracc.getUserid());
 			
-		List<SubLoc> sublocs=subLocDAO.getAllSubLoc();
+		List<SubLoc> sublocs=subLocDAO.findAll();
 		model.addAttribute("sublocs",sublocs);
+		
+		String message = (String)model.asMap().get("message");
+		model.addAttribute("message", message);
 			
 		return "location/subloc";
 	}
 		
 	/**************** MAIN LOCATION ACTION ***********************/
 	@GetMapping(value= "/createMainLoc")
-	public String getCreateMainLoc(Model model ) {
-		model.addAttribute("errorString",null);
+	public String getCreateMainLoc(Model model, HttpServletRequest request) {
+		
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
+		model.addAttribute("mainloc",new MainLoc());
 			
 		return "location/createMainLoc";
 	}
 		
 	@PostMapping(value= "/createMainLoc")
-	public String postCreateMainLoc(@RequestParam String mainlocname, Model model ) {
-//			String errorString=mainLocDAO.createMainLoc(mainlocname);
-//			if(errorString==null) {
-			return "redirect:/location";
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "location/createMainLoc";
-//			}
+	public String postCreateMainLoc(@ModelAttribute MainLoc mainloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+		String errorString=mainLocDAO.create(mainloc.getMainlocname());
+		
+		if(errorString==null) {
+			String message="Main Location - "+ mainloc.getMainlocname() +" created successfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 		
 	@GetMapping(value= "/editMainLoc")
-	public String getEditMainLoc(@RequestParam int mainlocid, Model model ) {
-			
-		MainLoc mainloc = mainLocDAO.getMainLoc(mainlocid);
+	public String getEditMainLoc(@RequestParam int mainlocid, Model model, HttpServletRequest request) {
+		
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
+		MainLoc mainloc = mainLocDAO.findOne(mainlocid);
 		model.addAttribute("mainloc",mainloc);
 		    
 		return "location/editMainLoc";
 	}
 		
 	@PostMapping(value= "/editMainLoc")
-	public String postEditMainLoc(@RequestParam int mainlocid, 
-			@RequestParam String mainlocname, Model model ) {
-//			System.out.println(orgid+" "+deptid+" "+deptcode+" "+deptname);
-//			String errorString=mainLocDAO.updateMainLoc(mainlocid, mainlocname);
-//			if(errorString==null) {
-			return "redirect:/location";
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "location/editMainLoc";
-//			}
+	public String postEditMainLoc(@ModelAttribute MainLoc mainloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+		String errorString=mainLocDAO.update(mainloc.getMainlocid(), mainloc.getMainlocname());
+
+		if(errorString==null) {
+			String message="Main Location - "+ mainloc.getMainlocname() +" updated successfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
-	
-//	@GetMapping(value= "/deleteMainLoc")
-//	public String getDeleteMainLoc(@RequestParam int mainlocid, Model model ) {
-//			
-//		mainLocDAO.deleteMainLoc(mainlocid);
-//			
-//		return "redirect:/location";
-//	}
 	
 	@GetMapping(value= "/deleteMainLoc")
 	public String getDeleteMainLoc(@RequestParam int mainlocid, Model model, HttpServletRequest request ) {
-		String referer = request.getHeader("Referer");
-		MainLoc mainloc = mainLocDAO.getMainLoc(mainlocid);
 		
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
+		MainLoc mainloc = mainLocDAO.findOne(mainlocid);
 		model.addAttribute("mainloc", mainloc);
-		model.addAttribute("referer", referer);
+		
 		return "location/deleteMainLoc";
 	}
 	
 	@PostMapping(value= "/deleteMainLoc")
-	public String getDeleteMainLoc(@RequestParam int mainlocid, Model model, @RequestParam String referer ) {
-		System.out.println(mainlocid);
-//			productDAO.deleteProduct(productid);
+	public String getDeleteMainLoc(@ModelAttribute MainLoc mainloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
-		return "redirect:"+referer;
+		String errorString = mainLocDAO.delete(mainloc.getMainlocid());
+		
+		if(errorString==null) {
+			String message="Main Location - "+ mainloc.getMainlocname() +" has deleted";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 	
 	/**************** SUB LOCATION ACTION ***********************/	
 	@GetMapping(value= "/createSubLoc")
-	public String getCreateSubLoc(Model model ) {
-		List<MainLoc> mainlocs= mainLocDAO.getAllMainLoc();
-			
-		model.addAttribute("errorString",null);
+	public String getCreateSubLoc(Model model, HttpServletRequest request) {
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
+		List<MainLoc> mainlocs= mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
+		
+		model.addAttribute("subloc",new SubLoc());
 			
 		return "location/createSubLoc";
 	}
 		
 	@PostMapping(value= "/createSubLoc")
-	public String postCreateSubLoc(@RequestParam int mainlocid, @RequestParam String sublocname, Model model, @RequestParam String referer ) {
-//			String errorString=subLocDAO.createSubLoc(sublocname, mainlocid);
-//			System.out.println(deptid+" "+subdeptcode+" "+subdeptname);
-//			if(errorString==null) {
-			return "redirect:"+referer;
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "location/createSubLoc";
-//			}
+	public String postCreateSubLoc(@ModelAttribute SubLoc subloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+		String errorString=subLocDAO.create(subloc.getSublocname(), subloc.getMainlocid());
+		
+		if(errorString==null) {
+			String message="Sub Location - "+ subloc.getSublocname() +" created successfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 		
 	@GetMapping(value= "/editSubLoc")
-	public String getEditSubLoc(@RequestParam int sublocid, Model model ) {
-			
-		SubLoc subloc = subLocDAO.getSubLoc(sublocid);
-		MainLoc mainloc = mainLocDAO.getMainLoc(subloc.getMainlocid());
-		    
+	public String getEditSubLoc(@RequestParam int sublocid, Model model, HttpServletRequest request) {
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
+		SubLoc subloc = subLocDAO.findOne(sublocid);
 		model.addAttribute("subloc",subloc);
+		
+		MainLoc mainloc = mainLocDAO.findOne(subloc.getMainlocid());
 		model.addAttribute("mainloc",mainloc);
 		    
 		return "location/editSubLoc";
 	}
 		
 	@PostMapping(value= "/editSubLoc")
-	public String postEditSubLoc(@RequestParam int sublocid,
-			@RequestParam String sublocname, Model model ) {
-//			System.out.println(deptid+" "+subdeptid+" "+subdeptcode+" "+subdeptname);
-//			String errorString=subLocDAO.updateSubLoc(sublocid, sublocname);
-//			if(errorString==null) {
-			return "redirect:/location";
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "location/editSubLoc";
-//			}
+	public String postEditSubLoc(@ModelAttribute SubLoc subloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+		String errorString=subLocDAO.update(subloc.getSublocid(), subloc.getSublocname());
+		
+		if(errorString==null) {
+			String message="Sub Location - "+ subloc.getSublocname() +" updated successfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 		
-//	@GetMapping(value= "/deleteSubLoc")
-//	public String getDeleteSubloc(@RequestParam int sublocid, Model model ) {
-//		System.out.println(sublocid);
-////			subDeptDAO.deleteDepartment(subdeptid);
-//			
-//		return "redirect:/location";
-//	}
-	
 	@GetMapping(value= "/deleteSubLoc")
 	public String getDeleteSubLoc(@RequestParam int sublocid, Model model, HttpServletRequest request ) {
-		String referer = request.getHeader("Referer");
-		SubLoc subloc = subLocDAO.getSubLoc(sublocid);
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
 		
+		SubLoc subloc = subLocDAO.findOne(sublocid);
 		model.addAttribute("subloc", subloc);
-		model.addAttribute("referer", referer);
+	
 		return "location/deleteSubLoc";
 	}
 	
 	@PostMapping(value= "/deleteSubLoc")
-	public String getDeleteSubLoc(@RequestParam int sublocid, Model model, @RequestParam String referer ) {
-		System.out.println(sublocid);
-//			productDAO.deleteProduct(productid);
+	public String getDeleteSubLoc(@ModelAttribute SubLoc subloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
-		return "redirect:"+referer;
+		String errorString = subLocDAO.delete(subloc.getSublocid());
+		
+		if(errorString==null) {
+			String message="Sub Location - "+ subloc.getSublocname() +" has deleted";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 }

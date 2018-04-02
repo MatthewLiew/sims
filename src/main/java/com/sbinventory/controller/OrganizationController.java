@@ -143,7 +143,7 @@ public class OrganizationController {
 		String errorString = organizationDAO.update(org.getOrgid(), org.getOrgcode(), org.getOrgname());
 		
 		if(errorString==null) {
-			String message="Organization - "+ org.getOrgname() +" updated succussfully";
+			String message="Organization - "+ org.getOrgname() +" updated successfully";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {
@@ -229,7 +229,7 @@ public class OrganizationController {
 
 		String errorString=deptDAO.update(dept.getDeptid(), dept.getDeptcode(), dept.getDeptname());
 		if(errorString==null) {
-			String message="Department - "+ dept.getDeptname() +" updated succussfully";
+			String message="Department - "+ dept.getDeptname() +" updated successfully";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {
@@ -322,7 +322,7 @@ public class OrganizationController {
 		String errorString = subDeptDAO.update(subdept.getSubdeptid(), subdept.getSubdeptcode(), subdept.getSubdeptname());
 		if(errorString==null) {
 
-			String message="Sub Department - "+ subdept.getSubdeptname() +" updated succussfully";
+			String message="Sub Department - "+ subdept.getSubdeptname() +" updated successfully";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {

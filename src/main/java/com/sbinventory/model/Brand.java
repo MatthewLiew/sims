@@ -3,7 +3,7 @@ package com.sbinventory.model;
 public class Brand {
 
 	private int brandid;
-	private int brandcode;
+	private Integer brandcode;
 	private String brandname;
 	
 	public Brand() {}
@@ -22,18 +22,22 @@ public class Brand {
 		this.brandid = brandid;
 	}
 
-	public int getBrandcode() {
+	public Integer getBrandcode() {
 		return brandcode;
 	}
-	public void setBrandcode(int brandcode) {
+	
+	public void setBrandcode(Integer brandcode) {
 		this.brandcode = brandcode;
 	}
+	
 	public String getBrandname() {
 		return brandname;
 	}
+	
 	public void setBrandname(String brandname) {
 		this.brandname = brandname;
 	}
+	
 	public boolean isBrand(int brandid){
         if (this.brandid==brandid) {
             return true;

@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Implementation-Title: SbInventory
 Implementation-Version: 0.0.1-SNAPSHOT
-Built-By: Matthew
+Built-By: Dell Dev 2
 Implementation-Vendor-Id: com.sbinventory
 Build-Jdk: 1.8.0_161
 Implementation-URL: http://projects.spring.io/spring-boot/spring-boot-

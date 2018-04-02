@@ -781,6 +781,17 @@ function mainlocName(form) {
  		dataType: 'json',
  		
  		success: function (response) {
+ 			if(response.flag=="true"){
+	 			$("#"+form+" .mainlocname" ).removeClass("is-invalid");
+				$("#"+form+" .mainlocname" ).addClass("is-valid");
+				$("#"+form+" .mainlocname_status" ).removeClass("text-danger");
+ 				$("#"+form+" .mainlocname_status" ).addClass("text-success");
+ 			} else {
+ 				$("#"+form+" .mainlocname" ).removeClass("is-valid");
+ 				$("#"+form+" .mainlocname" ).addClass("is-invalid");
+ 				$("#"+form+" .mainlocname_status" ).removeClass("text-success");
+ 				$("#"+form+" .mainlocname_status" ).addClass("text-danger");
+ 			}
  			$("#"+form+" .mainlocname_status").html(response.status);
  			$("#"+form+" .mainlocname_flag").html(response.flag);
   		},
@@ -790,25 +801,27 @@ function mainlocName(form) {
 			}
  		});
  	} else {
- 		$("#"+form+" .mainlocname_status").html("Field is Required");
+ 		$("#"+form+" .mainlocname").removeClass("is-valid");
+		$("#"+form+" .mainlocname").removeClass("is-invalid");
+ 		$("#"+form+" .mainlocname_status").html("");
  		$("#"+form+" .mainlocname_flag").html("false");
  	}
 }
 
 function mainlocForm(form) {
 	
-	var mainlocnameinput= $.isEmptyObject($("#"+form+" .mainlocname").val());
 	var mainlocnameflag=$("#"+form+" .mainlocname_flag" ).text();
+	let mainlocname=$("#"+form+" .mainlocname").val();
 
-	if(mainlocnameinput){
-		$("#"+form+" .mainlocname_status").html("Field is required");
-	}
-	if((mainlocnameinput)||(mainlocnameflag=="false")){
-		$("#"+form+" .error").html("Please complete the form");
+	if(mainlocnameflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("Main Location - "+mainlocname+" Exists.");
 		return false;
 	} else {
+		$("#"+form+" #modal_error").hide();
 		return true;
 	}
+	
 }
 
 function sublocName(form) {
@@ -827,6 +840,17 @@ function sublocName(form) {
  		dataType: 'json',
  		
  		success: function (response) {
+ 			if(response.flag=="true"){
+	 			$("#"+form+" .sublocname" ).removeClass("is-invalid");
+				$("#"+form+" .sublocname" ).addClass("is-valid");
+				$("#"+form+" .sublocname_status" ).removeClass("text-danger");
+ 				$("#"+form+" .sublocname_status" ).addClass("text-success");
+ 			} else {
+ 				$("#"+form+" .sublocname" ).removeClass("is-valid");
+ 				$("#"+form+" .sublocname" ).addClass("is-invalid");
+ 				$("#"+form+" .sublocname_status" ).removeClass("text-success");
+ 				$("#"+form+" .sublocname_status" ).addClass("text-danger");
+ 			}
  			$("#"+form+" .sublocname_status").html(response.status);
  			$("#"+form+" .sublocname_flag").html(response.flag);
   		},
@@ -836,25 +860,27 @@ function sublocName(form) {
 			}
  		});
  	} else {
- 		$("#"+form+" .sublocname_status").html("Field is Required");
+ 		$("#"+form+" .sublocname").removeClass("is-valid");
+		$("#"+form+" .sublocname").removeClass("is-invalid");
+ 		$("#"+form+" .sublocname_status").html("");
  		$("#"+form+" .sublocname_flag").html("false");
  	}
 }
 
 function sublocForm(form) {
 	
-	var sublocnameinput= $.isEmptyObject($("#"+form+" .sublocname").val());
 	var sublocnameflag=$("#"+form+" .sublocname_flag" ).text();
+	let sublocname=$("#"+form+" .sublocname").val();
 
-	if(sublocnameinput){
-		$("#"+form+" .sublocname_status").html("Field is required");
-	}
-	if((sublocnameinput)||(sublocnameflag=="false")){
-		$("#"+form+" .error").html("Please complete the form");
+	if(sublocnameflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("Sub Location - "+sublocname+" Exists.");
 		return false;
 	} else {
+		$("#"+form+" #modal_error").hide();
 		return true;
 	}
+	
 }
 
 function hardwareCode(form) {
@@ -871,16 +897,30 @@ function hardwareCode(form) {
  		dataType: 'json',
  		
  		success: function (response) {
+ 			if(response.flag=="true"){
+ 				$("#"+form+" .hardwarecode" ).removeClass("is-invalid");
+ 				$("#"+form+" .hardwarecode" ).addClass("is-valid");
+				$("#"+form+" .hardwarecode_status" ).removeClass("text-danger");
+ 				$("#"+form+" .hardwarecode_status" ).addClass("text-success");
+ 			} else {
+ 				$("#"+form+" .hardwarecode" ).removeClass("is-valid");
+ 				$("#"+form+" .hardwarecode" ).addClass("is-invalid");
+ 				$("#"+form+" .hardwarecode_status" ).removeClass("text-success");
+ 				$("#"+form+" .hardwarecode_status" ).addClass("text-danger");
+ 			}
  			$("#"+form+" .hardwarecode_status").html(response.status);
  			$("#"+form+" .hardwarecode_flag").html(response.flag);
   		},
  		error : function(e) {
+ 		
  			$("#"+form+" .hardwarecode_status" ).html("Error");
  			$("#"+form+" .hardwarecode_flag").html("false");
 			}
  		});
 		} else {
-			$("#"+form+" .hardwarecode_status").html("Field is required");
+			$("#"+form+" .hardwarecode").removeClass("is-valid");
+			$("#"+form+" .hardwarecode").removeClass("is-invalid");
+			$("#"+form+" .hardwarecode_status").html("");
 			$("#"+form+" .hardwarecode_flag").html("false");
 		}
 }
@@ -899,6 +939,17 @@ function hardwareType(form) {
  		dataType: 'json',
  		
  		success: function (response) {
+ 			if(response.flag=="true"){
+ 				$("#"+form+" .hardwaretype" ).removeClass("is-invalid");
+ 				$("#"+form+" .hardwaretype" ).addClass("is-valid");
+				$("#"+form+" .hardwaretype_status" ).removeClass("text-danger");
+ 				$("#"+form+" .hardwaretype_status" ).addClass("text-success");
+ 			} else {
+ 				$("#"+form+" .hardwaretype" ).removeClass("is-valid");
+ 				$("#"+form+" .hardwaretype" ).addClass("is-invalid");
+ 				$("#"+form+" .hardwaretype_status" ).removeClass("text-success");
+ 				$("#"+form+" .hardwaretype_status" ).addClass("text-danger");
+ 			}
  			$("#"+form+" .hardwaretype_status" ).html(response.status);
  			$("#"+form+" .hardwaretype_flag" ).html(response.flag);
   		},
@@ -908,28 +959,30 @@ function hardwareType(form) {
 			}
  		});
 	} else {
-		$("#"+form+" .hardwaretype_status").html("Field is required");
+		$("#"+form+" .hardwaretype").removeClass("is-valid");
+		$("#"+form+" .hardwaretype").removeClass("is-invalid");
+		$("#"+form+" .hardwaretype_status").html("");
 		$("#"+form+" .hardwaretype_falg").html("false");
 	}
 }
 
 function hardwareForm(form) {
 	
-	var hardwarecodeinput= $.isEmptyObject($("#"+form+" .hardwarecode").val());
-	var hardwaretypeinput= $.isEmptyObject($("#"+form+" .hardwaretype").val());
 	var hardwarecodeflag=$("#"+form+" .hardwarecode_flag" ).text();
 	var hardwaretypeflag=$("#"+form+" .hardwaretype_flag" ).text();
+	let hardwarecode=$("#"+form+" .hardwarecode").val();
+	let hardwaretype=$("#"+form+" .hardwaretype").val();
 
-	if(hardwarecodeinput){
-		$("#"+form+" .hardwarecode_status").html("Field is required");
-	}
-	if(hardwaretypeinput){
-		$("#"+form+" .hardwaretype_status").html("Field is required");
-	}
-	if(((hardwarecodeinput)||(hardwarecodeflag=="false"))||((hardwaretypeinput)||(hardwaretypeflag=="false"))){
-		$("#"+form+" .error").html("Please complete the form");
+	if(hardwarecodeflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("Hardware Code - "+hardwarecode+" Exists.");
+		return false;
+	} else if(hardwaretypeflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("Hardware Type - "+hardwaretype+" Exists.");
 		return false;
 	} else {
+		$("#"+form+" #modal_error").hide();
 		return true;
 	}
 }
@@ -948,6 +1001,17 @@ function brandCode(form) {
  		dataType: 'json',
  		
  		success: function (response) {
+ 			if(response.flag=="true"){
+	 			$("#"+form+" .brandcode" ).removeClass("is-invalid");
+				$("#"+form+" .brandcode" ).addClass("is-valid");
+				$("#"+form+" .brandcode_status" ).removeClass("text-danger");
+ 				$("#"+form+" .brandcode_status" ).addClass("text-success");
+ 			} else {
+ 				$("#"+form+" .brandcode" ).removeClass("is-valid");
+ 				$("#"+form+" .brandcode" ).addClass("is-invalid");
+ 				$("#"+form+" .brandcode_status" ).removeClass("text-success");
+ 				$("#"+form+" .brandcode_status" ).addClass("text-danger");
+ 			}
  			$("#"+form+" .brandcode_status").html(response.status);
  			$("#"+form+" .brandcode_flag").html(response.flag);
   		},
@@ -957,7 +1021,9 @@ function brandCode(form) {
 			}
  		});
 		} else {
-			$("#"+form+" .brandcode_status").html("Field is required");
+			$("#"+form+" .brandcode").removeClass("is-valid");
+			$("#"+form+" .brandcode").removeClass("is-invalid");
+			$("#"+form+" .brandcode_status").html("");
 			$("#"+form+" .brandcode_flag").html("false");
 		}
 }
@@ -976,6 +1042,17 @@ function brandName(form) {
  		dataType: 'json',
  		
  		success: function (response) {
+ 			if(response.flag=="true"){
+	 			$("#"+form+" .brandname" ).removeClass("is-invalid");
+				$("#"+form+" .brandname" ).addClass("is-valid");
+				$("#"+form+" .brandname_status" ).removeClass("text-danger");
+ 				$("#"+form+" .brandname_status" ).addClass("text-success");
+ 			} else {
+ 				$("#"+form+" .brandname" ).removeClass("is-valid");
+ 				$("#"+form+" .brandname" ).addClass("is-invalid");
+ 				$("#"+form+" .brandname_status" ).removeClass("text-success");
+ 				$("#"+form+" .brandname_status" ).addClass("text-danger");
+ 			}
  			$("#"+form+" .brandname_status" ).html(response.status);
  			$("#"+form+" .brandname_flag" ).html(response.flag);
   		},
@@ -985,59 +1062,61 @@ function brandName(form) {
 			}
  		});
 	} else {
-		$("#"+form+" .brandname_status").html("Field is required");
+		$("#"+form+" .brandname").removeClass("is-valid");
+		$("#"+form+" .brandname").removeClass("is-invalid");
+		$("#"+form+" .brandname_status").html("");
 		$("#"+form+" .brandname_falg").html("false");
 	}
 }
 
 function brandForm(form) {
 	
-	var brandcodeinput= $.isEmptyObject($("#"+form+" .brandcode").val());
-	var brandnameinput= $.isEmptyObject($("#"+form+" .brandname").val());
 	var brandcodeflag=$("#"+form+" .brandcode_flag" ).text();
 	var brandnameflag=$("#"+form+" .brandname_flag" ).text();
+	let brandcode=$("#"+form+" .brandcode").val();
+	let brandname=$("#"+form+" .brandname").val();
 
-	if(brandcodeinput){
-		$("#"+form+" .brandcode_status").html("Field is required");
-	}
-	if(brandnameinput){
-		$("#"+form+" .brandname_status").html("Field is required");
-	}
-	if(((brandcodeinput)||(brandcodeflag=="false"))||((brandnameinput)||(brandnameflag=="false"))){
-		$("#"+form+" .error").html("Please complete the form");
+	if(brandcodeflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("Brand Code - "+brandcode+" Exists.");
+		return false;
+	} else if(brandnameflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("Brand Name - "+brandname+" Exists.");
 		return false;
 	} else {
+		$("#"+form+" #modal_error").hide();
 		return true;
 	}
 }
 
-//function partnoCode(form) {
-//	var data= { 
-//			partnoid: $("#"+form+" .partnoid").val(),
-//			partnocode: $("#"+form+" .partnocode").val()
-//			}
-//		if(!$.isEmptyObject($("#"+form+" .partnocode").val())) {
-// 		$.ajax({
-// 		type: "POST",
-// 		contentType: "application/json",
-// 		url: BASE_URL + "api/checkPartNoCode",
-// 		data: JSON.stringify (data),
-// 		dataType: 'json',
-// 		
-// 		success: function (response) {
-// 			$("#"+form+" .partnocode_status").html(response.status);
-// 			$("#"+form+" .partnocode_flag").html(response.flag);
-//  		},
-// 		error : function(e) {
-// 			$("#"+form+" .partnocode_status" ).html("Error");
-// 			$("#"+form+" .partnocode_flag").html("false");
-//			}
-// 		});
-//		} else {
-//			$("#"+form+" .partnocode_status").html("Field is required");
-//			$("#"+form+" .partnocode_flag").html("false");
-//		}
-//}
+function partnoCode(form) {
+	var data= { 
+			partnoid: $("#"+form+" .partnoid").val(),
+			partnocode: $("#"+form+" .partnocode").val()
+			}
+		if(!$.isEmptyObject($("#"+form+" .partnocode").val())) {
+ 		$.ajax({
+ 		type: "POST",
+ 		contentType: "application/json",
+ 		url: BASE_URL + "api/checkPartNoCode",
+ 		data: JSON.stringify (data),
+ 		dataType: 'json',
+ 		
+ 		success: function (response) {
+ 			$("#"+form+" .partnocode_status").html(response.status);
+ 			$("#"+form+" .partnocode_flag").html(response.flag);
+  		},
+ 		error : function(e) {
+ 			$("#"+form+" .partnocode_status" ).html("Error");
+ 			$("#"+form+" .partnocode_flag").html("false");
+			}
+ 		});
+		} else {
+			$("#"+form+" .partnocode_status").html("Field is required");
+			$("#"+form+" .partnocode_flag").html("false");
+		}
+}
 
 function partnoModelNo(form) {
 //	var data= { 
@@ -1097,33 +1176,33 @@ function partnoSerialNo(form) {
 	}
 }
 
-//function partnoUpcCode(form) {
-//	var data= { 
-//			partnoid: $("#"+form+" .partnoid").val(),
-//			upccode: $("#"+form+" .upccode").val()
-//			}
-//	if(!$.isEmptyObject($("#"+form+" .upccode").val())) {
-// 		$.ajax({
-// 		type: "POST",
-// 		contentType: "application/json",
-// 		url: BASE_URL + "api/checkUpcCode",
-// 		data: JSON.stringify (data),
-// 		dataType: 'json',
-// 		
-// 		success: function (response) {
-// 			$("#"+form+" .upccode_status" ).html(response.status);
-// 			$("#"+form+" .upccode_flag" ).html(response.flag);
-//  		},
-// 		error : function(e) {
-// 			$("#"+form+" .upccode_status" ).html("Error");
-// 			$("#"+form+" .upccode_flag").html("false");
-//			}
-// 		});
-//	} else {
-//		$("#"+form+" .upccode_status").html("Field is required");
-//		$("#"+form+" .upccode_falg").html("false");
-//	}
-//}
+function partnoUpcCode(form) {
+	var data= { 
+			partnoid: $("#"+form+" .partnoid").val(),
+			upccode: $("#"+form+" .upccode").val()
+			}
+	if(!$.isEmptyObject($("#"+form+" .upccode").val())) {
+ 		$.ajax({
+ 		type: "POST",
+ 		contentType: "application/json",
+ 		url: BASE_URL + "api/checkUpcCode",
+ 		data: JSON.stringify (data),
+ 		dataType: 'json',
+ 		
+ 		success: function (response) {
+ 			$("#"+form+" .upccode_status" ).html(response.status);
+ 			$("#"+form+" .upccode_flag" ).html(response.flag);
+  		},
+ 		error : function(e) {
+ 			$("#"+form+" .upccode_status" ).html("Error");
+ 			$("#"+form+" .upccode_flag").html("false");
+			}
+ 		});
+	} else {
+		$("#"+form+" .upccode_status").html("Field is required");
+		$("#"+form+" .upccode_falg").html("false");
+	}
+}
 
 function partnoForm(form) {
 	
@@ -1173,6 +1252,17 @@ function productCode(form) {
  		dataType: 'json',
  		
  		success: function (response) {
+ 			if(response.flag=="true"){
+	 			$("#"+form+" .productcode" ).removeClass("is-invalid");
+				$("#"+form+" .productcode" ).addClass("is-valid");
+				$("#"+form+" .productcode_status" ).removeClass("text-danger");
+ 				$("#"+form+" .productcode_status" ).addClass("text-success");
+ 			} else {
+ 				$("#"+form+" .productcode" ).removeClass("is-valid");
+ 				$("#"+form+" .productcode" ).addClass("is-invalid");
+ 				$("#"+form+" .productcode_status" ).removeClass("text-success");
+ 				$("#"+form+" .productcode_status" ).addClass("text-danger");
+ 			}
  			$("#"+form+" .productcode_status").html(response.status);
  			$("#"+form+" .productcode_flag").html(response.flag);
   		},
@@ -1182,7 +1272,9 @@ function productCode(form) {
 			}
  		});
 		} else {
-			$("#"+form+" .productcode_status").html("Field is required");
+			$("#"+form+" .productcode").removeClass("is-valid");
+			$("#"+form+" .productcode").removeClass("is-invalid");
+			$("#"+form+" .productcode_status").html("");
 			$("#"+form+" .productcode_flag").html("false");
 		}
 }
@@ -1201,6 +1293,17 @@ function productName(form) {
  		dataType: 'json',
  		
  		success: function (response) {
+ 			if(response.flag=="true"){
+	 			$("#"+form+" .productname" ).removeClass("is-invalid");
+				$("#"+form+" .productname" ).addClass("is-valid");
+				$("#"+form+" .productname_status" ).removeClass("text-danger");
+ 				$("#"+form+" .productname_status" ).addClass("text-success");
+ 			} else {
+ 				$("#"+form+" .productname" ).removeClass("is-valid");
+ 				$("#"+form+" .productname" ).addClass("is-invalid");
+ 				$("#"+form+" .productname_status" ).removeClass("text-success");
+ 				$("#"+form+" .productname_status" ).addClass("text-danger");
+ 			}
  			$("#"+form+" .productname_status" ).html(response.status);
  			$("#"+form+" .productname_flag" ).html(response.flag);
   		},
@@ -1210,7 +1313,9 @@ function productName(form) {
 			}
  		});
 	} else {
-		$("#"+form+" .productname_status").html("Field is required");
+		$("#"+form+" .productname").removeClass("is-valid");
+		$("#"+form+" .productname").removeClass("is-invalid");
+		$("#"+form+" .productname_status").html("");
 		$("#"+form+" .productname_falg").html("false");
 	}
 }
@@ -1245,31 +1350,24 @@ function productLBValue(form) {
 
 function productForm(form) {
 	
-	var productcodeinput= $.isEmptyObject($("#"+form+" .productcode").val());
-	var productnameinput= $.isEmptyObject($("#"+form+" .productname").val());
-	var lbvalueinput= $.isEmptyObject($("#"+form+" .lbvalue").val());
-	
 	var productcodeflag=$("#"+form+" .productcode_flag" ).text();
 	var productnameflag=$("#"+form+" .productname_flag" ).text();
-	var lbvalueflag=$("#"+form+" .lbvalue_flag" ).text();
+	let productcode=$("#"+form+" .productcode").val();
+	let productname=$("#"+form+" .productname").val();
 	
-
-	if(productcodeinput){
-		$("#"+form+" .productcode_status").html("Field is required");
-	}
-	if(productnameinput){
-		$("#"+form+" .productname_status").html("Field is required");
-	}
-	if(lbvalueinput){
-		$("#"+form+" .lbvalue_status").html("Field is required");
-	}
-	if(((productcodeinput)||(productcodeflag=="false"))||((productnameinput)||(productnameflag=="false"))
-			||((lbvalueinput)||(lbvalueflag=="false"))){
-		$("#"+form+" .error").html("Please complete the form");
+	if(productcodeflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("Product Code - "+productcode+" Exists.");
+		return false;
+	} else if(productnameflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("Product Name - "+productname+" Exists.");
 		return false;
 	} else {
+		$("#"+form+" #modal_error").hide();
 		return true;
 	}
+	
 }
 
 function checkreason(form) {
@@ -1316,4 +1414,5 @@ function reasonForm(form) {
 		return true;
 	}
 }
+
 

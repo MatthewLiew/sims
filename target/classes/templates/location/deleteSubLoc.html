@@ -4,16 +4,20 @@
 		<meta charset="UTF-8">
    	</head>
 	
-	<input type="hidden" name="sublocid" th:value="${subloc.sublocid}" />
-	<input type="hidden" name="referer" th:value="${referer}" />
 	
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-12">
-                Are you sure to Delete Following Sub Location ? <br/>
-                Sub Location - <b><span th:text="${subloc.sublocname}"></span></b>
-            </div>
-        </div>
+	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
+	
+	<div th:object="${subloc}">
+		<input type="hidden" name="sublocid" th:field="*{sublocid}" th:value="${subloc.sublocid}" />
+		<input type="hidden" name="sublocname" th:field="*{sublocname}" th:value="${subloc.sublocname}" />
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-12">
+	                Are you sure to Delete Following Sub Location ? <br/>
+	                Sub Location - <b><span th:text="${subloc.sublocname}"></span></b>
+	            </div>
+	        </div>
+	    </div>
     </div>
            
 </html>

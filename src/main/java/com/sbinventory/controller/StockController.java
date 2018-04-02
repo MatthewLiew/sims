@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sbinventory.dao.AssetReqsDAO;
 import com.sbinventory.dao.BrandDAO;
@@ -180,16 +181,26 @@ public class StockController {
 	
 	/**************** INFORMATION PORTAL ***********************/
 	@GetMapping(value= "/stockmanagement")
-	public String getStockManagement(Model model) {
+	public String getStockManagement(Model model, HttpServletRequest request) {
 		
 		stockquantity.update();
 		
-		List<Product> products = productDAO.getAllProduct();
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
-		List<Hardware> hardwares = hardwareDAO.getAllHardware();
+		
+		List<Hardware> hardwares = hardwareDAO.findAll();
 		model.addAttribute("hardwares",hardwares);
-		List<Brand> brands = brandDAO.getAllBrand();
+		
+		List<Brand> brands = brandDAO.findAll();
 		model.addAttribute("brands",brands);
+		
+		String message = (String)model.asMap().get("message");
+		model.addAttribute("message", message);
+		
+		model.addAttribute("stockhistory", new StockHistory());
 		
 		return "stock/stockManagement";
 	}
@@ -216,10 +227,10 @@ public class StockController {
 					reasonid == null ? 0 : reasonid);
 		
 		List<Reason> reasons = reasonDAO.getAllReason();	
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		List<StockType> stocktypes = stockTypeDAO.getAllStockType();
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<SubLoc> sublocs = subLocDAO.findAll();
 		
 		model.addAttribute("startdate", startdate);
 		model.addAttribute("enddate", enddate);
@@ -236,7 +247,7 @@ public class StockController {
 	@GetMapping(value= "/serialmanagement")
 	public String getSerialManagement(Model model) {
 
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
 		List<PartNo> partnos = partNoDAO.getAllPartNo();
@@ -245,10 +256,10 @@ public class StockController {
 		UploadForm UploadForm = new UploadForm();
 	    model.addAttribute("UploadForm", UploadForm);
 	    
-	    List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+	    List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 
 		return "stock/serialManagement";
@@ -283,11 +294,11 @@ public class StockController {
 
 		List<Storage> storages = storageDAO.getAllStorage();
 		model.addAttribute("storages", storages);
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
 		
@@ -299,11 +310,11 @@ public class StockController {
 
 		List<TransferHistory> transferhistories = transferHistoryDAO.getAllTransferHistory();
 		model.addAttribute("transferhistories", transferhistories);
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
 		return "stock/transferHistory";
@@ -314,11 +325,11 @@ public class StockController {
 
 		List<DisposalHistory> disposalhistories = disposalHistoryDAO.getAllDisposalHistory();
 		model.addAttribute("disposalhistories", disposalhistories);
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
 		return "stock/disposalHistory";
@@ -329,11 +340,11 @@ public class StockController {
 
 		List<RMA> rmas = rmaDAO.getAllRMA();
 		model.addAttribute("rmas", rmas);
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
 		return "stock/rma";
@@ -344,11 +355,11 @@ public class StockController {
 
 		List<ITF> itfs = itfDAO.getAllITF();
 		model.addAttribute("itfs", itfs);
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
 		return "stock/itf";
@@ -359,11 +370,11 @@ public class StockController {
 
 		List<AssetReqs> assetreqs = assetReqsDAO.getAllAssetReqs();
 		model.addAttribute("assetreqs", assetreqs);
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
 		return "stock/assetReqs";
@@ -448,138 +459,125 @@ public class StockController {
 	@GetMapping(value= "/stockIn")
 	public String getStockIn(@RequestParam(defaultValue="0") int productid, @RequestParam(defaultValue="1") int stocktypeid, Model model, HttpServletRequest request) {
 		
-		String referer = request.getHeader("Referer");
-		model.addAttribute("referer", referer);
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
 		
-		List<Product> products = productDAO.getAllProduct();
-		List<Reason> reasons = reasonDAO.getReasonStockInAndOut(stocktypeid);
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
-		
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("index", productid);
 		model.addAttribute("products",products);
+		
+		List<Reason> reasons = reasonDAO.getReasonStockInAndOut(stocktypeid);
 		model.addAttribute("reasons",reasons);
-		model.addAttribute("errorString",null);
+		
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
+		
+		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs",sublocs);
+		
+		StockHistory sh =new StockHistory();
+		sh.setProductid(productid);
+		sh.setStocktypeid(stocktypeid);
+		sh.setQuantity(1);
+		sh.setHistorydate(DateTime.DateNow());
+		sh.setHistorytime(DateTime.TimeNow());
+		model.addAttribute("sh", sh);
 		
 		return "stock/stockIn";
 	}
 	
 	@PostMapping(value= "/stockIn")
-	public String postStockIn(@RequestParam int productid, @RequestParam int mainlocid, @RequestParam int sublocid, @RequestParam int quantity,  @RequestParam int stocktypeid,
-			@RequestParam String date, @RequestParam String time, @RequestParam int reasonid, @RequestParam String remark, String serialno,
-			Model model, Principal principal, @RequestParam String referer) {
+	public String postStockIn(@ModelAttribute StockHistory sh, String serialno, Model model, Principal principal, 
+			@RequestParam String sourceURL, RedirectAttributes ra) {
 		
-		String delims = ", \r\n\t\f";
+//		String delims = ", \r\n\t\f";
+//
+//		System.out.println("StringTokenizer Example: \n");
 
-		System.out.println("StringTokenizer Example: \n");
+//		StringTokenizer st = new StringTokenizer(serialno, delims);
+//		while (st.hasMoreElements()) {
+//			String errorString= partNoDAO.createPartNo(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], productid[i], customername, invoiceno, mainlocid, sublocid, "Available");
+//			System.out.println("Token: "+st.nextElement());
+//		}
 
-			StringTokenizer st = new StringTokenizer(serialno,delims);
-			while (st.hasMoreElements()) {
-	//			String errorString= partNoDAO.createPartNo(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], productid[i], customername, invoiceno, mainlocid, sublocid, "Available");
-				System.out.println("Token: "+st.nextElement());
-			}
-
-//			if(principal!=null){
-//				String loguser = principal.getName();
-//			}
+//		if(principal!=null){
+//			String loguser = principal.getName();
+//		}
 		
 		String logdatetime = DateTime.Now();
+		String errorString= stockHistoryDAO.createStockHistory(sh.getProductid(), sh.getMainlocid(), sh.getSublocid(), sh.getQuantity(), 
+				sh.getHistorydate(), sh.getHistorytime(), sh.getStocktypeid(), sh.getReasonid(), sh.getRemark(), logdatetime, null, "pending");
 		
-		
-//			String errorString= stockHistoryDAO.createStockHistory(productid, mainlocid, sublocid, quantity, date, time, stocktypeid, reasonid, remark, logdatetime, null, "pending");
-		
-//			
-//			if(errorString==null) {
-			return "redirect:"+referer;
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "stock/stockIn";
-//			}
+		Product product = productDAO.findOne(sh.getProductid());
+		if(errorString==null) {
+			String message= product.getProductname() +" stocked in successfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 	
 	@GetMapping(value= "/stockOut")
 	public String getStockOut(@RequestParam(defaultValue="0") int productid, @RequestParam(defaultValue="2") int stocktypeid, Model model, HttpServletRequest request) {
 		
-		String referer = request.getHeader("Referer");
-		model.addAttribute("referer", referer);
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
 		
-		List<Product> products = productDAO.getAllProduct();
-		List<Reason> reasons = reasonDAO.getReasonStockInAndOut(stocktypeid);
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
-		
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("index",productid);
 		model.addAttribute("products",products);
+		
+		List<Reason> reasons = reasonDAO.getReasonStockInAndOut(stocktypeid);
 		model.addAttribute("reasons",reasons);
-		model.addAttribute("errorString",null);
+		
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
+		
+		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs",sublocs);
+		
+		StockHistory sh =new StockHistory();
+		sh.setProductid(productid);
+		sh.setStocktypeid(stocktypeid);
+		sh.setQuantity(1);
+		sh.setHistorydate(DateTime.DateNow());
+		sh.setHistorytime(DateTime.TimeNow());
+		model.addAttribute("sh", sh);
 		
 		return "stock/stockOut";
 	}
 	
 	@PostMapping(value= "/stockOut")
-	public String postStockOut(@RequestParam int productid, int mainlocid, int sublocid, @RequestParam int quantity,  @RequestParam int stocktypeid,
-			@RequestParam String date, @RequestParam String time, @RequestParam int reasonid, @RequestParam String remark, String serialno,
-			Model model, Principal principal, @RequestParam String referer) {
+	public String postStockOut(@ModelAttribute StockHistory sh, String serialno, Model model, Principal principal, 
+			@RequestParam String sourceURL, RedirectAttributes ra) {
 
-//			String loguser = principal.getName();
+//		String loguser = principal.getName();
 		
-		String delims = ", \r\n\t\f";
+//		String delims = ", \r\n\t\f";
 
-		System.out.println("StringTokenizer Example: \n");
+//		System.out.println("StringTokenizer Example: \n");
 
-		StringTokenizer st = new StringTokenizer(serialno,delims);
-		while (st.hasMoreElements()) {
+//		StringTokenizer st = new StringTokenizer(serialno,delims);
+//		while (st.hasMoreElements()) {
 //			String errorString= partNoDAO.createPartNo(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], productid[i], customername, invoiceno, mainlocid, sublocid, "Available");
-			System.out.println("Token: "+st.nextElement());
-		}
+//			System.out.println("Token: "+st.nextElement());
+//		}
 			
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		ZoneId sg = ZoneId.of("Asia/Singapore");
-		String logdatetime = formatter.format(ZonedDateTime.now(sg));
-//			System.out.println("Current time in singapore: "+logdatetime);
-		
-//			String historydate, historytime;
-		
-		try {
-			SimpleDateFormat  dateformatter = new SimpleDateFormat ("yyyy-MM-dd");
-			date = dateformatter.format(dateformatter.parse(date));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		String logdatetime = DateTime.Now();
+		String errorString= stockHistoryDAO.createStockHistory(sh.getProductid(), sh.getMainlocid(), sh.getSublocid(), sh.getQuantity(), 
+				sh.getHistorydate(), sh.getHistorytime(), sh.getStocktypeid(), sh.getReasonid(), sh.getRemark(), logdatetime, null, "pending");
 
-		try {
-			time=time.concat(":00");
-			SimpleDateFormat  timeformatter = new SimpleDateFormat ("HH:mm:ss");
-			time = timeformatter.format(timeformatter.parse(time));
-		} catch (ParseException e) {
-			e.printStackTrace();
+		Product product = productDAO.findOne(sh.getProductid());
+		if(errorString==null) {
+			String message= product.getProductname() +" stocked out successfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
 		}
-		
-//			String errorString= stockHistoryDAO.createStockHistory(productid, mainlocid, sublocid, quantity, date, time, stocktypeid, reasonid, remark, logdatetime, "pending");
-//			
-//			int totalquantity=0;
-//			List<StockHistory> stockquantity = stockHistoryDAO.getStockQuantity(productid);
-//			for(StockHistory a: stockquantity) {
-//				if(a.getApproval().equals(1)) {
-//					if(a.getStocktypeid()==1) {
-//						totalquantity+=a.getQuantity();
-//					} else {
-//						totalquantity-=a.getQuantity();
-//					}
-//				}
-//			}
-//			productDAO.updateQuantity(productid, totalquantity);
-//			
-//			if(errorString==null) {
-			return "redirect:"+referer;
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "stock/stockOut";
-//			}
 	}
 	
 	@GetMapping(value= "/stockioapproval")
@@ -598,11 +596,11 @@ public class StockController {
 		model.addAttribute("referer", referer);
 		
 		StockHistory stockhistory= stockHistoryDAO.getStockHistory(stockhistoryid);
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		List<Reason> reasons = reasonDAO.getAllReason();
 		List<StockType> stocktypes = stockTypeDAO.getAllStockType();
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc(stockhistory.getMainlocid());
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(stockhistory.getMainlocid());
 		
 		model.addAttribute("products",products);
 		model.addAttribute("reasons",reasons);
@@ -658,7 +656,7 @@ public class StockController {
 		model.addAttribute("referer", referer);
 		
 		StockHistory stockhistory = stockHistoryDAO.getStockHistory(stockhistoryid);
-		Product product = productDAO.getProduct(stockhistory.getProductid());
+		Product product = productDAO.findOne(stockhistory.getProductid());
 		
 		model.addAttribute("stockhistory", stockhistory);		
 		model.addAttribute("product", product);	
@@ -681,16 +679,16 @@ public class StockController {
 		String referer = request.getHeader("Referer");
 		model.addAttribute("referer", referer);
 		
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
 //		List<Storage> storages = storageDAO.getAllStorage();
 //		model.addAttribute("storages", storages);
 		
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
 		model.addAttribute("errorString",null);
@@ -738,16 +736,16 @@ public class StockController {
 		TransferHistory transferhistory= transferHistoryDAO.getTransferHistory(transferhistoryid);
 		model.addAttribute("transferhistory", transferhistory);
 		
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> orisublocs = subLocDAO.getAllSubLoc(transferhistory.getOrimainlocid());
+		List<SubLoc> orisublocs = subLocDAO.findAllByMainlocid(transferhistory.getOrimainlocid());
 		model.addAttribute("orisublocs", orisublocs);
 		
-		List<SubLoc> dessublocs = subLocDAO.getAllSubLoc(transferhistory.getDesmainlocid());
+		List<SubLoc> dessublocs = subLocDAO.findAllByMainlocid(transferhistory.getDesmainlocid());
 		model.addAttribute("dessublocs", dessublocs);
 		
 		model.addAttribute("errorString",null);
@@ -784,7 +782,7 @@ public class StockController {
 		model.addAttribute("referer", referer);
 		
 		TransferHistory transferhistory = transferHistoryDAO.getTransferHistory(transferhistoryid);
-		Product product = productDAO.getProduct(transferhistory.getProductid());
+		Product product = productDAO.findOne(transferhistory.getProductid());
 		
 		model.addAttribute("transferhistory", transferhistory);		
 		model.addAttribute("product", product);	
@@ -807,16 +805,16 @@ public class StockController {
 		String referer = request.getHeader("Referer");
 		model.addAttribute("referer", referer);
 		
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
 //		List<Storage> storages = storageDAO.getAllStorage();
 //		model.addAttribute("storages", storages);
 		
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
 		model.addAttribute("errorString",null);
@@ -853,13 +851,13 @@ public class StockController {
 		DisposalHistory disposalhistory= disposalHistoryDAO.getDisposalHistory(disposalhistoryid);
 		model.addAttribute("disposalhistory", disposalhistory);
 		
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc(disposalhistory.getMainlocid());
+		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(disposalhistory.getMainlocid());
 		model.addAttribute("sublocs", sublocs);
 		
 		model.addAttribute("errorString",null);
@@ -903,7 +901,7 @@ public class StockController {
 		model.addAttribute("referer", referer);
 		
 		DisposalHistory disposalhistory = disposalHistoryDAO.getDisposalHistory(disposalhistoryid);
-		Product product = productDAO.getProduct(disposalhistory.getProductid());
+		Product product = productDAO.findOne(disposalhistory.getProductid());
 		
 		model.addAttribute("disposalhistory", disposalhistory);		
 		model.addAttribute("product", product);	
@@ -926,13 +924,13 @@ public class StockController {
 		String referer = request.getHeader("Referer");
 		model.addAttribute("referer", referer);
 		
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
 		model.addAttribute("errorString",null);
@@ -970,13 +968,13 @@ public class StockController {
 		RMA rma= rmaDAO.getRMA(rmaid);
 		model.addAttribute("rma", rma);
 		
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc(rma.getMainlocid());
+		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(rma.getMainlocid());
 		model.addAttribute("sublocs", sublocs);
 		
 		model.addAttribute("errorString",null);
@@ -1021,7 +1019,7 @@ public class StockController {
 		model.addAttribute("referer", referer);
 		
 		RMA rma = rmaDAO.getRMA(rmaid);
-		Product product = productDAO.getProduct(rma.getProductid());
+		Product product = productDAO.findOne(rma.getProductid());
 		
 		model.addAttribute("rma", rma);		
 		model.addAttribute("product", product);	
@@ -1044,13 +1042,13 @@ public class StockController {
 		String referer = request.getHeader("Referer");
 		model.addAttribute("referer", referer);
 		
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
 		model.addAttribute("errorString",null);
@@ -1087,13 +1085,13 @@ public class StockController {
 		ITF itf= itfDAO.getITF(itfid);
 		model.addAttribute("itf", itf);
 		
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc(itf.getMainlocid());
+		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(itf.getMainlocid());
 		model.addAttribute("sublocs", sublocs);
 		
 		model.addAttribute("errorString",null);
@@ -1137,7 +1135,7 @@ public class StockController {
 		model.addAttribute("referer", referer);
 		
 		ITF itf = itfDAO.getITF(itfid);
-		Product product = productDAO.getProduct(itf.getProductid());
+		Product product = productDAO.findOne(itf.getProductid());
 		
 		model.addAttribute("itf", itf);		
 		model.addAttribute("product", product);	
@@ -1160,13 +1158,13 @@ public class StockController {
 		String referer = request.getHeader("Referer");
 		model.addAttribute("referer", referer);
 		
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc();
+		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
 		model.addAttribute("errorString",null);
@@ -1203,13 +1201,13 @@ public class StockController {
 		AssetReqs assetreq= assetReqsDAO.getAssetReqs(assetreqsid);
 		model.addAttribute("assetreq", assetreq);
 		
-		List<Product> products = productDAO.getAllProduct();
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<MainLoc> mainlocs = mainLocDAO.getAllMainLoc();
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.getAllSubLoc(assetreq.getMainlocid());
+		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(assetreq.getMainlocid());
 		model.addAttribute("sublocs", sublocs);
 		
 		model.addAttribute("errorString",null);
@@ -1253,7 +1251,7 @@ public class StockController {
 		model.addAttribute("referer", referer);
 		
 		AssetReqs assetreq = assetReqsDAO.getAssetReqs(assetreqsid);
-		Product product = productDAO.getProduct(assetreq.getProductid());
+		Product product = productDAO.findOne(assetreq.getProductid());
 		
 		model.addAttribute("assetreq", assetreq);		
 		model.addAttribute("product", product);	

@@ -176,12 +176,8 @@ public class MainRESTController {
 	//********** LOCATION **********//
 	@PostMapping(value="/api/checkMainLocName")
 	public Response getMainLocNameResponse(@RequestBody MainLoc mainloc ) {
-		MainLoc result;
-		if(mainloc.getMainlocid()==0) {
-			result= mainLocDAO.getMainLocName(mainloc.getMainlocname());
-		} else {
-			result= mainLocDAO.getMainLocName(mainloc.getMainlocname(),mainloc.getMainlocid());
-		}
+		MainLoc result= mainLocDAO.getMainLocName(mainloc.getMainlocname(),mainloc.getMainlocid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -195,12 +191,8 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkSubLocName")
 	public Response getSubLocNameResponse(@RequestBody SubLoc subloc ) {
-		SubLoc result;
-		if(subloc.getSublocid()==0) {
-			result= subLocDAO.getSubLocName(subloc.getSublocname());
-		} else {
-			result= subLocDAO.getSubLocName(subloc.getSublocname(), subloc.getSublocid());
-		}
+		SubLoc result= subLocDAO.getSubLocName(subloc.getSublocname(), subloc.getSublocid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -216,12 +208,8 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkHardwareCode")
 	public Response getHardwareCodeResponse(@RequestBody Hardware hardware ) {
-		Hardware result;
-		if(hardware.getHardwareid()==0) {
-			result = hardwareDAO.getHardwareCode(hardware.getHardwarecode());
-		} else {
-			result = hardwareDAO.getHardwareCode(hardware.getHardwarecode(), hardware.getHardwareid());
-		}
+		Hardware result = hardwareDAO.getHardwareCode(hardware.getHardwarecode(), hardware.getHardwareid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -234,12 +222,8 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkHardwareType")
 	public Response getHardwareTypeResponse(@RequestBody Hardware hardware ) {
-		Hardware result;
-		if(hardware.getHardwareid()==0) {
-			result= hardwareDAO.getHardwareType(hardware.getHardwaretype());
-		} else {
-			result= hardwareDAO.getHardwareType(hardware.getHardwaretype(), hardware.getHardwareid());
-		}
+		Hardware result= hardwareDAO.getHardwareType(hardware.getHardwaretype(), hardware.getHardwareid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -253,12 +237,8 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkBrandCode")
 	public Response getBrandCodeResponse(@RequestBody Brand brand ) {
-		Brand result;
-		if(brand.getBrandid()==0) {
-			result = brandDAO.getBrandCode(brand.getBrandcode());
-		} else {
-			result = brandDAO.getBrandCode(brand.getBrandcode(), brand.getBrandid());
-		}
+		Brand result = brandDAO.getBrandCode(brand.getBrandcode(), brand.getBrandid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -271,12 +251,8 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkBrandName")
 	public Response getBrandNameResponse(@RequestBody Brand brand ) {
-		Brand result;
-		if(brand.getBrandid()==0) {
-			result= brandDAO.getBrandName(brand.getBrandname());
-		} else {
-			result= brandDAO.getBrandName(brand.getBrandname(), brand.getBrandid());
-		}
+		Brand result= brandDAO.getBrandName(brand.getBrandname(), brand.getBrandid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -364,12 +340,8 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkProductCode")
 	public Response getProductCodeResponse(@RequestBody Product product ) {
-		Product result;
-		if(product.getProductid()==0) {
-			result= productDAO.getProductCode(product.getProductcode());
-		} else {
-			result= productDAO.getProductCode(product.getProductcode(), product.getProductid());
-		}
+		Product result= productDAO.getProductCode(product.getProductcode(), product.getProductid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -383,12 +355,8 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkProductName")
 	public Response getProductNameResponse(@RequestBody Product product ) {
-		Product result;
-		if(product.getProductid()==0) {
-			result = productDAO.getProductName(product.getProductname());
-		} else {
-			result = productDAO.getProductName(product.getProductname(), product.getProductid());
-		}
+		Product result = productDAO.getProductName(product.getProductname(), product.getProductid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -401,12 +369,8 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkLBValue")
 	public Response getLBValueResponse(@RequestBody Product product ) {
-		Product result;
-		if(product.getProductid()==0) {
-			result= productDAO.getLBValue(product.getLbvalue());
-		} else {
-			result= productDAO.getLBValue(product.getLbvalue(), product.getProductid());
-		}
+		Product result= productDAO.getLBValue(product.getLbvalue(), product.getProductid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -460,14 +424,14 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/getSubLoc")
 	public List<SubLoc> getSubLoc(@RequestBody SubLoc subloc) {
-		List<SubLoc> sublocs=subLocDAO.getAllSubLoc(subloc.getMainlocid());
+		List<SubLoc> sublocs=subLocDAO.findAllByMainlocid(subloc.getMainlocid());
 		
 		return sublocs;
 	}
 	
 	@PostMapping(value="/api/checkSerialAvailability")
 	public Response checkSerialAvailability(@RequestBody Product product) {
-		Product productd = productDAO.getProduct(product.getProductid());
+		Product productd = productDAO.findOne(product.getProductid());
 //		System.out.println(productd.getQuantity());
 		
 		List<PartNo> partnos = partNoDAO.getAllProductID(product.getProductid());

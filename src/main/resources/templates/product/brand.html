@@ -7,6 +7,12 @@
 	<div class="header_ref" th:include="/header"></div>
 	<div class="content-wrapper">
     	<div class="container-fluid">
+    		
+    		<div th:if="${message!= null}" class="alert alert-info alert-dismissible">
+			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<span  th:text="${message}"></span>
+		  	</div>
+		  	
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		       <li class="breadcrumb-item">
@@ -57,7 +63,7 @@
            	</div>
            	
            	<div class="modal clickable" id="CreateBrand" tabindex="-1" role="dialog" aria-labelledby="CreateBrand" aria-hidden="true">
-	            <form method="POST" th:action="@{/createBrand}" id="CreateBrand">
+	            <form method="POST" th:action="@{/createBrand}" id="CreateBrand" onsubmit="return brandForm('CreateBrand');">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -84,7 +90,7 @@
 	        </div>
 	        
 	        <div class="modal clickable" id="EditBrand" tabindex="-1" role="dialog" aria-labelledby="EditBrand" aria-hidden="true">
-	            <form method="POST" th:action="@{/editBrand}" id="EditBrand">
+	            <form method="POST" th:action="@{/editBrand}" id="EditBrand" onsubmit="return brandForm('EditBrand');">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -145,12 +151,14 @@
             if (action == 'new') {
                 $('#CreateBrand .modal-body').empty();
                 $('#CreateBrand .modal-title').text("New Brand");
+                $('#CreateBrand #modal_error').hide();
                 $('#CreateBrand .modal-body').load('createBrand', function () {
                     $('#CreateBrand').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditBrand .modal-body').empty();
                 $('#EditBrand .modal-title').text("Edit Brand");
+                $('#EditBrand #modal_error').hide();
                 $('#EditBrand .modal-body').load('editBrand?brandid=' + id, function () {
                     $('#EditBrand').modal({show: true});
                 });

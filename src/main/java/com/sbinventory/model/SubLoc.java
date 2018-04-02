@@ -4,7 +4,7 @@ public class SubLoc {
 
 	private int sublocid;
 	private String sublocname;
-	private int mainlocid;
+	private Integer mainlocid;
 	
 	public SubLoc() {}
 	
@@ -31,11 +31,11 @@ public class SubLoc {
 		this.sublocname = sublocname;
 	}
 	
-	public int getMainlocid() {
+	public Integer getMainlocid() {
 		return mainlocid;
 	}
 	
-	public void setMainlocid(int mainlocid) {
+	public void setMainlocid(Integer mainlocid) {
 		this.mainlocid = mainlocid;
 	}
 	

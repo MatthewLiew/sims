@@ -28,18 +28,8 @@ public class StockHistoryDAO extends JdbcDaoSupport{
 		this.setDataSource(dataSource);
 	}
 	
-	public String createStockHistory(int productid, 
-									 int mainlocid, 
-									 int sublocid, 
-									 int quantity, 
-									 String historydate, 
-									 String historytime, 
-									 int stocktypeid, 
-									 int reasonid, 
-									 String remark, 
-									 String logdatetime, 
-									 String loguser,
-									 String approval) {
+	public String createStockHistory(int productid, int mainlocid, int sublocid, int quantity, String historydate, String historytime, 
+			int stocktypeid, int reasonid, String remark, String logdatetime, String loguser, String approval) {
 		
 		Object[] params=new Object[]{productid, mainlocid, sublocid, quantity, historydate, historytime, stocktypeid, reasonid, remark, logdatetime, loguser, approval};
 		String sql=CREATE_SQL;
