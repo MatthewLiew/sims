@@ -97,15 +97,17 @@ public class AssetReqsDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public void deleteAssetReqs(int assetreqsid){
+	public String deleteAssetReqs(int assetreqsid){
 		String sql=DELETE_SQL+" where ID= ?";
 		Object[] params= new Object[] {assetreqsid};
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
+			return null;
 		}catch(EmptyResultDataAccessException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	public String approval(int assetreqsid, String approve ){

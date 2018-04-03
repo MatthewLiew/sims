@@ -95,15 +95,17 @@ public class ITFDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public void deleteITF(int itfid){
+	public String deleteITF(int itfid){
 		String sql=DELETE_SQL+" where ID= ?";
 		Object[] params= new Object[] {itfid};
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
+			return null;
 		}catch(EmptyResultDataAccessException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	public String approval(int itfid, String approve ){

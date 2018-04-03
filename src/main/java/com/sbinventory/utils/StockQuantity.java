@@ -66,7 +66,7 @@ public class StockQuantity {
 		for(Storage stor : storages){
 			
 			int total = 0;
-			List<StockHistory> stocks = stockHistoryDAO.getAllStockHistory();
+			List<StockHistory> stocks = stockHistoryDAO.findAll();
 			for(StockHistory stock: stocks) {
 				
 				if((stor.getMainlocid() == stock.getMainlocid()) && (stor.getSublocid() == stock.getSublocid())
@@ -89,7 +89,7 @@ public class StockQuantity {
 		for(Storage stor : storages){
 			
 			int totalquantity=0;
-			List<TransferHistory> transferHistories = transferHistoryDAO.getAllTransferHistory();
+			List<TransferHistory> transferHistories = transferHistoryDAO.findAll();
 			for(TransferHistory trans: transferHistories){
 				
 				if((stor.getMainlocid() == trans.getOrimainlocid()) && (stor.getSublocid() == trans.getOrisublocid())

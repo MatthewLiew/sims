@@ -7,6 +7,12 @@
 	<div class="header_ref" th:include="/header"></div>
 	<div class="content-wrapper">
     	<div class="container-fluid">
+    		
+    		<div th:if="${message!= null}" class="alert alert-info alert-dismissible">
+			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<span  th:text="${message}"></span>
+		  	</div>
+		  	
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		        <li class="breadcrumb-item">
@@ -164,12 +170,14 @@
             if (action == 'dispose') {
                 $('#CreateRMA .modal-body').empty();
                 $('#CreateRMA .modal-title').text("Add RMA");
+                $('#CreateRMA #modal_error').hide();
                 $('#CreateRMA .modal-body').load('createRMA', function () {
                     $('#CreateRMA').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditRMA .modal-body').empty();
                 $('#EditRMA .modal-title').text("Edit RMA History");
+                $('#EditRMA #modal_error').hide();
                 $('#EditRMA .modal-body').load('editRMA?rmaid=' + id, function () {
                     $('#EditRMA').modal({show: true});
                 });

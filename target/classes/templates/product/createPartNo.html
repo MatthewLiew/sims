@@ -5,149 +5,150 @@
 	</head>
 	
 	<p class="error" style="color: red;" th:text="${errorString}" ></p>
-  	<input type="hidden" name="referer" th:value="${referer}" />
-  	
-   	<div class="form">
-		<div class="form-group">
-        	<div class="form-row">
-            	<div class="col-md-3">
-                	<label for="ProductLabel">Product</label>
-               	</div>
-               	<div class="col-md-6">
-               		<select class="form-control productid" name="productid" required>
-			            <option value="">Select Product</option>
-			            <option th:each="list: ${products}" th:selected="${list.isProduct(index)}" th:value="${list.productid}" th:text="${list.productname}"></option>
-		        	</select>
-               	</div>
-               	<div class="col-md-3">
-                	<span class="serialno_status"></span>
-               	</div>
-       		</div>
-       	</div>
-       	
-		<div class="form-group">
-	        <div class="form-row">
-	            <div class="col-md-3">
-	                <label for="MainLocationLabel">Main Location</label>
-	            </div>
-	            <div class="col-md-6">
-		            <select class="form-control" name="mainlocid" required onchange="subloc_select('CreatePartNo',this.value);">
-			            <option value="">Select Main Location</option>
-			            <option th:each="list: ${mainlocs}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option>
-		       		</select>
-	            </div>
-	        </div>
+  	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
+  	<div th:object="${partno}">
+	   	<div class="form">
+			<div class="form-group">
+	        	<div class="form-row">
+	            	<div class="col-md-3">
+	                	<label for="ProductLabel">Product</label>
+	               	</div>
+	               	<div class="col-md-6">
+	               		<select class="form-control productid" name="productid" th:field="*{productid}" required>
+				            <option value="">Select Product</option>
+				            <option th:each="list: ${products}" th:selected="${list.isProduct(index)}" th:value="${list.productid}" th:text="${list.productname}"></option>
+			        	</select>
+	               	</div>
+	               	<div class="col-md-3">
+	              
+	               	</div>
+	       		</div>
+	       	</div>
+	       	
+			<div class="form-group">
+		        <div class="form-row">
+		            <div class="col-md-3">
+		                <label for="MainLocationLabel">Main Location</label>
+		            </div>
+		            <div class="col-md-6">
+			            <select class="form-control" name="mainlocid" th:field="*{mainlocid}" required onchange="subloc_select('CreatePartNo',this.value);">
+				            <option value="">Select Main Location</option>
+				            <option th:each="list: ${mainlocs}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option>
+			       		</select>
+		            </div>
+		        </div>
+		    </div>
+		    
+		    <div class="form-group">
+		        <div class="form-row">
+		            <div class="col-md-3">
+		                <label for="SubLocationLabel">Sub Location</label>
+		            </div>
+		            <div class="col-md-6">                    
+			            <select class="form-control subloc_select" name="sublocid" th:field="*{sublocid}" required>
+			            	<option value="">Select Sub Location</option>
+			        	</select>
+		            </div>
+		         </div>
+		     </div>
+		     
+			<div class="form-group">
+	        	<div class="form-row">
+	            	<div class="col-md-3">
+	                	<label for="SerialNoLabel">Serial No</label>
+	           		</div>
+	               	<div class="col-md-6">
+	               	<!-- onkeyup="countSerialNo('CreatePartNo');" -->
+	           			<textarea class="form-control serialno" id="serialno" name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space"  th:field="*{serialno}" required></textarea>
+	           			
+					      	<label class="btn btn-primary btn_csv" for="file_upload" style="margin-bottom:0;">Upload
+	<!-- 				      	<button class="btn btn-primary btn_csv">Upload</button> -->
+					      	</label>
+	
+					      	<input class="btn btn-primary get_csv" name=file id="file_upload" type="file" accept=".csv" style="display:none;" />
+	               			
+	               	</div>
+	               	<div class="col-md-3">
+	               		<!-- <form method="POST" th:action="@{/uploadOneFile}" th:object="${UploadForm}" enctype="multipart/form-data" style="display:inline-block;">
+	
+						&nbsp;&nbsp;
+				         File to upload: 
+				         <input th:field="*{fileDatas}" type="file" accept=".csv" required/>
+				         <div th:if="${#fields.hasErrors('global')}" th:errors="*{file}"></div>
+				         <th:errors path="file" style="color:red;"></>
+				         <br />
+							<input type="submit" value="Upload">
+				         <button class="btn btn-primary">Upload</button>
+				      </form> -->
+				      	<div class="autostockin" style="display:none;">
+	           				<span class="outstanding"></span><br>
+				           	<label class="radio-inline">
+				               	<input class="addstockcheck" type="checkbox" name="autoaddstock" value="1" />Add
+				           	</label>
+			           	</div>
+				      
+	               		<span class="quantity" style="visibility:hidden;"></span>
+	               	</div>
+	           	</div>
+	   		</div>
+	       
+	       	<div class="form-group">
+	           	<div class="form-row">
+	               	<div class="col-md-3">
+	                   	<label for="ModelNoLabel">Model No</label>
+	               	</div>
+	               	<div class="col-md-6">
+	               		<input class="form-control modelno" id="modelno" name="modelno" type="text" data-error="Please Enter Model No" aria-describedby="ModelNo" placeholder="Enter Model No" th:field="*{modelno}" value="">
+	               	</div>
+	               	<div class="col-md-3">
+	               	</div>
+	           	</div>
+	       	</div>
+	       
+	       	<div class="form-group">
+	           	<div class="form-row">
+	               	<div class="col-md-3">
+	                   	<label for="UPCCodeLabel">UPC Code</label>
+	               	</div>
+	               	<div class="col-md-6">
+	               		<input class="form-control upccode" id="upccode" name="upccode" type="text" data-error="Please Enter UPC Code" aria-describedby="UPCCode" placeholder="Enter UPC Code" th:field="*{upccode}" value="">
+	               	</div>
+	               	<div class="col-md-3">
+	               	</div>
+	           	</div>
+	       	</div>
+	       
+	       	<div class="form-group">
+	           	<div class="form-row">
+	               	<div class="col-md-3">
+	                   	<label for="CustomerNameLabel">Customer Name</label>
+	               	</div>
+	               	<div class="col-md-6">
+	               		<input class="form-control customername" id="customername" name="customername" type="text" data-error="Please Enter Customer Name" aria-describedby="CustomerName" placeholder="Enter Customer Name" th:field="*{customername}" value="">
+	               	</div>
+	               	<div class="col-md-3">
+	               	</div>
+	           	</div>
+	       	</div>
+	       
+	       	<div class="form-group">
+	           	<div class="form-row">
+	               	<div class="col-md-3">
+	                   	<label for="InvoiceNoLabel">Invoice No</label>
+	               	</div>
+	               	<div class="col-md-6">
+	               		<input class="form-control invoiceno" id="invoiceno" name="invoiceno" type="text" data-error="Please Enter Invoice No" aria-describedby="InvoiceNo" placeholder="Enter Invoice No" th:field="*{invoiceno}" value="">
+	               	</div>
+	               	<div class="col-md-3">
+	               		<button type="button" class="btn btn-primary remove_partno">Remove</button>
+	               	</div>
+	           	</div>
+	       	</div>
+	       	<hr>
 	    </div>
-	    
-	    <div class="form-group">
-	        <div class="form-row">
-	            <div class="col-md-3">
-	                <label for="SubLocationLabel">Sub Location</label>
-	            </div>
-	            <div class="col-md-6">                    
-		            <select class="form-control subloc_select" name="sublocid" required>
-		            	<option value="">Select Sub Location</option>
-		        	</select>
-	            </div>
-	         </div>
-	     </div>
-	     
-		<div class="form-group">
-        	<div class="form-row">
-            	<div class="col-md-3">
-                	<label for="SerialNoLabel">Serial No</label>
-           		</div>
-               	<div class="col-md-6">
-               	<!-- onkeyup="countSerialNo('CreatePartNo');" -->
-           			<textarea class="form-control serialno" id="serialno" name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space"  required></textarea>
-           			
-				      	<label class="btn btn-primary btn_csv" for="file_upload" style="margin-bottom:0;">Upload
-<!-- 				      	<button class="btn btn-primary btn_csv">Upload</button> -->
-				      	</label>
-
-				      	<input class="btn btn-primary get_csv" name=file id="file_upload" type="file" accept=".csv" style="display:none;" />
-               			
-               	</div>
-               	<div class="col-md-3">
-               		<!-- <form method="POST" th:action="@{/uploadOneFile}" th:object="${UploadForm}" enctype="multipart/form-data" style="display:inline-block;">
-
-					&nbsp;&nbsp;
-			         File to upload: 
-			         <input th:field="*{fileDatas}" type="file" accept=".csv" required/>
-			         <div th:if="${#fields.hasErrors('global')}" th:errors="*{file}"></div>
-			         <th:errors path="file" style="color:red;"></>
-			         <br />
-						<input type="submit" value="Upload">
-			         <button class="btn btn-primary">Upload</button>
-			      </form> -->
-			      	<div class="autostockin" style="display:none;">
-           				<span class="outstanding"></span><br>
-			           	<label class="radio-inline">
-			               	<input class="addstockcheck" type="checkbox" name="addstock" value="1" />Add
-			           	</label>
-		           	</div>
-			      
-               		<span class="quantity" style="visibility:hidden;"></span>
-               	</div>
-           	</div>
-   		</div>
-       
-       	<div class="form-group">
-           	<div class="form-row">
-               	<div class="col-md-3">
-                   	<label for="ModelNoLabel">Model No</label>
-               	</div>
-               	<div class="col-md-6">
-               		<input class="form-control modelno" id="modelno" name="modelno" type="text" data-error="Please Enter Model No" aria-describedby="ModelNo" placeholder="Enter Model No" value="">
-               	</div>
-               	<div class="col-md-3">
-               	</div>
-           	</div>
-       	</div>
-       
-       	<div class="form-group">
-           	<div class="form-row">
-               	<div class="col-md-3">
-                   	<label for="UPCCodeLabel">UPC Code</label>
-               	</div>
-               	<div class="col-md-6">
-               		<input class="form-control upccode" id="upccode" name="upccode" type="text" data-error="Please Enter UPC Code" aria-describedby="UPCCode" placeholder="Enter UPC Code" value="">
-               	</div>
-               	<div class="col-md-3">
-               	</div>
-           	</div>
-       	</div>
-       
-       	<div class="form-group">
-           	<div class="form-row">
-               	<div class="col-md-3">
-                   	<label for="CustomerNameLabel">Customer Name</label>
-               	</div>
-               	<div class="col-md-6">
-               		<input class="form-control customername" id="customername" name="customername" type="text" data-error="Please Enter Customer Name" aria-describedby="CustomerName" placeholder="Enter Customer Name" value="">
-               	</div>
-               	<div class="col-md-3">
-               	</div>
-           	</div>
-       	</div>
-       
-       	<div class="form-group">
-           	<div class="form-row">
-               	<div class="col-md-3">
-                   	<label for="InvoiceNoLabel">Invoice No</label>
-               	</div>
-               	<div class="col-md-6">
-               		<input class="form-control invoiceno" id="invoiceno" name="invoiceno" type="text" data-error="Please Enter Invoice No" aria-describedby="InvoiceNo" placeholder="Enter Invoice No" value="">
-               	</div>
-               	<div class="col-md-3">
-               		<button type="button" class="btn btn-primary remove_partno">Remove</button>
-               	</div>
-           	</div>
-       	</div>
-       	<hr>
+	   
+	   	<div class="clone_form"></div>
+	        
+	    <button type="button" class="btn btn-primary" onclick="addmorepartno();">Add More</button>
     </div>
-   
-   	<div class="clone_form"></div>
-        
-    <button type="button" class="btn btn-primary" onclick="addmorepartno();">Add More</button>
 </html>

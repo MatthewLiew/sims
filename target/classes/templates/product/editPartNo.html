@@ -5,119 +5,116 @@
 	</head>
 
 	<p class="error" style="color: red;" th:text="${errorString}" ></p>
-	<input type="hidden" name="partnoid" th:value="${partno.partnoid}" />
- 	<input type="hidden" name="referer" th:value="${referer}" />
-	
-	<div class="form-group">
-       	<div class="form-row">
-           	<div class="col-md-3">
-               	<label for="ProductLabel">Product</label>
-           	</div>
-           	<div class="col-md-6">
-           		<input type="hidden" name="productid" th:value="${partno.productid}" />
-                <span th:text=${product.productname}></span>
-           		<!-- <select class="form-control" name="productid" required>
-	            	<option value="">Select Product</option>
-	            	<option th:each="list: ${products}" th:selected="${list.isProduct(index)}" th:value="${list.productid}" th:text="${list.productname}"></option>
-        		</select> -->
-           	</div>
-   		</div>
-   	</div>
-    
-<!--     <div class="form-group"> -->
-<!--         <div class="form-row"> -->
-<!--             <div class="col-md-3"> -->
-<!--                 <label for="MainLocationLabel">Main Location</label> -->
-<!--             </div> -->
-<!--             <div class="col-md-6"> -->
-<!-- 	            <select class="form-control" name="mainlocid" required onchange="subloc_select('EditPartNo',this.value);"> -->
-<!-- 		            <option value="">Select Main Location</option> -->
-<!-- 		            <option th:each="list: ${mainlocs}" th:selected="${list.isMainLocName(partno.mainlocid)}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option> -->
-<!-- 	       		</select> -->
-<!--             </div> -->
-<!--         </div> -->
-<!--     </div> -->
+ 	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
+	<div th:object="${partno}">
+		<input type="hidden" name="partnoid" th:field="*{partnoid}" th:value="${partno.partnoid}" />
+		<input type="hidden" th:field="*{mainlocid}" />
+		<input type="hidden" th:field="*{sublocid}" />
+		<div class="form-group">
+	       	<div class="form-row">
+	           	<div class="col-md-3">
+	               	<label for="ProductLabel">Product</label>
+	           	</div>
+	           	<div class="col-md-6">
+	           		<input type="hidden" name="productid" th:value="${partno.productid}" />
+	                <span th:text=${product.productname}></span>
+	           	</div>
+	   		</div>
+	   	</div>
 	    
-<!-- 	<div class="form-group"> -->
-<!--         <div class="form-row"> -->
-<!--             <div class="col-md-3"> -->
-<!--                 <label for="SubLocationLabel">Sub Location</label> -->
-<!--             </div> -->
-<!--             <div class="col-md-6">                     -->
-<!-- 	            <select class="form-control subloc_select" name="sublocid" required> -->
-<!-- 	            	<option value="">Select Sub Location</option> -->
-<!-- 	            	<option th:each="list: ${sublocs}" th:selected="${list.isSubLocName(partno.sublocid)}" th:value="${list.sublocid}" th:text="${list.sublocname}"></option> -->
-<!-- 	        	</select> -->
-<!--             </div> -->
-<!--          </div> -->
-<!--      </div> -->
-     
-     <div class="form-group">
-         <div class="form-row">
-             <div class="col-md-3">
-                 <label for="SerialNoLabel">Serial No</label>
-             </div>
-             <div class="col-md-6">
-             	<input class="form-control serialno" id="serialno" name="serialno" type="text" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Enter Serial No" th:value="${partno.serialno}" onkeyup="partnoSerialNo('EditPartNo');" required>
-            </div>
-            <div class="col-md-3">
-            	<span class="serialno_status"></span>
-                <span style="visibility:hidden;"class="serialno_flag" th:text="true"></span>
-            </div>
-         </div>
-     </div>
-        
-     <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="ModelNoLabel">Model No</label>
-            </div>
-            <div class="col-md-6">
-            	<input class="form-control modelno" id="modelno" name="modelno" type="text" data-error="Please Ener Model No" aria-describedby="ModelNo" placeholder="Enter Model No" th:value="${partno.modelno}">
-            </div>
-            <div class="col-md-3">
-            </div>
-        </div>
-   	 </div>
-        
-     <div class="form-group">
-         <div class="form-row">
-            <div class="col-md-3">
-                <label for="UPCCodeLabel">UPC Code</label>
-            </div>
-            <div class="col-md-6">
-            	<input class="form-control upccode" id="upccode" name="upccode" type="text" data-error="Please Ener UPC Code" aria-describedby="UPCCode" placeholder="Enter UPC Code" th:value="${partno.upccode}">
-            </div>
-            <div class="col-md-3">
-            </div>
-         </div>
-     </div>
-        
-     <div class="form-group">
-         <div class="form-row">
-            <div class="col-md-3">
-                <label for="CustomerNameLabel">Customer Name</label>
-            </div>
-            <div class="col-md-6"> 
-            	<input class="form-control customername" id="customername" name="customername" type="text" data-error="Please Ener Customer Name" aria-describedby="CustomerName" placeholder="Enter Customer Name" th:value="${partno.customername}">
-            </div>
-            <div class="col-md-3">
-            </div>
-        </div>
-    </div>
-        
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="InvoiceNoLabel">Invoice No</label>
-            </div>
-            <div class="col-md-6">
-            	<input class="form-control invoiceno" id="invoiceno" name="invoiceno" type="text" data-error="Please Ener Invoice No" aria-describedby="InvoiceNo" placeholder="Enter Invoice No" th:value="${partno.invoiceno}">
-            </div>
-            <div class="col-md-3">
-<!--                 	<span class="productname_status"></span> -->
-<!--                     <span style="visibility:hidden;"class="productname_flag" th:text="true"></span> -->
-            </div>
-        </div>
+	<!--     <div class="form-group"> -->
+	<!--         <div class="form-row"> -->
+	<!--             <div class="col-md-3"> -->
+	<!--                 <label for="MainLocationLabel">Main Location</label> -->
+	<!--             </div> -->
+	<!--             <div class="col-md-6"> -->
+	<!-- 	            <select class="form-control" name="mainlocid" required onchange="subloc_select('EditPartNo',this.value);"> -->
+	<!-- 		            <option value="">Select Main Location</option> -->
+	<!-- 		            <option th:each="list: ${mainlocs}" th:selected="${list.isMainLocName(partno.mainlocid)}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option> -->
+	<!-- 	       		</select> -->
+	<!--             </div> -->
+	<!--         </div> -->
+	<!--     </div> -->
+		    
+	<!-- 	<div class="form-group"> -->
+	<!--         <div class="form-row"> -->
+	<!--             <div class="col-md-3"> -->
+	<!--                 <label for="SubLocationLabel">Sub Location</label> -->
+	<!--             </div> -->
+	<!--             <div class="col-md-6">                     -->
+	<!-- 	            <select class="form-control subloc_select" name="sublocid" required> -->
+	<!-- 	            	<option value="">Select Sub Location</option> -->
+	<!-- 	            	<option th:each="list: ${sublocs}" th:selected="${list.isSubLocName(partno.sublocid)}" th:value="${list.sublocid}" th:text="${list.sublocname}"></option> -->
+	<!-- 	        	</select> -->
+	<!--             </div> -->
+	<!--          </div> -->
+	<!--      </div> -->
+	     
+	     <div class="form-group">
+	         <div class="form-row">
+	             <div class="col-md-3">
+	                 <label for="SerialNoLabel">Serial No</label>
+	             </div>
+	             <div class="col-md-6">
+	             	<input class="form-control serialno" id="serialno" name="serialno" type="text" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Enter Serial No" th:field="*{serialno}" th:value="${partno.serialno}" onkeyup="partnoSerialNo('EditPartNo');" required>
+	            </div>
+	            <div class="col-md-3">
+	            	<span class="serialno_status"></span>
+	                <span style="visibility:hidden;"class="serialno_flag" th:text="true"></span>
+	            </div>
+	         </div>
+	     </div>
+	        
+	     <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="ModelNoLabel">Model No</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<input class="form-control modelno" id="modelno" name="modelno" type="text" data-error="Please Enter Model No" aria-describedby="ModelNo" placeholder="Enter Model No" th:field="*{modelno}" th:value="${partno.modelno}">
+	            </div>
+	            <div class="col-md-3">
+	            </div>
+	        </div>
+	   	 </div>
+	        
+	     <div class="form-group">
+	         <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="UPCCodeLabel">UPC Code</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<input class="form-control upccode" id="upccode" name="upccode" type="text" data-error="Please Enter UPC Code" aria-describedby="UPCCode" placeholder="Enter UPC Code" th:field="*{upccode}" th:value="${partno.upccode}">
+	            </div>
+	            <div class="col-md-3">
+	            </div>
+	         </div>
+	     </div>
+	        
+	     <div class="form-group">
+	         <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="CustomerNameLabel">Customer Name</label>
+	            </div>
+	            <div class="col-md-6"> 
+	            	<input class="form-control customername" id="customername" name="customername" type="text" data-error="Please Enter Customer Name" aria-describedby="CustomerName" placeholder="Enter Customer Name" th:field="*{customername}" th:value="${partno.customername}">
+	            </div>
+	            <div class="col-md-3">
+	            </div>
+	        </div>
+	    </div>
+	        
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="InvoiceNoLabel">Invoice No</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<input class="form-control invoiceno" id="invoiceno" name="invoiceno" type="text" data-error="Please Ener Invoice No" aria-describedby="InvoiceNo" placeholder="Enter Invoice No" th:field="*{invoiceno}" th:value="${partno.invoiceno}">
+	            </div>
+	            <div class="col-md-3">
+	            </div>
+	        </div>
+	    </div>
     </div>
 </html>

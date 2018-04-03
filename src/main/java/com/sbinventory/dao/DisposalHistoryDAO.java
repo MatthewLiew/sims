@@ -91,15 +91,17 @@ public class DisposalHistoryDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public void deleteDisposalHistory(int disposalhistoryid){
+	public String deleteDisposalHistory(int disposalhistoryid){
 		String sql=DELETE_SQL+" where ID= ?";
 		Object[] params= new Object[] {disposalhistoryid};
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
+			return null;
 		}catch(EmptyResultDataAccessException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	public String approval(int disposalhistoryid, String approve ){

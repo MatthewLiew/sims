@@ -6,11 +6,11 @@ public class PartNo {
 	private String serialno;
 	private String modelno;
 	private String upccode;
-	private int productid;
+	private Integer productid;
 	private String customername;
 	private String invoiceno;
-	private int mainlocid;
-	private int sublocid;
+	private Integer mainlocid;
+	private Integer sublocid;
 	private String status;
 	
 	public PartNo() {}
@@ -61,11 +61,11 @@ public class PartNo {
 		this.upccode = upccode;
 	}
 	
-	public int getProductid() {
+	public Integer getProductid() {
 		return productid;
 	}
 
-	public void setProductid(int productid) {
+	public void setProductid(Integer productid) {
 		this.productid = productid;
 	}
 
@@ -85,19 +85,19 @@ public class PartNo {
 		this.invoiceno = invoiceno;
 	}
 	
-	public int getMainlocid() {
+	public Integer getMainlocid() {
 		return mainlocid;
 	}
 
-	public void setMainlocid(int mainlocid) {
+	public void setMainlocid(Integer mainlocid) {
 		this.mainlocid = mainlocid;
 	}
 
-	public int getSublocid() {
+	public Integer getSublocid() {
 		return sublocid;
 	}
 
-	public void setSublocid(int sublocid) {
+	public void setSublocid(Integer sublocid) {
 		this.sublocid = sublocid;
 	}
 

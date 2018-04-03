@@ -4,16 +4,19 @@
 		<meta charset="UTF-8">
    	</head>
 	
-	<input type="hidden" name="referer" th:value="${referer}" />
-	<input type="hidden" name="partnoid" th:value="${partno.partnoid}" />
+	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
 	
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-12">
-                Are you sure to Delete Following User ? <br/>
-                Serial No - <b><span th:text="${partno.serialno}"></span></b>
-            </div>
-        </div>
+	<div th:object="${partno}">
+		<input type="hidden" name="partnoid" th:field="*{partnoid}" th:value="${partno.partnoid}" />
+		<input type="hidden" th:field="*{serialno}" />
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-12">
+	                Are you sure to Delete Following Serial No ? <br/>
+	                Serial No - <b><span th:text="${partno.serialno}"></span></b>
+	            </div>
+	        </div>
+	    </div>
     </div>
            
 </html>

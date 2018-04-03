@@ -6,6 +6,8 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -28,7 +30,7 @@ public class StockHistoryDAO extends JdbcDaoSupport{
 		this.setDataSource(dataSource);
 	}
 	
-	public String createStockHistory(int productid, int mainlocid, int sublocid, int quantity, String historydate, String historytime, 
+	public String create(int productid, int mainlocid, int sublocid, int quantity, String historydate, String historytime, 
 			int stocktypeid, int reasonid, String remark, String logdatetime, String loguser, String approval) {
 		
 		Object[] params=new Object[]{productid, mainlocid, sublocid, quantity, historydate, historytime, stocktypeid, reasonid, remark, logdatetime, loguser, approval};
@@ -37,16 +39,63 @@ public class StockHistoryDAO extends JdbcDaoSupport{
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
 			return null;
-		}catch(EmptyResultDataAccessException e ) {
-			return e.getMessage();
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
 			
-		}catch(DataAccessException  e) {
-//			throw new DataAccessException("Something error", e);
+		} catch (DataAccessException e) {
 			return e.getMessage();
 		}
 	}
 	
-	public List<StockHistory> getAllStockHistory(){
+	public String update(int stockhistoryid, int productid, int quantity, String historydate, String historytime, int stocktypeid, int reasonid, String remark, int mainlocid, int sublocid ){
+		String sql=UPDATE_SQL+" set PRODUCT_ID = ?, QUANTITY = ?, HISTORY_DATE = ?, HISTORY_TIME = ?, STOCK_TYPE_ID = ?, REASON_ID = ?, REMARK = ?, MAIN_LOC_ID = ?, SUB_LOC_ID = ? where ID= ?";
+		Object[] params=new Object[]{productid, quantity, historydate, historytime, stocktypeid, reasonid, remark, mainlocid, sublocid, stockhistoryid};
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataAccessException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public String delete(int stockhistoryid){
+		String sql=DELETE_SQL+" where ID= ?";
+		Object[] params= new Object[] {stockhistoryid};
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityViolationException("Entity is tied. Please clear the parent.", e);
+			
+		} catch (DataAccessException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public String approval(int stockhistoryid, String approve ){
+		String sql=UPDATE_SQL+" set APPROVAL = ? where ID= ?";
+		Object[] params=new Object[]{approve, stockhistoryid};
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataAccessException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public List<StockHistory> findAll(){
 		
 		String sql=READ_SQL;
 		StockHistoryMapper mapper=new StockHistoryMapper();
@@ -59,7 +108,7 @@ public class StockHistoryDAO extends JdbcDaoSupport{
         }
 	}
 	
-	public List<StockHistory> getAllStockHistory(String startdate, String enddate, int stocktypeid, int reasonid){
+	public List<StockHistory> findAllByFilter(String startdate, String enddate, int stocktypeid, int reasonid){
 		Object[] params = null;
 		String sql=READ_SQL+ " where HISTORY_DATE >= ? AND HISTORY_DATE <= ?"; 
 		params=new Object[] {startdate, enddate};
@@ -84,7 +133,7 @@ public class StockHistoryDAO extends JdbcDaoSupport{
         }
 	}
 	
-	public StockHistory getStockHistory(int stockhistoryid){
+	public StockHistory findOne(int stockhistoryid){
 		
 		String sql=READ_SQL+" where ID = ?";
 		Object[] params=new Object[] {stockhistoryid};
@@ -112,44 +161,5 @@ public class StockHistoryDAO extends JdbcDaoSupport{
         }
 	}
 	
-	public String updateStockHistory(int stockhistoryid, int productid, int quantity, String historydate, String historytime, int stocktypeid, int reasonid, String remark, int mainlocid, int sublocid ){
-		String sql=UPDATE_SQL+" set PRODUCT_ID = ?, QUANTITY = ?, HISTORY_DATE = ?, HISTORY_TIME = ?, STOCK_TYPE_ID = ?, REASON_ID = ?, REMARK = ?, MAIN_LOC_ID = ?, SUB_LOC_ID = ? where ID= ?";
-		Object[] params=new Object[]{productid, quantity, historydate, historytime, stocktypeid, reasonid, remark, mainlocid, sublocid, stockhistoryid};
-		try {
-			int rows=this.getJdbcTemplate().update(sql, params);
-			System.out.println(rows + " row(s) updated.");
-			return null;
-		}catch(EmptyResultDataAccessException e) {
-			e.printStackTrace();
-			return e.getMessage();
-		}catch(DataAccessException  e) {
-			return e.getMessage();
-		}
-	}
 	
-	public void deleteStockHistory(int stockhistoryid){
-		String sql=DELETE_SQL+" where ID= ?";
-		Object[] params= new Object[] {stockhistoryid};
-		try {
-			int rows=this.getJdbcTemplate().update(sql, params);
-			System.out.println(rows + " row(s) updated.");
-		}catch(EmptyResultDataAccessException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public String approval(int stockhistoryid, String approve ){
-		String sql=UPDATE_SQL+" set APPROVAL = ? where ID= ?";
-		Object[] params=new Object[]{approve, stockhistoryid};
-		try {
-			int rows=this.getJdbcTemplate().update(sql, params);
-			System.out.println(rows + " row(s) updated.");
-			return null;
-		}catch(EmptyResultDataAccessException e) {
-			e.printStackTrace();
-			return e.getMessage();
-		}catch(DataAccessException  e) {
-			return e.getMessage();
-		}
-	}
 }

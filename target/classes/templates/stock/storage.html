@@ -7,6 +7,12 @@
 	<div class="header_ref" th:include="/header"></div>
 	<div class="content-wrapper">
     	<div class="container-fluid">
+    	
+    		<div th:if="${message!= null}" class="alert alert-info alert-dismissible">
+			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<span  th:text="${message}"></span>
+		  	</div>
+		  	
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		        <li class="breadcrumb-item">
@@ -153,6 +159,7 @@
             if (action == 'transfer') {
                 $('#TransferStock .modal-body').empty();
                 $('#TransferStock .modal-title').text("Stock Transfer");
+                $('#TransferStock #modal_error').hide();
                 $('#TransferStock .modal-body').load('transferStock', function () {
                     $('#TransferStock').modal({show: true});
                 });

@@ -4,18 +4,20 @@
 		<meta charset="UTF-8">
    	</head>
 	
-	<input type="hidden" name="referer" th:value="${referer}" />
-	<input type="hidden" name="transferhistoryid" th:value="${transferhistory.transferhistoryid}" />
+	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
 	
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-12">
-                Are you sure to Delete Following Transfer Transaction ? <br/>
-                Product - <b><span th:text="${product.productname}"></span></b>
-                										<br/>
-                Quantity - <b><span th:text="${transferhistory.quantity}"></span></b>
-            </div>
-        </div>
+	<div th:object="${transferhistory}">
+		<input type="hidden" name="transferhistoryid" th:field="*{transferhistoryid}" th:value="${transferhistory.transferhistoryid}" />
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-12">
+	                Are you sure to Delete Following Transfer Transaction ? <br/>
+	                Product - <b><span th:text="${product.productname}"></span></b>
+	                										<br/>
+	                Quantity - <b><span th:text="${transferhistory.quantity}"></span></b>
+	            </div>
+	        </div>
+	    </div>
     </div>
            
 </html>

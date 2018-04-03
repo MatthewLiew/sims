@@ -7,10 +7,16 @@
 	<div class="header_ref" th:include="/header"></div>
 	<div class="content-wrapper">
     	<div class="container-fluid">
+    		
+    		<div th:if="${message!= null}" class="alert alert-info alert-dismissible">
+			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<span  th:text="${message}"></span>
+		  	</div>
+		  	
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		        <li class="breadcrumb-item">
-		          <!-- <a th:href="''#"> -->ITF<!-- </a> -->
+		          <!-- <a th:href="''#"> -->Asset Requisition<!-- </a> -->
 		        </li>
 		        <li class="breadcrumb-item active">Asset Requisition Records</li>
 	      	</ol>  
@@ -161,12 +167,14 @@
             if (action == 'new') {
                 $('#CreateAssetReqs .modal-body').empty();
                 $('#CreateAssetReqs .modal-title').text("Add Asset Requisition");
+                $('#CreateAssetReqs #modal_error').hide();
                 $('#CreateAssetReqs .modal-body').load('createAssetReqs', function () {
                     $('#CreateAssetReqs').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditAssetReqs .modal-body').empty();
                 $('#EditAssetReqs .modal-title').text("Edit Asset Requisition History");
+                $('#EditAssetReqs #modal_error').hide();
                 $('#EditAssetReqs .modal-body').load('editAssetReqs?assetreqsid=' + id, function () {
                     $('#EditAssetReqs').modal({show: true});
                 });

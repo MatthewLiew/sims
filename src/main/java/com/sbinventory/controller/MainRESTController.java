@@ -284,12 +284,8 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkModelNo")
 	public Response getModelNoResponse(@RequestBody PartNo partno ) {
-		PartNo result;
-		if(partno.getPartnoid()==0) {
-			result= partNoDAO.getModelNo(partno.getModelno());
-		} else {
-			result= partNoDAO.getModelNo(partno.getModelno(), partno.getPartnoid());
-		}
+		PartNo result= partNoDAO.getModelNo(partno.getModelno(), partno.getPartnoid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -303,12 +299,8 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkSerialNo")
 	public Response getSerialNoResponse(@RequestBody PartNo partno ) {
-		PartNo result;
-		if(partno.getPartnoid()==0) {
-			result = partNoDAO.getSerialNo(partno.getSerialno());
-		} else {
-			result = partNoDAO.getSerialNo(partno.getSerialno(), partno.getPartnoid());
-		}
+		PartNo result = partNoDAO.getSerialNo(partno.getSerialno(), partno.getPartnoid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -321,12 +313,8 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkUpcCode")
 	public Response getUpcCodeResponse(@RequestBody PartNo partno ) {
-		PartNo result;
-		if(partno.getPartnoid()==0) {
-			result= partNoDAO.getUpcCode(partno.getUpccode());
-		} else {
-			result= partNoDAO.getUpcCode(partno.getUpccode(), partno.getPartnoid());
-		}
+		PartNo result= partNoDAO.getUpcCode(partno.getUpccode(), partno.getPartnoid());
+		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -434,7 +422,7 @@ public class MainRESTController {
 		Product productd = productDAO.findOne(product.getProductid());
 //		System.out.println(productd.getQuantity());
 		
-		List<PartNo> partnos = partNoDAO.getAllProductID(product.getProductid());
+		List<PartNo> partnos = partNoDAO.findAllByProductid(product.getProductid());
 //		System.out.println(partnos.size());
 //		List<SubLoc> sublocs=subLocDAO.getAllSubLoc(subloc.getMainlocid());
 		int amount = (productd.getQuantity())-(partnos.size());

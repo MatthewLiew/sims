@@ -7,17 +7,22 @@
 	<div class="header_ref" th:include="/header"></div>
 	<div class="content-wrapper">
     	<div class="container-fluid">
+    	
+    		<div th:if="${message!= null}" class="alert alert-info alert-dismissible">
+			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<span  th:text="${message}"></span>
+		  	</div>
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		        <li class="breadcrumb-item">
-		          <!-- <a th:href="''#"> -->Diposal<!-- </a> -->
+		          <!-- <a th:href="''#"> -->Disposal<!-- </a> -->
 		        </li>
-		        <li class="breadcrumb-item active">Diposal Records</li>
+		        <li class="breadcrumb-item active">Disposal Records</li>
 	      	</ol>  
 		    
 	     	<div class="card mb-3">
       			<div class="card-header">
-      				<i class="fa fa-table"></i> Diposal History &nbsp;&nbsp;
+      				<i class="fa fa-table"></i> Disposal History &nbsp;&nbsp;
       				<a onclick="doAction('dispose', 0);">
       					<button class="btn btn-primary" data-toggle="modal" >Dispose Stock</button>
 	      			</a>
@@ -161,12 +166,14 @@
             if (action == 'dispose') {
                 $('#DisposeStock .modal-body').empty();
                 $('#DisposeStock .modal-title').text("Stock Disposal");
+                $('#DisposeStock #modal_error').hide();
                 $('#DisposeStock .modal-body').load('disposeStock', function () {
                     $('#DisposeStock').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditDisposalHistory .modal-body').empty();
                 $('#EditDisposalHistory .modal-title').text("Edit Disposal History");
+                $('#EditDisposalHistory #modal_error').hide();
                 $('#EditDisposalHistory .modal-body').load('editDisposalHistory?disposalhistoryid=' + id, function () {
                     $('#EditDisposalHistory').modal({show: true});
                 });

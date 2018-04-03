@@ -5,10 +5,10 @@ public class DisposalHistory {
 	private int disposalhistoryid;
 	private String loguser;
 	private String logdatetime;
-	private int productid;
-	private int quantity;
-	private int mainlocid;
-	private int sublocid;
+	private Integer productid;
+	private Integer quantity;
+	private Integer mainlocid;
+	private Integer sublocid;
 	private String approval;
 	
 	public DisposalHistory() {}
@@ -50,35 +50,35 @@ public class DisposalHistory {
 		this.logdatetime = logdatetime;
 	}
 
-	public int getProductid() {
+	public Integer getProductid() {
 		return productid;
 	}
 
-	public void setProductid(int productid) {
+	public void setProductid(Integer productid) {
 		this.productid = productid;
 	}
 
-	public int getQuantity() {
+	public Integer getQuantity() {
 		return quantity;
 	}
 
-	public void setQuantity(int quantity) {
+	public void setQuantity(Integer quantity) {
 		this.quantity = quantity;
 	}
 
-	public int getMainlocid() {
+	public Integer getMainlocid() {
 		return mainlocid;
 	}
 
-	public void setMainlocid(int mainlocid) {
+	public void setMainlocid(Integer mainlocid) {
 		this.mainlocid = mainlocid;
 	}
 
-	public int getSublocid() {
+	public Integer getSublocid() {
 		return sublocid;
 	}
 
-	public void setSublocid(int sublocid) {
+	public void setSublocid(Integer sublocid) {
 		this.sublocid = sublocid;
 	}
 

@@ -7,6 +7,12 @@
 	<div class="header_ref" th:include="/header"></div>
 	<div class="content-wrapper">
     	<div class="container-fluid">
+    		
+    		<div th:if="${message!= null}" class="alert alert-info alert-dismissible">
+			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<span  th:text="${message}"></span>
+		  	</div>
+		  	
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		        <li class="breadcrumb-item">
@@ -161,12 +167,14 @@
             if (action == 'new') {
                 $('#CreateITF .modal-body').empty();
                 $('#CreateITF .modal-title').text("Add ITF");
+                $('#CreateITF #modal_error').hide();
                 $('#CreateITF .modal-body').load('createITF', function () {
                     $('#CreateITF').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditITF .modal-body').empty();
                 $('#EditITF .modal-title').text("Edit ITF History");
+                $('#EditITF #modal_error').hide();
                 $('#EditITF .modal-body').load('editITF?itfid=' + id, function () {
                     $('#EditITF').modal({show: true});
                 });

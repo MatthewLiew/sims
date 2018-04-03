@@ -4,18 +4,20 @@
 		<meta charset="UTF-8">
    	</head>
 	
-	<input type="hidden" name="referer" th:value="${referer}" />
-	<input type="hidden" name="assetreqsid" th:value="${assetreq.assetreqsid}" />
+	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
 	
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-12">
-                Are you sure to Delete Following Asset Requisition Transaction ? <br/>
-                Product - <b><span th:text="${product.productname}"></span></b>
-                										<br/>
-                Quantity - <b><span th:text="${assetreq.quantity}"></span></b>
-            </div>
-        </div>
+	<div th:object="${assetreq}">
+		<input type="hidden" name="assetreqsid" th:field="*{assetreqsid}" th:value="${assetreq.assetreqsid}" />
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-12">
+	                Are you sure to Delete Following Asset Requisition Transaction ? <br/>
+	                Product - <b><span th:text="${product.productname}"></span></b>
+	                										<br/>
+	                Quantity - <b><span th:text="${assetreq.quantity}"></span></b>
+	            </div>
+	        </div>
+	    </div>
     </div>
            
 </html>

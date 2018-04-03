@@ -4,18 +4,21 @@
 		<meta charset="UTF-8">
    	</head>
 	
-	<input type="hidden" name="referer" th:value="${referer}" />
-	<input type="hidden" name="stockhistoryid" th:value="${stockhistory.stockhistoryid}" />
+	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
 	
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-12">
-                Are you sure to Delete Following Stock Transaction ? <br/>
-                Product - <b><span th:text="${product.productname}"></span></b>
-                										<br/>
-                Quantity - <b><span th:text="${stockhistory.quantity}"></span></b>
-            </div>
-        </div>
+	
+	<div th:object="${stockhistory}">
+		<input type="hidden" name="stockhistoryid" th:field="*{stockhistoryid}" th:value="${stockhistory.stockhistoryid}" />
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-12">
+	                Are you sure to Delete Following Stock Transaction ? <br/>
+	                Product - <b><span th:text="${product.productname}"></span></b>
+	                										<br/>
+	                Quantity - <b><span th:text="${stockhistory.quantity}"></span></b>
+	            </div>
+	        </div>
+	    </div>
     </div>
            
 </html>

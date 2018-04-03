@@ -7,6 +7,12 @@
 	<div class="header_ref" th:include="/header"></div>
 	<div class="content-wrapper">
     	<div class="container-fluid">
+    		
+    		<div th:if="${message!= null}" class="alert alert-info alert-dismissible">
+			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<span  th:text="${message}"></span>
+		  	</div>
+		  	
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		        <li class="breadcrumb-item">
@@ -232,12 +238,14 @@
             if (action == 'in') {
                 $('#StockIn .modal-body').empty();
                 $('#StockIn .modal-title').text("Stock In");
+                $('#StockIn #modal_error').hide();
                 $('#StockIn .modal-body').load('stockIn?stocktypeid=1', function () {
                     $('#StockIn').modal({show: true});
                 });
             } else if (action == 'out') {
                 $('#StockOut .modal-body').empty();
                 $('#StockOut .modal-title').text("Stock Out");
+                $('#StockOut #modal_error').hide();
                 $('#StockOut .modal-body').load('stockOut?stocktypeid=2', function () {
                     $('#StockOut').modal({show: true});
                 });
@@ -245,6 +253,7 @@
             	console.log("change");
                 $('#EditStockHistory .modal-body').empty();
                 $('#EditStockHistory .modal-title').text("Edit Stock Transaction");
+                $('#EditStockHistory #modal_error').hide();
                 $('#EditStockHistory .modal-body').load('editStockHistory?stockhistoryid=' + id, function () {
                     $('#EditStockHistory').modal({show: true});
                 });

@@ -5,63 +5,64 @@
    	</head>
    	
 	<p class="error" style="color: red;" th:text="${errorString}" ></p>
-	<input type="hidden" name="assetreqsid" th:value="${assetreq.assetreqsid}" />
-	<input type="hidden" name="referer" th:value="${referer}" />
-      
-	<div class="form-group">
-    	<div class="form-row">
-        	<div class="col-md-3">
-            	<label for="StockTypeLabel">Product</label>
-            </div>
-            <div class="col-md-6">
-            	<select class="form-control" name="productid" required>
-           			<option value="">Select Product</option>
-           			<option th:each="elem: ${products}" th:selected="${elem.isProduct(assetreq.productid)}" th:value="${elem.productid}" th:text="${elem.productname}"></option>
-       			</select>
-            </div>
-        </div>
-    </div>
+	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
     
-    <div class="form-group">
-    	<div class="form-row">
-        	<div class="col-md-3">
-            	<label for="ReasonLabel">Quantity</label>
-            </div>
-            <div class="col-md-6">
-           		<input class="form-control quantity" id="quantity" name="quantity" type="text" data-error="Please Enter Quantity" aria-describedby="Quantity" placeholder="Enter Quantity" th:value="${assetreq.quantity}" required>
-       	 	</div>
-            <div class="col-md-3">
-            </div>
-        </div>
+    <div th:object="${assetreq}">
+	    <input type="hidden" name="assetreqsid" th:value="${assetreq.assetreqsid}" />  
+		<div class="form-group">
+	    	<div class="form-row">
+	        	<div class="col-md-3">
+	            	<label for="StockTypeLabel">Product</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<select class="form-control" name="productid" th:field="*{productid}" required>
+	           			<option value="">Select Product</option>
+	           			<option th:each="elem: ${products}" th:selected="${elem.isProduct(assetreq.productid)}" th:value="${elem.productid}" th:text="${elem.productname}"></option>
+	       			</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	    	<div class="form-row">
+	        	<div class="col-md-3">
+	            	<label for="ReasonLabel">Quantity</label>
+	            </div>
+	            <div class="col-md-6">
+	           		<input class="form-control quantity" id="quantity" name="quantity" type="text" data-error="Please Enter Quantity" aria-describedby="Quantity" placeholder="Enter Quantity" th:field="*{quantity}" th:value="${assetreq.quantity}" required>
+	       	 	</div>
+	            <div class="col-md-3">
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	    	<div class="form-row">
+	        	<div class="col-md-3">
+	            	<label for="StockTypeLabel">Main Location</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<select class="form-control" name="mainlocid" th:field="*{mainlocid}" onchange="subloc_select('EditAssetReqs',this.value);" required>
+	           			<option value="">Select Main Location</option>
+	           			<option th:each="elem: ${mainlocs}" th:selected="${elem.isMainLocName(assetreq.mainlocid)}" th:value="${elem.mainlocid}" th:text="${elem.mainlocname}">
+	           			</option>
+	       			</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	    	<div class="form-row">
+	        	<div class="col-md-3">
+	            	<label for="StockTypeLabel">Sub Location</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<select class="form-control subloc_select" name="sublocid" th:field="*{sublocid}">
+	           			<option value="">Select Sub Location</option>
+	           			<option th:each="elem: ${sublocs}" th:selected="${elem.isSubLocName(assetreq.sublocid)}" th:value="${elem.sublocid}" th:text="${elem.sublocname}">
+	       			</select>
+	            </div>
+	        </div>
+	    </div>
     </div>
-    
-    <div class="form-group">
-    	<div class="form-row">
-        	<div class="col-md-3">
-            	<label for="StockTypeLabel">Main Location</label>
-            </div>
-            <div class="col-md-6">
-            	<select class="form-control" name="mainlocid" onchange="subloc_select('EditAssetReqs',this.value);" required>
-           			<option value="">Select Main Location</option>
-           			<option th:each="elem: ${mainlocs}" th:selected="${elem.isMainLocName(assetreq.mainlocid)}" th:value="${elem.mainlocid}" th:text="${elem.mainlocname}">
-           			</option>
-       			</select>
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-group">
-    	<div class="form-row">
-        	<div class="col-md-3">
-            	<label for="StockTypeLabel">Sub Location</label>
-            </div>
-            <div class="col-md-6">
-            	<select class="form-control subloc_select" name="sublocid">
-           			<option value="">Select Sub Location</option>
-           			<option th:each="elem: ${sublocs}" th:selected="${elem.isSubLocName(assetreq.sublocid)}" th:value="${elem.sublocid}" th:text="${elem.sublocname}">
-       			</select>
-            </div>
-        </div>
-    </div>
-        
 </html>

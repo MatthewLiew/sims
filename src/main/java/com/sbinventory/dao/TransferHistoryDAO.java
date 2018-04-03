@@ -6,6 +6,7 @@ import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
@@ -31,7 +32,7 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
 		this.setDataSource(dataSource);
 	}
 	
-	public String createTransferHistory(String loguser, String logdatetime, int productid, int quantity, int orimainlocid, int orisublocid, 
+	public String create(String loguser, String logdatetime, int productid, int quantity, int orimainlocid, int orisublocid, 
 			int desmainlocid, int dessublocid, String approval) {
 
 		Object[] params=new Object[]{loguser, logdatetime, productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid, approval};
@@ -42,16 +43,48 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
 			return null;
-		}catch(EmptyResultDataAccessException e ) {
-			return e.getMessage();
-
-		}catch(DataAccessException  e) {
-			//throw new DataAccessException("Something error", e);
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataAccessException e) {
 			return e.getMessage();
 		}
 	}
 	
-	public List<TransferHistory> getAllTransferHistory(){
+	public String update(int transferhistoryid, int productid, int orimainlocid, int orisublocid, int desmainlocid, int dessublocid, int quantity ){
+		String sql=UPDATE_SQL+" set PRODUCT_ID = ?, ORI_MAIN_LOC = ?, ORI_SUB_LOC = ?, DES_MAIN_LOC = ?, DES_SUB_LOC = ?, QUANTITY = ? where ID= ?";
+		Object[] params=new Object[]{productid, orimainlocid, orisublocid, desmainlocid, dessublocid, quantity, transferhistoryid};
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataAccessException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public String delete(int transferhistoryid){
+		String sql=DELETE_SQL+" where ID= ?";
+		Object[] params= new Object[] {transferhistoryid};
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataIntegrityViolationException e) {
+			throw new DataIntegrityViolationException("Entity is tied. Please clear the parent.", e);
+			
+		} catch (DataAccessException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public List<TransferHistory> findAll(){
 		
 		String sql=READ_SQL;
 		TransferHistoryMapper mapper=new TransferHistoryMapper();
@@ -64,7 +97,7 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
         }
 	}
 	
-	public TransferHistory getTransferHistory(int transferhistoryid){
+	public TransferHistory findOne(int transferhistoryid){
 		
 		String sql=READ_SQL+" where ID = ?";
 		Object[] params=new Object[] {transferhistoryid};
@@ -76,32 +109,6 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
-	}
-	
-	public String updateTransferHistory(int transferhistoryid, int productid, int orimainlocid, int orisublocid, int desmainlocid, int dessublocid, int quantity ){
-		String sql=UPDATE_SQL+" set PRODUCT_ID = ?, ORI_MAIN_LOC = ?, ORI_SUB_LOC = ?, DES_MAIN_LOC = ?, DES_SUB_LOC = ?, QUANTITY = ? where ID= ?";
-		Object[] params=new Object[]{productid, orimainlocid, orisublocid, desmainlocid, dessublocid, quantity, transferhistoryid};
-		try {
-			int rows=this.getJdbcTemplate().update(sql, params);
-			System.out.println(rows + " row(s) updated.");
-			return null;
-		}catch(EmptyResultDataAccessException e) {
-			e.printStackTrace();
-			return e.getMessage();
-		}catch(DataAccessException  e) {
-			return e.getMessage();
-		}
-	}
-	
-	public void deleteStockHistory(int transferhistoryid){
-		String sql=DELETE_SQL+" where ID= ?";
-		Object[] params= new Object[] {transferhistoryid};
-		try {
-			int rows=this.getJdbcTemplate().update(sql, params);
-			System.out.println(rows + " row(s) updated.");
-		}catch(EmptyResultDataAccessException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public String approval(int transferhistoryid, String approve ){

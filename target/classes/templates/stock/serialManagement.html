@@ -7,6 +7,12 @@
 	<div class="header_ref" th:include="/header"></div>
 	<div class="content-wrapper">
     	<div class="container-fluid">
+    	
+    		<div th:if="${message!= null}" class="alert alert-info alert-dismissible">
+			    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<span  th:text="${message}"></span>
+		  	</div>
+		  	
 	   		<!-- Breadcrumbs -->
 	    	<ol class="breadcrumb">
 		        <li class="breadcrumb-item">
@@ -210,12 +216,14 @@
             if (action == 'new') {
                 $('#CreatePartNo .modal-body').empty();
                 $('#CreatePartNo .modal-title').text("Add Serial No");
+                $('#CreatePartNo #modal_error').hide();
                 $('#CreatePartNo .modal-body').load('createPartNo', function () {
                     $('#CreatePartNo').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditPartNo .modal-body').empty();
                 $('#EditPartNo .modal-title').text("Edit Serial No");
+                $('#EditPartNo #modal_error').hide();
                 $('#EditPartNo .modal-body').load('editPartNo?partnoid=' + id, function () {
                     $('#EditPartNo').modal({show: true});
                 });

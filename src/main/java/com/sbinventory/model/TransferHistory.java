@@ -5,12 +5,12 @@ public class TransferHistory {
 	private int transferhistoryid;
 	private String loguser;
 	private String logdatetime;
-	private int productid;
+	private Integer productid;
 	private int quantity;
-	private int orimainlocid;
-	private int orisublocid;
-	private int desmainlocid;
-	private int dessublocid;
+	private Integer orimainlocid;
+	private Integer orisublocid;
+	private Integer desmainlocid;
+	private Integer dessublocid;
 	private String approval;
 	
 	public TransferHistory () {}
@@ -54,11 +54,11 @@ public class TransferHistory {
 		this.logdatetime = logdatetime;
 	}
 
-	public int getProductid() {
+	public Integer getProductid() {
 		return productid;
 	}
 
-	public void setProductid(int productid) {
+	public void setProductid(Integer productid) {
 		this.productid = productid;
 	}
 
@@ -70,35 +70,35 @@ public class TransferHistory {
 		this.quantity = quantity;
 	}
 
-	public int getOrimainlocid() {
+	public Integer getOrimainlocid() {
 		return orimainlocid;
 	}
 
-	public void setOrimainlocid(int orimainlocid) {
+	public void setOrimainlocid(Integer orimainlocid) {
 		this.orimainlocid = orimainlocid;
 	}
 
-	public int getOrisublocid() {
+	public Integer getOrisublocid() {
 		return orisublocid;
 	}
 
-	public void setOrisublocid(int orisublocid) {
+	public void setOrisublocid(Integer orisublocid) {
 		this.orisublocid = orisublocid;
 	}
 
-	public int getDesmainlocid() {
+	public Integer getDesmainlocid() {
 		return desmainlocid;
 	}
 
-	public void setDesmainlocid(int desmainlocid) {
+	public void setDesmainlocid(Integer desmainlocid) {
 		this.desmainlocid = desmainlocid;
 	}
 
-	public int getDessublocid() {
+	public Integer getDessublocid() {
 		return dessublocid;
 	}
 
-	public void setDessublocid(int dessublocid) {
+	public void setDessublocid(Integer dessublocid) {
 		this.dessublocid = dessublocid;
 	}
 

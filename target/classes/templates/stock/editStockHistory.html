@@ -5,128 +5,130 @@
     </head>
 		
 	<p class="error" style="color: red;" th:text="${errorString}" ></p>
-   	<input type="hidden" name="stockhistoryid" th:value="${stockhistory.stockhistoryid}" />
-  	<input type="hidden" name="referer" th:value="${referer}" />
+  	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
 
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="ProductLabel">Product</label>
-            </div>
-            <div class="col-md-6">
-	            <select class="form-control" name="productid" required>
-		           	<option value="">Select Product</option>
-		           	<option th:each="list: ${products}" th:selected="${list.isProduct(stockhistory.productid)}" th:value="${list.productid}" th:text="${list.productname}"></option>
-	       		</select>
-            </div>
-        </div>
-	</div>
-        
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="QuantityLabel">Quantity</label>
-            </div>
-            <div class="col-md-6">
-            	<input class="form-control quantity" id="quantity" name="quantity" type="text" data-error="Please Enter Quantity" aria-describedby="Quantity" placeholder="Enter Quantity" th:value="${stockhistory.quantity}" required>
-            </div>
-            <div class="col-md-3">
-            </div>
-        </div>
-    </div>
-        
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="StockTypeLabel">Stock Type</label>
-            </div>
-            <div class="col-md-6">
-            	<select class="form-control" name="stocktypeid" required>
-	            	<option value="">Select StockType</option>
-		            <option th:each="list: ${stocktypes}" th:selected="${list.isStockType(stockhistory.stocktypeid)}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option>
-      			</select>
-            </div>
-        </div>
-    </div>
-        
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="DateLabel">Date</label>
-            </div>
-            <div class="col-md-6">
-            	<input class="form-control date" id="date" name="date" type="date" data-error="Please Enter Date" aria-describedby="Date" placeholder="Enter Date" th:value="${stockhistory.historydate}" required>
-            </div>
-            <div class="col-md-3">
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="TimeLabel">Time</label>
-            </div>
-            <div class="col-md-6">
-            	<input class="form-control time" id="time" name="time" type="time" data-error="Please Enter Time" aria-describedby="Time" placeholder="Enter Time" th:value="${stockhistory.historytime}" required>
-            </div>
-            <div class="col-md-3">
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="MainLocationLabel">Main Location</label>
-            </div>
-            <div class="col-md-6">
-	            <select class="form-control" name="mainlocid" required onchange="subloc_select('EditStockHistory',this.value);">
-		            <option value="">Select Main Location</option>
-		            <option th:each="list: ${mainlocs}" th:selected="${list.isMainLocName(stockhistory.mainlocid)}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option>
-	       		</select>
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="SubLocationLabel">Sub Location</label>
-            </div>
-            <div class="col-md-6">                    
-	            <select class="form-control subloc_select" name="sublocid" required>
-	            	<option value="">Select Sub Location</option>
-	            	<option th:each="list: ${sublocs}" th:selected="${list.isSubLocName(stockhistory.sublocid)}" th:value="${list.sublocid}" th:text="${list.sublocname}"></option>
-	        	</select>
-            </div>
-         </div>
-     </div>
-     
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="ReasonLabel">Reason</label>
-            </div>
-            <div class="col-md-6">
-	            <select class="form-control" name="reasonid" required>
-		            <option value="">Select Reason</option>
-		            <option th:each="list: ${reasons}" th:selected="${list.isReason(stockhistory.reasonid)}" th:value="${list.reasonid}" th:text="${list.reason}"></option>
-	       		</select>
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-group">
-        <div class="form-row">
-            <div class="col-md-3">
-                <label for="RemarkLabel">Remark</label>
-            </div>
-            <div class="col-md-6">
-            	<textarea class="form-control remark" id="remark" name="remark" rows="2" cols="50" data-error="Please Enter Remark" aria-describedby="Remark" placeholder="Remark" th:inline="text">[[${stockhistory.remark}]]</textarea>
-            </div>
-            <div class="col-md-3">
-            </div>
-        </div>
+	<div th:object="${sh}">
+		<input type="hidden" name="stockhistoryid" th:field="*{stockhistoryid}" th:value="${sh.stockhistoryid}" />
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="ProductLabel">Product</label>
+	            </div>
+	            <div class="col-md-6">
+		            <select class="form-control" name="productid" th:field="*{productid}" required>
+			           	<option value="">Select Product</option>
+			           	<option th:each="list: ${products}" th:selected="${list.isProduct(sh.productid)}" th:value="${list.productid}" th:text="${list.productname}"></option>
+		       		</select>
+	            </div>
+	        </div>
+		</div>
+	        
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="QuantityLabel">Quantity</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<input class="form-control quantity" id="quantity" name="quantity" type="text" data-error="Please Enter Quantity" aria-describedby="Quantity" placeholder="Enter Quantity" th:field="*{quantity}" th:value="${sh.quantity}" required>
+	            </div>
+	            <div class="col-md-3">
+	            </div>
+	        </div>
+	    </div>
+	        
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="StockTypeLabel">Stock Type</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<select class="form-control" name="stocktypeid" th:field="*{stocktypeid}" required>
+		            	<option value="">Select StockType</option>
+			            <option th:each="list: ${stocktypes}" th:selected="${list.isStockType(sh.stocktypeid)}" th:value="${list.stocktypeid}" th:text="${list.stocktype}"></option>
+	      			</select>
+	            </div>
+	        </div>
+	    </div>
+	        
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="DateLabel">Date</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<input class="form-control date" id="date" name="date" type="date" data-error="Please Enter Date" aria-describedby="Date" placeholder="Enter Date" th:field="*{historydate}" th:value="${sh.historydate}" required>
+	            </div>
+	            <div class="col-md-3">
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="TimeLabel">Time</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<input class="form-control time" id="time" name="time" type="time" data-error="Please Enter Time" aria-describedby="Time" placeholder="Enter Time" th:field="*{historytime}" th:value="${sh.historytime}" required>
+	            </div>
+	            <div class="col-md-3">
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="MainLocationLabel">Main Location</label>
+	            </div>
+	            <div class="col-md-6">
+		            <select class="form-control" name="mainlocid" required onchange="subloc_select('EditStockHistory',this.value);">
+			            <option value="">Select Main Location</option>
+			            <option th:each="list: ${mainlocs}" th:selected="${list.isMainLocName(sh.mainlocid)}" th:field="*{mainlocid}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option>
+		       		</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="SubLocationLabel">Sub Location</label>
+	            </div>
+	            <div class="col-md-6">                    
+		            <select class="form-control subloc_select" name="sublocid" required>
+		            	<option value="">Select Sub Location</option>
+		            	<option th:each="list: ${sublocs}" th:selected="${list.isSubLocName(sh.sublocid)}" th:field="*{sublocid}" th:value="${list.sublocid}" th:text="${list.sublocname}"></option>
+		        	</select>
+	            </div>
+	         </div>
+	     </div>
+	     
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="ReasonLabel">Reason</label>
+	            </div>
+	            <div class="col-md-6">
+		            <select class="form-control" name="reasonid" required>
+			            <option value="">Select Reason</option>
+			            <option th:each="list: ${reasons}" th:selected="${list.isReason(sh.reasonid)}" th:field="*{reasonid}" th:value="${list.reasonid}" th:text="${list.reason}"></option>
+		       		</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="RemarkLabel">Remark</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<textarea class="form-control remark" id="remark" name="remark" rows="2" cols="50" data-error="Please Enter Remark" aria-describedby="Remark" placeholder="Remark" th:field="*{remark}" th:inline="text">[[${sh.remark}]]</textarea>
+	            </div>
+	            <div class="col-md-3">
+	            </div>
+	        </div>
+	    </div>
     </div>
 </html>

@@ -4,18 +4,20 @@
 		<meta charset="UTF-8">
    	</head>
 	
-	<input type="hidden" name="referer" th:value="${referer}" />
-	<input type="hidden" name="disposalhistoryid" th:value="${disposalhistory.disposalhistoryid}" />
+	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
 	
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-12">
-                Are you sure to Delete Following Disposal Transaction ? <br/>
-                Product - <b><span th:text="${product.productname}"></span></b>
-                										<br/>
-                Quantity - <b><span th:text="${disposalhistory.quantity}"></span></b>
-            </div>
-        </div>
+	<div th:object="${disposalhistory}">
+		<input type="hidden" name="disposalhistoryid" th:value="${disposalhistory.disposalhistoryid}" />
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-12">
+	                Are you sure to Delete Following Disposal Transaction ? <br/>
+	                Product - <b><span th:text="${product.productname}"></span></b>
+	                										<br/>
+	                Quantity - <b><span th:text="${disposalhistory.quantity}"></span></b>
+	            </div>
+	        </div>
+	    </div>
     </div>
            
 </html>

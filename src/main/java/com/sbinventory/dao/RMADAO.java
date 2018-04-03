@@ -93,15 +93,17 @@ public class RMADAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public void deleteRMA(int rmaid){
+	public String deleteRMA(int rmaid){
 		String sql=DELETE_SQL+" where ID= ?";
 		Object[] params= new Object[] {rmaid};
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
+			return null;
 		}catch(EmptyResultDataAccessException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 	
 	public String approval(int rmaid, String approve ){

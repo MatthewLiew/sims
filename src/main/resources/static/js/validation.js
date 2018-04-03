@@ -36,9 +36,11 @@ function addmorepartno(){
 	clone.find(".autostockin").hide();
 	clone.find(".serialno").val("");
 	clone.find(".serialno_status").text("");
-//	clone.find(".get_csv").attr("id", count);
+	clone.find(".modelno").val("");
+	clone.find(".upccode").val("");
+	clone.find(".customername").val("");
+	clone.find(".invoiceno").val("");
 	clone.appendTo(".clone_form");
-//	cloneform.append(clone);
 	count++;
 	return false;
 }

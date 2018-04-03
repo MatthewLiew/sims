@@ -96,26 +96,23 @@ public class ProductController {
 		return "product/brand";
 	}
 	
-	@GetMapping(value= "/partno")
-	public String getPartNo(Model model) {
-//		List<Hardware> hardwares = hardwareDAO.getAllHardware();
-//		List<Brand> brands = brandDAO.getAllBrand();
-		List<PartNo> partnos = partNoDAO.getAllPartNo();
-		List<Product> products = productDAO.findAll();
-		
-//		model.addAttribute("hardwares",hardwares);
-//		model.addAttribute("brands",brands);
-		model.addAttribute("partnos",partnos);
-        model.addAttribute("products",products);
-        
-		return "product/partno";
-	}
+//	@GetMapping(value= "/partno")
+//	public String getPartNo(Model model) {
+//
+//		List<PartNo> partnos = partNoDAO.findAll();
+//		List<Product> products = productDAO.findAll();
+//		
+//		model.addAttribute("partnos",partnos);
+//        model.addAttribute("products",products);
+//        
+//		return "product/partno";
+//	}
 	
 	@GetMapping(value= "/product")
 	public String getProduct(Model model) {
 		List<Hardware> hardwares = hardwareDAO.findAll();
 		List<Brand> brands = brandDAO.findAll();
-		List<PartNo> partnos = partNoDAO.getAllPartNo();
+		List<PartNo> partnos = partNoDAO.findAll();
 		List<Product> products = productDAO.findAll();
 		
 		model.addAttribute("hardwares",hardwares);
@@ -293,121 +290,153 @@ public class ProductController {
 	@GetMapping(value= "/createPartNo")
 	public String getCreatePartNo(@RequestParam(defaultValue="0") int productid, Model model, HttpServletRequest request) {
 		
-		String referer = request.getHeader("Referer");
-		model.addAttribute("referer", referer);
-		
-		List<Product> products = productDAO.findAll();
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
-		List<SubLoc> sublocs = subLocDAO.findAll();
-		
 		stockquantity.update();
 		
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
+		List<Product> products = productDAO.findAll();
 		model.addAttribute("index", productid);
-		model.addAttribute("errorString",null);
 		model.addAttribute("products",products);
+		
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
+		
+		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs",sublocs);
+		
+		PartNo partno = new PartNo();
+		model.addAttribute("partno",partno);
 		
 		return "product/createPartNo";
 	}
 	
 	@PostMapping(value= "/createPartNo")
-	public String postCreatePartNos(@RequestParam String[] serialno,
-			@RequestParam (defaultValue=" ")String[] modelno, @RequestParam String[] upccode, int[] productid, 
-			@RequestParam String customername, @RequestParam String invoiceno, @RequestParam int mainlocid, @RequestParam int sublocid, 
-			@RequestParam int[] addstock, Model model, @RequestParam String referer ) {
-//		String delims = ",";
-		String delims = ", \r\n\t\f";
-//			String splitString = "one,two,,three,four,,five";
+	public String postCreatePartNos(@RequestParam String[] serialno, @RequestParam String[] modelno, @RequestParam String[] upccode, 
+			int[] productid, @RequestParam String[] customername, @RequestParam String[] invoiceno, @RequestParam int[] mainlocid, 
+			@RequestParam int[] sublocid, @RequestParam (required=false) int[] autoaddstock, Model model, @RequestParam String sourceURL, 
+			RedirectAttributes ra ) {
+//	public String postCreatePartNos(@ModelAttribute PartNo[] partno, @RequestParam int[] autoaddstock, Model model, 
+//			@RequestParam String sourceURL, RedirectAttributes ra ) {
+
+//		for(int i=0; i < partno.length; i++) {
+//			System.out.println(partno[i].getSerialno());
+//			System.out.println(partno[i].getModelno());
+//			System.out.println(partno[i].getUpccode());
+//			System.out.println(partno[i].getProductid());
+//			System.out.println(partno[i].getCustomername());
+//			System.out.println(partno[i].getInvoiceno());
+//			System.out.println(partno[i].getMainlocid());
+//			System.out.println(partno[i].getSublocid());
+//		}
 		
-//		System.out.println(serialno.length);
-//		System.out.println("StringTokenizer Example: \n");
+//		for(int i=0; i < serialno.length; i++) {
+//			System.out.println(serialno[i]);
+//			System.out.println(modelno[i]);
+//			System.out.println(upccode[i]);
+//			System.out.println(productid[i]);
+//			System.out.println(customername[i]);
+//			System.out.println(invoiceno[i]);
+//			System.out.println(mainlocid[i]);
+//			System.out.println(sublocid[i]);
+//			System.out.println(autoaddstock[i]);
+//		}
+	
+		String errorString=null;
+		String delims = ", \r\n\t\f";
+		
 		for(int i=0; i < serialno.length; i++) {
 			
-//			StringTokenizer st = new StringTokenizer(serialno[i],delims);
-//			while (st.hasMoreElements()) {
-////				String errorString= partNoDAO.createPartNo(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], productid[i], customername, invoiceno, mainlocid, sublocid, "Available");
+			StringTokenizer st = new StringTokenizer(serialno[i],delims);
+			while (st.hasMoreElements()) {
+				errorString= partNoDAO.create(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], 
+						productid[i], customername[i], invoiceno[i], mainlocid[i], sublocid[i], "Available");
 //				System.out.println(productid[i]+" "+modelno[i]+" "+" Token: "+st.nextElement());
-//			}
-			if(addstock[i]!=0) {
+			}
+		
+			if(autoaddstock[i]!=0) {
 				String date = DateTime.DateNow();
 				String time = DateTime.TimeNow();
 				String logdatetime = DateTime.Now();
 				int stocktypeid = 1;
 				int reasonid= 1;
 				String remark=" ";
-//				System.out.println("Im here");
-				String errorString= stockHistoryDAO.createStockHistory(productid[i], mainlocid, sublocid, addstock[i], date, time, stocktypeid, reasonid, remark, logdatetime, null, "approved");
-				
-				
+				errorString= stockHistoryDAO.create(productid[i], mainlocid[i], sublocid[i], autoaddstock[i], date, time, stocktypeid, reasonid, remark, logdatetime, null, "approved");
 			}
 		}
+		
 		stockquantity.update();
-//			for(int b:productid){
-//				System.out.println(b);
-//			}
-//			if(errorString==null) {
-			return "redirect:"+referer;
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "product/createPartNo";
-//			}
+		if(errorString==null) {
+			String message = "Serial number added succussfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 	
 	@GetMapping(value= "/editPartNo")
-	public String getEditPartNos(/*@RequestParam*/ int partnoid, Model model, HttpServletRequest request) {
+	public String getEditPartNo(@RequestParam int partnoid, Model model, HttpServletRequest request) {
 		
-		String referer = request.getHeader("Referer");
-		model.addAttribute("referer", referer);
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
 		
-		List <Product> products = productDAO.findAll();
-		PartNo partno = partNoDAO.getPartNo(partnoid);
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
-		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(partno.getMainlocid());
-		Product product = productDAO.findOne(partno.getProductid());
-		
+		PartNo partno = partNoDAO.findOne(partnoid);
 		model.addAttribute("partno",partno);
-		model.addAttribute("products",products);
+		
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
+		
+		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(partno.getMainlocid());
 		model.addAttribute("sublocs",sublocs);
+		
+		Product product = productDAO.findOne(partno.getProductid());
 		model.addAttribute("product",product);
 		    
 		return "product/editPartNo";
 	}
 	
 	@PostMapping(value= "/editPartNo")
-	public String postEditPartNo(/*@RequestParam*/ int partnoid,
-			/*@RequestParam*/ String serialno, /*@RequestParam*/ String modelno, /*@RequestParam*/ String upccode/*, @RequestParam int productid*/, 
-			/*@RequestParam*/ String customername, /*@RequestParam*/ String invoiceno, int mainlocid, int sublocid, Model model, /*@RequestParam*/ String referer) {
-			System.out.println(mainlocid+" "+sublocid);
-			String errorString=partNoDAO.updatePartNo(partnoid, serialno, modelno, upccode, /*productid,*/ customername, invoiceno, mainlocid, sublocid);
-//			if(errorString==null) {
-			return "redirect:"+referer; 
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "product/editPartNo";
-//			}
+	public String postEditPartNo(@ModelAttribute PartNo partno, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+
+		String errorString=partNoDAO.update(partno.getPartnoid(), partno.getSerialno(), partno.getModelno(), partno.getUpccode(), /*productid,*/ 
+				partno.getCustomername(), partno.getInvoiceno(), partno.getMainlocid(), partno.getSublocid());
+		if(errorString==null) {
+			String message="Serial No - "+ partno.getSerialno() +" updated successfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 	
 	@GetMapping(value= "/deletePartNo")
 	public String getDeletePartNo(@RequestParam int partnoid, Model model, HttpServletRequest request ) {
-//			System.out.println(partnoid);
-//			partNoDAO.deletePartNo(partnoid);
-		String referer = request.getHeader("Referer");
-		model.addAttribute("referer", referer);
+
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
 		
-		PartNo partno = partNoDAO.getPartNo(partnoid);
+		PartNo partno = partNoDAO.findOne(partnoid);
 		model.addAttribute("partno", partno);
 		
 		return "product/deletePartNo";
 	}
 	
 	@PostMapping(value= "/deletePartNo")
-	public String postDeletePartNo(@RequestParam int partnoid, Model model, @RequestParam String referer) {
-		System.out.println(partnoid);
-//			partNoDAO.deletePartNo(partnoid);
+	public String postDeletePartNo(@ModelAttribute PartNo partno, Model model, @RequestParam String sourceURL, RedirectAttributes ra ) {
+
+		String errorString = partNoDAO.delete(partno.getPartnoid());
 		
-		return "redirect:"+referer;
+		if(errorString==null) {
+			String message="Serial No - "+ partno.getSerialno() +" has deleted";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 
 	/**************** PRODUCT ACTION ***********************/
@@ -423,7 +452,7 @@ public class ProductController {
 		List<Brand> brands = brandDAO.findAll();
 		model.addAttribute("brands",brands);
 		
-		List<PartNo> partnos = partNoDAO.getAllPartNo();
+		List<PartNo> partnos = partNoDAO.findAll();
 		model.addAttribute("partnos",partnos);
 		
 		model.addAttribute("product",new Product());
