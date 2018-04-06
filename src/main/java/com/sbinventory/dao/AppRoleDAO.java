@@ -27,9 +27,9 @@ public class AppRoleDAO extends JdbcDaoSupport {
  
     public List<String> getRoleNames(int userId) {
     	
-        String sql = "Select r.Role_Name " //
-                + " from User_Role ur, App_Role r " //
-                + " where ur.Role_Id = r.ID and ur.User_Id = ? ";
+        String sql = "SELECT R.ROLE_NAME " //
+                + " FROM APP_USER UR, APP_ROLE R " //
+                + " WHERE UR.ROLE_ID = R.ID and UR.ID = ? ";
         Object[] params = new Object[] { userId };
         List<String> roles = this.getJdbcTemplate().queryForList(sql, params, String.class);
  

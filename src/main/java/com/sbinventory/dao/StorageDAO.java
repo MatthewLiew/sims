@@ -20,10 +20,10 @@ import com.sbinventory.model.Storage;
 @Transactional
 public class StorageDAO extends JdbcDaoSupport {
 	
-	private static final String CREATE_SQL="INSERT INTO STORAGE (MAIN_LOC_ID, SUB_LOC_ID, PRODUCT_ID, QUANTITY) VALUES (?,?,?,?)";
-	private static final String READ_SQL="SELECT * FROM STORAGE";
-	private static final String UPDATE_SQL="UPDATE STORAGE";
-	private static final String DELETE_SQL="DELETE FROM STORAGE";
+	private static final String CREATE_SQL="INSERT INTO STORAGE1 (MAIN_LOC_ID, SUB_LOC_ID, PRODUCT_ID, QUANTITY) VALUES (?,?,?,?)";
+	private static final String READ_SQL="SELECT * FROM STORAGE1";
+	private static final String UPDATE_SQL="UPDATE STORAGE1";
+	private static final String DELETE_SQL="DELETE FROM STORAGE1";
 	
 	@Autowired
 	public StorageDAO(DataSource dataSource) {
@@ -103,15 +103,5 @@ public class StorageDAO extends JdbcDaoSupport {
 			return e.getMessage();
 		}
 	}
-	
-//	public void deleteStockType(int stocktypeid){
-//		String sql=DELETE_SQL+" where ID= ?";
-//		Object[] params= new Object[] {stocktypeid};
-//		try {
-//			int rows=this.getJdbcTemplate().update(sql, params);
-//			System.out.println(rows + " row(s) updated.");
-//		}catch(EmptyResultDataAccessException e) {
-//			e.printStackTrace();
-//		}
-//	}
+
 }

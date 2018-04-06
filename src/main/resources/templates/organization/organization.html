@@ -62,7 +62,7 @@
        		</div>
        		
        		<div class="modal clickable" id="CreateOrganization" tabindex="-1" role="dialog" aria-labelledby="CreateOrganization" aria-hidden="true">
-	            <form method="POST" th:action="@{/createOrganization}" id="CreateOrganization" onsubmit="return orgForm('CreateOrganization')">
+	            <form method="POST" th:action="@{/organization/createOrganization}" id="CreateOrganization" onsubmit="return orgForm('CreateOrganization')">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -89,7 +89,7 @@
 	        </div>
 	        
 	        <div class="modal clickable" id="EditOrganization" tabindex="-1" role="dialog" aria-labelledby="EditOrganization" aria-hidden="true">
-	            <form method="POST" th:action="@{/editOrganization}" id="EditOrganization" onsubmit="return orgForm('EditOrganization')">
+	            <form method="POST" th:action="@{/organization/editOrganization}" id="EditOrganization" onsubmit="return orgForm('EditOrganization')">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -116,7 +116,7 @@
 	        </div>
 	        
 	        <div class="modal clickable" id="DeleteOrganization" tabindex="-1" role="dialog" aria-labelledby="DeleteOrganization" aria-hidden="true">
-	            <form method="POST" th:action="@{/deleteOrganization}" id="DeleteOrganization">
+	            <form method="POST" th:action="@{/organization/deleteOrganization}" id="DeleteOrganization">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -151,14 +151,14 @@
                 $('#CreateOrganization .modal-body').empty();
                 $('#CreateOrganization .modal-title').text("New Organization");
                 $('#CreateOrganization #modal_error').hide();
-                $('#CreateOrganization .modal-body').load('createOrganization', function () {
+                $('#CreateOrganization .modal-body').load('/organization/createOrganization', function () {
                     $('#CreateOrganization').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditOrganization .modal-body').empty();
                 $('#EditOrganization .modal-title').text("Edit Organization");
                 $('#EditOrganization #modal_error').hide();
-                $('#EditOrganization .modal-body').load('editOrganization?orgid=' + id, function () {
+                $('#EditOrganization .modal-body').load('/organization/editOrganization?orgid=' + id, function () {
                     $('#EditOrganization').modal({show: true});
                 });
             } else if (action == 'change') {
@@ -171,7 +171,7 @@
             } else if (action == 'delete') {
                 $('#DeleteOrganization .modal-body').empty();
                 $('#DeleteOrganization .modal-title').text("Delete Organization");
-                $('#DeleteOrganization .modal-body').load('deleteOrganization?orgid=' + id, function () {
+                $('#DeleteOrganization .modal-body').load('/organization/deleteOrganization?orgid=' + id, function () {
                     $('#DeleteOrganization').modal({show: true});
                 });
             }

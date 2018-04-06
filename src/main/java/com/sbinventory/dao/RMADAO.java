@@ -31,7 +31,7 @@ public class RMADAO extends JdbcDaoSupport{
 		this.setDataSource(dataSource);
 	}
 	
-	public String createRMA(String loguser, String logdatetime, int productid, int quantity, int mainlocid, int sublocid, 
+	public String create(String loguser, String logdatetime, int productid, int quantity, int mainlocid, int sublocid, 
 			String approval, String reason) {
 
 		Object[] params=new Object[]{loguser, logdatetime, productid, quantity, mainlocid, sublocid, approval, reason};
@@ -51,34 +51,7 @@ public class RMADAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public List<RMA> getAllRMA(){
-		
-		String sql=READ_SQL;
-		RMAMapper mapper=new RMAMapper();
-		
-		try {
-            List<RMA> rmas =  this.getJdbcTemplate().query(sql, mapper);
-            return rmas;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-	}
-	
-	public RMA getRMA(int rmaid){
-		
-		String sql=READ_SQL+" where ID = ?";
-		Object[] params=new Object[] {rmaid};
-		RMAMapper mapper=new RMAMapper();
-		
-		try {
-			RMA rma = this.getJdbcTemplate().queryForObject(sql, params, mapper);
-            return rma;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-	}
-	
-	public String updateRMA(int rmaid, int productid, int mainlocid, int sublocid, int quantity, String reason){
+	public String update(int rmaid, int productid, int mainlocid, int sublocid, int quantity, String reason){
 		String sql=UPDATE_SQL+" set PRODUCT_ID = ?, MAIN_LOC = ?, SUB_LOC = ?, QUANTITY = ?, REASON = ? where ID= ?";
 		Object[] params=new Object[]{productid, mainlocid, sublocid, quantity, reason, rmaid};
 		try {
@@ -93,7 +66,7 @@ public class RMADAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public String deleteRMA(int rmaid){
+	public String delete(int rmaid){
 		String sql=DELETE_SQL+" where ID= ?";
 		Object[] params= new Object[] {rmaid};
 		try {
@@ -106,6 +79,33 @@ public class RMADAO extends JdbcDaoSupport{
 		return null;
 	}
 	
+	public List<RMA> findAll(){
+		
+		String sql=READ_SQL;
+		RMAMapper mapper=new RMAMapper();
+		
+		try {
+            List<RMA> rmas =  this.getJdbcTemplate().query(sql, mapper);
+            return rmas;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+	
+	public RMA findOne(int rmaid){
+		
+		String sql=READ_SQL+" where ID = ?";
+		Object[] params=new Object[] {rmaid};
+		RMAMapper mapper=new RMAMapper();
+		
+		try {
+			RMA rma = this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            return rma;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+
 	public String approval(int rmaid, String approve ){
 		String sql=UPDATE_SQL+" set APPROVAL = ? where ID= ?";
 		Object[] params=new Object[]{approve, rmaid};

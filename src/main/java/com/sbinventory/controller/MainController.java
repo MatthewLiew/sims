@@ -1,49 +1,14 @@
 package com.sbinventory.controller;
 
 import java.security.Principal;
-import java.sql.Time;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
-import java.util.StringTokenizer;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.sbinventory.dao.AppRoleDAO;
-import com.sbinventory.dao.BrandDAO;
 import com.sbinventory.dao.DeptDAO;
-import com.sbinventory.dao.HardwareDAO;
-import com.sbinventory.dao.MainLocDAO;
 import com.sbinventory.dao.OrganizationDAO;
-import com.sbinventory.dao.PartNoDAO;
-import com.sbinventory.dao.ProductDAO;
-import com.sbinventory.dao.ReasonDAO;
-import com.sbinventory.dao.StockHistoryDAO;
-import com.sbinventory.dao.StockTypeDAO;
 import com.sbinventory.dao.SubDeptDAO;
-import com.sbinventory.dao.SubLocDAO;
 import com.sbinventory.dao.UserAccountDAO;
-import com.sbinventory.dao.UserRoleDAO;
-import com.sbinventory.model.AppRole;
-import com.sbinventory.model.Brand;
 import com.sbinventory.model.Dept;
-import com.sbinventory.model.Hardware;
-import com.sbinventory.model.MainLoc;
 import com.sbinventory.model.Organization;
-import com.sbinventory.model.PartNo;
-import com.sbinventory.model.Product;
-import com.sbinventory.model.Reason;
-import com.sbinventory.model.StockHistory;
-import com.sbinventory.model.StockType;
 import com.sbinventory.model.SubDept;
-import com.sbinventory.model.SubLoc;
 import com.sbinventory.model.UserAccount;
-import com.sbinventory.model.UserRole;
 import com.sbinventory.utils.WebUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +17,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MainController {
@@ -88,13 +50,7 @@ public class MainController {
         return "adminPage";
     }
  
-//	@GetMapping(value = "/login")
-//    public String loginPage(Model model) {
-// 
-//        return "loginPage";
-//    }
-	
-	@GetMapping(value = "/login2")
+	@GetMapping(value = "/login")
     public String login2Page(Model model) {
  
         return "login";

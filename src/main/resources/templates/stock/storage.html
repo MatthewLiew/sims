@@ -33,7 +33,9 @@
 		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 		        			<thead>
 		        				<tr>
-<!-- 		        					<th>No</th> -->
+									<th>Organization</th>
+									<th>Department</th>
+									<th>Sub Department</th>
 		        					<th>Main Location</th>
 						          	<th>Sub Location</th>
 						          	<th>Product</th>
@@ -43,7 +45,9 @@
 		              		</thead>
 		              		<tfoot>
 		                		<tr>
-<!-- 		                			<th>No</th> -->
+		                			<th>Organization</th>
+									<th>Department</th>
+									<th>Sub Department</th>
 		                  			<th>Main Location</th>
 						          	<th>Sub Location</th>
 						          	<th>Product</th>
@@ -53,6 +57,9 @@
 				          	</tfoot>
 				          	<tbody>
 				          		<tr th:each="s : ${storages}">
+				          			<td th:each="org : ${orgs}" th:if="${org.isOrgname(s.orgid)}" th:text="${org.orgname}"></td>
+				          			<td th:each="dept : ${depts}" th:if="${dept.isDeptname(s.deptid)}" th:text="${dept.deptname}"></td>
+				          			<td th:each="subdept : ${subdepts}" th:if="${subdept.isSelected(s.subdeptid)}" th:text="${subdept.subdeptname}"></td>
 				          			<td th:each="m : ${mainlocs}" th:if="${m.isMainLocName(s.mainlocid)}" th:text="${m.mainlocname}"></td>
 				          			<td th:each="sub : ${sublocs}" th:if="${sub.isSubLocName(s.sublocid)}" th:text="${sub.sublocname}"></td>
 				          			<td th:if="${s.sublocid}==0" th:text="'-'"></td>

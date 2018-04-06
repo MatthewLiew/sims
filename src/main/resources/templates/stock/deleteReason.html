@@ -4,18 +4,21 @@
 		<meta charset="UTF-8">
    	</head>
 	
-	<input type="hidden" name="referer" th:value="${referer}" />
-	<input type="hidden" name="reasonid" th:value="${reason.reasonid}" />
-	
-	<div class="form-group">
-        <div class="form-row">
-            <div class="col-md-12">
-                Are you sure to Delete Following User ? <br/>
-                Stock Type - <b><span th:text="${stocktype.stocktype}"></span></b>
-                										<br/>
-                Reason - <b><span th:text="${reason.reason}"></span></b>
-            </div>
-        </div>
+	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
+
+	<div th:object="${reason}">
+		<input type="hidden" name="reasonid" th:field="*{reasonid}" th:value="${reason.reasonid}" />
+		<input type="hidden" th:field="*{reason}" />
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-12">
+	                Are you sure to Delete Following User ? <br/>
+	                Stock Type - <b><span th:text="${stocktype.stocktype}"></span></b>
+	                										<br/>
+	                Reason - <b><span th:text="*{reason}"></span></b>
+	            </div>
+	        </div>
+	    </div>
     </div>
            
 </html>

@@ -116,7 +116,7 @@ public class ReasonDAO extends JdbcDaoSupport{
 //        }
 //	}
 	
-	public List<Reason> getReasonStockInAndOut(int stocktypeid){
+	public List<Reason> findAllByStocktype(int stocktypeid){
 		
 		String sql=READ_SQL+" where STOCK_TYPE_ID = ? ";
 		Object[] params=new Object[] {stocktypeid};
@@ -145,14 +145,16 @@ public class ReasonDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public void deleteReason(int reasonid){
+	public String deleteReason(int reasonid){
 		String sql=DELETE_SQL+" where ID= ?";
 		Object[] params= new Object[] {reasonid};
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
+			return null;
 		}catch(EmptyResultDataAccessException e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 }

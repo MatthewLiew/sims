@@ -29,7 +29,7 @@ public class DisposalHistoryDAO extends JdbcDaoSupport{
 		this.setDataSource(dataSource);
 	}
 	
-	public String createDisposalHistory(String loguser, String logdatetime, int productid, int quantity, int mainlocid, int sublocid, 
+	public String create(String loguser, String logdatetime, int productid, int quantity, int mainlocid, int sublocid, 
 			String approval) {
 
 		Object[] params=new Object[]{loguser, logdatetime, productid, quantity, mainlocid, sublocid, approval};
@@ -49,34 +49,7 @@ public class DisposalHistoryDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public List<DisposalHistory> getAllDisposalHistory(){
-		
-		String sql=READ_SQL;
-		DisposalHistoryMapper mapper=new DisposalHistoryMapper();
-		
-		try {
-            List<DisposalHistory> disposalhistories =  this.getJdbcTemplate().query(sql, mapper);
-            return disposalhistories;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-	}
-	
-	public DisposalHistory getDisposalHistory(int disposalhistoryid){
-		
-		String sql=READ_SQL+" where ID = ?";
-		Object[] params=new Object[] {disposalhistoryid};
-		DisposalHistoryMapper mapper=new DisposalHistoryMapper();
-		
-		try {
-			DisposalHistory disposalhistory = this.getJdbcTemplate().queryForObject(sql, params, mapper);
-            return disposalhistory;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-	}
-	
-	public String updateDisposalHistory(int disposalhistoryid, int productid, int mainlocid, int sublocid, int quantity ){
+	public String update(int disposalhistoryid, int productid, int mainlocid, int sublocid, int quantity ){
 		String sql=UPDATE_SQL+" set PRODUCT_ID = ?, MAIN_LOC = ?, SUB_LOC = ?, QUANTITY = ? where ID= ?";
 		Object[] params=new Object[]{productid, mainlocid, sublocid, quantity, disposalhistoryid};
 		try {
@@ -91,7 +64,7 @@ public class DisposalHistoryDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public String deleteDisposalHistory(int disposalhistoryid){
+	public String delete(int disposalhistoryid){
 		String sql=DELETE_SQL+" where ID= ?";
 		Object[] params= new Object[] {disposalhistoryid};
 		try {
@@ -102,6 +75,33 @@ public class DisposalHistoryDAO extends JdbcDaoSupport{
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public List<DisposalHistory> findAll(){
+		
+		String sql=READ_SQL;
+		DisposalHistoryMapper mapper=new DisposalHistoryMapper();
+		
+		try {
+            List<DisposalHistory> disposalhistories =  this.getJdbcTemplate().query(sql, mapper);
+            return disposalhistories;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+	
+	public DisposalHistory findOne(int disposalhistoryid){
+		
+		String sql=READ_SQL+" where ID = ?";
+		Object[] params=new Object[] {disposalhistoryid};
+		DisposalHistoryMapper mapper=new DisposalHistoryMapper();
+		
+		try {
+			DisposalHistory disposalhistory = this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            return disposalhistory;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
 	}
 	
 	public String approval(int disposalhistoryid, String approve ){

@@ -34,4 +34,11 @@ public class AppRole {
         }
         return false;
     }
+	
+	public boolean isAppRole(int roleid){
+        if (this.roleid==roleid) {
+            return true;
+        }
+        return false;
+    }
 }

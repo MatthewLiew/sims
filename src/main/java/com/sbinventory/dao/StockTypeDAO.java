@@ -30,24 +30,24 @@ public class StockTypeDAO extends JdbcDaoSupport {
 		this.setDataSource(dataSource);
 	}
 	
-	public String createStockType(String stocktype) {
-		
-		Object[] params=new Object[]{stocktype};
-		String sql=CREATE_SQL;
-		try {
-			int rows=this.getJdbcTemplate().update(sql, params);
-			System.out.println(rows + " row(s) updated.");
-			return null;
-		}catch(EmptyResultDataAccessException e ) {
-			return e.getMessage();
-			
-		}catch(DataAccessException  e) {
-//			throw new DataAccessException("Something error", e);
-			return e.getMessage();
-		}
-	}
+//	public String createStockType(String stocktype) {
+//		
+//		Object[] params=new Object[]{stocktype};
+//		String sql=CREATE_SQL;
+//		try {
+//			int rows=this.getJdbcTemplate().update(sql, params);
+//			System.out.println(rows + " row(s) updated.");
+//			return null;
+//		}catch(EmptyResultDataAccessException e ) {
+//			return e.getMessage();
+//			
+//		}catch(DataAccessException  e) {
+////			throw new DataAccessException("Something error", e);
+//			return e.getMessage();
+//		}
+//	}
 	
-	public List<StockType> getAllStockType(){
+	public List<StockType> findAll(){
 		
 		String sql=READ_SQL;
 		StockTypeMapper mapper=new StockTypeMapper();
@@ -60,7 +60,7 @@ public class StockTypeDAO extends JdbcDaoSupport {
         }
 	}
 	
-	public StockType getStockType(int stocktypeid){
+	public StockType findOne(int stocktypeid){
 		
 		String sql=READ_SQL+" where ID = ?";
 		Object[] params=new Object[] {stocktypeid};

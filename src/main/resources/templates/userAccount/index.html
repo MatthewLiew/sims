@@ -73,7 +73,7 @@
 		       </div>
 		       
 		       <div class="modal clickable" id="CreateUser" tabindex="-1" role="dialog" aria-labelledby="CreateUser" aria-hidden="true">
-		       		<form method="POST" th:action="@{/createUser}" id="CreateUser" onsubmit="return userForm('CreateUser');">
+		       		<form method="POST" th:action="@{/useraccount/createUser}" id="CreateUser" onsubmit="return userForm('CreateUser');">
 <!-- 		            <form method="POST" th:action="@{/createUser}" th:object="${useracc}" id="CreateUser"> -->
 		                <div class="vertical-alignment-helper">
 		                    <div class="modal-dialog  modal-lg vertical-align-center">
@@ -101,7 +101,7 @@
 		        </div>
 		        
 		        <div class="modal clickable" id="EditUser" tabindex="-1" role="dialog" aria-labelledby="EditUser" aria-hidden="true">
-		            <form method="POST" th:action="@{/editUser}" id="EditUser" onsubmit="return userForm('EditUser');">
+		            <form method="POST" th:action="@{/useraccount/editUser}" id="EditUser" onsubmit="return userForm('EditUser');">
 		                <div class="vertical-alignment-helper">
 		                    <div class="modal-dialog  modal-lg vertical-align-center">
 		                        <!-- Modal content-->
@@ -128,7 +128,7 @@
 		        </div>
 		        
 		        <div class="modal clickable" id="ChangePwd" tabindex="-1" role="dialog" aria-labelledby="ChangePwd" aria-hidden="true">
-		            <form method="POST" th:action="@{/changePassword}" id="ChangePwd">
+		            <form method="POST" th:action="@{/useraccount/changePassword}" id="ChangePwd">
 		                <div class="vertical-alignment-helper">
 		                    <div class="modal-dialog  modal-lg vertical-align-center">
 		                        <!-- Modal content-->
@@ -155,7 +155,7 @@
 		        </div>
 		        
 		        <div class="modal clickable" id="DeleteUser" tabindex="-1" role="dialog" aria-labelledby="DeleteUser" aria-hidden="true">
-		            <form method="POST" th:action="@{/deleteUser}" id="DeleteUser">
+		            <form method="POST" th:action="@{/useraccount/deleteUser}" id="DeleteUser">
 		                <div class="vertical-alignment-helper">
 		                    <div class="modal-dialog  modal-lg vertical-align-center">
 		                        <!-- Modal content-->
@@ -205,27 +205,27 @@
                 $('#CreateUser .modal-body').empty();
                 $('#CreateUser .modal-title').text("New User");
                 $('#CreateUser #modal_error').hide();
-                $('#CreateUser .modal-body').load('createUser', function () {
+                $('#CreateUser .modal-body').load('/useraccount/createUser', function () {
                     $('#CreateUser').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditUser .modal-body').empty();
                 $('#EditUser .modal-title').text("Edit User");
                 $('#EditUser #modal_error').hide();
-                $('#EditUser .modal-body').load('editUser?userid=' + id, function () {
+                $('#EditUser .modal-body').load('/useraccount/editUser?userid=' + id, function () {
                     $('#EditUser').modal({show: true});
                 });
             } else if (action == 'change') {
             	console.log("change");
                 $('#ChangePwd .modal-body').empty();
                 $('#ChangePwd .modal-title').text("Change Password");
-                $('#ChangePwd .modal-body').load('changePassword?userid=' + id, function () {
+                $('#ChangePwd .modal-body').load('/useraccount/changePassword?userid=' + id, function () {
                     $('#ChangePwd').modal({show: true});
                 });
             } else if (action == 'delete') {
                 $('#DeleteUser .modal-body').empty();
                 $('#DeleteUser .modal-title').text("Delete User");
-                $('#DeleteUser .modal-body').load('deleteUser?userid=' + id, function () {
+                $('#DeleteUser .modal-body').load('/useraccount/deleteUser?userid=' + id, function () {
                     $('#DeleteUser').modal({show: true});
                 });
             }

@@ -1,6 +1,7 @@
 var BASE_URL = window.location.origin+"/";
 var count=0;
 
+
 $(document).ready (function(){
 //    $("#success-alert").hide();
 //    $("#myWish").click(function showAlert() {
@@ -9,6 +10,19 @@ $(document).ready (function(){
         });   
 //    });
 });
+
+$(document).on("change", ".accessright", function() {
+//	console.log(this.closest(".clone_form .form"));
+	if(this.checked){
+		console.log("check");
+		$(this).closest("tr").find(".actionright").prop('disabled', false);;
+	} else {
+		$(this).closest("tr").find(".actionright").prop('checked', false);;
+		$(this).closest("tr").find(".actionright").prop('disabled', true);
+	}
+//    return false;
+});
+
 //$(document).on("submit", "#CreateUserForm", function(e) {
 	  
 //	  console.log(this);
@@ -1387,6 +1401,17 @@ function checkreason(form) {
  		dataType: 'json',
  		
  		success: function (response) {
+ 			if(response.flag=="true"){
+	 			$("#"+form+" .reason" ).removeClass("is-invalid");
+				$("#"+form+" .reason" ).addClass("is-valid");
+				$("#"+form+" .reason_status" ).removeClass("text-danger");
+ 				$("#"+form+" .reason_status" ).addClass("text-success");
+ 			} else {
+ 				$("#"+form+" .reason" ).removeClass("is-valid");
+ 				$("#"+form+" .reason" ).addClass("is-invalid");
+ 				$("#"+form+" .reason_status" ).removeClass("text-success");
+ 				$("#"+form+" .reason_status" ).addClass("text-danger");
+ 			}
  			$("#"+form+" .reason_status").html(response.status);
  			$("#"+form+" .reason_flag").html(response.flag);
   		},
@@ -1396,23 +1421,24 @@ function checkreason(form) {
 			}
  		});
  	} else {
- 		$("#"+form+" .reason_status").html("Field is Required");
+ 		$("#"+form+" .reason").removeClass("is-valid");
+		$("#"+form+" .reason").removeClass("is-invalid");
+ 		$("#"+form+" .reason_status").html("");
  		$("#"+form+" .reason_flag").html("false");
  	}
 }
 
 function reasonForm(form) {
 	
-	var reasoninput= $.isEmptyObject($("#"+form+" .reason").val());
 	var reasonflag=$("#"+form+" .reason_flag" ).text();
-
-	if(reasoninput){
-		$("#"+form+" .reason_status").html("Field is required");
-	}
-	if((reasoninput)||(reasonflag=="false")){
-		$("#"+form+" .error").html("Please complete the form");
+	let reason=$("#"+form+" .reason").val();
+	
+	if(reasonflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("Product Code - "+productcode+" Exists.");
 		return false;
-	} else {
+	}  else {
+		$("#"+form+" #modal_error").hide();
 		return true;
 	}
 }

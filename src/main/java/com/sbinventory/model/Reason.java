@@ -4,7 +4,7 @@ public class Reason {
 
 	private int reasonid;
 	private String reason;
-	private int stocktypeid;
+	private Integer stocktypeid;
 	
 	public Reason( ) {}
 
@@ -30,11 +30,11 @@ public class Reason {
 		this.reason = reason;
 	}
 	
-	public int getStocktypeid() {
+	public Integer getStocktypeid() {
 		return stocktypeid;
 	}
 
-	public void setStocktypeid(int stocktypeid) {
+	public void setStocktypeid(Integer stocktypeid) {
 		this.stocktypeid = stocktypeid;
 	}
 

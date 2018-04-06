@@ -31,14 +31,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	UserDetailsServiceImpl userDetailsService;
 	
-//	@Autowired
-//    private RequestMappingHandlerAdapter requestMappingHandlerAdapter;
-//
-//    @PostConstruct
-//    public void init() {
-//       requestMappingHandlerAdapter.setIgnoreDefaultModelOnRedirect(true);
-//    }
-	
 	@Bean
     public BCryptPasswordEncoder passwordEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
@@ -60,11 +52,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         http.csrf().disable();
  
         // The pages does not require login
-        http.authorizeRequests().antMatchers("/", "/login2", "/logout").permitAll();
+        http.authorizeRequests().antMatchers("/login", "/logout", "/vendor/**", "/css/**","/js/**" ).permitAll();
  
         // /userInfo page requires login as ROLE_USER or ROLE_ADMIN.
         // If no login, it will redirect to /login page.
-        http.authorizeRequests().antMatchers("/myAccInfo").access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
+        http.authorizeRequests().antMatchers(/*"/**"*/).access("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')");
         
 //        http.authorizeRequests().antMatchers("/productList").access("hasRole('ROLE_USER')");
  
@@ -80,13 +72,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
         http.authorizeRequests().and().formLogin()//
                 // Submit URL of login page.
                 .loginProcessingUrl("/j_spring_security_check") // Submit URL
-                .loginPage("/login2")//
+                .loginPage("/login")//
                 .defaultSuccessUrl("/myAccInfo")//
                 .failureUrl("/login?error=true")//
                 .usernameParameter("username")//
                 .passwordParameter("password")
                 // Config for Logout Page
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login2");
+                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/login");
  
     }
 }

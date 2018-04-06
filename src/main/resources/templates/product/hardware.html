@@ -63,7 +63,7 @@
            	</div>
            	
            	<div class="modal clickable" id="CreateHardware" tabindex="-1" role="dialog" aria-labelledby="CreateHardware" aria-hidden="true">
-	            <form method="POST" th:action="@{/createHardware}" id="CreateHardware" onsubmit="return hardwareForm('CreateHardware');">
+	            <form method="POST" th:action="@{/hardware/createHardware}" id="CreateHardware" onsubmit="return hardwareForm('CreateHardware');">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -90,7 +90,7 @@
 	        </div>
 	        
 	        <div class="modal clickable" id="EditHardware" tabindex="-1" role="dialog" aria-labelledby="EditHardware" aria-hidden="true">
-	            <form method="POST" th:action="@{/editHardware}" id="EditHardware" onsubmit="return hardwareForm('EditHardware');">
+	            <form method="POST" th:action="@{/hardware/editHardware}" id="EditHardware" onsubmit="return hardwareForm('EditHardware');">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -117,7 +117,7 @@
 	        </div>
 	        
 	        <div class="modal clickable" id="DeleteHardware" tabindex="-1" role="dialog" aria-labelledby="DeleteHardware" aria-hidden="true">
-	            <form method="POST" th:action="@{/deleteHardware}" id="DeleteHardware">
+	            <form method="POST" th:action="@{/hardware/deleteHardware}" id="DeleteHardware">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -152,14 +152,14 @@
                 $('#CreateHardware .modal-body').empty();
                 $('#CreateHardware .modal-title').text("New Hardware");
                 $('#CreateHardware #modal_error').hide();
-                $('#CreateHardware .modal-body').load('createHardware', function () {
+                $('#CreateHardware .modal-body').load('/hardware/createHardware', function () {
                     $('#CreateHardware').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditHardware .modal-body').empty();
                 $('#EditHardware .modal-title').text("Edit Hardware");
                 $('#EditHardware #modal_error').hide();
-                $('#EditHardware .modal-body').load('editHardware?hardwareid=' + id, function () {
+                $('#EditHardware .modal-body').load('/hardware/editHardware?hardwareid=' + id, function () {
                     $('#EditHardware').modal({show: true});
                 });
             } else if (action == 'change') {
@@ -172,7 +172,7 @@
             } else if (action == 'delete') {
                 $('#DeleteHardware .modal-body').empty();
                 $('#DeleteHardware .modal-title').text("Delete Hardware");
-                $('#DeleteHardware .modal-body').load('deleteHardware?hardwareid=' + id, function () {
+                $('#DeleteHardware .modal-body').load('/hardware/deleteHardware?hardwareid=' + id, function () {
                     $('#DeleteHardware').modal({show: true});
                 });
             }

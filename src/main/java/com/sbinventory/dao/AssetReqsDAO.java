@@ -35,7 +35,7 @@ public class AssetReqsDAO extends JdbcDaoSupport{
 		this.setDataSource(dataSource);
 	}
 	
-	public String createAssetReqs(String loguser, String logdatetime, int productid, int quantity, int mainlocid, int sublocid, 
+	public String create(String loguser, String logdatetime, int productid, int quantity, int mainlocid, int sublocid, 
 			String approval) {
 
 		Object[] params=new Object[]{loguser, logdatetime, productid, quantity, mainlocid, sublocid, approval};
@@ -55,34 +55,7 @@ public class AssetReqsDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public List<AssetReqs> getAllAssetReqs(){
-		
-		String sql=READ_SQL;
-		AssetReqsMapper mapper=new AssetReqsMapper();
-		
-		try {
-            List<AssetReqs> assetreqs =  this.getJdbcTemplate().query(sql, mapper);
-            return assetreqs;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-	}
-	
-	public AssetReqs getAssetReqs(int assetreqsid){
-		
-		String sql=READ_SQL+" where ID = ?";
-		Object[] params=new Object[] {assetreqsid};
-		AssetReqsMapper mapper=new AssetReqsMapper();
-		
-		try {
-			AssetReqs assetreqs = this.getJdbcTemplate().queryForObject(sql, params, mapper);
-            return assetreqs;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-	}
-	
-	public String updateAssetReqs(int assetreqsid, int productid, int mainlocid, int sublocid, int quantity){
+	public String update(int assetreqsid, int productid, int mainlocid, int sublocid, int quantity){
 		String sql=UPDATE_SQL+" set PRODUCT_ID = ?, MAIN_LOC = ?, SUB_LOC = ?, QUANTITY = ? where ID= ?";
 		Object[] params=new Object[]{productid, mainlocid, sublocid, quantity, assetreqsid};
 		try {
@@ -97,7 +70,7 @@ public class AssetReqsDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public String deleteAssetReqs(int assetreqsid){
+	public String delete(int assetreqsid){
 		String sql=DELETE_SQL+" where ID= ?";
 		Object[] params= new Object[] {assetreqsid};
 		try {
@@ -110,6 +83,33 @@ public class AssetReqsDAO extends JdbcDaoSupport{
 		return null;
 	}
 	
+	public List<AssetReqs> findAll(){
+		
+		String sql=READ_SQL;
+		AssetReqsMapper mapper=new AssetReqsMapper();
+		
+		try {
+            List<AssetReqs> assetreqs =  this.getJdbcTemplate().query(sql, mapper);
+            return assetreqs;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+	
+	public AssetReqs findOne(int assetreqsid){
+		
+		String sql=READ_SQL+" where ID = ?";
+		Object[] params=new Object[] {assetreqsid};
+		AssetReqsMapper mapper=new AssetReqsMapper();
+		
+		try {
+			AssetReqs assetreqs = this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            return assetreqs;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+
 	public String approval(int assetreqsid, String approve ){
 		String sql=UPDATE_SQL+" set APPROVAL = ? where ID= ?";
 		Object[] params=new Object[]{approve, assetreqsid};

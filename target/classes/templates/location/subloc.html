@@ -63,7 +63,7 @@
            	</div>
            	
            		<div class="modal clickable" id="CreateSubLocation" tabindex="-1" role="dialog" aria-labelledby="CreateSubLocation" aria-hidden="true">
-	            <form method="POST" th:action="@{/createSubLoc}" id="CreateSubLocation" onsubmit="return sublocForm('CreateSubLocation');">
+	            <form method="POST" th:action="@{/sublocation/createSubLoc}" id="CreateSubLocation" onsubmit="return sublocForm('CreateSubLocation');">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -90,7 +90,7 @@
 	        </div>
 	        
 	        <div class="modal clickable" id="EditSubLocation" tabindex="-1" role="dialog" aria-labelledby="EditSubLocation" aria-hidden="true">
-	            <form method="POST" th:action="@{/editSubLoc}" id="EditSubLocation" onsubmit="return sublocForm('EditSubLocation');">
+	            <form method="POST" th:action="@{/sublocation/editSubLoc}" id="EditSubLocation" onsubmit="return sublocForm('EditSubLocation');">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -117,7 +117,7 @@
 	        </div>
 	        
 	        <div class="modal clickable" id="DeleteSubLocation" tabindex="-1" role="dialog" aria-labelledby="DeleteSubLocation" aria-hidden="true">
-	            <form method="POST" th:action="@{/deleteSubLoc}" id="DeleteSubLocation">
+	            <form method="POST" th:action="@{/sublocation/deleteSubLoc}" id="DeleteSubLocation">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -152,14 +152,14 @@
                 $('#CreateSubLocation .modal-body').empty();
                 $('#CreateSubLocation .modal-title').text("New Sub Location");
                 $('#CreateSubLocation #modal_error').hide();
-                $('#CreateSubLocation .modal-body').load('createSubLoc', function () {
+                $('#CreateSubLocation .modal-body').load('/sublocation/createSubLoc', function () {
                     $('#CreateSubLocation').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditSubLocation .modal-body').empty();
                 $('#EditSubLocation .modal-title').text("Edit Sub Location");
                 $('#EditSubLocation #modal_error').hide();
-                $('#EditSubLocation .modal-body').load('editSubLoc?sublocid=' + id, function () {
+                $('#EditSubLocation .modal-body').load('/sublocation/editSubLoc?sublocid=' + id, function () {
                     $('#EditSubLocation').modal({show: true});
                 });
             } else if (action == 'change') {
@@ -172,7 +172,7 @@
             } else if (action == 'delete') {
                 $('#DeleteSubLocation .modal-body').empty();
                 $('#DeleteSubLocation .modal-title').text("Delete Sub Location");
-                $('#DeleteSubLocation .modal-body').load('deleteSubLoc?sublocid=' + id, function () {
+                $('#DeleteSubLocation .modal-body').load('/sublocation/deleteSubLoc?sublocid=' + id, function () {
                     $('#DeleteSubLocation').modal({show: true});
                 });
             }

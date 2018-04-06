@@ -11,26 +11,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.sbinventory.dao.AppRoleDAO;
-import com.sbinventory.dao.BrandDAO;
-import com.sbinventory.dao.DeptDAO;
-import com.sbinventory.dao.HardwareDAO;
 import com.sbinventory.dao.MainLocDAO;
-import com.sbinventory.dao.OrganizationDAO;
-import com.sbinventory.dao.PartNoDAO;
-import com.sbinventory.dao.ProductDAO;
-import com.sbinventory.dao.ReasonDAO;
-import com.sbinventory.dao.StockHistoryDAO;
-import com.sbinventory.dao.StockTypeDAO;
-import com.sbinventory.dao.SubDeptDAO;
 import com.sbinventory.dao.SubLocDAO;
-import com.sbinventory.dao.UserAccountDAO;
-import com.sbinventory.dao.UserRoleDAO;
+//import com.sbinventory.dao.UserRoleDAO;
 import com.sbinventory.model.MainLoc;
-import com.sbinventory.model.SubDept;
 import com.sbinventory.model.SubLoc;
 
 @Controller
@@ -80,7 +68,7 @@ public class LocationController {
 	}
 		
 	/**************** MAIN LOCATION ACTION ***********************/
-	@GetMapping(value= "/createMainLoc")
+	@GetMapping(value= "/mainlocation/createMainLoc")
 	public String getCreateMainLoc(Model model, HttpServletRequest request) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -90,8 +78,8 @@ public class LocationController {
 			
 		return "location/createMainLoc";
 	}
-		
-	@PostMapping(value= "/createMainLoc")
+	
+	@PostMapping(value= "/mainlocation/createMainLoc")
 	public String postCreateMainLoc(@ModelAttribute MainLoc mainloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		String errorString=mainLocDAO.create(mainloc.getMainlocname());
 		
@@ -104,8 +92,8 @@ public class LocationController {
 			return "redirect:"+sourceURL;
 		}
 	}
-		
-	@GetMapping(value= "/editMainLoc")
+	
+	@GetMapping(value= "/mainlocation/editMainLoc")
 	public String getEditMainLoc(@RequestParam int mainlocid, Model model, HttpServletRequest request) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -117,7 +105,7 @@ public class LocationController {
 		return "location/editMainLoc";
 	}
 		
-	@PostMapping(value= "/editMainLoc")
+	@PostMapping(value= "/mainlocation/editMainLoc")
 	public String postEditMainLoc(@ModelAttribute MainLoc mainloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		String errorString=mainLocDAO.update(mainloc.getMainlocid(), mainloc.getMainlocname());
 
@@ -131,7 +119,7 @@ public class LocationController {
 		}
 	}
 	
-	@GetMapping(value= "/deleteMainLoc")
+	@GetMapping(value= "/mainlocation/deleteMainLoc")
 	public String getDeleteMainLoc(@RequestParam int mainlocid, Model model, HttpServletRequest request ) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -143,7 +131,7 @@ public class LocationController {
 		return "location/deleteMainLoc";
 	}
 	
-	@PostMapping(value= "/deleteMainLoc")
+	@PostMapping(value= "/mainlocation/deleteMainLoc")
 	public String getDeleteMainLoc(@ModelAttribute MainLoc mainloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
 		String errorString = mainLocDAO.delete(mainloc.getMainlocid());
@@ -159,7 +147,7 @@ public class LocationController {
 	}
 	
 	/**************** SUB LOCATION ACTION ***********************/	
-	@GetMapping(value= "/createSubLoc")
+	@GetMapping(value= "/sublocation/createSubLoc")
 	public String getCreateSubLoc(Model model, HttpServletRequest request) {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
@@ -172,7 +160,7 @@ public class LocationController {
 		return "location/createSubLoc";
 	}
 		
-	@PostMapping(value= "/createSubLoc")
+	@PostMapping(value= "/sublocation/createSubLoc")
 	public String postCreateSubLoc(@ModelAttribute SubLoc subloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		String errorString=subLocDAO.create(subloc.getSublocname(), subloc.getMainlocid());
 		
@@ -186,7 +174,7 @@ public class LocationController {
 		}
 	}
 		
-	@GetMapping(value= "/editSubLoc")
+	@GetMapping(value= "/sublocation/editSubLoc")
 	public String getEditSubLoc(@RequestParam int sublocid, Model model, HttpServletRequest request) {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
@@ -200,7 +188,7 @@ public class LocationController {
 		return "location/editSubLoc";
 	}
 		
-	@PostMapping(value= "/editSubLoc")
+	@PostMapping(value= "/sublocation/editSubLoc")
 	public String postEditSubLoc(@ModelAttribute SubLoc subloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		String errorString=subLocDAO.update(subloc.getSublocid(), subloc.getSublocname());
 		
@@ -214,7 +202,7 @@ public class LocationController {
 		}
 	}
 		
-	@GetMapping(value= "/deleteSubLoc")
+	@GetMapping(value= "/sublocation/deleteSubLoc")
 	public String getDeleteSubLoc(@RequestParam int sublocid, Model model, HttpServletRequest request ) {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
@@ -225,7 +213,7 @@ public class LocationController {
 		return "location/deleteSubLoc";
 	}
 	
-	@PostMapping(value= "/deleteSubLoc")
+	@PostMapping(value= "/sublocation/deleteSubLoc")
 	public String getDeleteSubLoc(@ModelAttribute SubLoc subloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
 		String errorString = subLocDAO.delete(subloc.getSublocid());

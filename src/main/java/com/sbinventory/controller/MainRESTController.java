@@ -405,7 +405,7 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/getReason")
 	public List<Reason> getReason(@RequestBody Reason reason) {
-		List<Reason> reasons=reasonDAO.getReasonStockInAndOut(reason.getStocktypeid());
+		List<Reason> reasons=reasonDAO.findAllByStocktype(reason.getStocktypeid());
 		
 		return reasons;
 	}

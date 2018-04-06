@@ -33,7 +33,7 @@ public class ITFDAO extends JdbcDaoSupport{
 		this.setDataSource(dataSource);
 	}
 	
-	public String createITF(String loguser, String logdatetime, int productid, int quantity, int mainlocid, int sublocid, 
+	public String create(String loguser, String logdatetime, int productid, int quantity, int mainlocid, int sublocid, 
 			String approval) {
 
 		Object[] params=new Object[]{loguser, logdatetime, productid, quantity, mainlocid, sublocid, approval};
@@ -53,34 +53,7 @@ public class ITFDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public List<ITF> getAllITF(){
-		
-		String sql=READ_SQL;
-		ITFMapper mapper=new ITFMapper();
-		
-		try {
-            List<ITF> itfs =  this.getJdbcTemplate().query(sql, mapper);
-            return itfs;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-	}
-	
-	public ITF getITF(int itfid){
-		
-		String sql=READ_SQL+" where ID = ?";
-		Object[] params=new Object[] {itfid};
-		ITFMapper mapper=new ITFMapper();
-		
-		try {
-			ITF itf = this.getJdbcTemplate().queryForObject(sql, params, mapper);
-            return itf;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-	}
-	
-	public String updateITF(int rmaid, int productid, int mainlocid, int sublocid, int quantity){
+	public String update(int rmaid, int productid, int mainlocid, int sublocid, int quantity){
 		String sql=UPDATE_SQL+" set PRODUCT_ID = ?, MAIN_LOC = ?, SUB_LOC = ?, QUANTITY = ? where ID= ?";
 		Object[] params=new Object[]{productid, mainlocid, sublocid, quantity, rmaid};
 		try {
@@ -95,7 +68,7 @@ public class ITFDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public String deleteITF(int itfid){
+	public String delete(int itfid){
 		String sql=DELETE_SQL+" where ID= ?";
 		Object[] params= new Object[] {itfid};
 		try {
@@ -106,6 +79,33 @@ public class ITFDAO extends JdbcDaoSupport{
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public List<ITF> findAll(){
+		
+		String sql=READ_SQL;
+		ITFMapper mapper=new ITFMapper();
+		
+		try {
+            List<ITF> itfs =  this.getJdbcTemplate().query(sql, mapper);
+            return itfs;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+	
+	public ITF findOne(int itfid){
+		
+		String sql=READ_SQL+" where ID = ?";
+		Object[] params=new Object[] {itfid};
+		ITFMapper mapper=new ITFMapper();
+		
+		try {
+			ITF itf = this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            return itf;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
 	}
 	
 	public String approval(int itfid, String approve ){

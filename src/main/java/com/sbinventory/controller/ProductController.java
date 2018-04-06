@@ -1,6 +1,5 @@
 package com.sbinventory.controller;
 
-import java.io.File;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -15,28 +14,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.sbinventory.dao.AppRoleDAO;
 import com.sbinventory.dao.BrandDAO;
-import com.sbinventory.dao.DeptDAO;
 import com.sbinventory.dao.HardwareDAO;
 import com.sbinventory.dao.MainLocDAO;
-import com.sbinventory.dao.OrganizationDAO;
 import com.sbinventory.dao.PartNoDAO;
 import com.sbinventory.dao.ProductDAO;
-import com.sbinventory.dao.ReasonDAO;
 import com.sbinventory.dao.StockHistoryDAO;
 import com.sbinventory.dao.StockTypeDAO;
-import com.sbinventory.dao.SubDeptDAO;
 import com.sbinventory.dao.SubLocDAO;
-import com.sbinventory.dao.UserAccountDAO;
-import com.sbinventory.dao.UserRoleDAO;
+//import com.sbinventory.dao.UserRoleDAO;
 import com.sbinventory.model.Brand;
 import com.sbinventory.model.Hardware;
 import com.sbinventory.model.MainLoc;
-import com.sbinventory.model.Organization;
 import com.sbinventory.model.PartNo;
 import com.sbinventory.model.Product;
-import com.sbinventory.model.StockType;
 import com.sbinventory.model.SubLoc;
 import com.sbinventory.utils.DateTime;
 import com.sbinventory.utils.StockQuantity;
@@ -127,7 +118,7 @@ public class ProductController {
 	}
 	
 	/**************** HARDWARE ACTION ***********************/
-	@GetMapping(value= "/createHardware")
+	@GetMapping(value= "/hardware/createHardware")
 	public String getCreateHardware(Model model, HttpServletRequest request) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -138,7 +129,7 @@ public class ProductController {
 		return "product/createHardware";
 	}
 	
-	@PostMapping(value= "/createHardware")
+	@PostMapping(value= "/hardware/createHardware")
 	public String postCreateHardware(@ModelAttribute Hardware hardware, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		String errorString=hardwareDAO.create(hardware.getHardwarecode(), hardware.getHardwaretype());
 		
@@ -152,7 +143,7 @@ public class ProductController {
 		}
 	}
 	
-	@GetMapping(value= "/editHardware")
+	@GetMapping(value= "/hardware/editHardware")
 	public String getEditHardware(@RequestParam int hardwareid, Model model, HttpServletRequest request) {
 			
 		String sourceURL = request.getHeader("Referer");
@@ -164,7 +155,7 @@ public class ProductController {
 		return "product/editHardware";
 	}	
 	
-	@PostMapping(value= "/editHardware")
+	@PostMapping(value= "/hardware/editHardware")
 	public String postEditHardware(@ModelAttribute Hardware hardware, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 
 		String errorString=hardwareDAO.update(hardware.getHardwareid(), hardware.getHardwarecode(), hardware.getHardwaretype());
@@ -179,7 +170,7 @@ public class ProductController {
 		}
 	}
 
-	@GetMapping(value= "/deleteHardware")
+	@GetMapping(value= "/hardware/deleteHardware")
 	public String getDeleteHardware(@RequestParam int hardwareid, Model model, HttpServletRequest request ) {
 
 		String sourceURL = request.getHeader("Referer");
@@ -191,7 +182,7 @@ public class ProductController {
 		return "product/deleteHardware";
 	}
 	
-	@PostMapping(value= "/deleteHardware")
+	@PostMapping(value= "/hardware/deleteHardware")
 	public String postDeleteHardware(@ModelAttribute Hardware hardware, Model model, @RequestParam String sourceURL, RedirectAttributes ra) { 
 
 		String errorString = hardwareDAO.delete(hardware.getHardwareid());
@@ -207,7 +198,7 @@ public class ProductController {
 	}
 	
 	/**************** BRAND ACTION ***********************/
-	@GetMapping(value= "/createBrand")
+	@GetMapping(value= "/brand/createBrand")
 	public String getCreateBrand(Model model, HttpServletRequest request) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -218,7 +209,7 @@ public class ProductController {
 		return "product/createBrand";
 	}
 	
-	@PostMapping(value= "/createBrand")
+	@PostMapping(value= "/brand/createBrand")
 	public String postCreateBrand(@ModelAttribute Brand brand, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		String errorString= brandDAO.create(brand.getBrandcode(), brand.getBrandname());
 		
@@ -232,7 +223,7 @@ public class ProductController {
 		}
 	}
 	
-	@GetMapping(value= "/editBrand")
+	@GetMapping(value= "/brand/editBrand")
 	public String getEditBrand(@RequestParam int brandid, Model model, HttpServletRequest request) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -244,7 +235,7 @@ public class ProductController {
 		return "product/editBrand";
 	}
 	
-	@PostMapping(value= "/editBrand")
+	@PostMapping(value= "/brand/editBrand")
 	public String postEditBrand(@ModelAttribute Brand brand, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 
 		String errorString=brandDAO.update(brand.getBrandid(), brand.getBrandcode(), brand.getBrandname());
@@ -259,7 +250,7 @@ public class ProductController {
 		}
 	}
 	
-	@GetMapping(value= "/deleteBrand")
+	@GetMapping(value= "/brand/deleteBrand")
 	public String getDeleteBrand(@RequestParam int brandid, Model model, HttpServletRequest request ) {
 
 		String sourceURL = request.getHeader("Referer");
@@ -271,7 +262,7 @@ public class ProductController {
 		return "product/deleteBrand";
 	}
 	
-	@PostMapping(value= "/deleteBrand")
+	@PostMapping(value= "/brand/deleteBrand")
 	public String postDeleteBrand(@ModelAttribute Brand brand, Model model, @RequestParam String sourceURL, RedirectAttributes ra) { 
 
 		String errorString = brandDAO.delete(brand.getBrandid());

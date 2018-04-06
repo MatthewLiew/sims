@@ -69,7 +69,7 @@
            	</div>
            	
            	<div class="modal clickable" id="CreateSubDepartment" tabindex="-1" role="dialog" aria-labelledby="CreateSubDepartment" aria-hidden="true">
-	            <form method="POST" th:action="@{/createSubDepartment}" id="CreateSubDepartment" onsubmit="return subdeptForm('CreateSubDepartment')">
+	            <form method="POST" th:action="@{/subdepartment/createSubDepartment}" id="CreateSubDepartment" onsubmit="return subdeptForm('CreateSubDepartment')">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -96,7 +96,7 @@
 	        </div>
 	        
 	        <div class="modal clickable" id="EditSubDepartment" tabindex="-1" role="dialog" aria-labelledby="EditSubDepartment" aria-hidden="true">
-	            <form method="POST" th:action="@{/editSubDepartment}" id="EditSubDepartment" onsubmit="return subdeptForm('EditSubDepartment')">
+	            <form method="POST" th:action="@{/subdepartment/editSubDepartment}" id="EditSubDepartment" onsubmit="return subdeptForm('EditSubDepartment')">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -123,7 +123,7 @@
 	        </div>
 	        
 	        <div class="modal clickable" id="DeleteSubDepartment" tabindex="-1" role="dialog" aria-labelledby="DeleteSubDepartment" aria-hidden="true">
-	            <form method="POST" th:action="@{/deleteSubDepartment}" id="DeleteSubDepartment">
+	            <form method="POST" th:action="@{/subdepartment/deleteSubDepartment}" id="DeleteSubDepartment">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -158,14 +158,14 @@
                 $('#CreateSubDepartment .modal-body').empty();
                 $('#CreateSubDepartment .modal-title').text("New Sub Department");
                 $('#CreateSubDepartment #modal_error').hide();
-                $('#CreateSubDepartment .modal-body').load('createSubDepartment', function () {
+                $('#CreateSubDepartment .modal-body').load('/subdepartment/createSubDepartment', function () {
                     $('#CreateSubDepartment').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditSubDepartment .modal-body').empty();
                 $('#EditSubDepartment .modal-title').text("Edit Sub Department");
                 $('#EditSubDepartment #modal_error').hide();
-                $('#EditSubDepartment .modal-body').load('editSubDepartment?subdeptid=' + id, function () {
+                $('#EditSubDepartment .modal-body').load('/subdepartment/editSubDepartment?subdeptid=' + id, function () {
                     $('#EditSubDepartment').modal({show: true});
                 });
             } else if (action == 'change') {
@@ -178,7 +178,7 @@
             } else if (action == 'delete') {
                 $('#DeleteSubDepartment .modal-body').empty();
                 $('#DeleteSubDepartment .modal-title').text("Delete Sub Department");
-                $('#DeleteSubDepartment .modal-body').load('deleteSubDepartment?subdeptid=' + id, function () {
+                $('#DeleteSubDepartment .modal-body').load('/subdepartment/deleteSubDepartment?subdeptid=' + id, function () {
                     $('#DeleteSubDepartment').modal({show: true});
                 });
             }

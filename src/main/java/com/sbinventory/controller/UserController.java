@@ -7,35 +7,23 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sbinventory.dao.AppRoleDAO;
-import com.sbinventory.dao.BrandDAO;
 import com.sbinventory.dao.DeptDAO;
-import com.sbinventory.dao.HardwareDAO;
-import com.sbinventory.dao.MainLocDAO;
 import com.sbinventory.dao.OrganizationDAO;
-import com.sbinventory.dao.PartNoDAO;
-import com.sbinventory.dao.ProductDAO;
-import com.sbinventory.dao.ReasonDAO;
-import com.sbinventory.dao.StockHistoryDAO;
-import com.sbinventory.dao.StockTypeDAO;
 import com.sbinventory.dao.SubDeptDAO;
-import com.sbinventory.dao.SubLocDAO;
 import com.sbinventory.dao.UserAccountDAO;
-import com.sbinventory.dao.UserRoleDAO;
+//import com.sbinventory.dao.UserRoleDAO;
 import com.sbinventory.model.AppRole;
 import com.sbinventory.model.Dept;
 import com.sbinventory.model.Organization;
 import com.sbinventory.model.SubDept;
 import com.sbinventory.model.UserAccount;
-import com.sbinventory.model.UserRole;
 
 @Controller
 public class UserController {
@@ -52,8 +40,8 @@ public class UserController {
 	@Autowired
 	private SubDeptDAO subDeptDAO;
 
-	@Autowired
-	private UserRoleDAO userRoleDAO;
+//	@Autowired
+//	private UserRoleDAO userRoleDAO;
 	
 	@Autowired
 	private AppRoleDAO appRoleDAO;
@@ -81,7 +69,7 @@ public class UserController {
 	}
 	
 	/**************** USER ACCOUNT ACTION ***********************/
-	@GetMapping(value= "/createUser")
+	@GetMapping(value= "/useraccount/createUser")
 	public String getCreateUser(Model model, HttpServletRequest request ) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -104,7 +92,7 @@ public class UserController {
 		return "userAccount/createUser";
 	}
 	
-	@PostMapping(value= "/createUser")
+	@PostMapping(value= "/useraccount/createUser")
 	public String postCreateUser(@ModelAttribute UserAccount useracc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
 //		System.out.println(useracc.getUsername());
@@ -126,7 +114,7 @@ public class UserController {
 		}
 	}
 	
-	@GetMapping(value= "/editUser")
+	@GetMapping(value= "/useraccount/editUser")
 	public String getEditUser(@RequestParam int userid, Model model, HttpServletRequest request) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -150,7 +138,7 @@ public class UserController {
 		return "userAccount/editUser";
 	}
 	
-	@PostMapping(value= "/editUser")
+	@PostMapping(value= "/useraccount/editUser")
 
 	public String postEditUser(@ModelAttribute UserAccount useracc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 
@@ -166,7 +154,7 @@ public class UserController {
 		}
 	}
 	
-	@GetMapping(value= "/deleteUser")
+	@GetMapping(value= "/useraccount/deleteUser")
 	public String getDeleteUser(@RequestParam int userid, Model model, HttpServletRequest request) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -178,7 +166,7 @@ public class UserController {
 		return "userAccount/deleteUser";
 	}
 	
-	@PostMapping(value= "/deleteUser")
+	@PostMapping(value= "/useraccount/deleteUser")
 	public String postDeleteUser(@ModelAttribute UserAccount useracc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
 		String errorString = userAccountDAO.delete(useracc.getUserid());
@@ -193,7 +181,7 @@ public class UserController {
 		}
 	}
 
-	@GetMapping(value= "/changePassword")
+	@GetMapping(value= "/useraccount/changePassword")
 	public String getChangePassword(@RequestParam int userid, Model model, HttpServletRequest request) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -202,7 +190,7 @@ public class UserController {
 		return "userAccount/changePassword";
 	}
 	
-	@PostMapping(value= "/changePassword")
+	@PostMapping(value= "/useraccount/changePassword")
 	public String postChangePassword(@RequestParam int userid, 
 									 @RequestParam String password, 
 									 @RequestParam String repassword,

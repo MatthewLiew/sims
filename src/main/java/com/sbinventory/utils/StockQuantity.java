@@ -79,6 +79,7 @@ public class StockQuantity {
 					}
 				}
 			}
+			System.out.println(total);
 			storageDAO.updateQuantity(stor.getStorageid(), total);
 		}
 	}
@@ -110,7 +111,7 @@ public class StockQuantity {
 		for(Storage stor : storages){
 			
 			int totalquantity=0;
-			List<DisposalHistory> disposalHistories = disposalHistoryDAO.getAllDisposalHistory();
+			List<DisposalHistory> disposalHistories = disposalHistoryDAO.findAll();
 			for(DisposalHistory dis: disposalHistories){
 				
 				if((stor.getMainlocid() == dis.getMainlocid()) && (stor.getSublocid() == dis.getSublocid())
@@ -128,7 +129,7 @@ public class StockQuantity {
 		for(Storage stor : storages){
 			
 			int totalquantity=0;
-			List<RMA> rmas = rmaDAO.getAllRMA();
+			List<RMA> rmas = rmaDAO.findAll();
 			for(RMA rma: rmas){
 				
 				if((stor.getMainlocid() == rma.getMainlocid()) && (stor.getSublocid() == rma.getSublocid())

@@ -13,26 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.sbinventory.dao.AppRoleDAO;
-import com.sbinventory.dao.BrandDAO;
 import com.sbinventory.dao.DeptDAO;
-import com.sbinventory.dao.HardwareDAO;
-import com.sbinventory.dao.MainLocDAO;
 import com.sbinventory.dao.OrganizationDAO;
-import com.sbinventory.dao.PartNoDAO;
-import com.sbinventory.dao.ProductDAO;
-import com.sbinventory.dao.ReasonDAO;
-import com.sbinventory.dao.StockHistoryDAO;
-import com.sbinventory.dao.StockTypeDAO;
 import com.sbinventory.dao.SubDeptDAO;
-import com.sbinventory.dao.SubLocDAO;
-import com.sbinventory.dao.UserAccountDAO;
-import com.sbinventory.dao.UserRoleDAO;
+//import com.sbinventory.dao.UserRoleDAO;
 import com.sbinventory.model.Dept;
 import com.sbinventory.model.Organization;
-import com.sbinventory.model.Product;
 import com.sbinventory.model.SubDept;
-import com.sbinventory.model.UserAccount;
 
 @Controller
 public class OrganizationController {
@@ -99,7 +86,7 @@ public class OrganizationController {
 	}
 	
 	/**************** ORGANIZATION ACTION ***********************/
-	@GetMapping(value= "/createOrganization")
+	@GetMapping(value= "/organization/createOrganization")
 	public String getCreateOrganization(Model model, HttpServletRequest request) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -110,7 +97,7 @@ public class OrganizationController {
 		return "organization/createOrganization";
 	}
 	
-	@PostMapping(value= "/createOrganization")
+	@PostMapping(value= "/organization/createOrganization")
 	public String postCreateOrganization(@ModelAttribute Organization org, Model model, @RequestParam String sourceURL, RedirectAttributes ra ) {
 		
 		String errorString=organizationDAO.create(org.getOrgcode(), org.getOrgname());
@@ -125,7 +112,7 @@ public class OrganizationController {
 		}
 	}
 	
-	@GetMapping(value= "/editOrganization")
+	@GetMapping(value= "/organization/editOrganization")
 	public String getEditOrganization(@RequestParam int orgid, Model model, HttpServletRequest request) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -137,7 +124,7 @@ public class OrganizationController {
 		return "organization/editOrganization";
 	}
 	
-	@PostMapping(value= "/editOrganization")
+	@PostMapping(value= "/organization/editOrganization")
 	public String postEditOrganization(@ModelAttribute Organization org, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 
 		String errorString = organizationDAO.update(org.getOrgid(), org.getOrgcode(), org.getOrgname());
@@ -152,7 +139,7 @@ public class OrganizationController {
 		}
 	}
 
-	@GetMapping(value= "/deleteOrganization")
+	@GetMapping(value= "/organization/deleteOrganization")
 	public String getDeleteOrganization(@RequestParam int orgid, Model model, HttpServletRequest request ) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -164,7 +151,7 @@ public class OrganizationController {
 		return "organization/deleteOrganization";
 	}
 	
-	@PostMapping(value= "/deleteOrganization")
+	@PostMapping(value= "/organization/deleteOrganization")
 	public String postDeleteOrganization(@ModelAttribute Organization org, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
 		String errorString = organizationDAO.delete(org.getOrgid());
@@ -180,7 +167,7 @@ public class OrganizationController {
 	}
 	
 	/**************** DEPARTMENT ACTION ***********************/
-	@GetMapping(value= "/createDepartment")
+	@GetMapping(value= "/department/createDepartment")
 	public String getCreateDepartment(Model model, HttpServletRequest request) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -194,7 +181,7 @@ public class OrganizationController {
 		return "organization/createDepartment";
 	}
 	
-	@PostMapping(value= "/createDepartment")
+	@PostMapping(value= "/department/createDepartment")
 	public String postCreateDepartment(@ModelAttribute Dept dept, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
 		String errorString=deptDAO.create(dept.getOrgid(), dept.getDeptcode(), dept.getDeptname());
@@ -209,7 +196,7 @@ public class OrganizationController {
 		}
 	}
 	
-	@GetMapping(value= "/editDepartment")
+	@GetMapping(value= "/department/editDepartment")
 	public String getEditDepartment(@RequestParam int deptid, Model model, HttpServletRequest request) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -224,7 +211,7 @@ public class OrganizationController {
 		return "organization/editDepartment";
 	}
 	
-	@PostMapping(value= "/editDepartment")
+	@PostMapping(value= "/department/editDepartment")
 	public String postEditDepartment(@ModelAttribute Dept dept, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 
 		String errorString=deptDAO.update(dept.getDeptid(), dept.getDeptcode(), dept.getDeptname());
@@ -238,7 +225,7 @@ public class OrganizationController {
 		}
 	}
 		
-	@GetMapping(value= "/deleteDepartment")
+	@GetMapping(value= "/department/deleteDepartment")
 	public String getDeleteDepartment(@RequestParam int deptid, Model model, HttpServletRequest request ) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -250,7 +237,7 @@ public class OrganizationController {
 		return "organization/deleteDepartment";
 	}
 	
-	@PostMapping(value= "/deleteDepartment")
+	@PostMapping(value= "/department/deleteDepartment")
 	public String postDeleteDepartment(@ModelAttribute Dept dept, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
 		String errorString = deptDAO.delete(dept.getDeptid());
@@ -266,7 +253,7 @@ public class OrganizationController {
 	}
 	
 	/**************** SUB DEPARTMENT ACTION ***********************/
-	@GetMapping(value= "/createSubDepartment")
+	@GetMapping(value= "/subdepartment/createSubDepartment")
 	public String getCreateSubDepartment(Model model, HttpServletRequest request) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -283,7 +270,7 @@ public class OrganizationController {
 		return "organization/createSubDepartment";
 	}
 	
-	@PostMapping(value= "/createSubDepartment")
+	@PostMapping(value= "/subdepartment/createSubDepartment")
 	public String postCreateSubDepartment(@ModelAttribute SubDept subdept, Model model,  @RequestParam String sourceURL, RedirectAttributes ra) {
 		
 		String errorString=subDeptDAO.create(subdept.getDeptid(), subdept.getSubdeptcode(), subdept.getSubdeptname());
@@ -298,7 +285,7 @@ public class OrganizationController {
 		}
 	}
 	
-	@GetMapping(value= "/editSubDepartment")
+	@GetMapping(value= "/subdepartment/editSubDepartment")
 	public String getEditSubDepartment(@RequestParam int subdeptid, Model model, HttpServletRequest request) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -316,7 +303,7 @@ public class OrganizationController {
 		return "organization/editSubDepartment";
 	}
 	
-	@PostMapping(value= "/editSubDepartment")
+	@PostMapping(value= "/subdepartment/editSubDepartment")
 	public String postEditSubDepartment(@ModelAttribute SubDept subdept, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 
 		String errorString = subDeptDAO.update(subdept.getSubdeptid(), subdept.getSubdeptcode(), subdept.getSubdeptname());
@@ -331,7 +318,7 @@ public class OrganizationController {
 		}
 	}
 	
-	@GetMapping(value= "/deleteSubDepartment")
+	@GetMapping(value= "/subdepartment/deleteSubDepartment")
 	public String getDeleteSubDepartment(@RequestParam int subdeptid, Model model, HttpServletRequest request ) {
 		
 		String sourceURL = request.getHeader("Referer");
@@ -343,7 +330,7 @@ public class OrganizationController {
 		return "organization/deleteSubDepartment";
 	}
 	
-	@PostMapping(value= "/deleteSubDepartment")
+	@PostMapping(value= "/subdepartment/deleteSubDepartment")
 	public String postDeleteSubDepartment(@ModelAttribute SubDept subdept, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
 		String errorString = subDeptDAO.delete(subdept.getSubdeptid());

@@ -28,12 +28,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sbinventory.dao.AppRoleDAO;
 import com.sbinventory.dao.AssetReqsDAO;
 import com.sbinventory.dao.BrandDAO;
+import com.sbinventory.dao.DeptDAO;
 import com.sbinventory.dao.DisposalHistoryDAO;
 import com.sbinventory.dao.HardwareDAO;
 import com.sbinventory.dao.ITFDAO;
 import com.sbinventory.dao.MainLocDAO;
+import com.sbinventory.dao.OrganizationDAO;
 import com.sbinventory.dao.PartNoDAO;
 import com.sbinventory.dao.ProductDAO;
 import com.sbinventory.dao.RMADAO;
@@ -41,15 +44,20 @@ import com.sbinventory.dao.ReasonDAO;
 import com.sbinventory.dao.StockHistoryDAO;
 import com.sbinventory.dao.StockTypeDAO;
 import com.sbinventory.dao.StorageDAO;
+import com.sbinventory.dao.SubDeptDAO;
 import com.sbinventory.dao.SubLocDAO;
 import com.sbinventory.dao.TransferHistoryDAO;
+import com.sbinventory.dao.UserCapDAO;
 import com.sbinventory.fileio.ReadCSVFileExample;
+import com.sbinventory.model.AppRole;
 import com.sbinventory.model.AssetReqs;
 import com.sbinventory.model.Brand;
+import com.sbinventory.model.Dept;
 import com.sbinventory.model.DisposalHistory;
 import com.sbinventory.model.Hardware;
 import com.sbinventory.model.ITF;
 import com.sbinventory.model.MainLoc;
+import com.sbinventory.model.Organization;
 import com.sbinventory.model.PartNo;
 import com.sbinventory.model.Product;
 import com.sbinventory.model.RMA;
@@ -57,9 +65,11 @@ import com.sbinventory.model.Reason;
 import com.sbinventory.model.StockHistory;
 import com.sbinventory.model.StockType;
 import com.sbinventory.model.Storage;
+import com.sbinventory.model.SubDept;
 import com.sbinventory.model.SubLoc;
 import com.sbinventory.model.TransferHistory;
 import com.sbinventory.model.UploadForm;
+import com.sbinventory.model.UserCap;
 import com.sbinventory.utils.DateTime;
 import com.sbinventory.utils.StockQuantity;
 import com.sbinventory.validator.CustomFileValidator;
@@ -69,6 +79,15 @@ public class StockController {
 	
 	@Autowired
 	private StockQuantity stockquantity;
+	
+	@Autowired
+	private OrganizationDAO organizationDAO;
+	
+	@Autowired
+	private DeptDAO deptDAO;
+	
+	@Autowired
+	private SubDeptDAO subdeptDAO;
 	
 	@Autowired
 	private MainLocDAO mainLocDAO;
@@ -116,6 +135,12 @@ public class StockController {
 	private AssetReqsDAO assetReqsDAO;
 	
 	@Autowired
+	private UserCapDAO userCapDAO;
+	
+	@Autowired
+	private AppRoleDAO appRoleDAO;
+	
+	@Autowired
 	CustomFileValidator customFileValidator;
 	
 	private String doUpload(HttpServletRequest request, Model model, //
@@ -140,8 +165,8 @@ public class StockController {
 	    	  System.out.println("error");
 	          return "stock/serialManagement";
 	      }
-//	      
-	      //
+	      
+	      
 	      List<File> uploadedFiles = new ArrayList<File>();
 	      List<String> failedFiles = new ArrayList<String>();
 	      
@@ -225,7 +250,7 @@ public class StockController {
 		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<StockType> stocktypes = stockTypeDAO.getAllStockType();
+		List<StockType> stocktypes = stockTypeDAO.findAll();
 		model.addAttribute("stocktypes", stocktypes);
 		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
@@ -278,13 +303,28 @@ public class StockController {
 //	}
 	
 	@GetMapping(value= "/settings")
-	public String getSettings(Model model) {
+	public String getSettings(Model model, HttpServletRequest request) {
 		
-		List<Reason> reasons = reasonDAO.getAllReason();
-		model.addAttribute("reasons", reasons);
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
 		
-		List<StockType> stocktypes = stockTypeDAO.getAllStockType();
-		model.addAttribute("stocktypes", stocktypes);
+		List<Reason> inreasons = reasonDAO.findAllByStocktype(1);
+		model.addAttribute("inreasons", inreasons);
+		
+		List<Reason> outreasons = reasonDAO.findAllByStocktype(2);
+		model.addAttribute("outreasons", outreasons);
+		
+		StockType stockin = stockTypeDAO.findOne(1);
+		model.addAttribute("stockin", stockin);
+		
+		StockType stockout = stockTypeDAO.findOne(2);
+		model.addAttribute("stockout", stockout);
+		
+		List<AppRole> approles = appRoleDAO.getAllRoleNames();
+		model.addAttribute("usercaps", approles);
+		
+		List<UserCap> usercaps = userCapDAO.findAll();
+		model.addAttribute("usercaps", usercaps);
 		
 		String message = (String)model.asMap().get("message");
 		model.addAttribute("message", message);
@@ -299,6 +339,15 @@ public class StockController {
 
 		List<Storage> storages = storageDAO.getAllStorage();
 		model.addAttribute("storages", storages);
+		
+		List<Organization> orgs = organizationDAO.findAll();
+		model.addAttribute("orgs", orgs);
+		
+		List<Dept> depts = deptDAO.findAll();
+		model.addAttribute("depts", depts);
+		
+		List<SubDept> subdepts = subdeptDAO.findAll();
+		model.addAttribute("subdepts", subdepts);
 		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
@@ -339,7 +388,7 @@ public class StockController {
 	@GetMapping(value= "/disposalhistory")
 	public String getDisposalHistory(Model model) {
 
-		List<DisposalHistory> disposalhistories = disposalHistoryDAO.getAllDisposalHistory();
+		List<DisposalHistory> disposalhistories = disposalHistoryDAO.findAll();
 		model.addAttribute("disposalhistories", disposalhistories);
 		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
@@ -360,7 +409,7 @@ public class StockController {
 	@GetMapping(value= "/rma")
 	public String getRMA(Model model) {
 
-		List<RMA> rmas = rmaDAO.getAllRMA();
+		List<RMA> rmas = rmaDAO.findAll();
 		model.addAttribute("rmas", rmas);
 		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
@@ -381,7 +430,7 @@ public class StockController {
 	@GetMapping(value= "/itf")
 	public String getITF(Model model) {
 
-		List<ITF> itfs = itfDAO.getAllITF();
+		List<ITF> itfs = itfDAO.findAll();
 		model.addAttribute("itfs", itfs);
 		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
@@ -402,7 +451,7 @@ public class StockController {
 	@GetMapping(value= "/assetrequisition")
 	public String getAssetReqs(Model model) {
 
-		List<AssetReqs> assetreqs = assetReqsDAO.getAllAssetReqs();
+		List<AssetReqs> assetreqs = assetReqsDAO.findAll();
 		model.addAttribute("assetreqs", assetreqs);
 		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
@@ -424,75 +473,88 @@ public class StockController {
 	@GetMapping(value= "/createReason")
 	public String getCreateReason(Model model, HttpServletRequest request) {
 	
-		String referer = request.getHeader("Referer");
-		model.addAttribute("referer", referer);
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
 		
-		List<StockType> stocktypes = stockTypeDAO.getAllStockType();
-		model.addAttribute("errorString",null);
+		List<StockType> stocktypes = stockTypeDAO.findAll();
 		model.addAttribute("stocktypes",stocktypes);
+		
+		model.addAttribute("reason",new Reason());
 			
 		return "stock/createReason";
 	}
 		
 	@PostMapping(value= "/createReason")
-	public String postCreateReason(@RequestParam String reason, int stocktypeid, Model model, @RequestParam String referer ) {
-//			String errorString= reasonDAO.createReason(reason, stocktypeid);
-		System.out.println(reason);
-//			if(errorString==null) {
-			return "redirect:"+referer;
-//			} else {
-//				model.addAttribute("errorString",errorString);
-//				return "stock/createReason";
-//			}
+	public String postCreateReason(@ModelAttribute Reason reason, Model model, @RequestParam String sourceURL, RedirectAttributes ra ) {
+		String errorString= reasonDAO.createReason(reason.getReason(), reason.getStocktypeid());
+
+		if(errorString==null) {
+			String message= "Reason - "+reason.getReason() +" created successfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 	
 	@GetMapping(value= "/editReason")
-	public String getEditReason(@RequestParam int reasonid, Model model ) {
-			
-		List<StockType> stocktypes = stockTypeDAO.getAllStockType();
-		Reason reason = reasonDAO.getReason(reasonid);
-		    
-		model.addAttribute("reason",reason);
+	public String getEditReason(@RequestParam int reasonid, Model model, HttpServletRequest request) {
+		
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
+		List<StockType> stocktypes = stockTypeDAO.findAll();
 		model.addAttribute("stocktypes",stocktypes);
+		
+		Reason reason = reasonDAO.getReason(reasonid);
+		model.addAttribute("reason",reason);
 
 		return "stock/editReason";
 	}
 		
 	@PostMapping(value= "/editReason")
-	public String postEditReason(@RequestParam int reasonid,
-			@RequestParam String reason, @RequestParam int stocktypeid, Model model ) {
-		System.out.println(reasonid+" "+reason);
-		String errorString=reasonDAO.updateReason(reasonid, reason, stocktypeid);
+	public String postEditReason(@ModelAttribute Reason reason, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+
+		String errorString=reasonDAO.updateReason(reason.getReasonid(), reason.getReason(), reason.getStocktypeid());
 		if(errorString==null) {
-			return "redirect:/stockmanagement";
+			String message= "Reason - "+ reason.getReason()+" updated successfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
 		} else {
 			model.addAttribute("errorString",errorString);
-			return "stock/editReason";
+			return "redirect:"+sourceURL;
 		}
 	}
 	
 	@GetMapping(value= "/deleteReason")
 	public String getDeleteReason(@RequestParam int reasonid, Model model, HttpServletRequest request) {
 		
-		String referer = request.getHeader("Referer");
-		model.addAttribute("referer", referer);
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
 		
 		Reason reason = reasonDAO.getReason(reasonid);
-		StockType stocktype = stockTypeDAO.getStockType(reason.getStocktypeid());
-		
 		model.addAttribute("reason", reason);
-		model.addAttribute("stocktype", stocktype);
 		
+		StockType stocktype = stockTypeDAO.findOne(reason.getStocktypeid());
+		model.addAttribute("stocktype", stocktype);
 		
 		return "stock/deleteReason";
 	}
 	
 	@PostMapping(value= "/deleteReason")
-	public String postDeleteReason(@RequestParam int reasonid, Model model, @RequestParam String referer ) {
-		System.out.println(reasonid);
-//			reasonDAO.deleteReason(reasonid);
+	public String postDeleteReason(@ModelAttribute Reason reason, Model model, @RequestParam String sourceURL, RedirectAttributes ra ) {
+		
+		String errorString = reasonDAO.deleteReason(reason.getReasonid());
 			
-		return "redirect:"+referer;
+		if(errorString==null) {
+			String message="Reason - "+ reason.getReason()+" has deleted";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
 	}
 	
 	/**************** STOCK ACTION ***********************/
@@ -506,7 +568,7 @@ public class StockController {
 		model.addAttribute("index", productid);
 		model.addAttribute("products",products);
 		
-		List<Reason> reasons = reasonDAO.getReasonStockInAndOut(stocktypeid);
+		List<Reason> reasons = reasonDAO.findAllByStocktype(stocktypeid);
 		model.addAttribute("reasons",reasons);
 		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
@@ -569,7 +631,7 @@ public class StockController {
 		model.addAttribute("index",productid);
 		model.addAttribute("products",products);
 		
-		List<Reason> reasons = reasonDAO.getReasonStockInAndOut(stocktypeid);
+		List<Reason> reasons = reasonDAO.findAllByStocktype(stocktypeid);
 		model.addAttribute("reasons",reasons);
 		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
@@ -644,7 +706,7 @@ public class StockController {
 		List<Reason> reasons = reasonDAO.getAllReason();
 		model.addAttribute("reasons",reasons);
 		
-		List<StockType> stocktypes = stockTypeDAO.getAllStockType();
+		List<StockType> stocktypes = stockTypeDAO.findAll();
 		model.addAttribute("stocktypes",stocktypes);
 		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
@@ -844,7 +906,7 @@ public class StockController {
 	public String postDisposeStock(@ModelAttribute DisposalHistory dh, @RequestParam int productid, Model model, 
 			@RequestParam String sourceURL, RedirectAttributes ra) {
 		
-		String errorString = disposalHistoryDAO.createDisposalHistory(null, DateTime.Now(), dh.getProductid(), dh.getQuantity(), 
+		String errorString = disposalHistoryDAO.create(null, DateTime.Now(), dh.getProductid(), dh.getQuantity(), 
 				dh.getMainlocid(), dh.getSublocid(), "pending");		
 //		
 		if(errorString==null) {
@@ -863,7 +925,7 @@ public class StockController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		DisposalHistory disposalhistory= disposalHistoryDAO.getDisposalHistory(disposalhistoryid);
+		DisposalHistory disposalhistory= disposalHistoryDAO.findOne(disposalhistoryid);
 		model.addAttribute("dh", disposalhistory);
 		
 		List<Product> products = productDAO.findAll();
@@ -882,7 +944,7 @@ public class StockController {
 	public String postEditDisposalHistory(@ModelAttribute DisposalHistory dh, Model model, @RequestParam String sourceURL, 
 			RedirectAttributes ra) {
 		
-		String errorString = disposalHistoryDAO.updateDisposalHistory(dh.getDisposalhistoryid(), dh.getProductid(), dh.getMainlocid(), 
+		String errorString = disposalHistoryDAO.update(dh.getDisposalhistoryid(), dh.getProductid(), dh.getMainlocid(), 
 				dh.getSublocid(), dh.getQuantity());
 		
 		if(errorString==null) {
@@ -910,7 +972,7 @@ public class StockController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		DisposalHistory disposalhistory = disposalHistoryDAO.getDisposalHistory(disposalhistoryid);
+		DisposalHistory disposalhistory = disposalHistoryDAO.findOne(disposalhistoryid);
 		model.addAttribute("disposalhistory", disposalhistory);	
 		
 		Product product = productDAO.findOne(disposalhistory.getProductid());	
@@ -922,7 +984,7 @@ public class StockController {
 	@PostMapping(value= "/deleteDisposalHistory")
 	public String postDeleteDisposalHistory(@RequestParam int disposalhistoryid, Model model, @RequestParam String sourceURL, RedirectAttributes ra ) {
 
-		String errorString = disposalHistoryDAO.deleteDisposalHistory(disposalhistoryid);
+		String errorString = disposalHistoryDAO.delete(disposalhistoryid);
 			
 		if(errorString==null) {
 			String message= "Stock disposal record has deleted";
@@ -958,7 +1020,7 @@ public class StockController {
 	@PostMapping(value= "/createRMA")
 	public String postCreateRMA(@ModelAttribute RMA rma, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
-		String errorString = rmaDAO.createRMA(null, DateTime.Now(), rma.getProductid(), rma.getQuantity(), rma.getMainlocid(), rma.getSublocid(),
+		String errorString = rmaDAO.create(null, DateTime.Now(), rma.getProductid(), rma.getQuantity(), rma.getMainlocid(), rma.getSublocid(),
 				"pending", rma.getReason());		
 		
 		if(errorString==null) {
@@ -977,7 +1039,7 @@ public class StockController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		RMA rma= rmaDAO.getRMA(rmaid);
+		RMA rma= rmaDAO.findOne(rmaid);
 		model.addAttribute("rma", rma);
 		
 		List<Product> products = productDAO.findAll();
@@ -996,7 +1058,7 @@ public class StockController {
 	public String postEditRMA(/*@RequestParam (defaultValue="0")int sublocid,*/
 			@ModelAttribute RMA rma, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
-		String errorString = rmaDAO.updateRMA(rma.getRmaid(), rma.getProductid(), rma.getMainlocid(), rma.getSublocid(), rma.getQuantity(), 
+		String errorString = rmaDAO.update(rma.getRmaid(), rma.getProductid(), rma.getMainlocid(), rma.getSublocid(), rma.getQuantity(), 
 				rma.getReason());
 		
 		if(errorString==null) {
@@ -1024,7 +1086,7 @@ public class StockController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		RMA rma = rmaDAO.getRMA(rmaid);
+		RMA rma = rmaDAO.findOne(rmaid);
 		Product product = productDAO.findOne(rma.getProductid());
 		
 		model.addAttribute("rma", rma);		
@@ -1036,7 +1098,7 @@ public class StockController {
 	@PostMapping(value= "/deleteRMA")
 	public String postDeleteRMA(@ModelAttribute RMA rma, Model model, @RequestParam String sourceURL, RedirectAttributes ra ) {
 
-		String errorString = rmaDAO.deleteRMA(rma.getRmaid());
+		String errorString = rmaDAO.delete(rma.getRmaid());
 			
 		if(errorString==null) {
 			String message= "RMA record has deleted";
@@ -1077,7 +1139,7 @@ public class StockController {
 			Model model,
 			@RequestParam String sourceURL, RedirectAttributes ra ) {
 		
-		String errorString = itfDAO.createITF(null, DateTime.Now(), productid, quantity, mainlocid, sublocid, "pending");		
+		String errorString = itfDAO.create(null, DateTime.Now(), productid, quantity, mainlocid, sublocid, "pending");		
 		
 		if(errorString==null) {
 			String message= "ITF created successfully";
@@ -1095,7 +1157,7 @@ public class StockController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		ITF itf= itfDAO.getITF(itfid);
+		ITF itf= itfDAO.findOne(itfid);
 		model.addAttribute("itf", itf);
 		
 		List<Product> products = productDAO.findAll();
@@ -1114,7 +1176,7 @@ public class StockController {
 	public String postEditITF( /*@RequestParam (defaultValue="0")int sublocid,*/
 			@ModelAttribute ITF itf, Model model, @RequestParam String sourceURL, RedirectAttributes ra ) {
 		
-		String errorString = itfDAO.updateITF(itf.getItfid(), itf.getProductid(), itf.getMainlocid(), itf.getSublocid(), itf.getQuantity());
+		String errorString = itfDAO.update(itf.getItfid(), itf.getProductid(), itf.getMainlocid(), itf.getSublocid(), itf.getQuantity());
 		
 		if(errorString==null) {
 			String message= "ITF record updated successfully";
@@ -1141,7 +1203,7 @@ public class StockController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		ITF itf = itfDAO.getITF(itfid);
+		ITF itf = itfDAO.findOne(itfid);
 		model.addAttribute("itf", itf);
 		
 		Product product = productDAO.findOne(itf.getProductid());		
@@ -1153,7 +1215,7 @@ public class StockController {
 	@PostMapping(value= "/deleteITF")
 	public String postDeleteITF(@ModelAttribute ITF itf, Model model, @RequestParam String sourceURL, RedirectAttributes ra ) {
 
-		String errorString = itfDAO.deleteITF(itf.getItfid());
+		String errorString = itfDAO.delete(itf.getItfid());
 			
 		if(errorString==null) {
 			String message= "ITF record has deleted";
@@ -1189,7 +1251,7 @@ public class StockController {
 	@PostMapping(value= "/createAssetReqs")
 	public String postCreateAssetReqs(@ModelAttribute AssetReqs assetreqs, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
-		String errorString = assetReqsDAO.createAssetReqs(null, DateTime.Now(), assetreqs.getProductid(), assetreqs.getQuantity(), assetreqs.getMainlocid(), 
+		String errorString = assetReqsDAO.create(null, DateTime.Now(), assetreqs.getProductid(), assetreqs.getQuantity(), assetreqs.getMainlocid(), 
 				assetreqs.getSublocid(), "pending");		
 		
 		if(errorString==null) {
@@ -1208,7 +1270,7 @@ public class StockController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		AssetReqs assetreq= assetReqsDAO.getAssetReqs(assetreqsid);
+		AssetReqs assetreq= assetReqsDAO.findOne(assetreqsid);
 		model.addAttribute("assetreq", assetreq);
 		
 		List<Product> products = productDAO.findAll();
@@ -1227,7 +1289,7 @@ public class StockController {
 	public String postEditAssetReqs( /*@RequestParam (defaultValue="0")int sublocid,*/
 			@ModelAttribute AssetReqs assetreq, Model model, @RequestParam String sourceURL, RedirectAttributes ra ) {
 		
-		String errorString = assetReqsDAO.updateAssetReqs(assetreq.getAssetreqsid(), assetreq.getProductid(),assetreq.getMainlocid(), 
+		String errorString = assetReqsDAO.update(assetreq.getAssetreqsid(), assetreq.getProductid(),assetreq.getMainlocid(), 
 				assetreq.getSublocid(), assetreq.getQuantity());
 		
 		if(errorString==null) {
@@ -1255,7 +1317,7 @@ public class StockController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		AssetReqs assetreq = assetReqsDAO.getAssetReqs(assetreqsid);
+		AssetReqs assetreq = assetReqsDAO.findOne(assetreqsid);
 		model.addAttribute("assetreq", assetreq);	
 		
 		Product product = productDAO.findOne(assetreq.getProductid());	
@@ -1267,10 +1329,98 @@ public class StockController {
 	@PostMapping(value= "/deleteAssetReqs")
 	public String postDeleteAssetReqs(@ModelAttribute AssetReqs assetreq, Model model, @RequestParam String sourceURL, RedirectAttributes ra ) {
 
-		String errorString = assetReqsDAO.deleteAssetReqs(assetreq.getAssetreqsid());
+		String errorString = assetReqsDAO.delete(assetreq.getAssetreqsid());
 			
 		if(errorString==null) {
 			String message= "Asset Requisition has deleted";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
+	}
+	
+	/**************** SETTINGS ACTION ***********************/
+	@GetMapping(value= "/createSettings")
+	public String getCreateSettings(Model model, HttpServletRequest request) {
+	
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
+		List<StockType> stocktypes = stockTypeDAO.findAll();
+		model.addAttribute("stocktypes",stocktypes);
+		
+		model.addAttribute("reason",new Reason());
+			
+		return "stock/createReason";
+	}
+		
+	@PostMapping(value= "/createSettings")
+	public String postCreateSettings(@ModelAttribute Reason reason, Model model, @RequestParam String sourceURL, RedirectAttributes ra ) {
+		String errorString= reasonDAO.createReason(reason.getReason(), reason.getStocktypeid());
+
+		if(errorString==null) {
+			String message= "Reason - "+reason.getReason() +" created successfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:"+sourceURL;
+		}
+	}
+	
+	@GetMapping(value= "/editSettings")
+	public String getEditSettings(@RequestParam int reasonid, Model model, HttpServletRequest request) {
+		
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
+		List<StockType> stocktypes = stockTypeDAO.findAll();
+		model.addAttribute("stocktypes",stocktypes);
+		
+		Reason reason = reasonDAO.getReason(reasonid);
+		model.addAttribute("reason",reason);
+
+		return "stock/editReason";
+	}
+		
+	@PostMapping(value= "/usercap")
+	public String postUserCap(@ModelAttribute UserCap usercap, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+
+//		String errorString=reasonDAO.updateReason(reason.getReasonid(), reason.getReason(), reason.getStocktypeid());
+//		if(errorString==null) {
+//			String message= "Reason - "+ reason.getReason()+" updated successfully";
+//			ra.addFlashAttribute("message", message);
+			return "redirect:"+sourceURL;
+//		} else {
+//			model.addAttribute("errorString",errorString);
+//			return "redirect:"+sourceURL;
+//		}
+	}
+	
+	@GetMapping(value= "/deleteSettings")
+	public String getDeleteSettings(@RequestParam int reasonid, Model model, HttpServletRequest request) {
+		
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
+		Reason reason = reasonDAO.getReason(reasonid);
+		model.addAttribute("reason", reason);
+		
+		StockType stocktype = stockTypeDAO.findOne(reason.getStocktypeid());
+		model.addAttribute("stocktype", stocktype);
+		
+		return "stock/deleteReason";
+	}
+	
+	@PostMapping(value= "/deleteSettings")
+	public String postDeleteSettings(@ModelAttribute Reason reason, Model model, @RequestParam String sourceURL, RedirectAttributes ra ) {
+		
+		String errorString = reasonDAO.deleteReason(reason.getReasonid());
+			
+		if(errorString==null) {
+			String message="Reason - "+ reason.getReason()+" has deleted";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {

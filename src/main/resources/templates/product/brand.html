@@ -63,7 +63,7 @@
            	</div>
            	
            	<div class="modal clickable" id="CreateBrand" tabindex="-1" role="dialog" aria-labelledby="CreateBrand" aria-hidden="true">
-	            <form method="POST" th:action="@{/createBrand}" id="CreateBrand" onsubmit="return brandForm('CreateBrand');">
+	            <form method="POST" th:action="@{/brand/createBrand}" id="CreateBrand" onsubmit="return brandForm('CreateBrand');">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -90,7 +90,7 @@
 	        </div>
 	        
 	        <div class="modal clickable" id="EditBrand" tabindex="-1" role="dialog" aria-labelledby="EditBrand" aria-hidden="true">
-	            <form method="POST" th:action="@{/editBrand}" id="EditBrand" onsubmit="return brandForm('EditBrand');">
+	            <form method="POST" th:action="@{/brand/editBrand}" id="EditBrand" onsubmit="return brandForm('EditBrand');">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -117,7 +117,7 @@
 	        </div>
 	        
 	        <div class="modal clickable" id="DeleteBrand" tabindex="-1" role="dialog" aria-labelledby="DeleteBrand" aria-hidden="true">
-	            <form method="POST" th:action="@{/deleteBrand}" id="DeleteBrand">
+	            <form method="POST" th:action="@{/brand/deleteBrand}" id="DeleteBrand">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->
@@ -152,14 +152,14 @@
                 $('#CreateBrand .modal-body').empty();
                 $('#CreateBrand .modal-title').text("New Brand");
                 $('#CreateBrand #modal_error').hide();
-                $('#CreateBrand .modal-body').load('createBrand', function () {
+                $('#CreateBrand .modal-body').load('/brand/createBrand', function () {
                     $('#CreateBrand').modal({show: true});
                 });
             } else if (action == 'edit') {
                 $('#EditBrand .modal-body').empty();
                 $('#EditBrand .modal-title').text("Edit Brand");
                 $('#EditBrand #modal_error').hide();
-                $('#EditBrand .modal-body').load('editBrand?brandid=' + id, function () {
+                $('#EditBrand .modal-body').load('/brand/editBrand?brandid=' + id, function () {
                     $('#EditBrand').modal({show: true});
                 });
             } else if (action == 'change') {
@@ -172,7 +172,7 @@
             } else if (action == 'delete') {
                 $('#DeleteBrand .modal-body').empty();
                 $('#DeleteBrand .modal-title').text("Delete Brand");
-                $('#DeleteBrand .modal-body').load('deleteBrand?brandid=' + id, function () {
+                $('#DeleteBrand .modal-body').load('/brand/deleteBrand?brandid=' + id, function () {
                     $('#DeleteBrand').modal({show: true});
                 });
             }
