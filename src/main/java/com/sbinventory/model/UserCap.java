@@ -4,16 +4,16 @@ public class UserCap {
 
 	private int usercapid;
 	private int approleid;
-	private boolean accessright;
-	private boolean approve;
-	private boolean add;
-	private boolean edit;
-	private boolean delete;
+	private int accessright;
+	private int approve;
+	private int add;
+	private int edit;
+	private int delete;
 	
 	public UserCap() {}
 
-	public UserCap(int usercapid, int approleid, boolean accessright, boolean approve, boolean add, boolean edit,
-			boolean delete) {
+	public UserCap(int usercapid, int approleid, int accessright, int approve, int add, int edit,
+			int delete) {
 		this.usercapid = usercapid;
 		this.approleid = approleid;
 		this.accessright = accessright;
@@ -39,43 +39,44 @@ public class UserCap {
 		this.approleid = approleid;
 	}
 
-	public boolean isAccessright() {
+	public int getAccessright() {
 		return accessright;
 	}
 
-	public void setAccessright(boolean accessright) {
+	public void setAccessright(int accessright) {
 		this.accessright = accessright;
 	}
 
-	public boolean isApprove() {
+	public int getApprove() {
 		return approve;
 	}
 
-	public void setApprove(boolean approve) {
+	public void setApprove(int approve) {
 		this.approve = approve;
 	}
 
-	public boolean isAdd() {
+	public int getAdd() {
 		return add;
 	}
 
-	public void setAdd(boolean add) {
+	public void setAdd(int add) {
 		this.add = add;
 	}
 
-	public boolean isEdit() {
+	public int getEdit() {
 		return edit;
 	}
 
-	public void setEdit(boolean edit) {
+	public void setEdit(int edit) {
 		this.edit = edit;
 	}
 
-	public boolean isDelete() {
+	public int getDelete() {
 		return delete;
 	}
 
-	public void setDelete(boolean delete) {
+	public void setDelete(int delete) {
 		this.delete = delete;
 	}
+	
 }

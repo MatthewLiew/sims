@@ -57,7 +57,7 @@ public class UserCapDAO extends JdbcDaoSupport {
 		}
 	}
 	
-	public String update(int usercapid, boolean accessright, boolean approve, boolean add, boolean edit, boolean delete){
+	public String update(int usercapid, int accessright, int approve, int add, int edit, int delete){
 		String sql=UPDATE_SQL+" set ACCESS_RIGHT = ?, APPROVE = ?, ADD_ = ? , EDIT_ = ?, DELETE_ =? where ID= ?";
 		Object[] params=new Object[]{accessright, approve, add, edit, delete, usercapid};
 		try {

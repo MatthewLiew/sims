@@ -14,14 +14,11 @@ public class UserCapMapper implements RowMapper<UserCap>{
 		
 		int usercapid = rs.getInt("ID");
 		int approleid = rs.getInt("APP_ROLE_ID");
-		boolean accessright = rs.getBoolean("ACCESS_RIGHT");
-		boolean approve = rs.getBoolean("APPROVE");
-		boolean add = rs.getBoolean("ADD_");
-		boolean edit = rs.getBoolean("EDIT_");
-		boolean delete = rs.getBoolean("DELETE_"); 
-		
-		System.out.println(usercapid);
-		System.out.println(approve);
+		int accessright = rs.getInt("ACCESS_RIGHT");
+		int approve = rs.getInt("APPROVE");
+		int add = rs.getInt("ADD_");
+		int edit = rs.getInt("EDIT_");
+		int delete = rs.getInt("DELETE_"); 
 		
 		return new UserCap(usercapid, approleid, accessright, approve, add, edit, delete);
 	}

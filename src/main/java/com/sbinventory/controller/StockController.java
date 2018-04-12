@@ -233,8 +233,11 @@ public class StockController {
 	@GetMapping(value= "/stockmovement")
 	public String getStockMovement(Model model, @RequestParam (required=false) String startdate, 
 			@RequestParam (required=false) String enddate, @RequestParam (required=false) Integer stocktypeid, 
-			@RequestParam (required=false) Integer reasonid) {
+			@RequestParam (required=false) Integer reasonid, Principal principal) {
 		
+		if(principal!=null) {
+			System.out.println(principal.getName());
+		}
 		String preset_enddate = DateTime.DateNow();
 		String preset_startdate = DateTime.DateOneMonthBefore();
 
@@ -321,11 +324,13 @@ public class StockController {
 		model.addAttribute("stockout", stockout);
 		
 		List<AppRole> approles = appRoleDAO.getAllRoleNames();
-		model.addAttribute("usercaps", approles);
+		model.addAttribute("approles", approles);
 		
 		List<UserCap> usercaps = userCapDAO.findAll();
 		model.addAttribute("usercaps", usercaps);
-		
+//		for(int i=0;i<usercaps.size();i++) {
+//			System.out.println(usercaps.get(i));
+//		}
 		String message = (String)model.asMap().get("message");
 		model.addAttribute("message", message);
 		
@@ -1386,17 +1391,31 @@ public class StockController {
 	}
 		
 	@PostMapping(value= "/usercap")
-	public String postUserCap(@ModelAttribute UserCap usercap, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+	public String postUserCap(/*@ModelAttribute List<UserCap> usercaps*/int[] usercapid, @RequestParam int[] accessright, @RequestParam (defaultValue="0") int[] approve,
+			@RequestParam  int[] add, @RequestParam  int[] edit, @RequestParam int[] delete, Model model, @RequestParam String sourceURL, 
+			RedirectAttributes ra) {
+		
+		String errorString=null;
+		for(int j=0;j<usercapid.length;j++) {
+//			System.out.println("Approleid"+j+": "+usercapid[j]);
+//			
+//			System.out.println("Accessright"+j+": "+accessright[j]);
+//			System.out.println("Approve"+j+": "+approve[j]);
+//			System.out.println("Add"+j+": "+add[j]);
+//			System.out.println("Edit"+j+": "+edit[j]);
+//			System.out.println("Delete"+j+": "+delete[j]);
+			errorString=userCapDAO.update(usercapid[j], accessright[j], approve[j], add[j], edit[j], delete[j]);
+		}
 
-//		String errorString=reasonDAO.updateReason(reason.getReasonid(), reason.getReason(), reason.getStocktypeid());
-//		if(errorString==null) {
-//			String message= "Reason - "+ reason.getReason()+" updated successfully";
-//			ra.addFlashAttribute("message", message);
-			return "redirect:"+sourceURL;
-//		} else {
-//			model.addAttribute("errorString",errorString);
-//			return "redirect:"+sourceURL;
-//		}
+		
+		if(errorString==null) {
+			String message= "User Capabilities has updated successfully";
+			ra.addFlashAttribute("message", message);
+			return "redirect:/settings";
+		} else {
+			model.addAttribute("errorString",errorString);
+			return "redirect:/settings";
+		}
 	}
 	
 	@GetMapping(value= "/deleteSettings")

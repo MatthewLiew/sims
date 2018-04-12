@@ -1,26 +1,39 @@
 var BASE_URL = window.location.origin+"/";
 var count=0;
 
-
+/***********  Alert Box Motion Control *************/
 $(document).ready (function(){
-//    $("#success-alert").hide();
-//    $("#myWish").click(function showAlert() {
-        $(".alert-info").fadeTo(2000, 500).slideUp(500, function(){
-       $(".alert-info").slideUp(500);
-        });   
-//    });
+
+	$(".alert-info").fadeTo(2000, 500).slideUp(500, function(){
+		$(".alert-info").slideUp(500);
+	});   
+});
+
+/***********  User Capabilities Control *************/
+$(document).on("change", ".accessright", function(){
+    console.log(this);
+    if(this.checked){
+    	$(this).parent().find('.checkboxesvalue').val(1);
+    } else {
+    	$(this).closest("tr").find(".checkboxesvalue").val(0);
+    }
+});
+
+$(document).on("change", ".actionright", function(){
+    if(this.checked){
+    	$(this).parent().find('.checkboxesvalue').val(1);
+    } else {
+    	$(this).parent().find(".checkboxesvalue").val(0);
+    }
 });
 
 $(document).on("change", ".accessright", function() {
-//	console.log(this.closest(".clone_form .form"));
 	if(this.checked){
-		console.log("check");
-		$(this).closest("tr").find(".actionright").prop('disabled', false);;
+		$(this).closest("tr").find(".actionright").prop('disabled', false);
 	} else {
-		$(this).closest("tr").find(".actionright").prop('checked', false);;
+		$(this).closest("tr").find(".actionright").prop('checked', false);
 		$(this).closest("tr").find(".actionright").prop('disabled', true);
 	}
-//    return false;
 });
 
 //$(document).on("submit", "#CreateUserForm", function(e) {

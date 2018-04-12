@@ -88,13 +88,13 @@
 <!--           		<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div> -->
        		</div>
 			
-			<div class="card mb-3" th:object="${usercaps}">
+			<div class="card mb-3">
 				<div class="card-header">
       				<i class="fa fa-table"></i> User Capabilities 
 	      		</div>
 	      		<div class="card-body">
 	      		<form method="POST" th:action="@{/usercap}">
-<!-- 	      			<input type="hidden" name="sourceURL" th:value="${sourceURL}" /> -->
+	      			<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
 		      		<table class="table table-bordered settingTable text-center" style="width:100% ;" cellspacing="0">
 		      			<thead>
 	        				<tr>
@@ -110,13 +110,32 @@
 	           			 	</tr>
 	              		</thead>
 	              		<tbody>
-	              			<tr th:each="uc : ${usercaps}">
+	              			<tr th:each="uc, iterStat : ${usercaps}">
+<!-- 	              			th:field="*{usercaps[__${iterStat.index}__].approleid}" -->
+<!-- 								th:field="${usercaps[__${iterStat.index}__].accessright}" -->
 	              				<td th:each="ar : ${approles}" th:if="${ar.isAppRole(uc.approleid)}" th:text="${ar.rolename}"></td>
-				             	<td><input class="accessright" type="checkbox" th:checked="${uc.accessright}"/></td>
-				             	<td><input class="actionright" type="checkbox" th:checked="${uc.approve}"/></td>
-				             	<td><input class="actionright" type="checkbox" th:checked="${uc.add}"/></td>
-				             	<td><input class="actionright" type="checkbox" th:checked="${uc.edit}"/></td>
-				             	<td><input class="actionright" type="checkbox" th:checked="${uc.delete}"/></td>
+				             	<td>
+				             		<input type="hidden" name="usercapid" th:value="${uc.usercapid}">
+					             	<input class="accessright" type="checkbox" th:checked="${uc.accessright}"/>
+					             	<input class="checkboxesvalue" type="hidden" name="accessright" th:value="${uc.accessright}">
+				             	</td>
+				             	
+				             	<td>
+				             		<input class="actionright" type="checkbox" th:disabled="!${uc.accessright}" th:checked="${uc.approve}"/>
+			             			<input class="checkboxesvalue" type="hidden" name="approve" th:value="${uc.approve}">
+			             		</td>
+				             	<td>
+				             		<input class="actionright" type="checkbox" th:disabled="!${uc.accessright}" th:checked="${uc.add}"/>
+				             		<input class="checkboxesvalue" type="hidden" name="add" th:value="${uc.add}">
+			             		</td>
+				             	<td>
+				             		<input class="actionright" type="checkbox" th:disabled="!${uc.accessright}"th:checked="${uc.edit}"/>
+				             		<input class="checkboxesvalue" type="hidden" name="edit" th:value="${uc.edit}">
+			             		</td>
+				             	<td>
+				             		<input class="actionright" type="checkbox"  th:disabled="!${uc.accessright}" th:checked="${uc.delete}"/>
+				             		<input class="checkboxesvalue" type="hidden" name="delete" th:value="${uc.delete}">
+			             		</td>
 	              			</tr>
 <!-- 	              			<tr> -->
 <!-- 		              			<td>Admin</td> -->
