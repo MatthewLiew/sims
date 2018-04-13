@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sbinventory.mapper.AppRoleMapper;
 import com.sbinventory.mapper.DeptMapper;
+import com.sbinventory.mapper.TransferHistoryMapper;
 import com.sbinventory.model.AppRole;
 import com.sbinventory.model.Dept;
  
@@ -34,6 +35,16 @@ public class AppRoleDAO extends JdbcDaoSupport {
         List<String> roles = this.getJdbcTemplate().queryForList(sql, params, String.class);
  
         return roles;
+    }
+    
+    public AppRole findRoleNameByRoleid(int roleid) {
+    	
+        String sql = "SELECT * FROM APP_ROLE WHERE ID = ? ";
+        Object[] params = new Object[] { roleid };
+        AppRoleMapper mapper=new AppRoleMapper();
+        AppRole approle = this.getJdbcTemplate().queryForObject(sql, params, mapper);
+ 
+        return approle;
     }
     
     public List<AppRole> getAllRoleNames() {

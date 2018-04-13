@@ -5,22 +5,28 @@ public class UserCap {
 	private int usercapid;
 	private int approleid;
 	private int accessright;
-	private int approve;
-	private int add;
-	private int edit;
-	private int delete;
+	private int stockapprove;
+	private int stockadd;
+	private int stockedit;
+	private int stockdelete;
+	private int serialadd;
+	private int serialedit;
+	private int serialdelete;
 	
 	public UserCap() {}
-
-	public UserCap(int usercapid, int approleid, int accessright, int approve, int add, int edit,
-			int delete) {
+	
+	public UserCap(int usercapid, int approleid, int accessright, int stockapprove, int stockadd, int stockedit,
+			int stockdelete, int serialadd, int serialedit, int serialdelete) {
 		this.usercapid = usercapid;
 		this.approleid = approleid;
 		this.accessright = accessright;
-		this.approve = approve;
-		this.add = add;
-		this.edit = edit;
-		this.delete = delete;
+		this.stockapprove = stockapprove;
+		this.stockadd = stockadd;
+		this.stockedit = stockedit;
+		this.stockdelete = stockdelete;
+		this.serialadd = serialadd;
+		this.serialedit = serialedit;
+		this.serialdelete = serialdelete;
 	}
 
 	public int getUsercapid() {
@@ -46,37 +52,61 @@ public class UserCap {
 	public void setAccessright(int accessright) {
 		this.accessright = accessright;
 	}
-
-	public int getApprove() {
-		return approve;
+	
+	public int getStockapprove() {
+		return stockapprove;
 	}
 
-	public void setApprove(int approve) {
-		this.approve = approve;
+	public void setStockapprove(int stockapprove) {
+		this.stockapprove = stockapprove;
 	}
 
-	public int getAdd() {
-		return add;
+	public int getStockadd() {
+		return stockadd;
 	}
 
-	public void setAdd(int add) {
-		this.add = add;
+	public void setStockadd(int stockadd) {
+		this.stockadd = stockadd;
 	}
 
-	public int getEdit() {
-		return edit;
+	public int getStockedit() {
+		return stockedit;
 	}
 
-	public void setEdit(int edit) {
-		this.edit = edit;
+	public void setStockedit(int stockedit) {
+		this.stockedit = stockedit;
 	}
 
-	public int getDelete() {
-		return delete;
+	public int getStockdelete() {
+		return stockdelete;
 	}
 
-	public void setDelete(int delete) {
-		this.delete = delete;
+	public void setStockdelete(int stockdelete) {
+		this.stockdelete = stockdelete;
+	}
+
+	public int getSerialadd() {
+		return serialadd;
+	}
+
+	public void setSerialadd(int serialadd) {
+		this.serialadd = serialadd;
+	}
+
+	public int getSerialedit() {
+		return serialedit;
+	}
+
+	public void setSerialedit(int serialedit) {
+		this.serialedit = serialedit;
+	}
+
+	public int getSerialdelete() {
+		return serialdelete;
+	}
+
+	public void setSerialdelete(int serialdelete) {
+		this.serialdelete = serialdelete;
 	}
 	
 }

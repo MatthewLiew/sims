@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<head>
 		<title>Serial Management</title>
 	</head>
@@ -24,9 +25,11 @@
 	      	<div class="card mb-3">
       			<div class="card-header">
       				<i class="fa fa-table"></i> Serial Management &nbsp;&nbsp;
+      				<span sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.serialadd}">
       				<a onclick="doAction('new', 0);">
       					<button class="btn btn-primary" data-toggle="modal" >Add Serial No</button>
 	      			</a>
+	      			</span>
 	      			<!-- <form method="POST" th:action="@{/uploadOneFile}" th:object="${UploadForm}" enctype="multipart/form-data" style="display:inline-block;">
 
 					&nbsp;&nbsp;
@@ -54,7 +57,7 @@
 						          	<th>Invoice</th>
 						          	<th>Main Location</th>
 						          	<th>Sub Location</th>
-						          	<th>Action</th>
+						          	<th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.serialedit} or ${usercap.serialdelete}" width="10%">Action</th>
 	               			 	</tr>
 		              		</thead>
 		              		<tfoot>
@@ -68,7 +71,7 @@
 						          	<th>Invoice</th>
 						          	<th>Main Location</th>
 						          	<th>Sub Location</th>
-						          	<th>Action</th>
+						          	<th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.serialedit} or ${usercap.serialdelete}">Action</th>
 					          	</tr>
 				          	</tfoot>
 				          	<tbody>
@@ -85,9 +88,9 @@
 					             	<td th:text="${pn.invoiceno}"></td>
 					             	<td th:each="list: ${mainlocs}" th:if="${list.isMainLocName(pn.mainlocid)}" th:text="${list.mainlocname}"></td>
 					             	<td th:each="list: ${sublocs}" th:if="${list.isSubLocName(pn.sublocid)}" th:text="${list.sublocname}"></td>
-					             	<td>
-					              	 	<a th:onclick="'doAction(\'edit\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Edit Serial No"><i class="fa fa-edit" title="Edit Serial No"></i></button></a>
-						             	<a th:onclick="'doAction(\'delete\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Delete Serial No"><i class="fa fa-trash" title="Delete Serial No"></i></button></a>
+					             	<td sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.serialedit} or ${usercap.serialdelete}">
+					              	 	<a th:if="${usercap.serialedit}" th:onclick="'doAction(\'edit\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Edit Serial No"><i class="fa fa-edit" title="Edit Serial No"></i></button></a>
+						             	<a th:if="${usercap.serialdelete}" th:onclick="'doAction(\'delete\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Delete Serial No"><i class="fa fa-trash" title="Delete Serial No"></i></button></a>
 					             	</td>
 					          	</tr>
 				          	</tbody>

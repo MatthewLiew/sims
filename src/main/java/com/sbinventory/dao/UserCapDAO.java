@@ -24,7 +24,8 @@ import com.sbinventory.model.UserCap;
 @Transactional
 public class UserCapDAO extends JdbcDaoSupport {
 
-	private static final String CREATE_SQL="INSERT INTO USER_CAP (APP_ROLE_ID, ACCESS_RIGHT, APPROVE, ADD_, EDIT_, DELETE_) VALUES (?,?,?,?,?,?)";
+	private static final String CREATE_SQL="INSERT INTO USER_CAP (APP_ROLE_ID, ACCESS_RIGHT, STOCK_APPROVE, STOCK_ADD, STOCK_EDIT, "
+			+ "STOCK_DELETE, SERIAL_ADD, SERIAL_EDIT, SERIAL_DELETE) VALUES (?,?,?,?,?,?,?,?,?)";
 	private static final String READ_SQL="SELECT * FROM USER_CAP";
 	private static final String UPDATE_SQL="UPDATE USER_CAP";
 	private static final String DELETE_SQL="DELETE FROM USER_CAP";
@@ -57,9 +58,11 @@ public class UserCapDAO extends JdbcDaoSupport {
 		}
 	}
 	
-	public String update(int usercapid, int accessright, int approve, int add, int edit, int delete){
-		String sql=UPDATE_SQL+" set ACCESS_RIGHT = ?, APPROVE = ?, ADD_ = ? , EDIT_ = ?, DELETE_ =? where ID= ?";
-		Object[] params=new Object[]{accessright, approve, add, edit, delete, usercapid};
+	public String update(int usercapid, int accessright, int stockapprove, int stockadd, int stockedit, int stockdelete, int serialadd, 
+			int serialedit, int serialdelete){
+		String sql=UPDATE_SQL+" set ACCESS_RIGHT = ?, STOCK_APPROVE = ?, STOCK_ADD = ? , STOCK_EDIT = ?, STOCK_DELETE = ?, "
+				+ "SERIAL_ADD = ?, SERIAL_EDIT = ?, SERIAL_DELETE = ? where ID= ?";
+		Object[] params=new Object[]{accessright, stockapprove, stockadd, stockedit, stockdelete, serialadd, serialedit, serialdelete, usercapid};
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
@@ -86,10 +89,38 @@ public class UserCapDAO extends JdbcDaoSupport {
         }
 	}
 	
+//	public List<UserCap> findByModule(String module){
+//		
+//		String sql=READ_SQL+" WHERE MODULE = ?";
+//		Object[] params=new Object[] {module};
+//		UserCapMapper mapper=new UserCapMapper();
+//		
+//		try {
+//            List<UserCap> usercaps =  this.getJdbcTemplate().query(sql, params, mapper);
+//            return usercaps;
+//        } catch (EmptyResultDataAccessException e) {
+//            return null;
+//        }
+//	}
+	
 	public UserCap findOne(int usercapid){
 		
 		String sql=READ_SQL+" where ID = ?";
 		Object[] params=new Object[] {usercapid};
+		UserCapMapper mapper=new UserCapMapper();
+		
+		try {
+            UserCap usercap = this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            return usercap;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+	
+	public UserCap findOneByApprole(int approleid){
+		
+		String sql=READ_SQL+" where APP_ROLE_ID = ?";
+		Object[] params=new Object[] {approleid};
 		UserCapMapper mapper=new UserCapMapper();
 		
 		try {

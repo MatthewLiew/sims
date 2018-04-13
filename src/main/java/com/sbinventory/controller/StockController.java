@@ -47,6 +47,7 @@ import com.sbinventory.dao.StorageDAO;
 import com.sbinventory.dao.SubDeptDAO;
 import com.sbinventory.dao.SubLocDAO;
 import com.sbinventory.dao.TransferHistoryDAO;
+import com.sbinventory.dao.UserAccountDAO;
 import com.sbinventory.dao.UserCapDAO;
 import com.sbinventory.fileio.ReadCSVFileExample;
 import com.sbinventory.model.AppRole;
@@ -69,6 +70,7 @@ import com.sbinventory.model.SubDept;
 import com.sbinventory.model.SubLoc;
 import com.sbinventory.model.TransferHistory;
 import com.sbinventory.model.UploadForm;
+import com.sbinventory.model.UserAccount;
 import com.sbinventory.model.UserCap;
 import com.sbinventory.utils.DateTime;
 import com.sbinventory.utils.StockQuantity;
@@ -139,6 +141,9 @@ public class StockController {
 	
 	@Autowired
 	private AppRoleDAO appRoleDAO;
+	
+	@Autowired
+	private UserAccountDAO userAccountDAO;
 	
 	@Autowired
 	CustomFileValidator customFileValidator;
@@ -236,8 +241,14 @@ public class StockController {
 			@RequestParam (required=false) Integer reasonid, Principal principal) {
 		
 		if(principal!=null) {
-			System.out.println(principal.getName());
+			UserAccount user = userAccountDAO.findOneByUsername(principal.getName(), 0);
+//			AppRole approle = appRoleDAO.findRoleNameByRoleid(user.getRoleid());
+//			model.addAttribute("role", approle.getRolename());
+			
+			UserCap usercap = userCapDAO.findOneByApprole(user.getRoleid());
+			model.addAttribute("usercap", usercap);
 		}
+		
 		String preset_enddate = DateTime.DateNow();
 		String preset_startdate = DateTime.DateOneMonthBefore();
 
@@ -273,8 +284,17 @@ public class StockController {
 	}
 	
 	@GetMapping(value= "/serialmanagement")
-	public String getSerialManagement(Model model) {
+	public String getSerialManagement(Model model, Principal principal) {
 
+		if(principal!=null) {
+			UserAccount user = userAccountDAO.findOneByUsername(principal.getName(), 0);
+//			AppRole approle = appRoleDAO.findRoleNameByRoleid(user.getRoleid());
+//			model.addAttribute("role", approle.getRolename());
+			
+			UserCap usercap = userCapDAO.findOneByApprole(user.getRoleid());
+			model.addAttribute("usercap", usercap);
+		}
+		
 		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
@@ -338,11 +358,21 @@ public class StockController {
 	}
 	
 	@GetMapping(value= "/storage")
-	public String getStorage(Model model) {
+	public String getStorage(Model model, Principal principal) {
+		
+		UserAccount user = null;
+		if(principal!=null) {
+			user = userAccountDAO.findOneByUsername(principal.getName(), 0);
+			UserCap usercap = userCapDAO.findOneByApprole(user.getRoleid());
+			model.addAttribute("usercap", usercap);
+		}
 		
 		stockquantity.update();
 
-		List<Storage> storages = storageDAO.getAllStorage();
+//		List<Storage> storages = storageDAO.getAllStorage();
+//		model.addAttribute("storages", storages);
+		
+		List<Storage> storages = storageDAO.findAllByOrgid(user.getOrgid());
 		model.addAttribute("storages", storages);
 		
 		List<Organization> orgs = organizationDAO.findAll();
@@ -1391,8 +1421,9 @@ public class StockController {
 	}
 		
 	@PostMapping(value= "/usercap")
-	public String postUserCap(/*@ModelAttribute List<UserCap> usercaps*/int[] usercapid, @RequestParam int[] accessright, @RequestParam (defaultValue="0") int[] approve,
-			@RequestParam  int[] add, @RequestParam  int[] edit, @RequestParam int[] delete, Model model, @RequestParam String sourceURL, 
+	public String postUserCap(/*@ModelAttribute List<UserCap> usercaps*/int[] usercapid, @RequestParam int[] accessright, @RequestParam int[] stockapprove,
+			@RequestParam  int[] stockadd, @RequestParam  int[] stockedit, @RequestParam int[] stockdelete, @RequestParam  int[] serialadd, 
+			@RequestParam  int[] serialedit, @RequestParam int[] serialdelete, Model model, @RequestParam String sourceURL,
 			RedirectAttributes ra) {
 		
 		String errorString=null;
@@ -1404,7 +1435,7 @@ public class StockController {
 //			System.out.println("Add"+j+": "+add[j]);
 //			System.out.println("Edit"+j+": "+edit[j]);
 //			System.out.println("Delete"+j+": "+delete[j]);
-			errorString=userCapDAO.update(usercapid[j], accessright[j], approve[j], add[j], edit[j], delete[j]);
+			errorString=userCapDAO.update(usercapid[j], accessright[j], stockapprove[j], stockadd[j], stockedit[j], stockdelete[j], serialadd[j], serialedit[j], serialdelete[j]);
 		}
 
 		

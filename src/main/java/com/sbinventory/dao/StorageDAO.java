@@ -60,6 +60,20 @@ public class StorageDAO extends JdbcDaoSupport {
         }
 	}
 	
+	public List<Storage> findAllByOrgid(int orgid){
+		
+		String sql=READ_SQL+" WHERE ORG_ID = ?";
+		Object[] params=new Object[] {orgid};
+		StorageMapper mapper=new StorageMapper();
+		
+		try {
+            List<Storage> storages =  this.getJdbcTemplate().query(sql, params, mapper);
+            return storages;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+	
 	public Storage getStorage(int storageid){
 		
 		String sql=READ_SQL+" where ID = ?";
