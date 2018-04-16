@@ -15,19 +15,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sbinventory.dao.BrandDAO;
+import com.sbinventory.dao.DeptDAO;
 import com.sbinventory.dao.HardwareDAO;
 import com.sbinventory.dao.MainLocDAO;
+import com.sbinventory.dao.OrganizationDAO;
 import com.sbinventory.dao.PartNoDAO;
 import com.sbinventory.dao.ProductDAO;
 import com.sbinventory.dao.StockHistoryDAO;
 import com.sbinventory.dao.StockTypeDAO;
+import com.sbinventory.dao.SubDeptDAO;
 import com.sbinventory.dao.SubLocDAO;
 //import com.sbinventory.dao.UserRoleDAO;
 import com.sbinventory.model.Brand;
+import com.sbinventory.model.Dept;
 import com.sbinventory.model.Hardware;
 import com.sbinventory.model.MainLoc;
+import com.sbinventory.model.Organization;
 import com.sbinventory.model.PartNo;
 import com.sbinventory.model.Product;
+import com.sbinventory.model.SubDept;
 import com.sbinventory.model.SubLoc;
 import com.sbinventory.utils.DateTime;
 import com.sbinventory.utils.StockQuantity;
@@ -55,6 +61,15 @@ public class ProductController {
 	
 	@Autowired
 	private SubLocDAO subLocDAO;
+	
+	@Autowired
+	private OrganizationDAO organizationDAO;
+	
+	@Autowired
+	private DeptDAO deptDAO;
+	
+	@Autowired
+	private SubDeptDAO subdeptDAO;
 	
 	@Autowired
 	private StockHistoryDAO stockHistoryDAO;
@@ -288,7 +303,10 @@ public class ProductController {
 		
 		List<Product> products = productDAO.findAll();
 		model.addAttribute("index", productid);
-		model.addAttribute("products",products);
+		model.addAttribute("products", products);
+		
+		List<Organization> orgs = organizationDAO.findAll();
+		model.addAttribute("orgs",orgs);
 		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
@@ -297,15 +315,18 @@ public class ProductController {
 		model.addAttribute("sublocs",sublocs);
 		
 		PartNo partno = new PartNo();
+		partno.setProductid(productid);
 		model.addAttribute("partno",partno);
 		
 		return "product/createPartNo";
 	}
 	
 	@PostMapping(value= "/createPartNo")
-	public String postCreatePartNos(@RequestParam String[] serialno, @RequestParam String[] modelno, @RequestParam String[] upccode, 
-			int[] productid, @RequestParam String[] customername, @RequestParam String[] invoiceno, @RequestParam int[] mainlocid, 
-			@RequestParam int[] sublocid, @RequestParam (required=false) int[] autoaddstock, Model model, @RequestParam String sourceURL, 
+	public String postCreatePartNos(@RequestParam int[] productid, @RequestParam int[] orgid, @RequestParam int[] deptid, @RequestParam int[] subdeptid, 
+			@RequestParam int[] mainlocid, @RequestParam (defaultValue=" ") int[] sublocid,
+			@RequestParam String[] serialno, @RequestParam (defaultValue=" ") String[] modelno, @RequestParam (defaultValue=" ") String[] upccode, 
+			@RequestParam (defaultValue=" ") String[] customername, @RequestParam (defaultValue=" ") String[] invoiceno, 
+			@RequestParam (required=false) int[] autoaddstock, Model model, @RequestParam String sourceURL, 
 			RedirectAttributes ra ) {
 //	public String postCreatePartNos(@ModelAttribute PartNo[] partno, @RequestParam int[] autoaddstock, Model model, 
 //			@RequestParam String sourceURL, RedirectAttributes ra ) {
@@ -338,11 +359,11 @@ public class ProductController {
 		
 		for(int i=0; i < serialno.length; i++) {
 			
-			StringTokenizer st = new StringTokenizer(serialno[i],delims);
+			StringTokenizer st = new StringTokenizer(serialno[i], delims);
 			while (st.hasMoreElements()) {
-				errorString= partNoDAO.create(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], 
-						productid[i], customername[i], invoiceno[i], mainlocid[i], sublocid[i], "Available");
-//				System.out.println(productid[i]+" "+modelno[i]+" "+" Token: "+st.nextElement());
+//				errorString= partNoDAO.create(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], 
+//						productid[i], customername[i], invoiceno[i], mainlocid[i], sublocid[i], "Available");
+//				System.out.println(i+" "+productid[i]+" "+modelno[i]+" Token: "+st.nextElement());
 			}
 		
 			if(autoaddstock[i]!=0) {
@@ -352,7 +373,7 @@ public class ProductController {
 				int stocktypeid = 1;
 				int reasonid= 1;
 				String remark=" ";
-				errorString= stockHistoryDAO.create(productid[i], mainlocid[i], sublocid[i], autoaddstock[i], date, time, stocktypeid, reasonid, remark, logdatetime, null, "approved");
+//				errorString= stockHistoryDAO.create(productid[i], mainlocid[i], sublocid[i], autoaddstock[i], date, time, stocktypeid, reasonid, remark, logdatetime, null, "approved");
 			}
 		}
 		
@@ -376,6 +397,15 @@ public class ProductController {
 		PartNo partno = partNoDAO.findOne(partnoid);
 		model.addAttribute("partno",partno);
 		
+		List<Organization> orgs= organizationDAO.findAll();
+		model.addAttribute("orgs",orgs);
+		
+		List<Dept> depts= deptDAO.findAllByOrgid(partno.getOrgid());
+		model.addAttribute("depts",depts);
+		
+		List<SubDept> subdepts = subdeptDAO.findAllByDeptid(partno.getDeptid());
+		model.addAttribute("subdepts",subdepts);
+		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
 		
@@ -392,7 +422,8 @@ public class ProductController {
 	public String postEditPartNo(@ModelAttribute PartNo partno, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 
 		String errorString=partNoDAO.update(partno.getPartnoid(), partno.getSerialno(), partno.getModelno(), partno.getUpccode(), /*productid,*/ 
-				partno.getCustomername(), partno.getInvoiceno(), partno.getMainlocid(), partno.getSublocid());
+				partno.getCustomername(), partno.getInvoiceno(), partno.getMainlocid(), partno.getSublocid(), partno.getOrgid(), partno.getDeptid(),
+				partno.getSubdeptid());
 		if(errorString==null) {
 			String message="Serial No - "+ partno.getSerialno() +" updated successfully";
 			ra.addFlashAttribute("message", message);

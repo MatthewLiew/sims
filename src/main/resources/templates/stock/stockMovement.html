@@ -25,10 +25,10 @@
 	      	<div class="card mb-3">
       			<div class="card-header">
       				<i class="fa fa-table"></i> Stock Movement &nbsp;&nbsp;
-      				<span sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.stockadd}">
+<!--       				<span sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.stockadd}"> -->
       				<a onclick="doAction('in', 0);"><button class="btn btn-primary" data-toggle="modal" >Stock In</button></a>
 	      			<a onclick="doAction('out', 0);"><button class="btn btn-primary" data-toggle="modal" >Stock Out</button></a>
-	      			</span>
+<!-- 	      			</span> -->
 	      			<form method="GET" th:action="@{/stockmovement}">
 	      			
 						<div class="form-group mt-3">
@@ -68,8 +68,8 @@
 									<th>Quantity</th>
 									<th>DateTime</th>
 									<th>Time</th>
-									<th>Log DateTime</th>
-									<th>Log User</th>
+<!-- 									<th>Log DateTime</th> -->
+<!-- 									<th>Log User</th> -->
 							        <th>Stock In / Out</th>
 							        <th>Reason</th>
 							        <th>Reason Details</th>
@@ -85,8 +85,8 @@
 									<th>Quantity</th>
 									<th>Date</th>
 									<th>Time</th>
-									<th>Log DateTime</th>
-									<th>Log User</th>
+<!-- 									<th>Log DateTime</th> -->
+<!-- 									<th>Log User</th> -->
 							        <th>Stock In / Out</th>
 							        <th>Reason</th>
 							        <th>Reason Details</th>
@@ -102,8 +102,8 @@
 						             <td th:text="${sh.quantity}"></td>
 						             <td th:text="${sh.historydate}"></td>
 						             <td th:text="${sh.historytime}"></td>
-						             <td th:text="${sh.logdatetime}"></td>
-						             <td th:text="${sh.loguser}"></td>
+<!-- 						             <td th:text="${sh.logdatetime}"></td> -->
+<!-- 						             <td th:text="${sh.loguser}"></td> -->
 						             <td th:each="st : ${stocktypes}" th:if="${st.isStockType(sh.stocktypeid)}" th:text="${st.stocktype}"></td>
 						             <td th:each="r : ${reasons}" th:if="${r.isReason(sh.reasonid)}" th:text="${r.reason}"></td>
 						             <td th:text="${sh.remark}"></td>
@@ -113,7 +113,6 @@
 						             <td th:each="s : ${sublocs}" th:if="${s.isSubLocName(sh.sublocid)}" th:text="${s.sublocname}"></td> -->
 						             
 						             <td sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.stockapprove} or ${usercap.stockedit} or ${usercap.stockdelete}" >
-						             	
 						                <a th:if="${usercap.stockedit}" th:onclick="'doAction(\'edit\',\''+ ${sh.stockhistoryid} +'\');'"><button class="btn btn-primary" title="Edit Stock Transaction"><i class="fa fa-edit"></i></button></a>
 						           		<a th:if="${usercap.stockdelete}" th:onclick="'doAction(\'delete\',\''+ ${sh.stockhistoryid} +'\');'"><button class="btn btn-primary" title="Delete Stock Transaction"><i class="fa fa-trash"></i></button></a>
 						             	<span th:if="${usercap.stockapprove}">&nbsp;&nbsp;

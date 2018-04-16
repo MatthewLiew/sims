@@ -36,57 +36,38 @@ $(document).on("change", ".accessright", function() {
 	}
 });
 
-//$(document).on("submit", "#CreateUserForm", function(e) {
-	  
-//	  console.log(this);
-	  
-	
-//	$("#CreateUser").modal("toggle")
-//	$('#myModal').modal('show');
-//	e.preventDefault(); //stop submit
-	  
-//});
-
-//function Submit(){
-////	console.log(this);
-////	return false;
-//	
-//}
+/***********  Duplicate Form *************/
 function addmorepartno(){
 	
 	var source = $(".form:first");
-//	var cloneform=$(".clone_form");
-	var clone = source.html();
+//	var clone = source.html();
 	var clone = source.clone();
+	
 	clone.find(".btn_csv").attr('for',count);
 	clone.find(".get_csv").attr("id", count);
+	
 	clone.find(".autostockin").hide();
 	clone.find(".serialno").val("");
 	clone.find(".serialno_status").text("");
+	clone.find(".quantity").text("");
 	clone.find(".modelno").val("");
 	clone.find(".upccode").val("");
 	clone.find(".customername").val("");
 	clone.find(".invoiceno").val("");
+	
 	clone.appendTo(".clone_form");
 	count++;
 	return false;
 }
 
+/***********  Remove Form *************/
 $(document).on("click", ".remove_partno", function() {
-//	console.log(this.closest(".clone_form .form"));
-	console.log(this);
-//	$(this).hide();
     $(this).closest(".clone_form .form").remove();
     return false;
 });
 
-//function parseCSV(id){
+/***********  Upload CSV to Form *************/
 $(document).on("change", ".get_csv", function(e) {
-	
-//	var name=$(this).closest("div").find(".serialno").val();
-	
-//	console.log(name);
-	console.log(this);
 	
 	var object=this;
 	var files;
@@ -98,7 +79,7 @@ $(document).on("change", ".get_csv", function(e) {
 	  }
 	  var reader = new FileReader();
 	  reader.onload = function(e) {
-//		console.log(object);
+		  
 	    var contents = e.target.result;
 	    console.log(typeof contents);
 	    let replace = contents.replace(/\W+/g,"\n");
@@ -112,53 +93,26 @@ $(document).on("change", ".get_csv", function(e) {
 	  reader.readAsText(file);
 	  
 	  $(this).val("");
-	  
-//	return false; 
+});
+
+/***********  Replace comma (,) to space and calculate serial no amount *************/
+$(document).on("input", ".serialno", function() {
+
+	let serialno= $(this).val();
 	
+	let replace = serialno.replace(","," ");
 	
-//	$(this).parse({
-//		 config: {
-////			 header:"true",
-//		 delimiter: "auto",
-//		 complete: function(results){
-////			 $(".serialno").val(results.data);
-////			 name.val("hell");
-////			 console.log(object);
-//			 console.log(typeof results);
-//			 console.log(results.data);
-//			 var contents="";
-//			 var data=results.data;
-//			 console.log(data);
-//			 for(i=0;i<data.length;i++){
-////				 console.log(typeof data[i]);
-////				 console.log(data[i][0]);
-//				 contents+=data[i][0];
-//				 contents+=" ";
-//				 
-//			 }
-//			 console.log(contents);
-////			 let abc=results.data;
-//			 let replace = contents.replace(/\W+/g,"\n");
-//			 $(object).closest("div").find(".serialno").val(replace);
-////			 $(this).closest("div").find(".serialno").val(results.data);
-////			 $(this).closest(".form-row").find("#serialno").remove();
-//			 
-//		 	},
-//		 },
-//		 before: function(file, inputElem)
-//		 {
-//		 //console.log("Parsing file...", file);
-//		 },
-//		 error: function(err, file)
-//		 {
-//		 //console.log("ERROR:", err, file);
-//		 },
-//		 complete: function(results)
-//		 {
-////			 console.log("Done with all files");
-//		 }
-//		 });
+	$(this).val(replace);
 	
+	var token = serialno.split(/\W+\w/);
+	
+	$(this).closest(".modal-body").find(".quantity").val(token.length);
+	$(this).closest(".form-row").find(".quantity").html(token.length);
+	
+	if(serialno=="")
+		$(this).closest(".form-row").find(".quantity").html(" ");
+	
+    return false;
 });
 
 function subloc_select(id, val) {
@@ -209,64 +163,44 @@ function id_subloc_select(id, val) {
 	});
 }
 
-$(document).on("input", ".serialno", function() {
-//	console.log(this.closest(".clone_form .form"));
-//	console.log(this);
-	let serialno= $(this).val();
-	
-	let replace = serialno.replace(","," ");
-	
-	$(this).val(replace);
-	
-	var token = serialno.split(/\W+\w/);
-	
-//	$("#"+form+" .quantity").val(token.length);
-	$(this).closest(".modal-body").find(".quantity").val(token.length);
-	$(this).closest(".form-row").find(".quantity").html(token.length);
-	
-	if(serialno=="")
-		$(this).closest(".form-row").find(".quantity").html(" ");
-//	$(this).hide();
-//    $(this).closest(".clone_form .form").remove();
-    return false;
-});
-
 function trial(form){
 	
-	let a=$("#"+form+" .serialno_status");
-	let b=$("#"+form+" .quantity");
-	let d=$("#"+form+" .serialno");
-	let e=$("#"+form+" .addstockcheck");
-	let f=$("#"+form+" .outstanding");
-	let g=$("#"+form+" .autostockin");
-//	$(".autostockin").show();
-	let gotcha = true;
+	let availSerial=$("#"+form+" .serialno_status");
+	let newSerial=$("#"+form+" .quantity");
+	let autostockin=$("#"+form+" .autostockin");
+	let autoaddstock=$("#"+form+" .autoaddstock");
+	let outstanding=$("#"+form+" .outstanding");
+	let serialno=$("#"+form+" .serialno");
+
+	let isChecked = true;
 //	console.log(d.length);
-	for(var i=0; i < d.length; i++){
+	for(var i=0; i < serialno.length; i++){
 //		console.log("d"+i+": "+d[i].value);
 //		console.log(b[i].innerHTML);
 //		console.log(a[i].innerHTML);
 		
-		if(parseInt(b[i].innerHTML)>parseInt(a[i].innerHTML)){
-			var num=parseInt(b[i].innerHTML)-parseInt(a[i].innerHTML);
-			$(f[i]).html("Add "+num+" Stock?");
-			$(g[i]).show();
-			$(e[i]).prop("value", num);
+		if(parseInt(newSerial[i].innerHTML)>parseInt(availSerial[i].innerHTML)){
+			var num=parseInt(newSerial[i].innerHTML)-parseInt(availSerial[i].innerHTML);
+			$(autostockin[i]).show();
+			$(outstanding[i]).html("Add "+num+" Stock?");
+			$(autoaddstock[i]).prop("value", num);
 		} else {
-			$(g[i]).hide();
-			$(e[i]).prop("checked", true);
-			$(e[i]).prop("value", 0);
+			$(autostockin[i]).hide();
+			$(autoaddstock[i]).prop("checked", true);
+			$(autoaddstock[i]).prop("value", 0);
 		}
 		
-		if(e[i].checked==false){
-			console.log(i);
-			gotcha=false;
-		}
+		if(autoaddstock[i].checked==false){
+			isChecked=false;
+		} 
 	}
 	
-	if(gotcha){
+	if(isChecked){
+		$("#"+form+" #modal_error").hide();
 		return true;
 	} else {
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("Please tick all checkbox.");
 		return false;
 	}
 //	if((parseInt(b)>parseInt(a))&&(c==0)){
@@ -295,18 +229,8 @@ $(document).on("change", ".productid", function() {
 		
 		success: function (response) {
 			$(current).closest(".form-row").find(".serialno_status").html(response.status);
-//			$("#"+id+" .subdept_select").empty();
-//			$("#"+id+" .subdept_select").append("<option value='0'>Select Sub Department</option>");
-//			if(!jQuery.isEmptyObject(response)){
-//				$("#"+id+" .subdept_select").append("<option value='0'>No Sub Department</option>");
-//			}
-//			for(var i of response) {
-//				$("#"+id+" .subdept_select").append("<option value='"+i["subdeptid"]+"'>"+i["subdeptname"]+"</option>");
-//			}
 		}
 	});
-	
-	
 });
 
 function reason_option(val) {
@@ -383,42 +307,6 @@ function subdepartment_select(id, val) {
 		}
 	});
 }
-
-//$(document).on("keyup",".username", function() {
-//	let current = this;
-//	let form = "#"+this.form.id;
-//	console.log(form);
-//	var data= { 
-//			userid: $(form+" .userid").val(),
-//			username: $(form+" .username").val()
-//			}
-//	
-//	$.ajax({
-// 		type: "POST",
-// 		contentType: "application/json",
-// 		url: BASE_URL + "api/checkUserName",
-// 		data: JSON.stringify (data),
-// 		dataType: 'json',
-// 		success: function (response) {
-// 			
-// 			if(response.flag=="true"){
-// 				
-// 				$(current).closest(".form-group").addClass("has-success");
-// 				$(form+" .username_status" ).removeClass("text-danger");
-// 				$(form+" .username_status" ).addClass("text-success");
-// 			} else {
-// 				$(form+" .username_status" ).removeClass("text-success");
-// 				$(form+" .username_status" ).addClass("text-danger");
-// 			}
-// 			$(form+" .username_status" ).html(response.status);
-// 			$(form+" .username_flag").html(response.flag);
-//  		},
-// 		error : function(e) {
-// 			$("#"+form+" .username_status" ).html("Error");
-// 			$("#"+form+" .username_flag").html("false");
-//			}
-// 		});
-//});
 
 function userName(form) {
 	var data= { 
@@ -1456,4 +1344,82 @@ function reasonForm(form) {
 	}
 }
 
+//$(this).parse({
+//config: {
+////	 header:"true",
+//delimiter: "auto",
+//complete: function(results){
+////	 $(".serialno").val(results.data);
+////	 name.val("hell");
+////	 console.log(object);
+//	 console.log(typeof results);
+//	 console.log(results.data);
+//	 var contents="";
+//	 var data=results.data;
+//	 console.log(data);
+//	 for(i=0;i<data.length;i++){
+////		 console.log(typeof data[i]);
+////		 console.log(data[i][0]);
+//		 contents+=data[i][0];
+//		 contents+=" ";
+//		 
+//	 }
+//	 console.log(contents);
+////	 let abc=results.data;
+//	 let replace = contents.replace(/\W+/g,"\n");
+//	 $(object).closest("div").find(".serialno").val(replace);
+////	 $(this).closest("div").find(".serialno").val(results.data);
+////	 $(this).closest(".form-row").find("#serialno").remove();
+//	 
+//	},
+//},
+//before: function(file, inputElem)
+//{
+////console.log("Parsing file...", file);
+//},
+//error: function(err, file)
+//{
+////console.log("ERROR:", err, file);
+//},
+//complete: function(results)
+//{
+////	 console.log("Done with all files");
+//}
+//});
 
+
+//$(document).on("keyup",".username", function() {
+//let current = this;
+//let form = "#"+this.form.id;
+//console.log(form);
+//var data= { 
+//		userid: $(form+" .userid").val(),
+//		username: $(form+" .username").val()
+//		}
+//
+//$.ajax({
+//		type: "POST",
+//		contentType: "application/json",
+//		url: BASE_URL + "api/checkUserName",
+//		data: JSON.stringify (data),
+//		dataType: 'json',
+//		success: function (response) {
+//			
+//			if(response.flag=="true"){
+//				
+//				$(current).closest(".form-group").addClass("has-success");
+//				$(form+" .username_status" ).removeClass("text-danger");
+//				$(form+" .username_status" ).addClass("text-success");
+//			} else {
+//				$(form+" .username_status" ).removeClass("text-success");
+//				$(form+" .username_status" ).addClass("text-danger");
+//			}
+//			$(form+" .username_status" ).html(response.status);
+//			$(form+" .username_flag").html(response.flag);
+//		},
+//		error : function(e) {
+//			$("#"+form+" .username_status" ).html("Error");
+//			$("#"+form+" .username_flag").html("false");
+//		}
+//		});
+//});

@@ -39,8 +39,8 @@
 						          	<th></th>
 						          	<th>To</th>
 						          	<th></th>
-						          	<th>Log User</th>
-						          	<th>Log Datetime</th>
+						          	<!-- <th>Log User</th>
+						          	<th>Log Datetime</th> -->
 						          	<th>Approval</th>
 						          	<th>Action</th>
 	               			 	</tr>
@@ -53,8 +53,8 @@
 						          	<th></th>
 						          	<th>To</th>
 						          	<th></th>
-						          	<th>Log User</th>
-						          	<th>Log Datetime</th>
+						          	<!-- <th>Log User</th>
+						          	<th>Log Datetime</th> -->
 						          	<th>Approval</th>
 						          	<th>Action</th>
 					          	</tr>
@@ -69,8 +69,8 @@
 				          			<td th:each="m : ${mainlocs}" th:if="${m.isMainLocName(trans.desmainlocid)}" th:text="${m.mainlocname}"></td>
 				          			<td th:each="sub : ${sublocs}" th:if="${sub.isSubLocName(trans.dessublocid)}" th:text="${sub.sublocname}"></td>
 				          			<td th:if="${trans.dessublocid}==0" th:text="'-'"></td>
-				          			<td th:text="${trans.loguser}"></td>
-				          			<td th:text="${trans.logdatetime}"></td>
+				          			<!-- <td th:text="${trans.loguser}"></td>
+				          			<td th:text="${trans.logdatetime}"></td> -->
 				          			<td th:if="${trans.approval}=='pending'"><a th:href="@{/transferapproval(transferhistoryid=${trans.transferhistoryid},approve='approved')}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/transferapproval(transferhistoryid=${trans.transferhistoryid},approve='cancelled')}"><i class="fa fa-close" title="Not Approve"></i></a></td>
 						             <td th:unless="${trans.approval}=='pending'" th:text="(${trans.approval}=='approved') ? 'Approved' : 'Not Approve'"></td>
 					             	<td>

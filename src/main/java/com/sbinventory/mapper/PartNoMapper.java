@@ -21,8 +21,11 @@ public class PartNoMapper implements RowMapper<PartNo>{
 		String invoiceno = rs.getString("INVOICE_NO");
 		int mainlocid = rs.getInt("MAIN_LOC_ID");
 		int sublocid = rs.getInt("SUB_LOC_ID");
+		int orgid = rs.getInt("SUB_LOC_ID");
+		int deptid = rs.getInt("DEPT_ID");
+		int subdeptid = rs.getInt("SUB_DEPT_ID");
 		String status = rs.getString("STOCK_STATUS");
 		
-		return new PartNo(partnoid, serialno, modelno, upccode, productid, customername, invoiceno, mainlocid, sublocid, status);
+		return new PartNo(partnoid, serialno, modelno, upccode, productid, customername, invoiceno, mainlocid, sublocid, orgid, deptid, subdeptid, status);
 	}
 }

@@ -74,6 +74,34 @@ public class StorageDAO extends JdbcDaoSupport {
         }
 	}
 	
+	public List<Storage> findAllByDeptid(int deptid){
+		
+		String sql=READ_SQL+" WHERE DEPT_ID = ?";
+		Object[] params=new Object[] {deptid};
+		StorageMapper mapper=new StorageMapper();
+		
+		try {
+            List<Storage> storages =  this.getJdbcTemplate().query(sql, params, mapper);
+            return storages;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+
+	public List<Storage> findAllBySubdeptid(int subdeptid){
+	
+	String sql=READ_SQL+" WHERE SUB_DEPT_ID = ?";
+	Object[] params=new Object[] {subdeptid};
+	StorageMapper mapper=new StorageMapper();
+	
+	try {
+        List<Storage> storages =  this.getJdbcTemplate().query(sql, params, mapper);
+        return storages;
+    } catch (EmptyResultDataAccessException e) {
+        return null;
+    }
+}
+	
 	public Storage getStorage(int storageid){
 		
 		String sql=READ_SQL+" where ID = ?";

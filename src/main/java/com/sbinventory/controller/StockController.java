@@ -267,6 +267,9 @@ public class StockController {
 		List<StockType> stocktypes = stockTypeDAO.findAll();
 		model.addAttribute("stocktypes", stocktypes);
 		
+		/*List<Organization> orgs = organizationDAO.findAll();
+		model.addAttribute("orgs",orgs);*/
+		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
 		
@@ -365,15 +368,32 @@ public class StockController {
 			user = userAccountDAO.findOneByUsername(principal.getName(), 0);
 			UserCap usercap = userCapDAO.findOneByApprole(user.getRoleid());
 			model.addAttribute("usercap", usercap);
-		}
+		} 
 		
 		stockquantity.update();
-
-//		List<Storage> storages = storageDAO.getAllStorage();
-//		model.addAttribute("storages", storages);
 		
-		List<Storage> storages = storageDAO.findAllByOrgid(user.getOrgid());
-		model.addAttribute("storages", storages);
+		if(principal!=null) {
+			if(user.getRoleid()==1) {
+				List<Storage> storages = storageDAO.getAllStorage();
+				model.addAttribute("storages", storages);
+			}
+			if(user.getRoleid()==2) {
+				List<Storage> storages = storageDAO.findAllBySubdeptid(user.getSubdeptid());
+				model.addAttribute("storages", storages);
+			}
+			if(user.getRoleid()==3) {
+				List<Storage> storages = storageDAO.findAllByDeptid(user.getDeptid());
+				model.addAttribute("storages", storages);
+			}
+			if(user.getRoleid()==4) {
+				List<Storage> storages = storageDAO.findAllByOrgid(user.getOrgid());
+				model.addAttribute("storages", storages);
+			}
+			
+		} else {
+			List<Storage> storages = storageDAO.getAllStorage();
+			model.addAttribute("storages", storages);
+		}
 		
 		List<Organization> orgs = organizationDAO.findAll();
 		model.addAttribute("orgs", orgs);
@@ -606,6 +626,9 @@ public class StockController {
 		List<Reason> reasons = reasonDAO.findAllByStocktype(stocktypeid);
 		model.addAttribute("reasons",reasons);
 		
+		List<Organization> orgs = organizationDAO.findAll();
+		model.addAttribute("orgs",orgs);
+		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
 		
@@ -642,8 +665,9 @@ public class StockController {
 //		}
 		
 		String logdatetime = DateTime.Now();
-		String errorString= stockHistoryDAO.create(sh.getProductid(), sh.getMainlocid(), sh.getSublocid(), sh.getQuantity(), 
-				sh.getHistorydate(), sh.getHistorytime(), sh.getStocktypeid(), sh.getReasonid(), sh.getRemark(), logdatetime, null, "pending");
+		String errorString= stockHistoryDAO.create(sh.getProductid(), sh.getOrgid(), sh.getDeptid(), sh.getSubdeptid(), sh.getMainlocid(), 
+				sh.getSublocid(), sh.getQuantity(), sh.getHistorydate(), sh.getHistorytime(), sh.getStocktypeid(), sh.getReasonid(), 
+				sh.getRemark(), logdatetime, null, "pending");
 		
 		Product product = productDAO.findOne(sh.getProductid());
 		if(errorString==null) {
@@ -668,6 +692,9 @@ public class StockController {
 		
 		List<Reason> reasons = reasonDAO.findAllByStocktype(stocktypeid);
 		model.addAttribute("reasons",reasons);
+		
+		List<Organization> orgs = organizationDAO.findAll();
+		model.addAttribute("orgs",orgs);
 		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
@@ -703,8 +730,9 @@ public class StockController {
 //		}
 			
 		String logdatetime = DateTime.Now();
-		String errorString= stockHistoryDAO.create(sh.getProductid(), sh.getMainlocid(), sh.getSublocid(), sh.getQuantity(), 
-				sh.getHistorydate(), sh.getHistorytime(), sh.getStocktypeid(), sh.getReasonid(), sh.getRemark(), logdatetime, null, "pending");
+		String errorString= stockHistoryDAO.create(sh.getProductid(), sh.getOrgid(), sh.getDeptid(), sh.getSubdeptid(), sh.getMainlocid(), 
+				sh.getSublocid(), sh.getQuantity(), sh.getHistorydate(), sh.getHistorytime(), sh.getStocktypeid(), sh.getReasonid(),
+				sh.getRemark(), logdatetime, null, "pending");
 
 		Product product = productDAO.findOne(sh.getProductid());
 		if(errorString==null) {
@@ -744,6 +772,15 @@ public class StockController {
 		List<StockType> stocktypes = stockTypeDAO.findAll();
 		model.addAttribute("stocktypes",stocktypes);
 		
+		List<Organization> orgs= organizationDAO.findAll();
+		model.addAttribute("orgs",orgs);
+		
+		List<Dept> depts= deptDAO.findAllByOrgid(stockhistory.getOrgid());
+		model.addAttribute("depts",depts);
+		
+		List<SubDept> subdepts = subdeptDAO.findAllByDeptid(stockhistory.getDeptid());
+		model.addAttribute("subdepts",subdepts);
+		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
 		
@@ -757,7 +794,8 @@ public class StockController {
 	public String postEditStockHistory(@ModelAttribute StockHistory sh, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
 		String errorString= stockHistoryDAO.update(sh.getStockhistoryid(), sh.getProductid(), sh.getQuantity(), sh.getHistorydate(), 
-				sh.getHistorytime(), sh.getStocktypeid(), sh.getReasonid(), sh.getRemark(), sh.getMainlocid(), sh.getSublocid());
+				sh.getHistorytime(), sh.getStocktypeid(), sh.getReasonid(), sh.getRemark(), sh.getMainlocid(), sh.getSublocid(), 
+				sh.getOrgid(), sh.getDeptid(), sh.getSubdeptid());
 		if(errorString==null) {
 			String message= "Stock record updated successfully";
 			ra.addFlashAttribute("message", message);

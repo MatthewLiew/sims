@@ -11,12 +11,17 @@ public class PartNo {
 	private String invoiceno;
 	private Integer mainlocid;
 	private Integer sublocid;
+	private Integer orgid;
+	private Integer deptid;
+	private Integer subdeptid;
 	private String status;
 	
 	public PartNo() {}
 	
-	public PartNo(int partnoid, String serialno, String modelno, String upccode, int productid, String customername, String invoiceno, int mainlocid, int sublocid, String status) {
-		
+	public PartNo(int partnoid, String serialno, String modelno, String upccode, Integer productid, String customername,
+			String invoiceno, Integer mainlocid, Integer sublocid, Integer orgid, Integer deptid, Integer subdeptid,
+			String status) {
+
 		this.partnoid = partnoid;
 		this.serialno = serialno;
 		this.modelno = modelno;
@@ -26,9 +31,12 @@ public class PartNo {
 		this.invoiceno = invoiceno;
 		this.mainlocid = mainlocid;
 		this.sublocid = sublocid;
+		this.orgid = orgid;
+		this.deptid = deptid;
+		this.subdeptid = subdeptid;
 		this.status = status;
 	}
-	
+
 	public int getPartnoid() {
 		return partnoid;
 	}
@@ -100,6 +108,30 @@ public class PartNo {
 	public void setSublocid(Integer sublocid) {
 		this.sublocid = sublocid;
 	}
+	
+	public Integer getOrgid() {
+		return orgid;
+	}
+
+	public void setOrgid(Integer orgid) {
+		this.orgid = orgid;
+	}
+
+	public Integer getDeptid() {
+		return deptid;
+	}
+
+	public void setDeptid(Integer deptid) {
+		this.deptid = deptid;
+	}
+
+	public Integer getSubdeptid() {
+		return subdeptid;
+	}
+
+	public void setSubdeptid(Integer subdeptid) {
+		this.subdeptid = subdeptid;
+	}
 
 	public String getStatus() {
 		return status;
@@ -108,7 +140,7 @@ public class PartNo {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
+	
 	public boolean isPartNo(int partnoid){
         if (this.partnoid==partnoid) {
             return true;

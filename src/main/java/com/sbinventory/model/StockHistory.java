@@ -15,11 +15,18 @@ public class StockHistory {
 	private String approval;
 	private Integer mainlocid;
 	private Integer sublocid;
+	private Integer orgid;
+	private Integer deptid;
+	private Integer subdeptid;
 	
 	public StockHistory () {}
 
-	public StockHistory(int stockhistoryid, int productid, int quantity, String historydate, String historytime, int stocktypeid,
-			int reasonid, String remark, String logdatetime, String loguser, String approval, int mainlocid, int sublocid) {
+	
+
+	public StockHistory(int stockhistoryid, Integer productid, int quantity, String historydate, String historytime,
+			Integer stocktypeid, Integer reasonid, String remark, String logdatetime, String loguser, String approval,
+			Integer mainlocid, Integer sublocid, Integer orgid, Integer deptid, Integer subdeptid) {
+		
 		this.stockhistoryid = stockhistoryid;
 		this.productid = productid;
 		this.quantity = quantity;
@@ -30,9 +37,12 @@ public class StockHistory {
 		this.remark = remark;
 		this.logdatetime = logdatetime;
 		this.loguser = loguser;
-		this.approval = approval; 
+		this.approval = approval;
 		this.mainlocid = mainlocid;
 		this.sublocid = sublocid;
+		this.orgid = orgid;
+		this.deptid = deptid;
+		this.subdeptid = subdeptid;
 	}
 
 	public int getStockhistoryid() {
@@ -139,6 +149,30 @@ public class StockHistory {
 		this.sublocid = sublocid;
 	}
 
+	public Integer getOrgid() {
+		return orgid;
+	}
+
+	public void setOrgid(Integer orgid) {
+		this.orgid = orgid;
+	}
+
+	public Integer getDeptid() {
+		return deptid;
+	}
+
+	public void setDeptid(Integer deptid) {
+		this.deptid = deptid;
+	}
+
+	public Integer getSubdeptid() {
+		return subdeptid;
+	}
+
+	public void setSubdeptid(Integer subdeptid) {
+		this.subdeptid = subdeptid;
+	}
+
 	public boolean isProduct(int productid) {
 		if(this.productid==productid) {
 			return true;
@@ -146,7 +180,5 @@ public class StockHistory {
 			return false;
 		}
 	}
-	
-	
 	
 }

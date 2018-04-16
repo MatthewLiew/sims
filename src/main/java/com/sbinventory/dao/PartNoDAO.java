@@ -20,7 +20,7 @@ import com.sbinventory.model.PartNo;
 public class PartNoDAO extends JdbcDaoSupport{
 	
 	private static final String READ_SQL="SELECT * FROM PART_NO";
-	private static final String CREATE_SQL="INSERT INTO PART_NO (SERIAL_NO, MODEL_NO, UPC_CODE, PRODUCT_ID, CUSTOMER_NAME, INVOICE_NO, MAIN_LOC_ID, SUB_LOC_ID, STOCK_STATUS) VALUES (?,?,?,?,?,?,?,?,?)";
+	private static final String CREATE_SQL="INSERT INTO PART_NO (SERIAL_NO, MODEL_NO, UPC_CODE, PRODUCT_ID, CUSTOMER_NAME, INVOICE_NO, MAIN_LOC_ID, SUB_LOC_ID, ORG_ID, DEPT_ID, SUB_DEPT_ID, STOCK_STATUS) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 	private static final String UPDATE_SQL="UPDATE PART_NO";
 	private static final String DELETE_SQL="DELETE FROM PART_NO";
 	
@@ -29,9 +29,10 @@ public class PartNoDAO extends JdbcDaoSupport{
 		this.setDataSource(dataSource);
 	}
 	
-	public String create(String serialno, String modelno, String upccode, int productid, String customername, String invoiceno, int mainlocid, int sublocid, String status) {
+	public String create(String serialno, String modelno, String upccode, int productid, String customername, String invoiceno, int mainlocid,
+			int sublocid, int orgid, int deptid, int subdeptid, String status) {
 		
-		Object[] params=new Object[]{serialno, modelno, upccode, productid, customername, invoiceno, mainlocid, sublocid, status};
+		Object[] params=new Object[]{serialno, modelno, upccode, productid, customername, invoiceno, mainlocid, sublocid, orgid, deptid, subdeptid, status};
 		String sql=CREATE_SQL;
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
@@ -45,9 +46,11 @@ public class PartNoDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public String update(int partnoid, String serialno, String modelno, String upccode, /*int productid,*/ String customername, String invoiceno, int mainlocid, int sublocid){
-		String sql=UPDATE_SQL+" set SERIAL_NO = ?, MODEL_NO = ?, UPC_CODE = ?, CUSTOMER_NAME = ?, INVOICE_NO = ?, MAIN_LOC_ID = ?, SUB_LOC_ID = ? where ID= ?";
-		Object[] params=new Object[] { serialno, modelno, upccode, /*productid,*/ customername, invoiceno, mainlocid, sublocid, partnoid };
+	public String update(int partnoid, String serialno, String modelno, String upccode, String customername, String invoiceno, int mainlocid,
+			int sublocid, int orgid, int deptid, int subdeptid){
+		String sql=UPDATE_SQL+" set SERIAL_NO = ?, MODEL_NO = ?, UPC_CODE = ?, CUSTOMER_NAME = ?, INVOICE_NO = ?, MAIN_LOC_ID = ?, "
+				+ "SUB_LOC_ID = ?, ORG_ID = ?, DEPT_ID = ?, SUB_DEPT_ID = ? where ID= ?";
+		Object[] params=new Object[] { serialno, modelno, upccode, customername, invoiceno, mainlocid, sublocid, orgid, deptid, subdeptid, partnoid };
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");

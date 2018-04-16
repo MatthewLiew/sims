@@ -7,6 +7,6 @@ $(document).ready(function() {
   $('.settingTable').DataTable({
       "paging":   false,
       "ordering": false,
-      "info":     false
+//      "info":     false
   } );
 });

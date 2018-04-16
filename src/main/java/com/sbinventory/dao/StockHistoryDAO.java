@@ -20,7 +20,7 @@ import com.sbinventory.model.StockHistory;
 @Transactional
 public class StockHistoryDAO extends JdbcDaoSupport{
 
-	private static final String CREATE_SQL="INSERT INTO STOCK_HISTORY (PRODUCT_ID, MAIN_LOC_ID, SUB_LOC_ID, QUANTITY, HISTORY_DATE, HISTORY_TIME, STOCK_TYPE_ID, REASON_ID, REMARK, LOG_DATETIME, LOG_USER, APPROVAL) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+	private static final String CREATE_SQL="INSERT INTO STOCK_HISTORY (PRODUCT_ID, ORG_ID, DEPT_ID, SUB_DEPT_ID, MAIN_LOC_ID, SUB_LOC_ID, QUANTITY, HISTORY_DATE, HISTORY_TIME, STOCK_TYPE_ID, REASON_ID, REMARK, LOG_DATETIME, LOG_USER, APPROVAL) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	private static final String READ_SQL="SELECT * FROM STOCK_HISTORY";
 	private static final String UPDATE_SQL="UPDATE STOCK_HISTORY";
 	private static final String DELETE_SQL="DELETE FROM STOCK_HISTORY";
@@ -30,10 +30,11 @@ public class StockHistoryDAO extends JdbcDaoSupport{
 		this.setDataSource(dataSource);
 	}
 	
-	public String create(int productid, int mainlocid, int sublocid, int quantity, String historydate, String historytime, 
-			int stocktypeid, int reasonid, String remark, String logdatetime, String loguser, String approval) {
+	public String create(int productid, int orgid, int deptid, int subdeptid, int mainlocid, int sublocid, int quantity, 
+			String historydate, String historytime, int stocktypeid, int reasonid, String remark, String logdatetime, String loguser, 
+			String approval) {
 		
-		Object[] params=new Object[]{productid, mainlocid, sublocid, quantity, historydate, historytime, stocktypeid, reasonid, remark, logdatetime, loguser, approval};
+		Object[] params=new Object[]{productid, orgid, deptid, subdeptid, mainlocid, sublocid, quantity, historydate, historytime, stocktypeid, reasonid, remark, logdatetime, loguser, approval};
 		String sql=CREATE_SQL;
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
@@ -47,9 +48,12 @@ public class StockHistoryDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public String update(int stockhistoryid, int productid, int quantity, String historydate, String historytime, int stocktypeid, int reasonid, String remark, int mainlocid, int sublocid ){
-		String sql=UPDATE_SQL+" set PRODUCT_ID = ?, QUANTITY = ?, HISTORY_DATE = ?, HISTORY_TIME = ?, STOCK_TYPE_ID = ?, REASON_ID = ?, REMARK = ?, MAIN_LOC_ID = ?, SUB_LOC_ID = ? where ID= ?";
-		Object[] params=new Object[]{productid, quantity, historydate, historytime, stocktypeid, reasonid, remark, mainlocid, sublocid, stockhistoryid};
+	public String update(int stockhistoryid, int productid, int quantity, String historydate, String historytime, int stocktypeid, 
+			int reasonid, String remark, int mainlocid, int sublocid, int orgid, int deptid, int subdeptid ){
+		String sql=UPDATE_SQL+" set PRODUCT_ID = ?, QUANTITY = ?, HISTORY_DATE = ?, HISTORY_TIME = ?, STOCK_TYPE_ID = ?, REASON_ID = ?, REMARK = ?, MAIN_LOC_ID = ?, SUB_LOC_ID = ?, "
+				+ "ORG_ID = ?, DEPT_ID = ?, SUB_DEPT_ID = ? where ID= ?";
+		Object[] params=new Object[]{productid, quantity, historydate, historytime, stocktypeid, reasonid, remark, mainlocid, sublocid, 
+				orgid, deptid, subdeptid, stockhistoryid};
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");

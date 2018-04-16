@@ -31,9 +31,12 @@ public class StockHistoryMapper implements RowMapper<StockHistory>{
 		String approval = rs.getString("APPROVAL");
 		int mainlocid = rs.getInt("MAIN_LOC_ID");
 		int sublocid = rs.getInt("SUB_LOC_ID");
+		int orgid = rs.getInt("ORG_ID");
+		int deptid = rs.getInt("DEPT_ID");
+		int subdeptid = rs.getInt("SUB_DEPT_ID");
 		
 		return new StockHistory(stockhistoryid, productid, quantity, historydate, historytime, stocktypeid, 
-				reasonid, remark, logdatetime, loguser, approval, mainlocid, sublocid);
+				reasonid, remark, logdatetime, loguser, approval, mainlocid, sublocid, orgid, deptid, subdeptid);
 	}
 	// reformat time
 	public String formatDateTime(String datetime, String type){

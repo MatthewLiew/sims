@@ -118,21 +118,23 @@ public class UserController {
 	public String getEditUser(@RequestParam int userid, Model model, HttpServletRequest request) {
 		
 		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
 		UserAccount useracc= userAccountDAO.findOne(userid);
-//		UserRole userrole=userRoleDAO.findOneByUserid(userid);
+		model.addAttribute("useracc",useracc);
 		
 		List<AppRole> approles = appRoleDAO.getAllRoleNames();
-		List<Organization> orgs= organizationDAO.findAll();
-		List<Dept> depts= deptDAO.findAllByOrgid(useracc.getOrgid());
-		List<SubDept> subdepts = subDeptDAO.findAllByDeptid(useracc.getDeptid());
+		model.addAttribute("approles",approles);
 		
-        model.addAttribute("useracc",useracc);
-//        model.addAttribute("userrole",userrole);
-        model.addAttribute("approles",approles);
-        model.addAttribute("orgs",orgs);
-        model.addAttribute("depts",depts);
-        model.addAttribute("subdepts",subdepts);
-        model.addAttribute("sourceURL", sourceURL);
+		List<Organization> orgs= organizationDAO.findAll();
+		model.addAttribute("orgs",orgs);
+		
+		List<Dept> depts= deptDAO.findAllByOrgid(useracc.getOrgid());
+		model.addAttribute("depts",depts);
+		
+		List<SubDept> subdepts = subDeptDAO.findAllByDeptid(useracc.getDeptid());
+		model.addAttribute("subdepts",subdepts);
+       
         model.addAttribute("errorString",null);
         
 		return "userAccount/editUser";
