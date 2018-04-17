@@ -47,6 +47,7 @@ import com.sbinventory.dao.StorageDAO;
 import com.sbinventory.dao.SubDeptDAO;
 import com.sbinventory.dao.SubLocDAO;
 import com.sbinventory.dao.TransferHistoryDAO;
+import com.sbinventory.dao.TransferTypeDAO;
 import com.sbinventory.dao.UserAccountDAO;
 import com.sbinventory.dao.UserCapDAO;
 import com.sbinventory.fileio.ReadCSVFileExample;
@@ -69,6 +70,7 @@ import com.sbinventory.model.Storage;
 import com.sbinventory.model.SubDept;
 import com.sbinventory.model.SubLoc;
 import com.sbinventory.model.TransferHistory;
+import com.sbinventory.model.TransferType;
 import com.sbinventory.model.UploadForm;
 import com.sbinventory.model.UserAccount;
 import com.sbinventory.model.UserCap;
@@ -123,6 +125,9 @@ public class StockController {
 	
 	@Autowired
 	private TransferHistoryDAO transferHistoryDAO;
+	
+	@Autowired
+	private TransferTypeDAO transferTypeDAO;
 	
 	@Autowired
 	private DisposalHistoryDAO disposalHistoryDAO;
@@ -846,6 +851,9 @@ public class StockController {
 		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
+		List<TransferType> transfertypes = transferTypeDAO.findAll();
+		model.addAttribute("transfertypes", transfertypes);
+		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
@@ -862,8 +870,9 @@ public class StockController {
 	@PostMapping(value= "/transferStock")
 	public String postTransferStock(@ModelAttribute TransferHistory th, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
+//		String errorString =null;
 		String errorString = transferHistoryDAO.create(null, DateTime.Now(),th.getProductid() , th.getQuantity(), 
-				th.getOrimainlocid(), th.getOrisublocid(), th.getDesmainlocid(), th.getDessublocid(), "pending");		
+				/*th.getOrimainlocid(), th.getOrisublocid(), th.getDesmainlocid(), th.getDessublocid(),*/ "pending");		
 //		
 		if(errorString==null) {
 			String message= "Stock Transfered successfully";
@@ -899,11 +908,11 @@ public class StockController {
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> orisublocs = subLocDAO.findAllByMainlocid(transferhistory.getOrimainlocid());
-		model.addAttribute("orisublocs", orisublocs);
+//		List<SubLoc> orisublocs = subLocDAO.findAllByMainlocid(transferhistory.getOrimainlocid());
+//		model.addAttribute("orisublocs", orisublocs);
 		
-		List<SubLoc> dessublocs = subLocDAO.findAllByMainlocid(transferhistory.getDesmainlocid());
-		model.addAttribute("dessublocs", dessublocs);
+//		List<SubLoc> dessublocs = subLocDAO.findAllByMainlocid(transferhistory.getDesmainlocid());
+//		model.addAttribute("dessublocs", dessublocs);
 			
 		return "stock/editTransferHistory";
 	}
@@ -911,8 +920,9 @@ public class StockController {
 	@PostMapping(value= "/editTransferHistory")
 	public String postEditTransferHistory(@ModelAttribute TransferHistory th, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
-		String errorString = transferHistoryDAO.update(th.getTransferhistoryid(), th.getProductid(), th.getOrimainlocid(), 
-				th.getOrisublocid(), th.getDesmainlocid(), th.getDessublocid(), th.getQuantity());
+//		String errorString = null;
+		String errorString = transferHistoryDAO.update(th.getTransferhistoryid(), th.getProductid(), /*th.getOrimainlocid(), 
+				th.getOrisublocid(), th.getDesmainlocid(), th.getDessublocid(),*/ th.getQuantity());
 		
 		if(errorString==null) {
 			String message= "Stock transfer record updated successfully";

@@ -32,10 +32,10 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
 		this.setDataSource(dataSource);
 	}
 	
-	public String create(String loguser, String logdatetime, int productid, int quantity, int orimainlocid, int orisublocid, 
-			int desmainlocid, int dessublocid, String approval) {
+	public String create(String loguser, String logdatetime, int productid, int quantity,/* int orimainlocid, int orisublocid, 
+			int desmainlocid, int dessublocid,*/ String approval) {
 
-		Object[] params=new Object[]{loguser, logdatetime, productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid, approval};
+		Object[] params=new Object[]{loguser, logdatetime, productid, quantity, /*orimainlocid, orisublocid, desmainlocid, dessublocid,*/ approval};
 //		Object[] params=new Object[]{"null",logdatetime, productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid};
 		String sql=CREATE_SQL;
 		
@@ -51,9 +51,9 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public String update(int transferhistoryid, int productid, int orimainlocid, int orisublocid, int desmainlocid, int dessublocid, int quantity ){
-		String sql=UPDATE_SQL+" set PRODUCT_ID = ?, ORI_MAIN_LOC = ?, ORI_SUB_LOC = ?, DES_MAIN_LOC = ?, DES_SUB_LOC = ?, QUANTITY = ? where ID= ?";
-		Object[] params=new Object[]{productid, orimainlocid, orisublocid, desmainlocid, dessublocid, quantity, transferhistoryid};
+	public String update(int transferhistoryid, int productid, /*int orimainlocid, int orisublocid, int desmainlocid, int dessublocid,*/ int quantity ){
+		String sql=UPDATE_SQL+" set PRODUCT_ID = ?, QUANTITY = ? where ID= ?";
+		Object[] params=new Object[]{productid,/* orimainlocid, orisublocid, desmainlocid, dessublocid, */quantity, transferhistoryid};
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
@@ -86,7 +86,9 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
 	
 	public List<TransferHistory> findAll(){
 		
-		String sql=READ_SQL;
+		String sql="SELECT * "
+				+ "FROM TRANSFER_HISTORY TH, OUTBOUND OB "
+				+ "WHERE TH.OUTBOUND_ID = OB.ID";
 		TransferHistoryMapper mapper=new TransferHistoryMapper();
 		
 		try {
@@ -99,7 +101,9 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
 	
 	public TransferHistory findOne(int transferhistoryid){
 		
-		String sql=READ_SQL+" where ID = ?";
+		String sql="SELECT * "
+				+ "FROM TRANSFER_HISTORY TH, OUTBOUND OB "
+				+ "WHERE TH.OUTBOUND_ID = OB.ID AND TH.ID = ?";
 		Object[] params=new Object[] {transferhistoryid};
 		TransferHistoryMapper mapper=new TransferHistoryMapper();
 		

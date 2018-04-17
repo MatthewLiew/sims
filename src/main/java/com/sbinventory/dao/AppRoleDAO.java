@@ -37,6 +37,19 @@ public class AppRoleDAO extends JdbcDaoSupport {
         return roles;
     }
     
+//    public List<AppRole> getRoleName(int userId) {
+//    	
+//        String sql = "SELECT R.ROLE_NAME " //
+//                + " FROM APP_USER UR, APP_ROLE R " //
+//                + " WHERE UR.ROLE_ID = R.ID and UR.ID = ? ";
+//        Object[] params = new Object[] { userId };
+//        AppRoleMapper mapper=new AppRoleMapper();
+////        List<String> roles = this.getJdbcTemplate().queryForList(sql, params, String.class);
+//        List<AppRole> approles =  this.getJdbcTemplate().query(sql, params, mapper);
+//        return approles;
+//    }
+    
+    
     public AppRole findRoleNameByRoleid(int roleid) {
     	
         String sql = "SELECT * FROM APP_ROLE WHERE ID = ? ";

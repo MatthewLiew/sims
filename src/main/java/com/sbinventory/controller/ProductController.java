@@ -322,7 +322,7 @@ public class ProductController {
 	}
 	
 	@PostMapping(value= "/createPartNo")
-	public String postCreatePartNos(@RequestParam int[] productid, @RequestParam int[] orgid, @RequestParam int[] deptid, @RequestParam int[] subdeptid, 
+	public String postCreatePartNo(@RequestParam int[] productid, @RequestParam int[] orgid, @RequestParam int[] deptid, @RequestParam int[] subdeptid, 
 			@RequestParam int[] mainlocid, @RequestParam (defaultValue=" ") int[] sublocid,
 			@RequestParam String[] serialno, @RequestParam (defaultValue=" ") String[] modelno, @RequestParam (defaultValue=" ") String[] upccode, 
 			@RequestParam (defaultValue=" ") String[] customername, @RequestParam (defaultValue=" ") String[] invoiceno, 
@@ -361,8 +361,8 @@ public class ProductController {
 			
 			StringTokenizer st = new StringTokenizer(serialno[i], delims);
 			while (st.hasMoreElements()) {
-//				errorString= partNoDAO.create(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], 
-//						productid[i], customername[i], invoiceno[i], mainlocid[i], sublocid[i], "Available");
+				errorString= partNoDAO.create(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], 
+						productid[i], customername[i], invoiceno[i], mainlocid[i], sublocid[i], orgid[i], deptid[i], subdeptid[i], "Available");
 //				System.out.println(i+" "+productid[i]+" "+modelno[i]+" Token: "+st.nextElement());
 			}
 		
@@ -373,7 +373,7 @@ public class ProductController {
 				int stocktypeid = 1;
 				int reasonid= 1;
 				String remark=" ";
-//				errorString= stockHistoryDAO.create(productid[i], mainlocid[i], sublocid[i], autoaddstock[i], date, time, stocktypeid, reasonid, remark, logdatetime, null, "approved");
+				errorString= stockHistoryDAO.create(productid[i], orgid[i], deptid[i], subdeptid[i], mainlocid[i], sublocid[i], autoaddstock[i], date, time, stocktypeid, reasonid, remark, logdatetime, null, "approved");
 			}
 		}
 		

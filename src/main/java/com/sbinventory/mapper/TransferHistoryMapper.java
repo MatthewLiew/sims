@@ -17,13 +17,14 @@ public class TransferHistoryMapper implements RowMapper<TransferHistory> {
 		String logdatetime = rs.getString("LOG_DATETIME");
 		int productid = rs.getInt("PRODUCT_ID");
 		int quantity = rs.getInt("QUANTITY");
-		int orimainlocid = rs.getInt("ORI_MAIN_LOC");
-		int orisublocid = rs.getInt("ORI_SUB_LOC");		
-		int desmainlocid = rs.getInt("DES_MAIN_LOC");
-		int dessublocid = rs.getInt("DES_SUB_LOC");	
+//		int orimainlocid = rs.getInt("ORI_MAIN_LOC");
+//		int orisublocid = rs.getInt("ORI_SUB_LOC");		
+//		int desmainlocid = rs.getInt("DES_MAIN_LOC");
+//		int dessublocid = rs.getInt("DES_SUB_LOC");	
 		String approval = rs.getString("APPROVAL");
 		
-		return new TransferHistory(transferhistoryid, loguser, logdatetime, productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid, approval);
+//		return null;
+		return new TransferHistory(transferhistoryid, loguser, logdatetime, productid, quantity, /*orimainlocid, orisublocid, desmainlocid, dessublocid,*/ approval);
 	}
 
 }

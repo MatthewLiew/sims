@@ -25,11 +25,11 @@
 	      	<div class="card mb-3">
       			<div class="card-header">
       				<i class="fa fa-table"></i> Serial Management &nbsp;&nbsp;
-      				<span sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.serialadd}">
+      				<!-- <span sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.serialadd}"> -->
       				<a onclick="doAction('new', 0);">
       					<button class="btn btn-primary" data-toggle="modal" >Add Serial No</button>
 	      			</a>
-	      			</span>
+	      			<!-- </span> -->
 	      			<!-- <form method="POST" th:action="@{/uploadOneFile}" th:object="${UploadForm}" enctype="multipart/form-data" style="display:inline-block;">
 
 					&nbsp;&nbsp;

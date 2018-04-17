@@ -94,11 +94,13 @@ public class StockQuantity {
 //			List<TransferHistory> transferHistories = transferHistoryDAO.findAll();
 //			for(TransferHistory trans: transferHistories){
 //				
-//				if((stor.getMainlocid() == trans.getOrimainlocid()) && (stor.getSublocid() == trans.getOrisublocid())
-//						&& (stor.getProductid() == trans.getProductid())) {
+//				if((stor.getOrgid() == trans.getOrgid())&&(stor.getDeptid() == trans.getDeptid())&&(stor.getSubdeptid() == trans.getSubdeptid())
+//						&& (stor.getMainlocid() == trans.getOrimainlocid()) && (stor.getSublocid() == trans.getOrisublocid())
+//						&& (stor.getProductid() == trans.getProductid()) && (trans.getApproval().equalsIgnoreCase("approved"))) {
 //					totalquantity-=trans.getQuantity();
-//				} else if((stor.getMainlocid() == trans.getDesmainlocid()) && (stor.getSublocid() == trans.getDessublocid())
-//						&& (stor.getProductid() == trans.getProductid())){
+//				} else if((stor.getOrgid() == trans.getOrgid())&&(stor.getDeptid() == trans.getDeptid())&&(stor.getSubdeptid() == trans.getSubdeptid())
+//						&& (stor.getMainlocid() == trans.getDesmainlocid()) && (stor.getSublocid() == trans.getDessublocid())
+//						&& (stor.getProductid() == trans.getProductid()) && (trans.getApproval().equalsIgnoreCase("approved"))){
 //					totalquantity+=trans.getQuantity();
 //				}
 //			}
