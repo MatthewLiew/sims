@@ -843,8 +843,14 @@ public class StockController {
 	
 	/**************** TRANSFER ACTION ***********************/
 	@GetMapping(value= "/transferStock")
-	public String getTransferStock(Model model, HttpServletRequest request) {
+	public String getTransferStock(Model model, HttpServletRequest request, Principal principal) {
 	
+		UserAccount user = null;
+		if(principal!=null) {
+			user = userAccountDAO.findOneByUsername(principal.getName(), 0);
+			model.addAttribute("user", user);
+		} 
+		
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
@@ -853,6 +859,15 @@ public class StockController {
 		
 		List<TransferType> transfertypes = transferTypeDAO.findAll();
 		model.addAttribute("transfertypes", transfertypes);
+		
+		List<Organization> organizations = organizationDAO.findAll(user.getOrgid());
+		model.addAttribute("organizations", organizations);
+		
+		List<Dept> depts = deptDAO.findAllByOrgid(user.getOrgid(), user.getDeptid());
+		model.addAttribute("depts", depts);
+		
+		List<SubDept> subdepts = subdeptDAO.findAllByDeptid(user.getDeptid(), user.getSubdeptid());
+		model.addAttribute("subdepts", subdepts);
 		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);

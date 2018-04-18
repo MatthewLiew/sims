@@ -1,5 +1,6 @@
 package com.sbinventory.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -32,6 +33,7 @@ import com.sbinventory.model.Hardware;
 import com.sbinventory.model.MainLoc;
 import com.sbinventory.model.Organization;
 import com.sbinventory.model.PartNo;
+import com.sbinventory.model.PartNoForm;
 import com.sbinventory.model.Product;
 import com.sbinventory.model.SubDept;
 import com.sbinventory.model.SubLoc;
@@ -316,6 +318,13 @@ public class ProductController {
 		
 		PartNo partno = new PartNo();
 		partno.setProductid(productid);
+		
+//		List<PartNo> partnos = new ArrayList<PartNo>();
+//		partnos.add(partNo);
+//		
+//		PartNoForm partnoform  = new PartNoForm();
+//		partnoform.setPartnos(partnos);
+		
 		model.addAttribute("partno",partno);
 		
 		return "product/createPartNo";
@@ -328,7 +337,7 @@ public class ProductController {
 			@RequestParam (defaultValue=" ") String[] customername, @RequestParam (defaultValue=" ") String[] invoiceno, 
 			@RequestParam (required=false) int[] autoaddstock, Model model, @RequestParam String sourceURL, 
 			RedirectAttributes ra ) {
-//	public String postCreatePartNos(@ModelAttribute PartNo[] partno, @RequestParam int[] autoaddstock, Model model, 
+//	public String postCreatePartNos(@ModelAttribute PartNo partno, @RequestParam (required=false) int[] autoaddstock, Model model, 
 //			@RequestParam String sourceURL, RedirectAttributes ra ) {
 
 //		for(int i=0; i < partno.length; i++) {
@@ -354,18 +363,32 @@ public class ProductController {
 //			System.out.println(autoaddstock[i]);
 //		}
 	
+		/*System.out.println(partno.getPartnoid());
+	  	for(int i=0; i < partno.length; i++) {
+  		for(PartNo a: partno.getPartnos()) {
+		
+		StringTokenizer st = new StringTokenizer(a.getSerialno(), delims);
+		while (st.hasMoreElements()) {
+			errorString= partNoDAO.create(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], 
+					productid[i], customername[i], invoiceno[i], mainlocid[i], sublocid[i], orgid[i], deptid[i], subdeptid[i], "Available");
+				System.out.println(i+" "+productid[i]+" "+modelno[i]+" Token: "+st.nextElement());
+			System.out.println(a.getProductid()+" "+a.getModelno()+" Token: "+st.nextElement());
+			System.out.println(i+" "+partno[i].getProductid()+" "+partno[i].getModelno()+" Token: "+st.nextElement());
+		}*/
+		
 		String errorString=null;
 		String delims = ", \r\n\t\f";
 		
 		for(int i=0; i < serialno.length; i++) {
+		
 			
 			StringTokenizer st = new StringTokenizer(serialno[i], delims);
 			while (st.hasMoreElements()) {
 				errorString= partNoDAO.create(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], 
 						productid[i], customername[i], invoiceno[i], mainlocid[i], sublocid[i], orgid[i], deptid[i], subdeptid[i], "Available");
-//				System.out.println(i+" "+productid[i]+" "+modelno[i]+" Token: "+st.nextElement());
+				System.out.println(i+" "+productid[i]+" "+modelno[i]+" Token: "+st.nextElement());
+				
 			}
-		
 			if(autoaddstock[i]!=0) {
 				String date = DateTime.DateNow();
 				String time = DateTime.TimeNow();

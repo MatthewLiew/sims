@@ -7,8 +7,12 @@
 	<p class="error" style="color: red;" th:text="${errorString}" ></p>
   	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
   	
+<!--   	<div th:object="${partnoform}"> -->
+<!-- 	<div th:each="a, state: ${partnos}"> -->
+<!-- 	</div>   -->
   	<div th:object="${partno}">
 	   	<div class="form">
+
 			<div class="form-group">
 	        	<div class="form-row">
 	            	<div class="col-md-3">
@@ -102,7 +106,8 @@
 	           		</div>
 	               	<div class="col-md-6">
 <!-- 	               	onkeyup="countSerialNo('CreatePartNo');" -->
-	           			<textarea class="form-control serialno" id="serialno" name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space"  th:field="*{serialno}" required></textarea>
+
+	           			<textarea class="form-control serialno" id="serialno" name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space" th:field="*{serialno}" required></textarea>
 	           			
 					      	<label class="btn btn-primary btn_csv" for="file_upload" style="margin-bottom:0;">Upload
 <!-- 					      	<button class="btn btn-primary btn_csv">Upload</button> -->
@@ -141,6 +146,7 @@
 	                   	<label for="ModelNoLabel">Model No</label>
 	               	</div>
 	               	<div class="col-md-6">
+	               	
 	               		<input class="form-control modelno" id="modelno" name="modelno" type="text" data-error="Please Enter Model No" aria-describedby="ModelNo" placeholder="Enter Model No" th:field="*{modelno}" value="">
 	               	</div>
 	               	<div class="col-md-3">
@@ -191,7 +197,7 @@
 	    </div>
 	   
 	   	<div class="clone_form"></div>
-	        
+	      
 	    <button type="button" class="btn btn-primary" onclick="addmorepartno();">Add More</button>
     </div>
 </html>

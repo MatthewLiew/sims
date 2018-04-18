@@ -104,16 +104,38 @@ $(document).on("input", ".serialno", function() {
 	
 	$(this).val(replace);
 	
-	var token = serialno.split(/\W+\w/);
-	
-	$(this).closest(".modal-body").find(".quantity").val(token.length);
-	$(this).closest(".form-row").find(".quantity").html(token.length);
+	var tokencount = serialno.split(/\W+\w/);
+	var token = serialno.split(/\W+/);
+	console.log(token);
+	$(this).closest(".modal-body").find(".quantity").val(tokencount.length);
+	$(this).closest(".form-row").find(".quantity").html(tokencount.length);
 	
 	if(serialno=="")
 		$(this).closest(".form-row").find(".quantity").html(" ");
 	
     return false;
 });
+
+
+function transfer_mode(val) {
+	
+	$("#org").hide();
+	$("#dept").hide();
+	$("#subdept").hide();
+	$("#mainloc").hide();
+	$("#subloc").hide();
+	if(val==1){
+		$("#org").show();
+	} else if (val==2) {
+		$("#dept").show();
+	} else if (val==3) {
+		$("#subdept").show();
+	} else if (val==4) {
+		$("#mainloc").show();
+	} else if (val==5) {
+		$("#subloc").show();
+	}
+}
 
 function subloc_select(id, val) {
 
@@ -1091,6 +1113,39 @@ function partnoSerialNo(form) {
 		$("#"+form+" .serialno_status").html("Field is required");
 		$("#"+form+" .serialno_falg").html("false");
 	}
+}
+
+function checkSerialAuth(form) {
+	var serialno = $("#"+form+" .serialno").val();
+	
+	var token = serialno.split(/\W+\w/);
+	
+//	console.log(token);
+//	var data= { 
+//			partnoid: $("#"+form+" .partnoid").val(),
+//			serialno: $("#"+form+" .serialno").val()
+//			}
+//	if(!$.isEmptyObject($("#"+form+" .serialno").val())) {
+// 		$.ajax({
+// 		type: "POST",
+// 		contentType: "application/json",
+// 		url: BASE_URL + "api/checkSerialNo",
+// 		data: JSON.stringify (data),
+// 		dataType: 'json',
+// 		
+// 		success: function (response) {
+// 			$("#"+form+" .serialno_status" ).html(response.status);
+// 			$("#"+form+" .serialno_flag" ).html(response.flag);
+//  		},
+// 		error : function(e) {
+// 			$("#"+form+" .serialno_status" ).html("Error");
+// 			$("#"+form+" .serialno_flag").html("false");
+//			}
+// 		});
+//	} else {
+//		$("#"+form+" .serialno_status").html("Field is required");
+//		$("#"+form+" .serialno_falg").html("false");
+//	}
 }
 
 function partnoUpcCode(form) {

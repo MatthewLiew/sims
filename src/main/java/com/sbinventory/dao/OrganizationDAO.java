@@ -103,6 +103,20 @@ public class OrganizationDAO extends JdbcDaoSupport {
         }
 	}
 	
+	public List<Organization> findAll(int orgid){
+		
+		String sql=READ_SQL+" WHERE ID ! = ?";
+		Object[] params=new Object[] {orgid};
+		OrganizationMapper mapper=new OrganizationMapper();
+		
+		try {
+            List<Organization> orgs =  this.getJdbcTemplate().query(sql, params, mapper);
+            return orgs;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+	
 	public Organization findOne(int orgid){
 		
 		String sql=READ_SQL+" where ID = ?";

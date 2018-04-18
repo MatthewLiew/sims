@@ -129,6 +129,20 @@ public class SubDeptDAO extends JdbcDaoSupport{
         }
 	}
 	
+	public List<SubDept> findAllByDeptid(int deptid, int subdeptid){
+		
+		String sql=READ_SQL+ " where DEPT_ID = ? AND ID != ?";
+		Object[] params =new Object[] {deptid, subdeptid};
+		SubDeptMapper mapper=new SubDeptMapper();
+		
+		try {
+            List<SubDept> subdepts =  this.getJdbcTemplate().query(sql, params, mapper);
+            return subdepts;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+	
 	public SubDept getSubDeptCode(int subdeptcode, int subdeptid){
 		
 		String sql=READ_SQL+ " where SUB_DEPT_CODE = ? ";

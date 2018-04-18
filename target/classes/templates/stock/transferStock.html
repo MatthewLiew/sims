@@ -41,7 +41,7 @@
 	            	<label for="SerialNoLabel">Serial No</label>
 	       		</div>
 	           	<div class="col-md-6">
-	       			<textarea class="form-control serialno" id="serialno" name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space" onkeyup="countSerialNo('TransferStock');"></textarea>
+	       			<textarea class="form-control serialno" id="serialno" name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space" onkeyup="checkSerialAuth('TransferStock')"></textarea>
 	           	</div>
 	           	<div class="col-md-3">
 	           	</div>
@@ -55,7 +55,7 @@
 	            </div>
 	            <div class="col-md-6">
 	            <!-- th:field="*{transfertypeid}" -->
-	            	<select class="form-control" name="transfertypeid"  required>
+	            	<select class="form-control" name="transfertypeid" onchange="transfer_mode(this.value);" required>
 	           			<option value="">Select Transfer Type</option>
 	           			<option th:each="elem: ${transfertypes}" th:value="${elem.transfertypeid}" th:text="${elem.mode}">
 	           			</option>
@@ -64,13 +64,62 @@
 	        </div>
 	    </div>
 	    
-	    <!-- <div class="form-group">
+	    <div class="form-group" id="org" style="display:none;">
 	    	<div class="form-row">
 	        	<div class="col-md-3">
-	            	<label for="StockTypeLabel">From</label>
+	            	<label for="StockTypeLabel">Destination</label>
 	            </div>
 	            <div class="col-md-6">
-	            	<select class="form-control" name="orimainlocid" th:field="*{orimainlocid}" onchange="subloc_select('From',this.value);" required>
+	            	<!-- th:field="*{orimainlocid}" onchange="subloc_select('From',this.value);" -->
+	            	<select class="form-control" name="destination"   required>
+	           			<option value="">Select Organization</option>
+	           			<option th:each="elem: ${organizations}" th:value="${elem.orgid}" th:text="${elem.orgname}">
+	           			</option>
+	       			</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group" id="dept" style="display:none;">
+	    	<div class="form-row">
+	        	<div class="col-md-3">
+	            	<label for="StockTypeLabel">Destination</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<!-- th:field="*{orimainlocid}" onchange="subloc_select('From',this.value);" -->
+	            	<select class="form-control" name="destination"   required>
+	           			<option value="">Select Department</option>
+	           			<option th:each="elem: ${depts}" th:value="${elem.deptid}" th:text="${elem.deptname}">
+	           			</option>
+	       			</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group" id="subdept" style="display:none;">
+	    	<div class="form-row">
+	        	<div class="col-md-3">
+	            	<label for="StockTypeLabel">Destination</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<!-- th:field="*{orimainlocid}" onchange="subloc_select('From',this.value);" -->
+	            	<select class="form-control" name="destination"   required>
+	           			<option value="">Select Sub Department</option>
+	           			<option th:each="elem: ${subdepts}" th:value="${elem.subdeptid}" th:text="${elem.subdeptname}">
+	           			</option>
+	       			</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group" id="mainloc" style="display:none;">
+	    	<div class="form-row">
+	        	<div class="col-md-3">
+	            	<label for="StockTypeLabel">Destination</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<!-- th:field="*{orimainlocid}" onchange="subloc_select('From',this.value);" -->
+	            	<select class="form-control" name="destination"   required>
 	           			<option value="">Select Main Location</option>
 	           			<option th:each="elem: ${mainlocs}" th:value="${elem.mainlocid}" th:text="${elem.mainlocname}">
 	           			</option>
@@ -79,7 +128,23 @@
 	        </div>
 	    </div>
 	    
-	    <div class="form-group" id="From">
+	    <div class="form-group" id="subloc" style="display:none;">
+	    	<div class="form-row">
+	        	<div class="col-md-3">
+	            	<label for="StockTypeLabel">Destination</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<!-- th:field="*{orimainlocid}" onchange="subloc_select('From',this.value);" -->
+	            	<select class="form-control" name="destination"   required>
+	           			<option value="">Select Sub Location</option>
+	           			<option th:each="elem: ${sublocs}" th:value="${elem.sublocid}" th:text="${elem.sublocname}">
+	           			</option>
+	       			</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <!-- <div class="form-group" id="From">
 	    	<div class="form-row">
 	        	<div class="col-md-3">
 	            	<label for="StockTypeLabel"></label>

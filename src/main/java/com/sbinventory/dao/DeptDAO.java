@@ -133,6 +133,20 @@ private static final String DELETE_SQL="DELETE FROM DEPT";
             return null;
         }
 	}
+	
+	public List<Dept> findAllByOrgid(int orgid, int deptid){
+		
+		String sql=READ_SQL+ " where ORG_ID = ? AND ID != ?";
+		Object[] params =new Object[] {orgid, deptid};
+		DeptMapper mapper=new DeptMapper();
+		
+		try {
+            List<Dept> depts =  this.getJdbcTemplate().query(sql, params, mapper);
+            return depts;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
 		
 	public Dept getDeptCode(int deptcode, int deptid){
 		
