@@ -44,9 +44,10 @@
 		        				<tr>
 		        					<th>Product</th>
 		        					<th>Quantity</th>
-<!-- 						          	<th>From</th> -->
-<!-- 						          	<th></th> -->
-<!-- 						          	<th>To</th> -->
+						          	<th>Serial No</th>
+						          	<th>Transfer Type</th>
+						          	<th>Source</th>
+						          	<th>Destination</th>
 <!-- 						          	<th></th> -->
 						          	<!-- <th>Log User</th>
 						          	<th>Log Datetime</th> -->
@@ -57,9 +58,10 @@
 		                		<tr>
 		                			<th>Product</th>
 		        					<th>Quantity</th>
-<!-- 						          	<th>From</th> -->
-<!-- 						          	<th></th> -->
-<!-- 						          	<th>To</th> -->
+						          	<th>Serial No</th>
+						          	<th>Transfer Type</th>
+						          	<th>Source</th>
+						          	<th>Destination</th>
 <!-- 						          	<th></th> -->
 						          	<!-- <th>Log User</th>
 						          	<th>Log Datetime</th> -->
@@ -70,6 +72,10 @@
 				          		<tr th:each="trans : ${transferhistories}">
 				          			<td th:each="p : ${products}" th:if="${p.isProduct(trans.productid)}" th:text="${p.productname}"></td>
 				          			<td th:text="${trans.quantity}"></td>
+				          			<td th:text="${trans.serialno}"></td>
+				          			<td th:text="${trans.transfertype}"></td>
+				          			<td th:text="${trans.source}"></td>
+				          			<td th:text="${trans.destination}"></td>
 				          			<!-- <td th:each="m : ${mainlocs}" th:if="${m.isMainLocName(trans.orimainlocid)}" th:text="${m.mainlocname}"></td>
 				          			<td th:each="sub : ${sublocs}" th:if="${sub.isSubLocName(trans.orisublocid)}" th:text="${sub.sublocname}"></td>
 				          			<td th:if="${trans.orisublocid}==0" th:text="'-'"></td>
@@ -94,7 +100,7 @@
           	</div>
       		
       		<div class="modal clickable" id="TransferStock" tabindex="-1" role="dialog" aria-labelledby="TransferStock" aria-hidden="true">
-		            <form method="POST" th:action="@{/transferStock}" id="TransferStock">
+		            <form method="POST" th:action="@{/transferStock}" id="TransferStock" onsubmit="return transferForm('TransferStock');">
 		                <div class="vertical-alignment-helper">
 		                    <div class="modal-dialog  modal-lg vertical-align-center">
 		                        <!-- Modal content-->

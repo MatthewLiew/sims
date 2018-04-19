@@ -1,10 +1,12 @@
 package com.sbinventory.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sbinventory.dao.BrandDAO;
@@ -22,6 +24,7 @@ import com.sbinventory.message.Response;
 
 import com.sbinventory.model.SubDept;
 import com.sbinventory.model.SubLoc;
+import com.sbinventory.model.TransferHistory;
 import com.sbinventory.model.Brand;
 import com.sbinventory.model.Dept;
 import com.sbinventory.model.Hardware;
@@ -429,5 +432,38 @@ public class MainRESTController {
 		
 		Response response = new Response(Integer.toString(amount), " ");
 		return response;
+	}
+	
+	@PostMapping(value="/api/checkSerialAuth")
+	public Response checkSerialAuth(/*@RequestBody PartNo th*/@RequestParam (value="data[]") String[] data, Principal principal) {
+		String message = "Serial No ";
+		boolean flag = true;
+		UserAccount user = null;
+		if(principal != null) {
+			user = userAccountDAO.findOneByUsername(principal.getName(), 0);
+		}
+		
+		for(int i=0; i<data.length ; i++) {
+			PartNo partno = partNoDAO.findOneBySerialNo(data[i]);
+			if(partno!=null) {
+				if(!((user.getOrgid()==partno.getOrgid())&&(user.getDeptid()==partno.getDeptid())&&(user.getSubdeptid()==partno.getSubdeptid()))) {
+					message += data[i]+" ";
+					flag=false;
+				} else {
+//					message += "Serial No "+data[i]+" belongs to you.\n";
+				}
+			} else {
+				message += data[i]+" ";
+				flag=false;
+			}
+		}
+		message+="unaccessable.";
+		if(flag) {
+			Response response = new Response(message, "true");
+			return response;
+		} else {
+			Response response = new Response(message, "false");
+			return response;
+		}
 	}
 }

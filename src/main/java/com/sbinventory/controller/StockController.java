@@ -883,12 +883,54 @@ public class StockController {
 	}
 	
 	@PostMapping(value= "/transferStock")
-	public String postTransferStock(@ModelAttribute TransferHistory th, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+	public String postTransferStock(@ModelAttribute TransferHistory th, @RequestParam Integer[] destination, Model model, @RequestParam String sourceURL, RedirectAttributes ra, Principal pricipal) {
 		
-//		String errorString =null;
-		String errorString = transferHistoryDAO.create(null, DateTime.Now(),th.getProductid() , th.getQuantity(), 
-				/*th.getOrimainlocid(), th.getOrisublocid(), th.getDesmainlocid(), th.getDessublocid(),*/ "pending");		
-//		
+		System.out.println(th.getProductid());
+		System.out.println(th.getQuantity());
+		System.out.println(th.getSerialno());
+		int transfertype = th.getTransfertype();
+		System.out.println(th.getTransfertype());
+		String[] token = th.getSerialno().split("\\W+");
+		PartNo partno =partNoDAO.findOneBySerialNo(token[0]);
+		
+		String source = null, dest = null;
+		if(transfertype == 1) {
+			Organization src = organizationDAO.findOne(partno.getOrgid());
+			Organization des = organizationDAO.findOne(destination[th.getTransfertype()-1]);
+			source = src.getOrgname();
+			dest = des.getOrgname();
+			
+		} else if(transfertype == 2) {
+			Dept src = deptDAO.findOne(partno.getDeptid());
+			Dept des = deptDAO.findOne(destination[th.getTransfertype()-1]);
+			source = src.getDeptname();
+			dest = des.getDeptname();
+			
+		} else if(transfertype == 3) {
+			SubDept src = subdeptDAO.findOne(partno.getSubdeptid());
+			SubDept des = subdeptDAO.findOne(destination[th.getTransfertype()-1]);
+			source = src.getSubdeptname();
+			dest = des.getSubdeptname();
+			
+		} else if(transfertype == 4) {
+			MainLoc src = mainLocDAO.findOne(partno.getMainlocid());
+			MainLoc des = mainLocDAO.findOne(destination[th.getTransfertype()-1]);
+			source = src.getMainlocname();
+			dest = des.getMainlocname();
+			
+		} else if(transfertype == 5) {
+			SubLoc src = subLocDAO.findOne(partno.getSublocid());
+			SubLoc des = subLocDAO.findOne(destination[th.getTransfertype()-1]);
+			source = src.getSublocname();
+			dest = des.getSublocname();
+		}
+		
+		System.out.println("Source: " + source);
+		System.out.println("Destination: "+ dest);
+		String errorString =null;
+		/*String errorString = transferHistoryDAO.create(null, DateTime.Now(),th.getProductid() , th.getQuantity(), 
+				th.getOrimainlocid(), th.getOrisublocid(), th.getDesmainlocid(), th.getDessublocid(), "pending");*/		
+		
 		if(errorString==null) {
 			String message= "Stock Transfered successfully";
 			ra.addFlashAttribute("message", message);
@@ -897,6 +939,7 @@ public class StockController {
 			model.addAttribute("errorString",errorString);
 			return "redirect:"+sourceURL;
 		}
+
 	}
 	
 	@GetMapping(value= "/transferapproval")

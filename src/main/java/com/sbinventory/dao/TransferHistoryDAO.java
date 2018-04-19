@@ -21,7 +21,7 @@ import com.sbinventory.model.TransferHistory;
 @Transactional
 public class TransferHistoryDAO extends JdbcDaoSupport{
 
-	private static final String CREATE_SQL="INSERT INTO TRANSFER_HISTORY (LOG_USER, LOG_DATETIME, PRODUCT_ID, QUANTITY, ORI_MAIN_LOC, ORI_SUB_LOC, DES_MAIN_LOC, DES_SUB_LOC, APPROVAL) VALUES (?,?,?,?,?,?,?,?,?)";
+	private static final String CREATE_SQL="INSERT INTO TRANSFER_HISTORY  (PRODUCT_ID, QUANTITY, APPROVAL) VALUES (?,?,?)";
 //	private static final String CREATE_SQL="INSERT INTO TRANSFER_HISTORY (LOG_USER ) VALUES (?)";
 	private static final String READ_SQL="SELECT * FROM TRANSFER_HISTORY";
 	private static final String UPDATE_SQL="UPDATE TRANSFER_HISTORY";
@@ -32,10 +32,28 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
 		this.setDataSource(dataSource);
 	}
 	
-	public String create(String loguser, String logdatetime, int productid, int quantity,/* int orimainlocid, int orisublocid, 
-			int desmainlocid, int dessublocid,*/ String approval) {
+	public String createOutBound(int orgid, int deptid, int subdeptid, int mainlocid, int sublocid, String approval, String loguser, 
+			String logdatetime, int transferhistoryid) {
 
-		Object[] params=new Object[]{loguser, logdatetime, productid, quantity, /*orimainlocid, orisublocid, desmainlocid, dessublocid,*/ approval};
+		Object[] params=new Object[]{orgid, deptid, subdeptid, mainlocid, sublocid, approval, loguser, logdatetime, transferhistoryid};
+		String sql="INSERT INTO OUTBOUND (ORG_ID, DEPT_ID, SUB_DEPT_ID, MAIN_LOC_ID, SUB_LOC_ID, APPROVAL, LOG_USER, LOG_DATETIME, TRANSFER_HISTORY_ID) "
+				+ "VALUES (?,?,?,?,?,?,?,?,?)";
+		
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataAccessException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public String create(int productid, int quantity, String serialno, int transfertype, String source, String destination) {
+
+		Object[] params=new Object[]{productid, quantity, serialno, transfertype, source, destination };
 //		Object[] params=new Object[]{"null",logdatetime, productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid};
 		String sql=CREATE_SQL;
 		
@@ -88,7 +106,7 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
 		
 		String sql="SELECT * "
 				+ "FROM TRANSFER_HISTORY TH, OUTBOUND OB "
-				+ "WHERE TH.OUTBOUND_ID = OB.ID";
+				+ "WHERE TH.ID = OB.TRANSFER_HISTORY_ID";
 		TransferHistoryMapper mapper=new TransferHistoryMapper();
 		
 		try {
@@ -103,7 +121,7 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
 		
 		String sql="SELECT * "
 				+ "FROM TRANSFER_HISTORY TH, OUTBOUND OB "
-				+ "WHERE TH.OUTBOUND_ID = OB.ID AND TH.ID = ?";
+				+ "WHERE TH.ID = OB.TRANSFER_HISTORY_ID AND TH.ID = ?";
 		Object[] params=new Object[] {transferhistoryid};
 		TransferHistoryMapper mapper=new TransferHistoryMapper();
 		

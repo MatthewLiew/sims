@@ -106,7 +106,7 @@ $(document).on("input", ".serialno", function() {
 	
 	var tokencount = serialno.split(/\W+\w/);
 	var token = serialno.split(/\W+/);
-	console.log(token);
+	
 	$(this).closest(".modal-body").find(".quantity").val(tokencount.length);
 	$(this).closest(".form-row").find(".quantity").html(tokencount.length);
 	
@@ -120,20 +120,30 @@ $(document).on("input", ".serialno", function() {
 function transfer_mode(val) {
 	
 	$("#org").hide();
+	$("#desorg").prop("required", false);
 	$("#dept").hide();
+	$("#desdept").prop("required", false);
 	$("#subdept").hide();
+	$("#dessubdept").prop("required", false);
 	$("#mainloc").hide();
+	$("#desmainloc").prop("required", false);
 	$("#subloc").hide();
+	$("#dessubloc").prop("required", false);
 	if(val==1){
 		$("#org").show();
+		$("#desorg").prop("required", true);
 	} else if (val==2) {
 		$("#dept").show();
+		$("#desdept").prop("required", true);
 	} else if (val==3) {
 		$("#subdept").show();
+		$("#dessubdept").prop("required", true);
 	} else if (val==4) {
 		$("#mainloc").show();
+		$("#desmainloc").prop("required", true);
 	} else if (val==5) {
 		$("#subloc").show();
+		$("#dessubloc").prop("required", true);
 	}
 }
 
@@ -1115,39 +1125,6 @@ function partnoSerialNo(form) {
 	}
 }
 
-function checkSerialAuth(form) {
-	var serialno = $("#"+form+" .serialno").val();
-	
-	var token = serialno.split(/\W+\w/);
-	
-//	console.log(token);
-//	var data= { 
-//			partnoid: $("#"+form+" .partnoid").val(),
-//			serialno: $("#"+form+" .serialno").val()
-//			}
-//	if(!$.isEmptyObject($("#"+form+" .serialno").val())) {
-// 		$.ajax({
-// 		type: "POST",
-// 		contentType: "application/json",
-// 		url: BASE_URL + "api/checkSerialNo",
-// 		data: JSON.stringify (data),
-// 		dataType: 'json',
-// 		
-// 		success: function (response) {
-// 			$("#"+form+" .serialno_status" ).html(response.status);
-// 			$("#"+form+" .serialno_flag" ).html(response.flag);
-//  		},
-// 		error : function(e) {
-// 			$("#"+form+" .serialno_status" ).html("Error");
-// 			$("#"+form+" .serialno_flag").html("false");
-//			}
-// 		});
-//	} else {
-//		$("#"+form+" .serialno_status").html("Field is required");
-//		$("#"+form+" .serialno_falg").html("false");
-//	}
-}
-
 function partnoUpcCode(form) {
 	var data= { 
 			partnoid: $("#"+form+" .partnoid").val(),
@@ -1208,6 +1185,65 @@ function partnoForm(form) {
 	} else {
 		return true;
 	}
+}
+
+function checkSerialAuth(form) {
+	var serialno = $("#"+form+" .serialno").val();
+	
+	var token = serialno.split(/\W+/);
+	
+//	console.log(token);
+	if(!$.isEmptyObject($("#"+form+" .serialno").val())) {
+	var data= { 
+			data: token
+			}
+	var data2= {
+			serialno: serialno
+	}
+//	console.log(data);
+ 		$.ajax({
+ 		type: "POST",
+// 		contentType: "application/json",
+ 		dataType: 'json',
+ 		url: BASE_URL + "api/checkSerialAuth",
+ 		data: data,
+ 		success: function (response) {
+// 			console.log(response.status);
+// 			console.log(response.flag);
+ 			$("#"+form+" .transferserial_message" ).html(response.status);
+ 			$("#"+form+" .transferserial_flag" ).html(response.flag);
+  		},
+ 		error : function(e) {
+// 			$("#"+form+" .serialno_status" ).html("Error");
+// 			$("#"+form+" .serialno_flag").html("false");
+		}
+ 		});
+	} /*else {
+		$("#"+form+" .serialno_status").html("Field is required");
+		$("#"+form+" .serialno_falg").html("false");
+	}*/
+}
+
+function transferForm(form) {
+	
+	var transferserialflag=$("#"+form+" .transferserial_flag" ).text();
+	var transferserialmessage=$("#"+form+" .transferserial_message" ).text();
+//	let productcode=$("#"+form+" .productcode").val();
+//	let productname=$("#"+form+" .productname").val();
+	
+	if(transferserialflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text(transferserialmessage);
+		return false;
+	} /*else if(productnameflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text("Product Name - "+productname+" Exists.");
+		return false;
+	} */else {
+		$("#"+form+" #modal_error").hide();
+		return true;
+	}
+	
 }
 
 function productCode(form) {
