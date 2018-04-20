@@ -53,10 +53,13 @@
 						          	<th>UPC Code</th>
 						         	<th>Product</th>
 						          	<th>Status</th>
-						          	<th>Customer Name</th>
-						          	<th>Invoice</th>
+						          	<!-- <th>Customer Name</th>
+						          	<th>Invoice</th> -->
 						          	<th>Main Location</th>
 						          	<th>Sub Location</th>
+						          	<!-- <th>Organization</th>
+						          	<th>Department</th>
+						          	<th>Sub Department</th> -->
 						          	<th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.serialedit} or ${usercap.serialdelete}" width="10%">Action</th>
 	               			 	</tr>
 		              		</thead>
@@ -67,10 +70,13 @@
 						          	<th>UPC Code</th>
 						         	<th>Product</th>
 						          	<th>Status</th>
-						          	<th>Customer Name</th>
-						          	<th>Invoice</th>
+						          	<!-- <th>Customer Name</th>
+						          	<th>Invoice</th> -->
 						          	<th>Main Location</th>
 						          	<th>Sub Location</th>
+						          	<!-- <th>Organization</th>
+						          	<th>Department</th>
+						          	<th>Sub Department</th> -->
 						          	<th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.serialedit} or ${usercap.serialdelete}">Action</th>
 					          	</tr>
 				          	</tfoot>
@@ -84,10 +90,13 @@
 <!-- 					             	<td th:if="${pn.status}=='Available'" style="color:green;" th:text="${pn.status}"></td> -->
 <!-- 					             	<td th:if="${pn.status}=='Sold'" style="color:red;" th:text="${pn.status}"></td> -->
 <!-- 					             	<td th:if="${pn.status}!='Available'" style="color:green;" th:text="${pn.status}"></td> -->
-					             	<td th:text="${pn.customername}"></td>
-					             	<td th:text="${pn.invoiceno}"></td>
+					             	<!-- <td th:text="${pn.customername}"></td>
+					             	<td th:text="${pn.invoiceno}"></td> -->
 					             	<td th:each="list: ${mainlocs}" th:if="${list.isMainLocName(pn.mainlocid)}" th:text="${list.mainlocname}"></td>
 					             	<td th:each="list: ${sublocs}" th:if="${list.isSubLocName(pn.sublocid)}" th:text="${list.sublocname}"></td>
+					             	<!-- <td th:each="list: ${organizations}" th:if="${list.isOrgname(pn.orgid)}" th:text="${list.orgname}"></td>
+					             	<td th:each="list: ${depts}" th:if="${list.isDeptname(pn.deptid)}" th:text="${list.deptname}"></td>
+					             	<td th:each="list: ${subdepts}" th:if="${list.isSubdeptname(pn.subdeptid)}" th:text="${list.subdeptname}"></td> -->
 					             	<td sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.serialedit} or ${usercap.serialdelete}">
 					              	 	<a th:if="${usercap.serialedit}" th:onclick="'doAction(\'edit\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Edit Serial No"><i class="fa fa-edit" title="Edit Serial No"></i></button></a>
 						             	<a th:if="${usercap.serialdelete}" th:onclick="'doAction(\'delete\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Delete Serial No"><i class="fa fa-trash" title="Delete Serial No"></i></button></a>

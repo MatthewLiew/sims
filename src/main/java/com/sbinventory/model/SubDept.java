@@ -54,5 +54,10 @@ public class SubDept {
         }
         return false;
     }
-	
+	public boolean isSubdeptname(int subdeptid){
+        if (this.subdeptid==subdeptid) {
+            return true;
+        }
+        return false;
+    }
 }

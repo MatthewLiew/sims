@@ -13,6 +13,7 @@ public class TransferHistoryMapper implements RowMapper<TransferHistory> {
 	public TransferHistory mapRow(ResultSet rs, int numRow) throws SQLException {
 		
 		int transferhistoryid = rs.getInt("ID");
+		String code = rs.getString("CODE");
 		String loguser = rs.getString("LOG_USER");
 		String logdatetime = rs.getString("LOG_DATETIME");
 		int productid = rs.getInt("PRODUCT_ID");
@@ -24,7 +25,7 @@ public class TransferHistoryMapper implements RowMapper<TransferHistory> {
 		int transfertype = rs.getInt("TRANSFER_TYPE");
 		
 //		return null;
-		return new TransferHistory(transferhistoryid, /*loguser, logdatetime, */productid, quantity, 
+		return new TransferHistory(transferhistoryid, code, /*loguser, logdatetime, */productid, quantity, 
 				serialno, transfertype,  source, destination, approval);
 	}
 

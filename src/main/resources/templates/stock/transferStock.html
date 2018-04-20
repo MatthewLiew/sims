@@ -8,6 +8,21 @@
 	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
     
     <div th:object="${th}">
+    	<div class="form-group">
+	       <div class="form-row">
+	           <div class="col-md-3">
+	               <label for="OrganizationCodeLabel">Transfer Code #</label>
+	           </div>
+	           <div class="col-md-6">
+	           <!-- onkeyup="orgCode('CreateOrganization');" -->
+	           	<input class="form-control code" name="transfercode" type="text" data-error="Please Enter Transfer Code" aria-describedby="TransferCode" placeholder="Enter Transfer Code" th:field="*{code}" value=""  required>
+	           </div>
+	           <div class="col-md-3">
+	           		<span class="transfercode_status"></span>
+	               <span style="visibility:hidden;"class="transfercode_flag" th:text="true"></span>
+	           </div>
+	       </div>
+	   </div>
 		<div class="form-group">
 	    	<div class="form-row">
 	        	<div class="col-md-3">

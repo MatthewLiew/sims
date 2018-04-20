@@ -318,6 +318,15 @@ public class StockController {
 		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
+		List<Organization> organizations = organizationDAO.findAll();
+		model.addAttribute("organizations", organizations);
+		
+		List<Dept> depts = deptDAO.findAll();
+		model.addAttribute("depts", depts);
+		
+		List<SubDept> subdepts = subdeptDAO.findAll();
+		model.addAttribute("subdepts", subdepts);
+		
 		String message = (String)model.asMap().get("message");
 		model.addAttribute("message", message);
 
@@ -885,6 +894,8 @@ public class StockController {
 	@PostMapping(value= "/transferStock")
 	public String postTransferStock(@ModelAttribute TransferHistory th, @RequestParam Integer[] destination, Model model, @RequestParam String sourceURL, RedirectAttributes ra, Principal pricipal) {
 		
+		//INSERT INTO TRANSFER HISTORY
+		System.out.println(th.getCode());
 		System.out.println(th.getProductid());
 		System.out.println(th.getQuantity());
 		System.out.println(th.getSerialno());
@@ -927,6 +938,20 @@ public class StockController {
 		
 		System.out.println("Source: " + source);
 		System.out.println("Destination: "+ dest);
+		
+		//END INSERT INTO TRANSFER HISTORY
+		
+		TransferHistory thistory = transferHistoryDAO.findOneByCode(th.getCode());
+		transferHistoryDAO.createOutBound(partno.getOrgid(), partno.getDeptid(), partno.getSubdeptid(), partno.getMainlocid(), 
+				partno.getSublocid(), "pending", null, null, thistory.getTransferhistoryid());
+			
+		//INSERT INTO OUTBOUND
+		
+		//END INSERT INTO OUTBOUND
+		
+		//INSERT INTO INBOUND
+		//END INSERT INTO INBOUND
+		
 		String errorString =null;
 		/*String errorString = transferHistoryDAO.create(null, DateTime.Now(),th.getProductid() , th.getQuantity(), 
 				th.getOrimainlocid(), th.getOrisublocid(), th.getDesmainlocid(), th.getDessublocid(), "pending");*/		

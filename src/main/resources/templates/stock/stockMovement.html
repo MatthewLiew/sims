@@ -61,19 +61,17 @@
 	      		</div>	
 	      		<div class="card-body">
 		        	<div class="table-responsive">
-		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+		        		<table class="table table-bordered" id="stockinouthistory" width="100%" cellspacing="0">
 		        			<thead>
 		        				<tr>
 		        					<th>Product Name</th>
 									<th>Quantity</th>
 									<th>DateTime</th>
-									<th>Time</th>
 <!-- 									<th>Log DateTime</th> -->
-<!-- 									<th>Log User</th> -->
+									<th>User</th>
 							        <th>Stock In / Out</th>
 							        <th>Reason</th>
 							        <th>Reason Details</th>
-							        <!-- <th>Approval</th> -->
 							        <!-- <th>Main Location</th>
 							        <th>Sub Location</th> -->
 						          	<th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.stockapprove} or ${usercap.stockedit} or ${usercap.stockdelete}">Action</th>
@@ -84,13 +82,11 @@
 		                  			<th>Product Name</th>
 									<th>Quantity</th>
 									<th>Date</th>
-									<th>Time</th>
 <!-- 									<th>Log DateTime</th> -->
-<!-- 									<th>Log User</th> -->
+									<th>User</th>
 							        <th>Stock In / Out</th>
 							        <th>Reason</th>
 							        <th>Reason Details</th>
-							        <!-- <th>Approval</th> -->
 							        <!-- <th>Main Location</th>
 							        <th>Sub Location</th> -->
 						          	<th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" width="17%" th:if="${usercap.stockapprove} or ${usercap.stockedit} or ${usercap.stockdelete}">Action</th>
@@ -100,10 +96,10 @@
 				          		<tr th:each="sh : ${stockhistories}">
 						             <td th:each="p : ${products}" th:if="${p.isProduct(sh.productid)}" th:text="${p.productname}"></td>
 						             <td th:text="${sh.quantity}"></td>
-						             <td th:text="${sh.historydate}"></td>
-						             <td th:text="${sh.historytime}"></td>
+						             <td th:text="${sh.historydate+' '+sh.historytime}"></td>
+<!-- 						             <td th:text="${sh.historytime}"></td> -->
 <!-- 						             <td th:text="${sh.logdatetime}"></td> -->
-<!-- 						             <td th:text="${sh.loguser}"></td> -->
+						             <td th:text="${sh.loguser}"></td>
 						             <td th:each="st : ${stocktypes}" th:if="${st.isStockType(sh.stocktypeid)}" th:text="${st.stocktype}"></td>
 						             <td th:each="r : ${reasons}" th:if="${r.isReason(sh.reasonid)}" th:text="${r.reason}"></td>
 						             <td th:text="${sh.remark}"></td>

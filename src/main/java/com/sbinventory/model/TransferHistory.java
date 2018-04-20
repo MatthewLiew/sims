@@ -3,6 +3,7 @@ package com.sbinventory.model;
 public class TransferHistory {
 
 	private int transferhistoryid;
+	private String code;
 //	private String loguser;
 //	private String logdatetime;
 	private Integer productid;
@@ -15,10 +16,11 @@ public class TransferHistory {
 	
 	public TransferHistory () {}
 
-	public TransferHistory(int transferhistoryid, /*String loguser, String logdatetime, */int productid, int quantity,
+	public TransferHistory(int transferhistoryid, String code,/*String loguser, String logdatetime, */int productid, int quantity,
 			String serialno, int transfertype, String source, String destination, String approval) {
 		
 		this.transferhistoryid = transferhistoryid;
+		this.code = code;
 //		this.loguser = loguser;
 //		this.logdatetime = logdatetime;
 		this.productid = productid;
@@ -38,6 +40,7 @@ public class TransferHistory {
 		this.transferhistoryid = transferhistoryid;
 	}
 
+	
 //	public String getLoguser() {
 //		return loguser;
 //	}
@@ -54,10 +57,18 @@ public class TransferHistory {
 //		this.logdatetime = logdatetime;
 //	}
 
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	public Integer getProductid() {
 		return productid;
 	}
-
+	
 	public void setProductid(Integer productid) {
 		this.productid = productid;
 	}

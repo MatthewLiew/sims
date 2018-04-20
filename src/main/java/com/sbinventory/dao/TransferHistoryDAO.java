@@ -21,7 +21,7 @@ import com.sbinventory.model.TransferHistory;
 @Transactional
 public class TransferHistoryDAO extends JdbcDaoSupport{
 
-	private static final String CREATE_SQL="INSERT INTO TRANSFER_HISTORY  (PRODUCT_ID, QUANTITY, APPROVAL) VALUES (?,?,?)";
+	private static final String CREATE_SQL="INSERT INTO TRANSFER_HISTORY (CODE, PRODUCT_ID, QUANTITY, SERIAL_NO, TRANSFER_TYPE, SOURCE, DESTINATION) VALUES (?,?,?,?,?,?,?)";
 //	private static final String CREATE_SQL="INSERT INTO TRANSFER_HISTORY (LOG_USER ) VALUES (?)";
 	private static final String READ_SQL="SELECT * FROM TRANSFER_HISTORY";
 	private static final String UPDATE_SQL="UPDATE TRANSFER_HISTORY";
@@ -51,9 +51,9 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public String create(int productid, int quantity, String serialno, int transfertype, String source, String destination) {
+	public String create(String code, int productid, int quantity, String serialno, int transfertype, String source, String destination) {
 
-		Object[] params=new Object[]{productid, quantity, serialno, transfertype, source, destination };
+		Object[] params=new Object[]{code, productid, quantity, serialno, transfertype, source, destination };
 //		Object[] params=new Object[]{"null",logdatetime, productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid};
 		String sql=CREATE_SQL;
 		
@@ -133,8 +133,22 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
         }
 	}
 	
+	public TransferHistory findOneByCode(String code){
+		
+		String sql="SELECT * FROM TRANSFER_HISTORY WHERE CODE = ?";
+		Object[] params=new Object[] {code};
+		TransferHistoryMapper mapper=new TransferHistoryMapper();
+		
+		try {
+            TransferHistory transferhistory = this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            return transferhistory;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+	
 	public String approval(int transferhistoryid, String approve ){
-		String sql=UPDATE_SQL+" set APPROVAL = ? where ID= ?";
+		String sql="UPDATE OUTBOUND set APPROVAL = ? where TRANSFER_HISTORY_ID= ?";
 		Object[] params=new Object[]{approve, transferhistoryid};
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
