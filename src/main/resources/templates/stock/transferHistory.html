@@ -31,18 +31,18 @@
 	      		<div class="card-body">
 	      		
 	      		<!-- Nav Bar -->
-	      			<!-- <ul class="nav nav-tabs" role="tablist" style="padding-left: 10px;">
+	      			<ul class="nav nav-tabs" role="tablist" style="padding-left: 10px;">
 		                <li class="nav-item">
-		                    <a class="nav-link active" th:href="@{/transferhistory}">Out Bound</a>
+		                    <a class="nav-link active" th:href="@{/transferhistory(type='outbound')}">Out Bound</a>
 						</li>
 		                <li class="nav-item">
-		                    <a class="nav-link" th:href="@{/transferhistory}">In Bound</a>
+		                    <a class="nav-link" th:href="@{/transferhistory(type='inbound')}">In Bound</a>
 						</li>
-					</ul> -->
+					</ul>
 					
 					<br>
 		        	<div class="table-responsive">
-		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+		        		<table class="table table-bordered" id="stocktransferhistory" width="100%" cellspacing="0">
 		        			<thead>
 		        				<tr>
 		        					<th>Oder No #</th>
@@ -52,8 +52,8 @@
 						          	<th>Transfer Type</th>
 						          	<th>Source</th>
 						          	<th>Destination</th>
-						          	<!-- <th>Log User</th>
-						          	<th>Log Datetime</th> -->
+						          	<th>Log Datetime</th>
+						          	<!-- <th>Log User</th> -->
 						          	<th>Action</th>
 	               			 	</tr>
 		              		</thead>
@@ -66,8 +66,8 @@
 						          	<th>Transfer Type</th>
 						          	<th>Source</th>
 						          	<th>Destination</th>
-						          	<!-- <th>Log User</th>
-						          	<th>Log Datetime</th> -->
+						          	<th>Log Datetime</th>
+						          	<!-- <th>Log User</th> -->
 						          	<th>Action</th>
 					          	</tr>
 				          	</tfoot>
@@ -75,11 +75,12 @@
 				          		<tr th:each="trans : ${transferhistories}">
 				          			<td th:text="${trans.code}"></td>
 				          			<td th:each="p : ${products}" th:if="${p.isProduct(trans.productid)}" th:text="${p.productname}"></td>
-				          			<td th:text="${trans.quantity}"></td>
+				          			<td th:text="-${trans.quantity}"></td>
 				          			<td th:text="${trans.serialno}"></td>
-				          			<td th:text="${trans.transfertype}"></td>
+				          			<td th:each="tt : ${transfertypes}" th:if="${tt.isTransfertype(trans.transfertype)}" th:text="${tt.mode}"></td>
 				          			<td th:text="${trans.source}"></td>
 				          			<td th:text="${trans.destination}"></td>
+				          			<td th:text="${trans.tfrdatetime}"></td>
 				          			<!-- <td th:each="m : ${mainlocs}" th:if="${m.isMainLocName(trans.orimainlocid)}" th:text="${m.mainlocname}"></td>
 				          			<td th:each="sub : ${sublocs}" th:if="${sub.isSubLocName(trans.orisublocid)}" th:text="${sub.sublocname}"></td>
 				          			<td th:if="${trans.orisublocid}==0" th:text="'-'"></td>
@@ -92,8 +93,8 @@
 						                <a th:onclick="'doAction(\'edit\',\''+ ${trans.transferhistoryid} +'\');'"><button class="btn btn-primary" title="Edit Transfer Transaction"><i class="fa fa-edit"></i></button></a>
 						                <a th:onclick="'doAction(\'delete\',\''+ ${trans.transferhistoryid} +'\');'"><button class="btn btn-primary" title="Delete Transfer Transaction"><i class="fa fa-trash" ></i></button></a>
 				            	 		&nbsp;&nbsp;
-				            	 		<span th:if="${trans.approval}=='pending'"><a th:href="@{/transferapproval(transferhistoryid=${trans.transferhistoryid},approve='approved')}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/transferapproval(transferhistoryid=${trans.transferhistoryid},approve='cancelled')}"><i class="fa fa-close" title="Not Approve"></i></a></span>
-				            	 		<span th:unless="${trans.approval}=='pending'" th:text="(${trans.approval}=='approved') ? 'Approved' : 'Not Approve'"></span>
+				            	 		<span th:if="${trans.isTransfered}=='pending'"><a th:href="@{/transferapproval(transferhistoryid=${trans.transferhistoryid},approve='approved')}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/transferapproval(transferhistoryid=${trans.transferhistoryid},approve='cancelled')}"><i class="fa fa-close" title="Not Approve"></i></a></span>
+				            	 		<span th:unless="${trans.isTransfered}=='pending'" th:text="(${trans.isTransfered}=='approved') ? 'Approved' : 'Not Approve'"></span>
 				            	 	</td>
 				            	 </tr>
 				          	</tbody>
@@ -221,10 +222,13 @@
     </script>
     <script type="text/javascript">
         $(document).ready(function() {	
-//             $('li.active').removeClass('active');
-//             $('a[href="' + location.pathname + '"]').closest('a').addClass('active'); 
-            
-            
+        	var pattern=/[?&]/;
+            $('a.nav-link').removeClass('active');
+            if(pattern.test(location.search)){
+            	$('a[href="' + window.location.pathname + window.location.search +'"]').closest('a').addClass('active'); 
+            } else {
+            	$('a[href="' + window.location.pathname + '?type=outbound'+'"]').closest('a').addClass('active'); 
+            }
             /* $.each($('#navbar').find('li'), function() {
                 $(this).toggleClass('active', 
                     window.location.pathname.indexOf($(this).find('a').attr('href')) > -1);
@@ -236,10 +240,10 @@
             }); */
             
            //nav-item
-            $('.nav-link').click(function(){ 
-                $('li a.nav-link').removeClass("active"); 
-//                 $(this).addClass("active"); 
-            });
+//             $('.nav-link').click(function(){ 
+//                 $('li a.nav-link').removeClass("active"); 
+// //                 $(this).addClass("active"); 
+//             });
         }); 
     </script>
 </html>

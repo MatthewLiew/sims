@@ -10,6 +10,12 @@ $(document).ready(function() {
 	  });
 });
 
+$(document).ready(function() {
+	$('#stocktransferhistory').DataTable({
+		  "order": [[ 7, "desc" ]]
+	  });
+});
+
 //$(document).ready(function() {
 //  $('table.settingTable').DataTable({
 //      "paging":   false,

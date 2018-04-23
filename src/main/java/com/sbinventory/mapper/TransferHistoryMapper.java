@@ -14,19 +14,35 @@ public class TransferHistoryMapper implements RowMapper<TransferHistory> {
 		
 		int transferhistoryid = rs.getInt("ID");
 		String code = rs.getString("CODE");
-		String loguser = rs.getString("LOG_USER");
-		String logdatetime = rs.getString("LOG_DATETIME");
 		int productid = rs.getInt("PRODUCT_ID");
 		int quantity = rs.getInt("QUANTITY");
 		String serialno = rs.getString("SERIAL_NO");
 		String source = rs.getString("SOURCE");
 		String destination = rs.getString("DESTINATION");
-		String approval = rs.getString("APPROVAL");
 		int transfertype = rs.getInt("TRANSFER_TYPE");
+		int srcorgid = rs.getInt("SRC_ORG_ID");
+		int srcdeptid = rs.getInt("SRC_DEPT_ID");
+		int srcsubdeptid = rs.getInt("SRC_SUB_DEPT_ID");
+		int srcmainlocid = rs.getInt("SRC_MAIN_LOC_ID");
+		int srcsublocid = rs.getInt("SRC_SUB_LOC_ID");
+		String isTransfered = rs.getString("TRANSFERED");
+		String tfruser = rs.getString("TFR_USER");
+		String tfrdatetime = rs.getString("TFR_DATETIME");
+		int desorgid = rs.getInt("DES_ORG_ID");
+		int desdeptid = rs.getInt("DES_ORG_ID");
+		int dessubdeptid = rs.getInt("DES_ORG_ID");
+		int desmainlocid = rs.getInt("DES_ORG_ID");
+		int dessublocid = rs.getInt("SRC_ORG_ID");
+		String isReceived = rs.getString("RECEIVED");
+		String recuser = rs.getString("REC_USER");
+		String recdatetime = rs.getString("REC_DATETIME");
 		
 //		return null;
-		return new TransferHistory(transferhistoryid, code, /*loguser, logdatetime, */productid, quantity, 
-				serialno, transfertype,  source, destination, approval);
+		return new TransferHistory(transferhistoryid, code, productid, quantity, serialno,
+				 source, destination, transfertype, srcorgid, srcdeptid,
+				 srcsubdeptid, srcmainlocid, srcsublocid, isTransfered, tfruser,
+				 tfrdatetime, desorgid, desdeptid, dessubdeptid, desmainlocid,
+				 dessublocid, isReceived, recuser, recdatetime);
 	}
 
 }

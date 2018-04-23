@@ -447,6 +447,7 @@ public class ProductController {
 		String errorString=partNoDAO.update(partno.getPartnoid(), partno.getSerialno(), partno.getModelno(), partno.getUpccode(), /*productid,*/ 
 				partno.getCustomername(), partno.getInvoiceno(), partno.getMainlocid(), partno.getSublocid(), partno.getOrgid(), partno.getDeptid(),
 				partno.getSubdeptid());
+		
 		if(errorString==null) {
 			String message="Serial No - "+ partno.getSerialno() +" updated successfully";
 			ra.addFlashAttribute("message", message);

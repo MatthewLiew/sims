@@ -434,8 +434,9 @@ public class StockController {
 	}
 	
 	@GetMapping(value= "/transferhistory")
-	public String getTransferHistory(Model model) {
+	public String getTransferHistory(@RequestParam(required=false) String type, Model model) {
 
+		System.out.println(type);
 		List<TransferHistory> transferhistories = transferHistoryDAO.findAll();
 		model.addAttribute("transferhistories", transferhistories);
 		
@@ -444,6 +445,9 @@ public class StockController {
 		
 		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
+		
+		List<TransferType> transfertypes = transferTypeDAO.findAll();
+		model.addAttribute("transfertypes", transfertypes);
 		
 		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
@@ -894,67 +898,102 @@ public class StockController {
 	@PostMapping(value= "/transferStock")
 	public String postTransferStock(@ModelAttribute TransferHistory th, @RequestParam Integer[] destination, Model model, @RequestParam String sourceURL, RedirectAttributes ra, Principal pricipal) {
 		
-		//INSERT INTO TRANSFER HISTORY
-		System.out.println(th.getCode());
-		System.out.println(th.getProductid());
-		System.out.println(th.getQuantity());
-		System.out.println(th.getSerialno());
-		int transfertype = th.getTransfertype();
-		System.out.println(th.getTransfertype());
-		String[] token = th.getSerialno().split("\\W+");
-		PartNo partno =partNoDAO.findOneBySerialNo(token[0]);
-		
-		String source = null, dest = null;
-		if(transfertype == 1) {
-			Organization src = organizationDAO.findOne(partno.getOrgid());
-			Organization des = organizationDAO.findOne(destination[th.getTransfertype()-1]);
-			source = src.getOrgname();
-			dest = des.getOrgname();
-			
-		} else if(transfertype == 2) {
-			Dept src = deptDAO.findOne(partno.getDeptid());
-			Dept des = deptDAO.findOne(destination[th.getTransfertype()-1]);
-			source = src.getDeptname();
-			dest = des.getDeptname();
-			
-		} else if(transfertype == 3) {
-			SubDept src = subdeptDAO.findOne(partno.getSubdeptid());
-			SubDept des = subdeptDAO.findOne(destination[th.getTransfertype()-1]);
-			source = src.getSubdeptname();
-			dest = des.getSubdeptname();
-			
-		} else if(transfertype == 4) {
-			MainLoc src = mainLocDAO.findOne(partno.getMainlocid());
-			MainLoc des = mainLocDAO.findOne(destination[th.getTransfertype()-1]);
-			source = src.getMainlocname();
-			dest = des.getMainlocname();
-			
-		} else if(transfertype == 5) {
-			SubLoc src = subLocDAO.findOne(partno.getSublocid());
-			SubLoc des = subLocDAO.findOne(destination[th.getTransfertype()-1]);
-			source = src.getSublocname();
-			dest = des.getSublocname();
-		}
-		
-		System.out.println("Source: " + source);
-		System.out.println("Destination: "+ dest);
-		
-		//END INSERT INTO TRANSFER HISTORY
-		
-		TransferHistory thistory = transferHistoryDAO.findOneByCode(th.getCode());
-		transferHistoryDAO.createOutBound(partno.getOrgid(), partno.getDeptid(), partno.getSubdeptid(), partno.getMainlocid(), 
-				partno.getSublocid(), "pending", null, null, thistory.getTransferhistoryid());
-			
-		//INSERT INTO OUTBOUND
-		
-		//END INSERT INTO OUTBOUND
-		
-		//INSERT INTO INBOUND
-		//END INSERT INTO INBOUND
 		
 		String errorString =null;
-		/*String errorString = transferHistoryDAO.create(null, DateTime.Now(),th.getProductid() , th.getQuantity(), 
-				th.getOrimainlocid(), th.getOrisublocid(), th.getDesmainlocid(), th.getDessublocid(), "pending");*/		
+		String[] token = th.getSerialno().split("\\W+");
+		Integer desorg = null, desdept = null, dessubdept = null, desmainloc = null, dessubloc = null;
+		for (int i=0; i<token.length; i++) {
+			
+			PartNo partno =partNoDAO.findOneBySerialNo(token[i]);
+		//INSERT INTO TRANSFER HISTORY
+//			PartNo partno =partNoDAO.findOneBySerialNo(token[0]);
+			System.out.println("Code: "+th.getCode());
+			System.out.println("Product ID: "+th.getProductid());
+			System.out.println("Quantity: "+th.getQuantity());
+			System.out.println("S/N : "+token[i]);
+			int transfertype = th.getTransfertype();
+			System.out.println("T/T: "+th.getTransfertype());
+			
+			String source = null, dest = null;
+			if(transfertype == 1) {
+				Organization src = organizationDAO.findOne(partno.getOrgid());
+				Organization des = organizationDAO.findOne(destination[th.getTransfertype()-1]);
+				source = src.getOrgname();
+				dest = des.getOrgname();
+				desorg = destination[th.getTransfertype()-1];
+				
+			} else if(transfertype == 2) {
+				Dept src = deptDAO.findOne(partno.getDeptid());
+				Dept des = deptDAO.findOne(destination[th.getTransfertype()-1]);
+				source = src.getDeptname();
+				dest = des.getDeptname();
+				desdept = destination[th.getTransfertype()-1];
+				
+			} else if(transfertype == 3) {
+				SubDept src = subdeptDAO.findOne(partno.getSubdeptid());
+				SubDept des = subdeptDAO.findOne(destination[th.getTransfertype()-1]);
+				source = src.getSubdeptname();
+				dest = des.getSubdeptname();
+				dessubdept = destination[th.getTransfertype()-1];
+				
+			} else if(transfertype == 4) {
+				MainLoc src = mainLocDAO.findOne(partno.getMainlocid());
+				MainLoc des = mainLocDAO.findOne(destination[th.getTransfertype()-1]);
+				source = src.getMainlocname();
+				dest = des.getMainlocname();
+				desmainloc = destination[th.getTransfertype()-1];
+				
+			} else if(transfertype == 5) {
+				SubLoc src = subLocDAO.findOne(partno.getSublocid());
+				SubLoc des = subLocDAO.findOne(destination[th.getTransfertype()-1]);
+				source = src.getSublocname();
+				dest = des.getSublocname();
+				dessubloc = destination[th.getTransfertype()-1];
+			}
+			
+			System.out.println("Source: " + source);
+			System.out.println("Destination: "+ dest);
+			
+			String tfrdatetime = DateTime.Now();
+			errorString = transferHistoryDAO.create(th.getCode(), th.getProductid() , th.getQuantity(), token[i], source, dest, 
+					 th.getTransfertype(), partno.getOrgid(), partno.getDeptid(), partno.getSubdeptid(), partno.getMainlocid(), partno.getSublocid(), 
+					"pending", null, tfrdatetime, desorg, desdept, dessubdept, desmainloc, dessubloc, "pending", null, null);	
+		}
+			//END INSERT INTO TRANSFER HISTORY
+			
+//			//INSERT INTO OUTBOUND
+//			String logdatetime = DateTime.Now();
+//			TransferHistory thistory = transferHistoryDAO.findOneByCode(th.getCode());
+//			transferHistoryDAO.createOutBound(partno.getOrgid(), partno.getDeptid(), partno.getSubdeptid(), partno.getMainlocid(), 
+//					partno.getSublocid(), "pending", null, logdatetime, thistory.getTransferhistoryid());
+//			//END INSERT INTO OUTBOUND
+			
+//			//INSERT INTO INBOUND
+//			Integer org = null, dept = null, subdept = null, mainloc = null, subloc = null;
+//			
+//			if(transfertype == 1) {
+//				org = destination[th.getTransfertype()-1];
+//				
+//			} else if(transfertype == 2) {
+//				dept = destination[th.getTransfertype()-1];
+//				
+//			} else if(transfertype == 3) {
+//				subdept = destination[th.getTransfertype()-1];
+//				
+//			} else if(transfertype == 4) {
+//				mainloc = destination[th.getTransfertype()-1];
+//				
+//			} else if(transfertype == 5) {
+//				subloc = destination[th.getTransfertype()-1];
+//			}
+//			
+//			transferHistoryDAO.createInBound(org, dept, subdept, mainloc, subloc,
+//					"pending", null, null, thistory.getTransferhistoryid());
+//			//END INSERT INTO INBOUND
+//		}
+		
+		
+		
 		
 		if(errorString==null) {
 			String message= "Stock Transfered successfully";

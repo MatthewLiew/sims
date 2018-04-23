@@ -27,4 +27,12 @@ public class TransferType {
 	public void setMode(String mode) {
 		this.mode = mode;
 	}
+	
+	public boolean isTransfertype(int transfertypeid) {
+		if (this.transfertypeid==transfertypeid) {
+            return true;
+        } else {
+        	return false;
+    	}
+	}
 }
