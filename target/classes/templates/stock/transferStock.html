@@ -87,8 +87,7 @@
 	            	<label for="StockTypeLabel">Destination</label>
 	            </div>
 	            <div class="col-md-6">
-	            	<!-- th:field="*{orimainlocid}" onchange="subloc_select('From',this.value);" -->
-	            	<select class="form-control" id="desorg" name="destination">
+	            	<select class="form-control" id="desorg" name="destination" th:field="*{desorgid}">
 	           			<option value="">Select Organization</option>
 	           			<option th:each="elem: ${organizations}" th:value="${elem.orgid}" th:text="${elem.orgname}">
 	           			</option>
@@ -103,8 +102,7 @@
 	            	<label for="StockTypeLabel">Destination</label>
 	            </div>
 	            <div class="col-md-6">
-	            	<!-- th:field="*{orimainlocid}" onchange="subloc_select('From',this.value);" -->
-	            	<select class="form-control" id="desdept" name="destination">
+	            	<select class="form-control" id="desdept" name="destination" th:field="*{desdeptid}">
 	           			<option value="">Select Department</option>
 	           			<option th:each="elem: ${depts}" th:value="${elem.deptid}" th:text="${elem.deptname}">
 	           			</option>
@@ -120,7 +118,7 @@
 	            </div>
 	            <div class="col-md-6">
 	            	<!-- th:field="*{orimainlocid}" onchange="subloc_select('From',this.value);" -->
-	            	<select class="form-control" id="dessubdept" name="destination">
+	            	<select class="form-control" id="dessubdept" name="destination" th:field="*{dessubdeptid}">
 	           			<option value="">Select Sub Department</option>
 	           			<option th:each="elem: ${subdepts}" th:value="${elem.subdeptid}" th:text="${elem.subdeptname}">
 	           			</option>
@@ -136,7 +134,7 @@
 	            </div>
 	            <div class="col-md-6">
 	            	<!-- th:field="*{orimainlocid}" onchange="subloc_select('From',this.value);" -->
-	            	<select class="form-control" id="desmainloc"name="destination">
+	            	<select class="form-control" id="desmainloc"name="destination" th:field="*{desmainlocid}">
 	           			<option value="">Select Main Location</option>
 	           			<option th:each="elem: ${mainlocs}" th:value="${elem.mainlocid}" th:text="${elem.mainlocname}">
 	           			</option>
@@ -152,7 +150,7 @@
 	            </div>
 	            <div class="col-md-6">
 	            	<!-- th:field="*{orimainlocid}" onchange="subloc_select('From',this.value);" -->
-	            	<select class="form-control" id="dessubdept" name="destination">
+	            	<select class="form-control" id="dessubdept" name="destination" th:field="*{dessublocid}">
 	           			<option value="">Select Sub Location</option>
 	           			<option th:each="elem: ${sublocs}" th:value="${elem.sublocid}" th:text="${elem.sublocname}">
 	           			</option>

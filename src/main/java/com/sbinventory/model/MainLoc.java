@@ -30,8 +30,10 @@ public class MainLoc {
 	
 	public boolean isMainLocName(int mainlocid) {
 		if (this.mainlocid==mainlocid) {
-            return true;
-        } else {return false;}
+			return true;
+        } else {
+        	return false;
+    	}
 	}
 	
 }

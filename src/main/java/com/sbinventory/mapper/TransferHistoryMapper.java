@@ -29,10 +29,10 @@ public class TransferHistoryMapper implements RowMapper<TransferHistory> {
 		String tfruser = rs.getString("TFR_USER");
 		String tfrdatetime = rs.getString("TFR_DATETIME");
 		int desorgid = rs.getInt("DES_ORG_ID");
-		int desdeptid = rs.getInt("DES_ORG_ID");
-		int dessubdeptid = rs.getInt("DES_ORG_ID");
-		int desmainlocid = rs.getInt("DES_ORG_ID");
-		int dessublocid = rs.getInt("SRC_ORG_ID");
+		int desdeptid = rs.getInt("DES_DEPT_ID");
+		int dessubdeptid = rs.getInt("DES_SUB_DEPT_ID");
+		int desmainlocid = rs.getInt("DES_MAIN_LOC_ID");
+		int dessublocid = rs.getInt("DES_SUB_LOC_ID");
 		String isReceived = rs.getString("RECEIVED");
 		String recuser = rs.getString("REC_USER");
 		String recdatetime = rs.getString("REC_DATETIME");

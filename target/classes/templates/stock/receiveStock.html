@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+	</head>
+
+	<p class="error" style="color: red;" th:text="${errorString}" ></p>
+ 	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
+	<div th:object="${th}">
+		<input type="hidden" th:field="*{transferhistoryid}" th:value="${th.transferhistoryid}" />
+	    
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="transfercode">Transfer Code #</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<input class="form-control transfercode" id="transfercode" name="transfercode" type="text" data-error="Please Enter Transfer Code" aria-describedby="TransferCode" placeholder="Enter Transfer Code" th:field="*{code}" th:value="${th.code}" required>
+	            </div>
+	            <div class="col-md-3">
+	            </div>
+	        </div>
+	    </div>
+	    
+		<div class="form-group">
+	    	<div class="form-row">
+	        	<div class="col-md-3">
+	            	<label for="StockTypeLabel">Product</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<select class="form-control" name="productid" th:field="*{productid}" required>
+	           			<option value="">Select Product</option>
+	           			<option th:each="elem: ${products}" th:selected="${elem.isProduct(th.productid)}" th:value="${elem.productid}" th:text="${elem.productname}"></option>
+	       			</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	    	<div class="form-row">
+	        	<div class="col-md-3">
+	            	<label for="SerialNoLabel">Serial No</label>
+	       		</div>
+	           	<div class="col-md-6">
+	           		<input class="form-control serialno" id="serialno" name="serialno" type="text" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Enter Serial No" th:field="*{serialno}" th:value="${th.serialno}" required>
+	           	</div>
+	           	<div class="col-md-3">
+<!-- 	           		<span style="visibility: hidden;" class="transferserial_flag"></span> -->
+<!-- 	           		<span style="visibility: hidden;" class="transferserial_message"></span> -->
+	           	</div>
+	       	</div>
+		</div>
+	    
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="orgid">Organization</label>
+	            </div>
+	            <div class="col-md-6"> 
+	            	<select class="form-control" id="orgid" name="desorgid" th:field="*{desorgid}" onchange="department_select('ReceiveStock',this.value);" required>
+		             	<option value="">Select Organization</option>
+		           		<option th:each="list: ${organizations}" th:value="${list.orgid}" th:text="${list.orgname}" ></option>
+	             	</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	     <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="DepartmentLabel">Department</label>
+	            </div>
+	            <div class="col-md-6"> 
+	            	<select  class="form-control dept_select" name="desdeptid" th:field="*{desdeptid}" onchange="subdepartment_select('ReceiveStock', this.value);" required>
+	          			<option value="">Select Department</option>
+	          			<option th:each="list: ${depts}" th:value="${list.deptid}" th:text="${list.deptname}" ></option>
+	         		</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="SubDepartmentLabel">Sub Department</label>
+	            </div>
+	            <div class="col-md-6"> 
+	            	<select class="form-control subdept_select" name="dessubdeptid" th:field="*{dessubdeptid}" required>
+	       				<option value="">Select Sub Department</option>
+	       				<option th:each="list: ${subdepts}" th:value="${list.subdeptid}" th:text="${list.subdeptname}" ></option>
+	          		</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="MainLocationLabel">Main Location</label>
+	            </div>
+	            <div class="col-md-6">
+		            <select class="form-control" name="desmainlocid" th:field="*{desmainlocid}" onchange="subloc_select('ReceiveStock',this.value);" required>
+			            <option value="">Select Main Location</option>
+			            <option th:each="list: ${mainlocs}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option>
+		       		</select>
+	            </div>
+	        </div>
+	    </div>
+		    
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="SubLocationLabel">Sub Location</label>
+	            </div>
+	            <div class="col-md-6">                    
+		            <select class="form-control subloc_select" name="dessublocid" th:field="*{dessublocid}" required>
+		            	<option value="">Select Sub Location</option>
+		            	<option th:each="list: ${sublocs}" th:value="${list.sublocid}" th:text="${list.sublocname}"></option>
+		        	</select>
+	            </div>
+	         </div>
+	     </div>
+	     
+    </div>
+</html>

@@ -95,9 +95,46 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public String update(int transferhistoryid, int productid, /*int orimainlocid, int orisublocid, int desmainlocid, int dessublocid,*/ int quantity ){
-		String sql=UPDATE_SQL+" set PRODUCT_ID = ?, QUANTITY = ? where ID= ?";
-		Object[] params=new Object[]{productid,/* orimainlocid, orisublocid, desmainlocid, dessublocid, */quantity, transferhistoryid};
+	public String update(int transferhistoryid, String code, int productid, int quantity, String serialno ){
+		String sql=UPDATE_SQL+" set CODE = ?, PRODUCT_ID = ?, QUANTITY = ?, SERIAL_NO = ? where ID= ?";
+		Object[] params=new Object[]{code, productid, quantity, serialno, transferhistoryid};
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataAccessException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public String updateNewDestination(int transferhistoryid, String code, int productid, int quantity, String serialno, int transfertype, String source, 
+			String destination, String tfruser, String tfrdatetime, Integer desorgid, Integer desdeptid, Integer dessubdeptid, Integer desmainlocid, 
+			Integer dessublocid, String isreceived, String recuser, String recdatetime){
+		String sql=UPDATE_SQL+" set CODE = ?, PRODUCT_ID = ?, QUANTITY = ?, SERIAL_NO = ?, TRANSFER_TYPE = ?, SOURCE = ?, DESTINATION = ?, TFR_USER = ?, "
+				+ "TFR_DATETIME = ?, DES_ORG_ID = ?, DES_DEPT_ID = ?, DES_SUB_DEPT_ID = ?, DES_MAIN_LOC_ID = ?, DES_SUB_LOC_ID = ?, RECEIVED = ?, "
+				+ "REC_USER = ?, REC_DATETIME = ? where ID= ?";
+		Object[] params=new Object[]{code, productid, quantity, serialno, transfertype, source, destination, tfruser, tfrdatetime, desorgid, 
+			 desdeptid, dessubdeptid, desmainlocid, dessublocid, isreceived, recuser, recdatetime, transferhistoryid};
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataAccessException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public String updateReceiveStock(int transferhistoryid, Integer desorgid, Integer desdeptid, Integer dessubdeptid, Integer desmainlocid, 
+			Integer dessublocid, String isreceived, String recuser, String recdatetime){
+		String sql=UPDATE_SQL+" set DES_ORG_ID = ?, DES_DEPT_ID = ?, DES_SUB_DEPT_ID = ?, DES_MAIN_LOC_ID = ?, DES_SUB_LOC_ID = ?, RECEIVED = ?, "
+				+ "REC_USER = ?, REC_DATETIME = ? where ID= ?";
+		Object[] params=new Object[]{desorgid, desdeptid, dessubdeptid, desmainlocid, dessublocid, isreceived, recuser, recdatetime, transferhistoryid};
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
@@ -111,7 +148,7 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
 	}
 	
 	public String delete(int transferhistoryid){
-		String sql=DELETE_SQL+" where ID= ?";
+		String sql=DELETE_SQL+" where ID = ?";
 		Object[] params= new Object[] {transferhistoryid};
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
@@ -141,6 +178,20 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
         }
 	}
 	
+	public List<TransferHistory> findAllInBound(){
+		String isApproved="approved", isReceived="pending";
+		String sql=READ_SQL+" WHERE TRANSFERED = ? ";
+		Object[] params=new Object[] {isApproved};
+		TransferHistoryMapper mapper=new TransferHistoryMapper();
+		
+		try {
+            List<TransferHistory> transferhistories =  this.getJdbcTemplate().query(sql, params, mapper);
+            return transferhistories;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+
 	public TransferHistory findOne(int transferhistoryid){
 		
 		String sql=READ_SQL+" where ID = ?";
@@ -172,7 +223,7 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
 	}
 	
 	public String approval(int transferhistoryid, String approve ){
-		String sql="UPDATE OUTBOUND set APPROVAL = ? where TRANSFER_HISTORY_ID= ?";
+		String sql=UPDATE_SQL+" set TRANSFERED = ? where ID= ?";
 		Object[] params=new Object[]{approve, transferhistoryid};
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);

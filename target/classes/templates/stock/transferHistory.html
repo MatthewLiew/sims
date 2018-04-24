@@ -45,15 +45,19 @@
 		        		<table class="table table-bordered" id="stocktransferhistory" width="100%" cellspacing="0">
 		        			<thead>
 		        				<tr>
-		        					<th>Oder No #</th>
+		        					<th>Order No #</th>
 		        					<th>Product</th>
 		        					<th>Quantity</th>
 						          	<th>Serial No</th>
 						          	<th>Transfer Type</th>
 						          	<th>Source</th>
 						          	<th>Destination</th>
-						          	<th>Log Datetime</th>
+						          	<th>Datetime</th>
 						          	<!-- <th>Log User</th> -->
+						          	<th>
+						          		<span th:if="${type}=='outbound'">Transfer</span>
+				          				<span th:if="${type}=='inbound'">Receive</span>
+						          	</th>
 						          	<th>Action</th>
 	               			 	</tr>
 		              		</thead>
@@ -66,8 +70,12 @@
 						          	<th>Transfer Type</th>
 						          	<th>Source</th>
 						          	<th>Destination</th>
-						          	<th>Log Datetime</th>
+						          	<th>Datetime</th>
 						          	<!-- <th>Log User</th> -->
+						          	<th>
+						          		<span th:if="${type}=='outbound'">Transfer</span>
+				          				<span th:if="${type}=='inbound'">Receive</span>
+						          	</th>
 						          	<th>Action</th>
 					          	</tr>
 				          	</tfoot>
@@ -75,12 +83,18 @@
 				          		<tr th:each="trans : ${transferhistories}">
 				          			<td th:text="${trans.code}"></td>
 				          			<td th:each="p : ${products}" th:if="${p.isProduct(trans.productid)}" th:text="${p.productname}"></td>
-				          			<td th:text="-${trans.quantity}"></td>
+				          			<td>
+				          				<span th:if="${type}=='outbound'" th:text="-${trans.quantity}"></span>
+				          				<span th:if="${type}=='inbound'" th:text="${trans.quantity}"></span>
+				          			</td>
 				          			<td th:text="${trans.serialno}"></td>
 				          			<td th:each="tt : ${transfertypes}" th:if="${tt.isTransfertype(trans.transfertype)}" th:text="${tt.mode}"></td>
 				          			<td th:text="${trans.source}"></td>
 				          			<td th:text="${trans.destination}"></td>
-				          			<td th:text="${trans.tfrdatetime}"></td>
+				          			<td>
+					          			<span th:if="${type}=='outbound'" th:text="${trans.tfrdatetime}"></span>
+					          			<span th:if="${type}=='inbound'" th:text="${trans.recdatetime}"></span>
+				          			</td>
 				          			<!-- <td th:each="m : ${mainlocs}" th:if="${m.isMainLocName(trans.orimainlocid)}" th:text="${m.mainlocname}"></td>
 				          			<td th:each="sub : ${sublocs}" th:if="${sub.isSubLocName(trans.orisublocid)}" th:text="${sub.sublocname}"></td>
 				          			<td th:if="${trans.orisublocid}==0" th:text="'-'"></td>
@@ -89,12 +103,22 @@
 				          			<td th:if="${trans.dessublocid}==0" th:text="'-'"></td> -->
 				          			<!-- <td th:text="${trans.loguser}"></td>
 				          			<td th:text="${trans.logdatetime}"></td> -->
+				          			<td>
+					          			<span th:if="${type}=='outbound'">
+					          				<span th:if="${trans.isTransfered}=='pending'"><a th:href="@{/transferapproval(transferhistoryid=${trans.transferhistoryid},approve='approved')}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/transferapproval(transferhistoryid=${trans.transferhistoryid},approve='cancelled')}"><i class="fa fa-close" title="Not Approve"></i></a></span>
+					            	 		<span th:unless="${trans.isTransfered}=='pending'" th:text="(${trans.isTransfered}=='approved') ? 'Approved' : 'Not Approve'"></span>
+					          			</span>
+					          			<span th:if="${type}=='inbound'">
+					          				<span th:if="${trans.isReceived}=='pending'"><a th:onclick="'doAction(\'receive\',\''+ ${trans.transferhistoryid} +'\');'"><button class="btn btn-primary" data-toggle="modal" >Receive</button></a></span>
+					            	 		<span th:unless="${trans.isReceived}=='pending'" th:text="'Received'"></span>
+					          			</span>
+				          			</td>
 									<td>
-						                <a th:onclick="'doAction(\'edit\',\''+ ${trans.transferhistoryid} +'\');'"><button class="btn btn-primary" title="Edit Transfer Transaction"><i class="fa fa-edit"></i></button></a>
+						                <span>
+							                <a th:if="${type}=='outbound'" th:onclick="'doAction(\'edit\',\''+ ${trans.transferhistoryid} +'\',\'outbound\');'"><button class="btn btn-primary" title="Edit Transfer Transaction"><i class="fa fa-edit"></i></button></a>
+							                <a th:if="${type}=='inbound'" th:onclick="'doAction(\'edit\',\''+ ${trans.transferhistoryid} +'\',\'inbound\');'"><button class="btn btn-primary" title="Edit Transfer Transaction"><i class="fa fa-edit"></i></button></a>
+						                </span>
 						                <a th:onclick="'doAction(\'delete\',\''+ ${trans.transferhistoryid} +'\');'"><button class="btn btn-primary" title="Delete Transfer Transaction"><i class="fa fa-trash" ></i></button></a>
-				            	 		&nbsp;&nbsp;
-				            	 		<span th:if="${trans.isTransfered}=='pending'"><a th:href="@{/transferapproval(transferhistoryid=${trans.transferhistoryid},approve='approved')}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/transferapproval(transferhistoryid=${trans.transferhistoryid},approve='cancelled')}"><i class="fa fa-close" title="Not Approve"></i></a></span>
-				            	 		<span th:unless="${trans.isTransfered}=='pending'" th:text="(${trans.isTransfered}=='approved') ? 'Approved' : 'Not Approve'"></span>
 				            	 	</td>
 				            	 </tr>
 				          	</tbody>
@@ -111,7 +135,34 @@
 		                        <!-- Modal content-->
 		                        <div class="modal-content">
 		                            <div class="modal-header">
-		                                <h4 class="modal-title">Stock Transfer</h4>
+		                                <h4 class="modal-title">Transfer Stock</h4>
+		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                            </div>
+		                            
+		                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+		
+		                            <div class="modal-body">
+		
+		                            </div>
+		
+		                            <div class="modal-footer">
+		                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		                                <button type="submit" class="btn btn-primary">Save</button>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </form>
+		        </div>
+		        
+		        <div class="modal clickable" id="ReceiveStock" tabindex="-1" role="dialog" aria-labelledby="ReceiveStock" aria-hidden="true">
+		            <form method="POST" th:action="@{/receiveStock}" id="ReceiveStock" onsubmit="return transferForm('TransferStock');">
+		                <div class="vertical-alignment-helper">
+		                    <div class="modal-dialog  modal-lg vertical-align-center">
+		                        <!-- Modal content-->
+		                        <div class="modal-content">
+		                            <div class="modal-header">
+		                                <h4 class="modal-title">Receive Stock</h4>
 		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
 		                            </div>
 		                            
@@ -189,10 +240,10 @@
 	<div class="footer_ref" th:include="/footer"></div>
 	
 	<script type="text/javascript">
-        function doAction(action, id) {
+        function doAction(action, id, type) {
             if (action == 'transfer') {
                 $('#TransferStock .modal-body').empty();
-                $('#TransferStock .modal-title').text("Stock Transfer");
+                $('#TransferStock .modal-title').text("Transfer Stock");
                 $('#TransferStock #modal_error').hide();
                 $('#TransferStock .modal-body').load('transferStock', function () {
                     $('#TransferStock').modal({show: true});
@@ -201,15 +252,16 @@
                 $('#EditTransferHistory .modal-body').empty();
                 $('#EditTransferHistory .modal-title').text("Edit Transfer History");
                 $('#EditTransferHistory #modal_error').hide();
-                $('#EditTransferHistory .modal-body').load('editTransferHistory?transferhistoryid=' + id, function () {
+                $('#EditTransferHistory .modal-body').load('editTransferHistory?transferhistoryid=' + id+'&type='+type, function () {
                     $('#EditTransferHistory').modal({show: true});
                 });
-            } else if (action == 'change') {
+            } else if (action == 'receive') {
             	console.log("change");
-                $('#ChangePwd .modal-body').empty();
-                $('#ChangePwd .modal-title').text("Change Password");
-                $('#ChangePwd .modal-body').load('changePassword?userid=' + id, function () {
-                    $('#ChangePwd').modal({show: true});
+                $('#ReceiveStock .modal-body').empty();
+                $('#ReceiveStock .modal-title').text("Receive Stock");
+                $('#ReceiveStock #modal_error').hide();
+                $('#ReceiveStock .modal-body').load('receiveStock?transferhistoryid=' + id, function () {
+                    $('#ReceiveStock').modal({show: true});
                 });
             } else if (action == 'delete') {
                 $('#DeleteTransferHistory .modal-body').empty();
