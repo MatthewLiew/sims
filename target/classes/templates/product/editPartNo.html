@@ -7,9 +7,7 @@
 	<p class="error" style="color: red;" th:text="${errorString}" ></p>
  	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
 	<div th:object="${partno}">
-		<input type="hidden" name="partnoid" th:field="*{partnoid}" th:value="${partno.partnoid}" />
-<!-- 		<input type="hidden" th:field="*{mainlocid}" /> -->
-<!-- 		<input type="hidden" th:field="*{sublocid}" /> -->
+		<input type="hidden" class="partnoid" name="partnoid" th:field="*{partnoid}" th:value="${partno.partnoid}" />
 		<div class="form-group">
 	       	<div class="form-row">
 	           	<div class="col-md-3">

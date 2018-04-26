@@ -267,24 +267,6 @@ public class MainRESTController {
 		
 	}
 	
-//	@PostMapping(value="/api/checkPartNoCode")
-//	public Response getPartNoCodeResponse(@RequestBody PartNo partno ) {
-//		PartNo result;
-//		if(partno.getPartnoid()==0) {
-//			result = partNoDAO.getPartNoCode(partno.getPartnocode());
-//		} else {
-//			result = partNoDAO.getPartNoCode(partno.getPartnocode(), partno.getPartnoid());
-//		}
-//		if(result==null) {
-//			Response response = new Response("OK", "true");
-//			return response;
-//		}
-//		else {
-//			Response response = new Response("Part No Code Exist", "false");
-//			return response;
-//		}
-//	}
-	
 	@PostMapping(value="/api/checkModelNo")
 	public Response getModelNoResponse(@RequestBody PartNo partno ) {
 		PartNo result= partNoDAO.getModelNo(partno.getModelno(), partno.getPartnoid());
@@ -303,13 +285,46 @@ public class MainRESTController {
 	@PostMapping(value="/api/checkSerialNo")
 	public Response getSerialNoResponse(@RequestBody PartNo partno ) {
 		PartNo result = partNoDAO.getSerialNo(partno.getSerialno(), partno.getPartnoid());
-		
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
 		}
 		else {
 			Response response = new Response("Serial No Exist", "false");
+			return response;
+		}
+	}
+	
+	@PostMapping(value="/api/checkMultipleSerialNo")
+	public Response checkMultipleSerialNo(/*@RequestBody PartNo th*/@RequestParam (value="data[]") String[] data, @RequestParam int productid, Principal principal) {
+//		System.out.println("Productid"+productid);
+		String message = "Serial No ";
+		boolean flag = true;
+//		UserAccount user = null;
+//		if(principal != null) {
+//			user = userAccountDAO.findOneByUsername(principal.getName(), 0);
+//		}
+		
+		for(int i=0; i<data.length ; i++) {
+			PartNo partno = partNoDAO.getSerialNoByProductid(data[i], productid);
+			if(partno!=null) {
+//				if(!((user.getOrgid()==partno.getOrgid())&&(user.getDeptid()==partno.getDeptid())&&(user.getSubdeptid()==partno.getSubdeptid()))) {
+					message += data[i]+" ";
+					flag=false;
+//				} else {
+//					message += "Serial No "+data[i]+" belongs to you.\n";
+//				}
+			} /*else {
+				message += data[i]+" ";
+				flag=false;
+			}*/
+		}
+		message+="exist(s).";
+		if(flag) {
+			Response response = new Response(message, "true");
+			return response;
+		} else {
+			Response response = new Response(message, "false");
 			return response;
 		}
 	}
@@ -436,28 +451,63 @@ public class MainRESTController {
 	
 	@PostMapping(value="/api/checkSerialAuth")
 	public Response checkSerialAuth(/*@RequestBody PartNo th*/@RequestParam (value="data[]") String[] data, Principal principal) {
-		String message = "Serial No ";
+
 		boolean flag = true;
 		UserAccount user = null;
 		if(principal != null) {
 			user = userAccountDAO.findOneByUsername(principal.getName(), 0);
 		}
+		Response response = AccessRightVerification(user, data);
+		return response;
+
+	}
+	
+	private Response AccessRightVerification(UserAccount user, String[] serialno) {
 		
-		for(int i=0; i<data.length ; i++) {
-			PartNo partno = partNoDAO.findOneBySerialNo(data[i]);
-			if(partno!=null) {
-				if(!((user.getOrgid()==partno.getOrgid())&&(user.getDeptid()==partno.getDeptid())&&(user.getSubdeptid()==partno.getSubdeptid()))) {
-					message += data[i]+" ";
-					flag=false;
-				} else {
-//					message += "Serial No "+data[i]+" belongs to you.\n";
+		int role = user.getRoleid();
+		boolean flag = true;
+		String accessible = "";
+		String available = "";
+		String message = "";
+		for(int i = 0; i < serialno.length; i++) {
+			PartNo partno = partNoDAO.findOneBySerialNo(serialno[i]);
+			
+			if(partno != null) {
+				boolean orglvl = user.getOrgid() == partno.getOrgid();
+				boolean deptlvl = user.getDeptid() == partno.getDeptid();
+				boolean subdeptlvl = user.getSubdeptid() == partno.getSubdeptid();
+				
+				if(role == 1) {
+					
+				} else if (role == 2) {
+					if(!(orglvl)) {
+						accessible += serialno[i]+" ";
+						flag = false;
+					}
+				} else if (role == 3) {
+					if(!(orglvl && deptlvl)) {
+						accessible += serialno[i]+" ";
+						flag = false;
+					}
+				} else if (role == 4) {
+					if(!(orglvl && deptlvl && subdeptlvl)) {
+						accessible += serialno[i]+" ";
+						flag = false;
+					}
 				}
 			} else {
-				message += data[i]+" ";
-				flag=false;
+				available += serialno[i] + " ";
+				flag = false;
 			}
+			
 		}
-		message+="unaccessable.";
+		if (accessible != "" && available != ""){
+			message = "Serial No " + accessible + "not accessible. Serial No " + available + "not available.";
+		} else if (accessible != "") {
+			message = "Serial No " + accessible + "not accessible.";
+		}else if (available != "") {
+			message = "Serial No " + available + "not available.";
+		}
 		if(flag) {
 			Response response = new Response(message, "true");
 			return response;

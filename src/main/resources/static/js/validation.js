@@ -11,7 +11,7 @@ $(document).ready (function(){
 
 /***********  User Capabilities Control *************/
 $(document).on("change", ".accessright", function(){
-    console.log(this);
+//    console.log(this);
     if(this.checked){
     	$(this).parent().find('.checkboxesvalue').val(1);
     } else {
@@ -46,10 +46,10 @@ function addmorepartno(){
 	clone.find(".btn_csv").attr('for',count);
 	clone.find(".get_csv").attr("id", count);
 	
-	clone.find(".autostockin").hide();
+	clone.find(".stockin").hide();
 	clone.find(".serialno").val("");
-	clone.find(".serialno_status").text("");
-	clone.find(".quantity").text("");
+	clone.find(".availSerialQty").text("");
+	clone.find(".newSerialQty").text("");
 	clone.find(".modelno").val("");
 	clone.find(".upccode").val("");
 	clone.find(".customername").val("");
@@ -66,56 +66,379 @@ $(document).on("click", ".remove_partno", function() {
     return false;
 });
 
-/***********  Upload CSV to Form *************/
-$(document).on("change", ".get_csv", function(e) {
+/*********** Check Available Serial No Qty *************/
+$(document).on("change", ".productid", function() {
+	
+	var current=this;
+	var data={ productid: this.value };
+	
+	$.ajax({
+		type: "POST",
+		url: BASE_URL + "api/checkSerialAvailability",
+		contentType: "application/json",
+		data: JSON.stringify (data),
+		dataType: 'json',
+		
+		success: function (response) {
+			$(current).closest(".form-row").find(".availSerialQty").html(response.status);
+			
+			let availSerialQty=$(current).closest(".form").find(".availSerialQty").text();
+			let newSerialQty=$(current).closest(".form").find(".newSerialQty").text();
+			let stockin=$(current).closest(".form").find(".stockin");
+			let message=$(current).closest(".form").find(".message");
+			let stockinQty=$(current).closest(".form").find(".stockinQty");
+			
+//			console.log("AvailSerialQty: "+availSerialQty);
+//			console.log("NewSerialQty: "+newSerialQty);
+			if(parseInt(newSerialQty)>parseInt(availSerialQty)){
+				
+				var num=parseInt(newSerialQty)-parseInt(availSerialQty);
+				$(stockin).show();
+				$(message).html("Add "+num+" Stock?");
+				$(stockinQty).prop("checked", false);
+				$(stockinQty).prop("value", num);
+				$(stockinQty).prop("required", true);
+			} else {
+				$(stockin).hide();
+				$(stockinQty).prop("checked", true);
+				$(stockinQty).prop("value", 0);
+				$(stockinQty).prop("required", false);
+			}
+		}
+	});
+	
+	if($.isEmptyObject($(current).val())) {
+		$(current).closest(".form-row").find(".availSerialQty").html("");
+	}
+	
+	var serialno = $(current).closest(".form").find(".serialno").val();
+	var token = serialno.split(/\W+/);
+	
+	if(!$.isEmptyObject($(current).closest(".form").find(".serialno").val())) {
+		
+		var data= { 
+				data: token,
+				productid: current.value 
+			}
+ 		$.ajax({
+ 		type: "POST",
+ 		/*contentType: "application/json",*/
+ 		dataType: 'json',
+ 		url: BASE_URL + "api/checkMultipleSerialNo",
+ 		data: data,
+ 		success: function (response) {
+ 			$(current).closest(".form").find(".serialno_status").html(response.status);
+ 			$(current).closest(".form").find(".serialno_flag").html(response.flag);
+
+  		},
+ 		error : function(e) {
+		}
+ 		});
+	}
+});
+
+/***********  Serial No By Upload CSV *************/
+$(document).on("change", ".get_csv", function(e) {  
 	
 	var object=this;
 	var files;
 	files = event.target.files;
 
 	var file = e.target.files[0];
-	  if (!file) {
-	    return;
-	  }
-	  var reader = new FileReader();
-	  reader.onload = function(e) {
-		  
-	    var contents = e.target.result;
-	    console.log(typeof contents);
-	    let replace = contents.replace(/\W+/g,"\n");
-	    $(object).closest("div").find(".serialno").val(replace);
-	    
-	    var token = contents.split(/\W+\w/);
-	    $(object).closest(".modal-body").find(".quantity").val(token.length);
-	    $(object).closest(".form-row").find(".quantity").html(token.length);
+	if (!file) {
+		return;
+	}
+	
+	var reader = new FileReader();
+	reader.onload = function(e) {
+		
+		var contents = e.target.result;
+		let serializeContents = contents.replace(/\W+/g,"\n");
+		var previousContents = $(object).closest("div").find(".serialno").val();
+		$(object).closest("div").find(".serialno").val(previousContents+serializeContents);
+    
+		let serialno =  $(object).closest("div").find(".serialno").val();
+    
+		var tokencount = serialno.split(/\W+\w/);
+		var token = serialno.split(/\W+/);
+	
+		$(object).closest(".modal-body").find(".quantity").val(tokencount.length);   // Quantity input value
+		$(object).closest(".form-row").find(".newSerialQty").html(tokencount.length);    // newSerial Qty
 
-	  };
-	  reader.readAsText(file);
-	  
-	  $(this).val("");
+		
+		let availSerialQty=$(object).closest(".form").find(".availSerialQty").text();
+		let newSerialQty=$(object).closest(".form").find(".newSerialQty").text();
+		let stockin=$(object).closest(".form").find(".stockin");
+		let message=$(object).closest(".form").find(".message");
+		let stockinQty=$(object).closest(".form").find(".stockinQty");
+
+		if(parseInt(newSerialQty)>parseInt(availSerialQty)){
+			
+			var num=parseInt(newSerialQty)-parseInt(availSerialQty);
+			$(stockin).show();
+			$(message).html("Add "+num+" Stock?");
+			$(stockinQty).prop("checked", false);
+			$(stockinQty).prop("value", num);
+			$(stockinQty).prop("required", true);
+		} else {
+			$(stockin).hide();
+			$(stockinQty).prop("checked", true);
+			$(stockinQty).prop("value", 0);
+			$(stockinQty).prop("required", false);
+		}
+	};
+  	reader.readAsText(file);
+  	$(this).val("");
+  	
 });
 
-/***********  Replace comma (,) to space and calculate serial no amount *************/
+/***********  Serial No By manually key in, Replace comma (,) to space *************/
 $(document).on("input", ".serialno", function() {
 
+	var current=this;
 	let serialno= $(this).val();
-	
+	let productid = $(this).closest(".form").find(".productid").val();
 	let replace = serialno.replace(","," ");
-	
 	$(this).val(replace);
 	
 	var tokencount = serialno.split(/\W+\w/);
 	var token = serialno.split(/\W+/);
 	
-	$(this).closest(".modal-body").find(".quantity").val(tokencount.length);
-	$(this).closest(".form-row").find(".quantity").html(tokencount.length);
+	$(this).closest(".modal-body").find(".quantity").val(tokencount.length);   // Quantity input value
+	$(this).closest(".form-row").find(".newSerialQty").html(tokencount.length);    // newSerial Qty
 	
-	if(serialno=="")
-		$(this).closest(".form-row").find(".quantity").html(" ");
+	if($.isEmptyObject($(this).val())) {
+		$(this).closest(".form-row").find(".newSerialQty").html('0');
+	}
 	
-    return false;
+	let availSerialQty=$(this).closest(".form").find(".availSerialQty").text();
+	let newSerialQty=$(this).closest(".form").find(".newSerialQty").text();
+	let stockin=$(this).closest(".form").find(".stockin");
+	let message=$(this).closest(".form").find(".message");
+	let stockinQty=$(this).closest(".form").find(".stockinQty");
+
+	if(parseInt(newSerialQty)>parseInt(availSerialQty)){
+		var num=parseInt(newSerialQty)-parseInt(availSerialQty);
+		$(stockin).show();
+		$(message).html("Add "+num+" Stock?");
+		$(stockinQty).prop("checked", false);
+		$(stockinQty).prop("value", num);
+		$(stockinQty).prop("required", true);
+	} else {
+		$(stockin).hide();
+		$(stockinQty).prop("checked", true);
+		$(stockinQty).prop("value", 0);
+		$(stockinQty).prop("required", false);
+	}
+	
+//	var serialno = $("#"+form+" .serialno").val();
+//	var token = serialno.split(/\W+/);
+	
+	if(!$.isEmptyObject($(this).val())) {
+		var data= { 
+				data: token,
+				productid: productid 
+			}
+ 		$.ajax({
+ 		type: "POST",
+ 		/*contentType: "application/json",*/
+ 		dataType: 'json',
+ 		url: BASE_URL + "api/checkMultipleSerialNo",
+ 		data: data,
+ 		success: function (response) {
+ 			$(current).closest(".form-row").find(".serialno_status").html(response.status);
+ 			$(current).closest(".form-row").find(".serialno_flag").html(response.flag);
+  		},
+ 		error : function(e) {
+
+		}
+ 		});
+	}
 });
 
+$(document).on("change", ".orgid", function() {
+
+	var current=this;
+	var data={ orgid: this.value };
+	$.ajax({
+		type: "POST",
+		url: BASE_URL + "api/getDept",
+		contentType: "application/json",
+		data: JSON.stringify (data),
+		dataType: 'json',
+		
+		success: function (response) {
+			$(current).closest(".form").find(".deptid").empty();
+			$(current).closest(".form").find(".deptid").append("<option value=''>Select Department</option>");
+			$(current).closest(".form").find(".subdeptid").empty();
+			$(current).closest(".form").find(".subdeptid").append("<option value=''>Select Sub Department</option>");
+			for(var i of response) {
+				$(current).closest(".form").find(".deptid").append("<option value='"+i["deptid"]+"'>"+i["deptname"]+"</option>");
+			}
+		}
+	});
+});
+
+
+
+function department_select(id, val) {
+
+	var data={ orgid:val }
+	$.ajax({
+		type: "POST",
+		url: BASE_URL + "api/getDept",
+		contentType: "application/json",
+		data: JSON.stringify (data),
+		dataType: 'json',
+		
+		success: function (response) {
+			$("#"+id+" .dept_select").empty();
+			$("#"+id+" .dept_select").append("<option value=''>Select Department</option>");
+			$("#"+id+" .subdept_select").empty();
+			$("#"+id+" .subdept_select").append("<option value=''>Select Sub Department</option>");
+			for(var i of response) {
+				$("#"+id+" .dept_select").append("<option value='"+i["deptid"]+"'>"+i["deptname"]+"</option>");
+			}
+		}
+	});
+}
+
+$(document).on("change", ".deptid", function() {
+
+	var current=this;
+	var data={ deptid: this.value };
+	$.ajax({
+		type: "POST",
+		url: BASE_URL + "api/getSubDept",
+		contentType: "application/json",
+		data: JSON.stringify (data),
+		dataType: 'json',
+		
+		success: function (response) {
+			$(current).closest(".form").find(".subdeptid").empty();
+			$(current).closest(".form").find(".subdeptid").append("<option value=''>Select Sub Department</option>");
+			for(var i of response) {
+				$(current).closest(".form").find(".subdeptid").append("<option value='"+i["subdeptid"]+"'>"+i["subdeptname"]+"</option>");
+			}
+		}
+	});
+});
+
+
+function subdepartment_select(id, val) {
+	
+	var data={ deptid:val }
+	$.ajax({
+		type: "POST",
+		url: BASE_URL + "api/getSubDept",
+		contentType: "application/json",
+		data: JSON.stringify (data),
+		dataType: 'json',
+		
+		success: function (response) {
+			$("#"+id+" .subdept_select").empty();
+			$("#"+id+" .subdept_select").append("<option value=''>Select Sub Department</option>");
+			if(!jQuery.isEmptyObject(response)){
+				$("#"+id+" .subdept_select").append("<option value=''>No Sub Department</option>");
+			}
+			for(var i of response) {
+				$("#"+id+" .subdept_select").append("<option value='"+i["subdeptid"]+"'>"+i["subdeptname"]+"</option>");
+			}
+		}
+	});
+}
+
+$(document).on("change", ".mainlocid", function() {
+
+	var current=this;
+	var data={ mainlocid: this.value };
+	$.ajax({
+		type: "POST",
+		url: BASE_URL + "api/getSubLoc",
+		contentType: "application/json",
+		data: JSON.stringify (data),
+		dataType: 'json',
+		
+		success: function (response) {
+			$(current).closest(".form").find(".sublocid").empty();
+			$(current).closest(".form").find(".sublocid").append("<option value=''>Select Sub Location</option>");
+			for(var i of response) {
+				$(current).closest(".form").find(".sublocid").append("<option value='"+i["sublocid"]+"'>"+i["sublocname"]+"</option>");
+			}
+		}
+	});
+});
+
+function subloc_select(id, val) {
+
+	var data={ mainlocid:val }
+	$.ajax({
+		type: "POST",
+		url: BASE_URL + "api/getSubLoc",
+		contentType: "application/json",
+		data: JSON.stringify (data),
+		dataType: 'json',
+		
+		success: function (response) {
+
+			$("#"+id+" .subloc_select").empty();
+			$("#"+id+" .subloc_select").append("<option value=''>Select Sub Location</option>");
+			for(var i of response) {
+				$("#"+id+" .subloc_select").append("<option value='"+i["sublocid"]+"'>"+i["sublocname"]+"</option>");
+			}
+		}
+	});
+}
+
+function id_subloc_select(id, val) {
+
+	var data={ mainlocid:val }
+	$.ajax({
+		type: "POST",
+		url: BASE_URL + "api/getSubLoc",
+		contentType: "application/json",
+		data: JSON.stringify (data),
+		dataType: 'json',
+		
+		success: function (response) {
+
+//			$("#"+id+" .dept_select").empty();
+//			$("#"+id+" .dept_select").append("<option value='0'>Select Department</option>");
+			$("."+id+" .subloc_select").empty();
+			$("."+id+" .subloc_select").append("<option value=''>Select Sub Location</option>");
+			for(var i of response) {
+				$("."+id+" .subloc_select").append("<option value='"+i["sublocid"]+"'>"+i["sublocname"]+"</option>");
+			}
+
+		}
+	});
+}
+
+function reason_option(val) {
+
+	var data={ stocktypeid:val }
+	if(val!=0){
+	$.ajax({
+		type: "POST",
+		url: BASE_URL + "api/getReason",
+		contentType: "application/json",
+		data: JSON.stringify (data),
+		dataType: 'json',
+		
+		success: function (response) {
+			$("#reason").show();
+			$("#reason").empty();
+			$("#reason").append("<option value=''>Any Stock In Type</option>");
+			for(var i of response) {
+				$("#reason").append("<option value='"+i["reasonid"]+"'>"+i["reason"]+"</option>");
+			}
+
+		}
+	});
+	} else {
+		$("#reason").hide();
+	}
+}
 
 function transfer_mode(val) {
 	
@@ -147,197 +470,44 @@ function transfer_mode(val) {
 	}
 }
 
-function subloc_select(id, val) {
-
-	var data={ mainlocid:val }
-	$.ajax({
-		type: "POST",
-		url: BASE_URL + "api/getSubLoc",
-		contentType: "application/json",
-		data: JSON.stringify (data),
-		dataType: 'json',
-		
-		success: function (response) {
-
-//			$("#"+id+" .dept_select").empty();
-//			$("#"+id+" .dept_select").append("<option value='0'>Select Department</option>");
-			$("#"+id+" .subloc_select").empty();
-			$("#"+id+" .subloc_select").append("<option value='0'>Select Sub Location</option>");
-			for(var i of response) {
-				$("#"+id+" .subloc_select").append("<option value='"+i["sublocid"]+"'>"+i["sublocname"]+"</option>");
-			}
-
-		}
-	});
-}
-
-function id_subloc_select(id, val) {
-
-	var data={ mainlocid:val }
-	$.ajax({
-		type: "POST",
-		url: BASE_URL + "api/getSubLoc",
-		contentType: "application/json",
-		data: JSON.stringify (data),
-		dataType: 'json',
-		
-		success: function (response) {
-
-//			$("#"+id+" .dept_select").empty();
-//			$("#"+id+" .dept_select").append("<option value='0'>Select Department</option>");
-			$("."+id+" .subloc_select").empty();
-			$("."+id+" .subloc_select").append("<option value='0'>Select Sub Location</option>");
-			for(var i of response) {
-				$("."+id+" .subloc_select").append("<option value='"+i["sublocid"]+"'>"+i["sublocname"]+"</option>");
-			}
-
-		}
-	});
-}
-
-function trial(form){
+function createPartNoForm(form){
 	
-	let availSerial=$("#"+form+" .serialno_status");
-	let newSerial=$("#"+form+" .quantity");
-	let autostockin=$("#"+form+" .autostockin");
-	let autoaddstock=$("#"+form+" .autoaddstock");
-	let outstanding=$("#"+form+" .outstanding");
-	let serialno=$("#"+form+" .serialno");
-
-	let isChecked = true;
-//	console.log(d.length);
-	for(var i=0; i < serialno.length; i++){
-//		console.log("d"+i+": "+d[i].value);
-//		console.log(b[i].innerHTML);
-//		console.log(a[i].innerHTML);
-		
-		if(parseInt(newSerial[i].innerHTML)>parseInt(availSerial[i].innerHTML)){
-			var num=parseInt(newSerial[i].innerHTML)-parseInt(availSerial[i].innerHTML);
-			$(autostockin[i]).show();
-			$(outstanding[i]).html("Add "+num+" Stock?");
-			$(autoaddstock[i]).prop("value", num);
-		} else {
-			$(autostockin[i]).hide();
-			$(autoaddstock[i]).prop("checked", true);
-			$(autoaddstock[i]).prop("value", 0);
-		}
-		
-		if(autoaddstock[i].checked==false){
-			isChecked=false;
-		} 
-	}
-	
-	if(isChecked){
-		$("#"+form+" #modal_error").hide();
-		return true;
-	} else {
-		$("#"+form+" #modal_error").show();
-		$("#"+form+" #modal_error").text("Please tick all checkbox.");
-		return false;
-	}
-//	if((parseInt(b)>parseInt(a))&&(c==0)){
-////		console.log(0);
-//		var num=parseInt(b)-parseInt(a);
-//		$("#"+form+" .outstanding").html("Require "+num+" stock to upload all serial number <br>Add Stock Automatically?");
-////		$("#OutstandingS/N").modal({show: true});
-//		return false;
+//	let availSerialQty=$("#"+form+" .availSerialQty");
+//	let newSerialQty=$("#"+form+" .newSerialQty");
+//	let stockin=$("#"+form+" .stockin");
+//	let message=$("#"+form+" .message");
+//	let stockinQty=$("#"+form+" .stockinQty");
+//	let serialno=$("#"+form+" .serialno");
+//
+//	let isChecked = true;
+//
+//	for(var i=0; i < serialno.length; i++){
 //		
-//	} else {
-////		console.log(1);
-//		return true;
+//		if(parseInt(newSerialQty[i].innerHTML)>parseInt(availSerialQty[i].innerHTML)){
+//			var num=parseInt(newSerialQty[i].innerHTML)-parseInt(availSerialQty[i].innerHTML);
+//			$(stockin[i]).show();
+//			$(message[i]).html("Add "+num+" Stock?");
+//			$(stockinQty[i]).prop("value", num);
+//			$(stockinQty[i]).prop("required", true);
+//		} else {
+//			$(stockin[i]).hide();
+//			$(stockinQty[i]).prop("checked", true);
+//			$(stockinQty[i]).prop("value", 0);
+//		}
+//		
+//		if(stockinQty[i].checked==false){
+//			isChecked=false;
+//		} 
 //	}
-}
-$(document).on("change", ".productid", function() {
-	
-	var current=this;
-	var data={ productid: this.value };
-	console.log(data);
-	$.ajax({
-		type: "POST",
-		url: BASE_URL + "api/checkSerialAvailability",
-		contentType: "application/json",
-		data: JSON.stringify (data),
-		dataType: 'json',
-		
-		success: function (response) {
-			$(current).closest(".form-row").find(".serialno_status").html(response.status);
-		}
-	});
-});
-
-function reason_option(val) {
-
-	var data={ stocktypeid:val }
-	if(val!=0){
-	$.ajax({
-		type: "POST",
-		url: BASE_URL + "api/getReason",
-		contentType: "application/json",
-		data: JSON.stringify (data),
-		dataType: 'json',
-		
-		success: function (response) {
-			$("#reason").show();
-			$("#reason").empty();
-			$("#reason").append("<option value='0'>Any Stock In Type</option>");
-//			$("#"+id+" .subdept_select").empty();
-//			$("#"+id+" .subdept_select").append("<option value='0'>Select Sub Department</option>");
-			for(var i of response) {
-				$("#reason").append("<option value='"+i["reasonid"]+"'>"+i["reason"]+"</option>");
-			}
-
-		}
-	});
-	} else {
-		$("#reason").hide();
-	}
-}
-
-function department_select(id, val) {
-
-	var data={ orgid:val }
-	$.ajax({
-		type: "POST",
-		url: BASE_URL + "api/getDept",
-		contentType: "application/json",
-		data: JSON.stringify (data),
-		dataType: 'json',
-		
-		success: function (response) {
-
-			$("#"+id+" .dept_select").empty();
-			$("#"+id+" .dept_select").append("<option value='0'>Select Department</option>");
-			$("#"+id+" .subdept_select").empty();
-			$("#"+id+" .subdept_select").append("<option value='0'>Select Sub Department</option>");
-			for(var i of response) {
-				$("#"+id+" .dept_select").append("<option value='"+i["deptid"]+"'>"+i["deptname"]+"</option>");
-			}
-
-		}
-	});
-}
-
-function subdepartment_select(id, val) {
-	
-	var data={ deptid:val }
-	$.ajax({
-		type: "POST",
-		url: BASE_URL + "api/getSubDept",
-		contentType: "application/json",
-		data: JSON.stringify (data),
-		dataType: 'json',
-		
-		success: function (response) {
-			$("#"+id+" .subdept_select").empty();
-			$("#"+id+" .subdept_select").append("<option value='0'>Select Sub Department</option>");
-			if(!jQuery.isEmptyObject(response)){
-				$("#"+id+" .subdept_select").append("<option value='0'>No Sub Department</option>");
-			}
-			for(var i of response) {
-				$("#"+id+" .subdept_select").append("<option value='"+i["subdeptid"]+"'>"+i["subdeptname"]+"</option>");
-			}
-		}
-	});
+//	
+//	if(isChecked){
+//		$("#"+form+" #modal_error").hide();
+//		return true;
+//	} else {
+//		$("#"+form+" #modal_error").show();
+//		$("#"+form+" #modal_error").text("Please tick all checkbox.");
+//		return false;
+//	}
 }
 
 function userName(form) {
@@ -1111,6 +1281,17 @@ function partnoSerialNo(form) {
  		dataType: 'json',
  		
  		success: function (response) {
+ 			if(response.flag=="true"){
+	 			$("#"+form+" .serialno" ).removeClass("is-invalid");
+				$("#"+form+" .serialno" ).addClass("is-valid");
+				$("#"+form+" .serialno_status" ).removeClass("text-danger");
+ 				$("#"+form+" .serialno_status" ).addClass("text-success");
+ 			} else {
+ 				$("#"+form+" .serialno" ).removeClass("is-valid");
+ 				$("#"+form+" .serialno" ).addClass("is-invalid");
+ 				$("#"+form+" .serialno_status" ).removeClass("text-success");
+ 				$("#"+form+" .serialno_status" ).addClass("text-danger");
+ 			}
  			$("#"+form+" .serialno_status" ).html(response.status);
  			$("#"+form+" .serialno_flag" ).html(response.flag);
   		},
@@ -1120,7 +1301,9 @@ function partnoSerialNo(form) {
 			}
  		});
 	} else {
-		$("#"+form+" .serialno_status").html("Field is required");
+		$("#"+form+" .serialno").removeClass("is-valid");
+		$("#"+form+" .serialno").removeClass("is-invalid");
+		$("#"+form+" .serialno_status").html("");
 		$("#"+form+" .serialno_falg").html("false");
 	}
 }
@@ -1154,68 +1337,39 @@ function partnoUpcCode(form) {
 }
 
 function partnoForm(form) {
-	
-//	var partnocodeinput= $.isEmptyObject($("#"+form+" .partnocode").val());
-//	var modelnoinput= $.isEmptyObject($("#"+form+" .modelno").val());
-	var serialnoinput= $.isEmptyObject($("#"+form+" .serialno").val());
-//	var upccodeinput= $.isEmptyObject($("#"+form+" .upccode").val());
-//	var partnocodeflag=$("#"+form+" .partnocode_flag" ).text();
-//	var modelnoflag=$("#"+form+" .modelno_flag" ).text();
-	var serialnoflag=$("#"+form+" .serialno_flag" ).text();
-//	var upccodeflag=$("#"+form+" .upccode_flag" ).text();
 
-//	if(partnocodeinput){
-//		$("#"+form+" .partnocode_status").html("Field is required");
-//	}
-//	if(modelnoinput){
-//		$("#"+form+" .modelno_status").html("Field is required");
-//	}
-	if(serialnoinput){
-		$("#"+form+" .serialno_status").html("Field is required");
-	}
-//	if(upccodeinput){
-//		$("#"+form+" .upccode_status").html("Field is required");
-//	}
-//	if(((modelnoinput)||(modelnoflag=="false"))
-//			||((serialnoinput)||(serialnoflag=="false"))||((upccodeinput)||(upccodeflag=="false"))){
-//	((modelnoinput)||(modelnoflag=="false"))||
-	if(((serialnoinput)||(serialnoflag=="false"))){
-		$("#"+form+" .error").html("Please complete the form");
+	var serialnoflag=$("#"+form+" .serialno_flag" ).text();
+	var serialnostatus=$("#"+form+" .serialno_status" ).text();
+
+	if(serialnoflag=="false"){
+		$("#"+form+" #modal_error").show();
+		$("#"+form+" #modal_error").text(serialnostatus);
 		return false;
 	} else {
+		$("#"+form+" #modal_error").hide();
 		return true;
 	}
 }
 
 function checkSerialAuth(form) {
 	var serialno = $("#"+form+" .serialno").val();
-	
-	var token = serialno.split(/\W+/);
-	
-//	console.log(token);
+	var token = serialno.split(/\W+(?=\w)/);
 	if(!$.isEmptyObject($("#"+form+" .serialno").val())) {
-	var data= { 
-			data: token
-			}
-	var data2= {
-			serialno: serialno
-	}
-//	console.log(data);
+		
+		var data= { data: token }
  		$.ajax({
  		type: "POST",
-// 		contentType: "application/json",
+ 		/*contentType: "application/json",*/
  		dataType: 'json',
  		url: BASE_URL + "api/checkSerialAuth",
  		data: data,
  		success: function (response) {
-// 			console.log(response.status);
-// 			console.log(response.flag);
  			$("#"+form+" .transferserial_message" ).html(response.status);
  			$("#"+form+" .transferserial_flag" ).html(response.flag);
   		},
  		error : function(e) {
-// 			$("#"+form+" .serialno_status" ).html("Error");
-// 			$("#"+form+" .serialno_flag").html("false");
+ 			/*$("#"+form+" .serialno_status" ).html("Error");
+ 			$("#"+form+" .serialno_flag").html("false");*/
 		}
  		});
 	} /*else {

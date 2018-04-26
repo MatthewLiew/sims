@@ -49,7 +49,7 @@ public class StorageDAO extends JdbcDaoSupport {
 	
 	public List<Storage> getAllStorage(){
 		
-		String sql=READ_SQL+" WHERE QUANTITY > 0";
+		String sql=READ_SQL;
 		StorageMapper mapper=new StorageMapper();
 		
 		try {
@@ -62,7 +62,7 @@ public class StorageDAO extends JdbcDaoSupport {
 	
 	public List<Storage> findAllByOrgid(int orgid){
 		
-		String sql=READ_SQL+" WHERE ORG_ID = ? AND QUANTITY > 0";
+		String sql=READ_SQL+" WHERE ORG_ID = ? ";
 		Object[] params=new Object[] {orgid};
 		StorageMapper mapper=new StorageMapper();
 		
@@ -76,7 +76,7 @@ public class StorageDAO extends JdbcDaoSupport {
 	
 	public List<Storage> findAllByDeptid(int deptid){
 		
-		String sql=READ_SQL+" WHERE DEPT_ID = ? AND QUANTITY > 0";
+		String sql=READ_SQL+" WHERE DEPT_ID = ? ";
 		Object[] params=new Object[] {deptid};
 		StorageMapper mapper=new StorageMapper();
 		
@@ -90,7 +90,7 @@ public class StorageDAO extends JdbcDaoSupport {
 
 	public List<Storage> findAllBySubdeptid(int subdeptid){
 	
-	String sql=READ_SQL+" WHERE SUB_DEPT_ID = ? AND QUANTITY > 0";
+	String sql=READ_SQL+" WHERE SUB_DEPT_ID = ? ";
 	Object[] params=new Object[] {subdeptid};
 	StorageMapper mapper=new StorageMapper();
 	

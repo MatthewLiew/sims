@@ -331,12 +331,15 @@ public class ProductController {
 	}
 	
 	@PostMapping(value= "/createPartNo")
-	public String postCreatePartNo(@RequestParam int[] productid, @RequestParam int[] orgid, @RequestParam int[] deptid, @RequestParam int[] subdeptid, 
-			@RequestParam int[] mainlocid, @RequestParam (defaultValue=" ") int[] sublocid,
+	public String postCreatePartNo(@RequestParam (required=false) int[] productid, @RequestParam (required=false) int[] orgid, @RequestParam (required=false) int[] deptid, 
+			@RequestParam (required=false) int[] subdeptid, @RequestParam (required=false) int[] mainlocid, 
+			@RequestParam (defaultValue="0") int[] sublocid,
 			@RequestParam String[] serialno, @RequestParam (defaultValue=" ") String[] modelno, @RequestParam (defaultValue=" ") String[] upccode, 
 			@RequestParam (defaultValue=" ") String[] customername, @RequestParam (defaultValue=" ") String[] invoiceno, 
-			@RequestParam (required=false) int[] autoaddstock, Model model, @RequestParam String sourceURL, 
+			@RequestParam (required=false) int[] stockinQty, Model model, @RequestParam String sourceURL, 
 			RedirectAttributes ra ) {
+			
+			
 //	public String postCreatePartNos(@ModelAttribute PartNo partno, @RequestParam (required=false) int[] autoaddstock, Model model, 
 //			@RequestParam String sourceURL, RedirectAttributes ra ) {
 
@@ -381,22 +384,22 @@ public class ProductController {
 		
 		for(int i=0; i < serialno.length; i++) {
 		
-			
 			StringTokenizer st = new StringTokenizer(serialno[i], delims);
 			while (st.hasMoreElements()) {
-				errorString= partNoDAO.create(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], 
-						productid[i], customername[i], invoiceno[i], mainlocid[i], sublocid[i], orgid[i], deptid[i], subdeptid[i], "Available");
-				System.out.println(i+" "+productid[i]+" "+modelno[i]+" Token: "+st.nextElement());
+//				errorString= partNoDAO.create(st.nextElement().toString().replaceAll("[^a-zA-Z0-9]", ""), modelno[i], upccode[i], 
+//						productid[i], customername[i], invoiceno[i], mainlocid[i], sublocid[i], orgid[i], deptid[i], subdeptid[i], "Available");
+				System.out.println(i+" "+productid[i]+" "+stockinQty[i]+" Token: "+st.nextElement());
 				
 			}
-			if(autoaddstock[i]!=0) {
+			if(stockinQty[i]!=0 && stockinQty!=null) {
+				System.out.println("Add Stock");
 				String date = DateTime.DateNow();
 				String time = DateTime.TimeNow();
 				String logdatetime = DateTime.Now();
 				int stocktypeid = 1;
 				int reasonid= 1;
 				String remark=" ";
-				errorString= stockHistoryDAO.create(productid[i], orgid[i], deptid[i], subdeptid[i], mainlocid[i], sublocid[i], autoaddstock[i], date, time, stocktypeid, reasonid, remark, logdatetime, null, "approved");
+//				errorString= stockHistoryDAO.create(productid[i], orgid[i], deptid[i], subdeptid[i], mainlocid[i], sublocid[i], stockinQty[i], date, time, stocktypeid, reasonid, remark, logdatetime, null, "approved");
 			}
 		}
 		

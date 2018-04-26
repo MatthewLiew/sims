@@ -131,7 +131,7 @@
           	</div>
           	
           	<div class="modal clickable" id="StockIn" tabindex="-1" role="dialog" aria-labelledby="StockIn" aria-hidden="true">
-	            <form method="POST" th:action="@{/stockIn}" id="StockIn">
+	            <form method="POST" th:action="@{/stockIn}" id="StockIn" onsubmit="return partnoForm('StockIn');">
 	                <div class="vertical-alignment-helper">
 	                    <div class="modal-dialog  modal-lg vertical-align-center">
 	                        <!-- Modal content-->

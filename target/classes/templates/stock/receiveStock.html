@@ -15,7 +15,7 @@
 	                <label for="transfercode">Transfer Code #</label>
 	            </div>
 	            <div class="col-md-6">
-	            	<input class="form-control transfercode" id="transfercode" name="transfercode" type="text" data-error="Please Enter Transfer Code" aria-describedby="TransferCode" placeholder="Enter Transfer Code" th:field="*{code}" th:value="${th.code}" required>
+	            	<input class="form-control transfercode" id="transfercode" name="transfercode" type="text" data-error="Please Enter Transfer Code" aria-describedby="TransferCode" placeholder="Enter Transfer Code" th:field="*{code}" th:value="${th.code}" disabled>
 	            </div>
 	            <div class="col-md-3">
 	            </div>
@@ -28,7 +28,7 @@
 	            	<label for="StockTypeLabel">Product</label>
 	            </div>
 	            <div class="col-md-6">
-	            	<select class="form-control" name="productid" th:field="*{productid}" required>
+	            	<select class="form-control" name="productid" th:field="*{productid}" disabled>
 	           			<option value="">Select Product</option>
 	           			<option th:each="elem: ${products}" th:selected="${elem.isProduct(th.productid)}" th:value="${elem.productid}" th:text="${elem.productname}"></option>
 	       			</select>
@@ -42,7 +42,7 @@
 	            	<label for="SerialNoLabel">Serial No</label>
 	       		</div>
 	           	<div class="col-md-6">
-	           		<input class="form-control serialno" id="serialno" name="serialno" type="text" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Enter Serial No" th:field="*{serialno}" th:value="${th.serialno}" required>
+	           		<input class="form-control serialno" id="serialno" name="serialno" type="text" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Enter Serial No" th:field="*{serialno}" th:value="${th.serialno}" disabled>
 	           	</div>
 	           	<div class="col-md-3">
 <!-- 	           		<span style="visibility: hidden;" class="transferserial_flag"></span> -->

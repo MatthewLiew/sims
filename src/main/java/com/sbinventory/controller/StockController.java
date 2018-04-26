@@ -434,13 +434,20 @@ public class StockController {
 	}
 	
 	@GetMapping(value= "/transferhistory")
-	public String getTransferHistory(@RequestParam(defaultValue="outbound") String type, Model model) {
+	public String getTransferHistory(@RequestParam(defaultValue="outbound") String type, Model model, Principal principal) {
 
-		List<TransferHistory> transferhistories;
-		if(type.equalsIgnoreCase("outbound")) {
-			transferhistories = transferHistoryDAO.findAll();
-		} else {
-			transferhistories = transferHistoryDAO.findAllInBound();
+		UserAccount user = null;
+		List<TransferHistory> transferhistories = null;
+		if(principal!=null) {
+			user = userAccountDAO.findOneByUsername(principal.getName(), 0);
+//			UserCap usercap = userCapDAO.findOneByApprole(user.getRoleid());
+//			model.addAttribute("usercap", usercap);
+			
+			if(type.equalsIgnoreCase("outbound")) {
+				transferhistories = transferHistoryDAO.findAll();
+			} else {
+				transferhistories = transferHistoryDAO.findAllInBound();
+			}
 		}
 		model.addAttribute("transferhistories", transferhistories);
 		
@@ -868,6 +875,17 @@ public class StockController {
 		if(principal!=null) {
 			user = userAccountDAO.findOneByUsername(principal.getName(), 0);
 			model.addAttribute("user", user);
+			
+			if(user.getRoleid()==1 || user.getRoleid()==2) {
+				List<TransferType> transfertypes = transferTypeDAO.findAll();
+				model.addAttribute("transfertypes", transfertypes);
+			} else if (user.getRoleid()==3) {
+				List<TransferType> transfertypes = transferTypeDAO.findAll(user.getRoleid());
+				model.addAttribute("transfertypes", transfertypes);
+			} else if (user.getRoleid()==4) {
+				List<TransferType> transfertypes = transferTypeDAO.findAll(user.getRoleid());
+				model.addAttribute("transfertypes", transfertypes);
+			}
 		} 
 		
 		String sourceURL = request.getHeader("Referer");
@@ -876,8 +894,8 @@ public class StockController {
 		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<TransferType> transfertypes = transferTypeDAO.findAll();
-		model.addAttribute("transfertypes", transfertypes);
+//		List<TransferType> transfertypes = transferTypeDAO.findAll();
+//		model.addAttribute("transfertypes", transfertypes);
 		
 		List<Organization> organizations = organizationDAO.findAll(user.getOrgid());
 		model.addAttribute("organizations", organizations);
@@ -987,11 +1005,17 @@ public class StockController {
 	}
 	
 	@GetMapping(value= "/receiveStock")
-	public String getReceiveStock(@RequestParam int transferhistoryid, Model model, HttpServletRequest request) {
+	public String getReceiveStock(@RequestParam int transferhistoryid, Model model, Principal principal, HttpServletRequest request) {
 	
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 	
+		UserAccount user = null;
+		if(principal!=null) {
+			user = userAccountDAO.findOneByUsername(principal.getName(), 0);
+			model.addAttribute("user", user);
+		}
+		
 		TransferHistory transferhistory= transferHistoryDAO.findOne(transferhistoryid);
 		model.addAttribute("th", transferhistory);
 		

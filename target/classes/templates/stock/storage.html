@@ -56,7 +56,7 @@
 					          	</tr>
 				          	</tfoot>
 				          	<tbody>
-				          		<tr th:each="s : ${storages}">
+				          		<tr th:each="s : ${storages}" th:if="${s.quantity}>0">
 				          			<td th:each="org : ${orgs}" th:if="${org.isOrgname(s.orgid)}" th:text="${org.orgname}"></td>
 				          			<td th:each="dept : ${depts}" th:if="${dept.isDeptname(s.deptid)}" th:text="${dept.deptname}"></td>
 				          			<td th:each="subdept : ${subdepts}" th:if="${subdept.isSelected(s.subdeptid)}" th:text="${subdept.subdeptname}"></td>

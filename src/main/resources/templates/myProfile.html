@@ -14,7 +14,7 @@
 		        </li>
 		        <li class="breadcrumb-item active">My Profile</li>
 	      	</ol>
-	      	<div sec:authorize="hasRole('ROLE_ADMIN')">
+	      	<div sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MANAGER','ROLE_SUPERVISOR','ROLE_USER')">
 			<h2>User Info Page</h2>
 			<h3>Welcome : <span th:utext="${#request.userPrincipal.name}"></span></h3>
 			<b>This is protected page!</b>  

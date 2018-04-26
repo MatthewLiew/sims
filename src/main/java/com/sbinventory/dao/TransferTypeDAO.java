@@ -58,6 +58,19 @@ public class TransferTypeDAO extends JdbcDaoSupport {
         }
 	}
 	
+	public List<TransferType> findAll(int id){
+		
+		String sql=READ_SQL + " where ID >= ? ";
+		TransferTypeMapper mapper=new TransferTypeMapper();
+		Object[] params=new Object[] {id-1};
+		try {
+            List<TransferType> transfertypes =  this.getJdbcTemplate().query(sql,params, mapper);
+            return transfertypes;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+	
 	public TransferType findOne(int transfertypeid){
 		
 		String sql=READ_SQL+" where ID = ?";

@@ -152,9 +152,23 @@ public class PartNoDAO extends JdbcDaoSupport{
         }
 	}
 
+	public PartNo getSerialNoByProductid(String serialno, int productid){
+		
+		String sql=READ_SQL+ " where SERIAL_NO = ? AND PRODUCT_ID = ?";
+		Object[] params =new Object[] {serialno, productid};
+		PartNoMapper mapper=new PartNoMapper();
+		
+		try {
+			PartNo partno =  this.getJdbcTemplate().queryForObject(sql, params, mapper);
+            return partno;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+
 	public PartNo getSerialNo(String serialno, int partnoid){
 		
-		String sql=READ_SQL+ " where Serial_NO = ? ";
+		String sql=READ_SQL+ " where SERIAL_NO = ? ";
 		Object[] params =new Object[] {serialno};
 		if(partnoid!=0) {
 			sql+="AND ID != ?";

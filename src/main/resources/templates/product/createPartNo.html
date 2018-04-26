@@ -6,10 +6,6 @@
 	
 	<p class="error" style="color: red;" th:text="${errorString}" ></p>
   	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
-  	
-<!--   	<div th:object="${partnoform}"> -->
-<!-- 	<div th:each="a, state: ${partnos}"> -->
-<!-- 	</div>   -->
   	<div th:object="${partno}">
 	   	<div class="form">
 
@@ -26,8 +22,7 @@
 		      	   		</select>
 	               	</div>
 	               	<div class="col-md-3">
-	               		<span class="serialno_status" ></span>
-<!-- 	                	<span style="visibility:hidden;"class="username_flag" th:text="true"></span> -->
+	               		<span class="availSerialQty" style="display:;"></span>
 	               	</div>
 	       		</div>
 	       	</div>
@@ -38,8 +33,8 @@
 		                <label for="orgid">Organization</label>
 		            </div>
 		            <div class="col-md-6"> 
-		            	<select class="form-control" id="orgid" name="orgid" th:field="*{orgid}" onchange="department_select('CreatePartNo',this.value);" required>
-			             	<option value="0">Select Organization</option>
+		            	<select class="form-control orgid" id="orgid" name="orgid" th:field="*{orgid}" >
+			             	<option value="">Select Organization</option>
 			           		<option th:each="list: ${orgs}" th:value="${list.orgid}" th:text="${list.orgname}"></option>
 		             	</select>
 		            </div>
@@ -52,8 +47,8 @@
 		                <label for="DepartmentLabel">Department</label>
 		            </div>
 		            <div class="col-md-6"> 
-		            	<select  class="form-control dept_select" name="deptid" th:field="*{deptid}" onchange="subdepartment_select('CreatePartNo', this.value);" required>
-		          			<option value="0">Select Department</option>
+		            	<select class="form-control deptid" name="deptid" th:field="*{deptid}" >
+		          			<option value="">Select Department</option>
 		         		</select>
 		            </div>
 		        </div>
@@ -65,8 +60,8 @@
 		                <label for="SubDepartmentLabel">Sub Department</label>
 		            </div>
 		            <div class="col-md-6"> 
-		            	<select class="form-control subdept_select" name="subdeptid" th:field="*{subdeptid}" required>
-		       				<option value="0">Select Sub Department</option>
+		            	<select class="form-control subdeptid" name="subdeptid" th:field="*{subdeptid}">
+		       				<option value="">Select Sub Department</option>
 		          		</select>
 		            </div>
 		        </div>
@@ -78,7 +73,7 @@
 		                <label for="MainLocationLabel">Main Location</label>
 		            </div>
 		            <div class="col-md-6">
-			            <select class="form-control" name="mainlocid" th:field="*{mainlocid}" required onchange="subloc_select('CreatePartNo',this.value);">
+			            <select class="form-control mainlocid" name="mainlocid" th:field="*{mainlocid}">
 				            <option value="">Select Main Location</option>
 				            <option th:each="list: ${mainlocs}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option>
 			       		</select>
@@ -92,7 +87,7 @@
 		                <label for="SubLocationLabel">Sub Location</label>
 		            </div>
 		            <div class="col-md-6">                    
-			            <select class="form-control subloc_select" name="sublocid" th:field="*{sublocid}" required>
+			            <select class="form-control sublocid" name="sublocid" th:field="*{sublocid}">
 			            	<option value="">Select Sub Location</option>
 			        	</select>
 		            </div>
@@ -105,37 +100,18 @@
 	                	<label for="SerialNoLabel">Serial No</label>
 	           		</div>
 	               	<div class="col-md-6">
-<!-- 	               	onkeyup="countSerialNo('CreatePartNo');" -->
-
 	           			<textarea class="form-control serialno" id="serialno" name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space" th:field="*{serialno}" required></textarea>
-	           			
-					      	<label class="btn btn-primary btn_csv" for="file_upload" style="margin-bottom:0;">Upload
-<!-- 					      	<button class="btn btn-primary btn_csv">Upload</button> -->
-					      	</label>
-	
-					      	<input class="btn btn-primary get_csv" name=file id="file_upload" type="file" accept=".csv" style="display:none;" />
-	               			
+	           			<label class="btn btn-primary btn_csv" for="file_upload" style="margin-bottom:0;">Upload</label>
+				      	<input class="btn btn-primary get_csv" name=file id="file_upload" type="file" accept=".csv" style="display:none;" />
 	               	</div>
 	               	<div class="col-md-3">
-<!-- 	               		<form method="POST" th:action="@{/uploadOneFile}" th:object="${UploadForm}" enctype="multipart/form-data" style="display:inline-block;">
-	
-<!-- 						&nbsp;&nbsp; -->
-<!-- 				         File to upload:  -->
-<!-- 				         <input th:field="*{fileDatas}" type="file" accept=".csv" required/> -->
-<!-- 				         <div th:if="${#fields.hasErrors('global')}" th:errors="*{file}"></div> -->
-<!-- 				         <th:errors path="file" style="color:red;"></> -->
-<!-- 				         <br /> -->
-<!-- 							<input type="submit" value="Upload"> -->
-<!-- 				         <button class="btn btn-primary">Upload</button> -->
-<!-- 				      </form> --> 
-	               		<span class="quantity" style="visibility:;"></span>
-	               	
-				      	<div class="autostockin" style="display:none;">
-	           				<span class="outstanding"></span><br>
-				           	<label class="radio-inline">
-				               	<input class="autoaddstock" type="checkbox" name="autoaddstock" value="1" />Add
-				           	</label>
+	               		<span class="newSerialQty" style="display:none;"></span>
+				      	<div class="stockin" style="display:none;">
+           					<span class="message"></span><br>
+				           	<label class="radio-inline"><input class="stockinQty" type="checkbox" name="stockinQty" value="1"/>Add</label>
 			           	</div>
+			           	<div class="serialno_flag" style="display:;"></div>
+			           	<div class="serialno_status" style="display:;"></div>
 			      	</div>
 	           	</div>
 	   		</div>
@@ -201,3 +177,15 @@
 	    <button type="button" class="btn btn-primary" onclick="addmorepartno();">Add More</button>
     </div>
 </html>
+
+<!-- 	               		<form method="POST" th:action="@{/uploadOneFile}" th:object="${UploadForm}" enctype="multipart/form-data" style="display:inline-block;">
+	
+<!-- 						&nbsp;&nbsp; -->
+<!-- 				         File to upload:  -->
+<!-- 				         <input th:field="*{fileDatas}" type="file" accept=".csv" required/> -->
+<!-- 				         <div th:if="${#fields.hasErrors('global')}" th:errors="*{file}"></div> -->
+<!-- 				         <th:errors path="file" style="color:red;"></> -->
+<!-- 				         <br /> -->
+<!-- 							<input type="submit" value="Upload"> -->
+<!-- 				         <button class="btn btn-primary">Upload</button> -->
+<!-- 				      </form> --> 

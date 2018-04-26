@@ -47,6 +47,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (roleNames != null) {
             for (String role : roleNames) {
                 // ROLE_USER, ROLE_ADMIN,..
+            	System.out.println(role);
                 GrantedAuthority authority = new SimpleGrantedAuthority(role);
                 grantList.add(authority);
             }

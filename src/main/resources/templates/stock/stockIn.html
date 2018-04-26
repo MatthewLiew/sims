@@ -8,6 +8,7 @@
   	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
 
 	<div th:object="${sh}">
+	<div class="form">
 		<input type="hidden" name="stocktypeid" th:field="*{stocktypeid}" value="1" />
 		<div class="form-group">
 	       <div class="form-row">
@@ -15,7 +16,7 @@
 	               <label for="ProductLabel">Product</label>
 	           </div>
 	           <div class="col-md-6">
-		           <select class="form-control" name="productid" th:field="*{productid}" required>
+		           <select class="form-control productid" name="productid" th:field="*{productid}" required>
 			           <option value="">Select Product</option>
 			           <option th:each="list: ${products}" th:selected="${list.isProduct(index)}" th:value="${list.productid}" th:text="${list.productname}"></option>
 		      	   </select>
@@ -30,7 +31,7 @@
 	            </div>
 	            <div class="col-md-6"> 
 	            	<select class="form-control" id="orgid" name="orgid" th:field="*{orgid}" onchange="department_select('StockIn',this.value);" required>
-		             	<option value="0">Select Organization</option>
+		             	<option value="">Select Organization</option>
 		           		<option th:each="list: ${orgs}" th:value="${list.orgid}" th:text="${list.orgname}"></option>
 	             	</select>
 	            </div>
@@ -44,7 +45,7 @@
 	            </div>
 	            <div class="col-md-6"> 
 	            	<select  class="form-control dept_select" name="deptid" th:field="*{deptid}" onchange="subdepartment_select('StockIn', this.value);" required>
-	          			<option value="0">Select Department</option>
+	          			<option value="">Select Department</option>
 	         		</select>
 	            </div>
 	        </div>
@@ -57,7 +58,7 @@
 	            </div>
 	            <div class="col-md-6"> 
 	            	<select class="form-control subdept_select" name="subdeptid" th:field="*{subdeptid}" required>
-	       				<option value="0">Select Sub Department</option>
+	       				<option value="">Select Sub Department</option>
 	          		</select>
 	            </div>
 	        </div>
@@ -110,13 +111,12 @@
 	       		</div>
 	           	<div class="col-md-6">
 	       			<textarea class="form-control serialno" id="serialno" name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space"></textarea>
-	       			<label class="btn btn-primary btn_csv" for="file_upload" style="margin-bottom:0;">Upload
-					</label>
-	
-		      	<input class="btn btn-primary get_csv" name=file id="file_upload" type="file" accept=".csv" style="display:none;" />
+	       			<label class="btn btn-primary btn_csv" for="file_upload" style="margin-bottom:0;">Upload</label>
+	       			<input class="btn btn-primary get_csv" name=file id="file_upload" type="file" accept=".csv" style="display:none;" />
 	           	</div>
 	           	<div class="col-md-3">
-	           	
+	           		<div class="serialno_flag" style="display:;"></div>
+		           	<div class="serialno_status" style="display:;"></div>
 	           	</div>
 	       	</div>
 		</div>
@@ -172,6 +172,7 @@
 	            <div class="col-md-3">
 	            </div>
 	        </div>
+	    </div>
 	    </div>
     </div>
 </html>
