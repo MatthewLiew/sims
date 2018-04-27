@@ -16,6 +16,7 @@ import com.sbinventory.mapper.StockHistoryMapper;
 import com.sbinventory.mapper.TransferHistoryMapper;
 import com.sbinventory.model.StockHistory;
 import com.sbinventory.model.TransferHistory;
+import com.sbinventory.model.UserAccount;
 
 @Repository
 @Transactional
@@ -166,7 +167,7 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
 	}
 	
 	public List<TransferHistory> findAll(){
-		
+
 		String sql=READ_SQL;
 		TransferHistoryMapper mapper=new TransferHistoryMapper();
 		
@@ -177,12 +178,69 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
             return null;
         }
 	}
-	
-	public List<TransferHistory> findAllInBound(){
-		String isApproved="approved", isReceived="pending";
-		String sql=READ_SQL+" WHERE TRANSFERED = ? ";
-		Object[] params=new Object[] {isApproved};
+
+	public List<TransferHistory> findAll(UserAccount user){
+		
+		int role = user.getRoleid();
+		int orgid = user.getOrgid();
+		int deptid = user.getDeptid();
+		int subdeptid = user.getSubdeptid();
+		
+		String sql = "";
 		TransferHistoryMapper mapper=new TransferHistoryMapper();
+		Object[] params=new Object[] {};
+		
+		if(role == 1) {
+			sql=READ_SQL;
+		} else if (role == 2){
+			sql=READ_SQL+" where SRC_ORG_ID = ? and TRANSFER_TYPE >= ?";
+			params=new Object[] {orgid, 1};
+		} else if (role == 3){
+			sql=READ_SQL+" where SRC_DEPT_ID = ? and TRANSFER_TYPE >= ?";
+			params=new Object[] {deptid, 2};
+		} else if (role == 4){
+			sql=READ_SQL+" where SRC_SUB_DEPT_ID = ? and TRANSFER_TYPE >= ?";
+			params=new Object[] {subdeptid, 3};
+		}
+		
+		try {
+            List<TransferHistory> transferhistories =  this.getJdbcTemplate().query(sql, params, mapper);
+            return transferhistories;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+	}
+	
+	public List<TransferHistory> findAllInBound(UserAccount user){
+		String isApproved="approved", isReceived="pending";
+		
+		int role = user.getRoleid();
+		int orgid = user.getOrgid();
+		int deptid = user.getDeptid();
+		int subdeptid = user.getSubdeptid();
+		
+		String sql = "";
+		TransferHistoryMapper mapper=new TransferHistoryMapper();
+		Object[] params=new Object[] {};
+		
+		if(role == 1) {
+			sql=READ_SQL;
+		} else if (role == 2){
+			System.out.println("ROLE_MNG");
+			sql=READ_SQL+" where TRANSFERED = ? and DES_ORG_ID = ? and TRANSFER_TYPE >= ?";
+			params=new Object[] {isApproved, orgid, 1};
+		} else if (role == 3){
+			System.out.println("ROLE_SUP");
+			sql=READ_SQL+" where TRANSFERED = ? and DES_DEPT_ID = ? and TRANSFER_TYPE >= ?";
+			params=new Object[] {isApproved, deptid, 2};
+		} else if (role == 4){
+			System.out.println("ROLE_USR");
+			sql=READ_SQL+" where TRANSFERED = ? and DES_SUB_DEPT_ID = ? and TRANSFER_TYPE >= ?";
+			params=new Object[] {isApproved, subdeptid, 3};
+		}
+//		String sql=READ_SQL+" WHERE TRANSFERED = ? ";
+//		Object[] params=new Object[] {isApproved};
+//		TransferHistoryMapper mapper=new TransferHistoryMapper();
 		
 		try {
             List<TransferHistory> transferhistories =  this.getJdbcTemplate().query(sql, params, mapper);

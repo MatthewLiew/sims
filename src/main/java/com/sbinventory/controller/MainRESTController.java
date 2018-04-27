@@ -472,7 +472,7 @@ public class MainRESTController {
 		for(int i = 0; i < serialno.length; i++) {
 			PartNo partno = partNoDAO.findOneBySerialNo(serialno[i]);
 			
-			if(partno != null) {
+			if (partno != null) {
 				boolean orglvl = user.getOrgid() == partno.getOrgid();
 				boolean deptlvl = user.getDeptid() == partno.getDeptid();
 				boolean subdeptlvl = user.getSubdeptid() == partno.getSubdeptid();
@@ -480,7 +480,8 @@ public class MainRESTController {
 				if(role == 1) {
 					
 				} else if (role == 2) {
-					if(!(orglvl)) {
+					if(!(orglvl)) 
+					{
 						accessible += serialno[i]+" ";
 						flag = false;
 					}
@@ -499,15 +500,16 @@ public class MainRESTController {
 				available += serialno[i] + " ";
 				flag = false;
 			}
-			
 		}
+		
 		if (accessible != "" && available != ""){
 			message = "Serial No " + accessible + "not accessible. Serial No " + available + "not available.";
 		} else if (accessible != "") {
 			message = "Serial No " + accessible + "not accessible.";
-		}else if (available != "") {
+		} else if (available != "") {
 			message = "Serial No " + available + "not available.";
 		}
+		
 		if(flag) {
 			Response response = new Response(message, "true");
 			return response;

@@ -435,7 +435,7 @@ public class StockController {
 	
 	@GetMapping(value= "/transferhistory")
 	public String getTransferHistory(@RequestParam(defaultValue="outbound") String type, Model model, Principal principal) {
-
+		
 		UserAccount user = null;
 		List<TransferHistory> transferhistories = null;
 		if(principal!=null) {
@@ -444,12 +444,14 @@ public class StockController {
 //			model.addAttribute("usercap", usercap);
 			
 			if(type.equalsIgnoreCase("outbound")) {
-				transferhistories = transferHistoryDAO.findAll();
+				transferhistories = transferHistoryDAO.findAll(user);
 			} else {
-				transferhistories = transferHistoryDAO.findAllInBound();
+				transferhistories = transferHistoryDAO.findAllInBound(user);
 			}
 		}
 		model.addAttribute("transferhistories", transferhistories);
+		
+		model.addAttribute("user", user);
 		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
@@ -894,9 +896,6 @@ public class StockController {
 		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-//		List<TransferType> transfertypes = transferTypeDAO.findAll();
-//		model.addAttribute("transfertypes", transfertypes);
-		
 		List<Organization> organizations = organizationDAO.findAll(user.getOrgid());
 		model.addAttribute("organizations", organizations);
 		
@@ -1071,8 +1070,25 @@ public class StockController {
 	}
 	
 	@GetMapping(value= "/editTransferHistory")
-	public String getEditTransferHistory(@RequestParam int transferhistoryid, @RequestParam String type, Model model, HttpServletRequest request) {
+	public String getEditTransferHistory(@RequestParam int transferhistoryid, @RequestParam String type, Model model, HttpServletRequest request, Principal principal) {
 	
+		UserAccount user = null;
+		if(principal!=null) {
+			user = userAccountDAO.findOneByUsername(principal.getName(), 0);
+			model.addAttribute("user", user);
+			
+			if(user.getRoleid()==1 || user.getRoleid()==2) {
+				List<TransferType> transfertypes = transferTypeDAO.findAll();
+				model.addAttribute("transfertypes", transfertypes);
+			} else if (user.getRoleid()==3) {
+				List<TransferType> transfertypes = transferTypeDAO.findAll(user.getRoleid());
+				model.addAttribute("transfertypes", transfertypes);
+			} else if (user.getRoleid()==4) {
+				List<TransferType> transfertypes = transferTypeDAO.findAll(user.getRoleid());
+				model.addAttribute("transfertypes", transfertypes);
+			}
+		} 
+		
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
@@ -1081,6 +1097,15 @@ public class StockController {
 
 		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
+		
+		List<Organization> org = organizationDAO.findAll();
+		model.addAttribute("org", org);
+		
+		List<Dept> dpt = deptDAO.findAll();
+		model.addAttribute("dpt", dpt);
+		
+		List<SubDept> sbdpt = subdeptDAO.findAll();
+		model.addAttribute("sbdpt", sbdpt);
 		
 		List<Organization> organizations = organizationDAO.findAll(transferhistory.getSrcorgid());
 		model.addAttribute("organizations", organizations);
@@ -1096,9 +1121,6 @@ public class StockController {
 		
 		List<SubLoc> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
-		
-		List<TransferType> transfertypes = transferTypeDAO.findAll();
-		model.addAttribute("transfertypes", transfertypes);
 		
 		model.addAttribute("type", type);
 			

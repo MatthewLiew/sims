@@ -58,7 +58,8 @@
 						          		<span th:if="${type}=='outbound'">Transfer</span>
 				          				<span th:if="${type}=='inbound'">Receive</span>
 						          	</th>
-						          	<th>Action</th>
+						          	<th th:if="${type}=='outbound'">Action</th>
+						          	<th th:if="${type}=='inbound' and ${user.roleid}==1">Action</th>
 	               			 	</tr>
 		              		</thead>
 		              		<tfoot>
@@ -76,7 +77,8 @@
 						          		<span th:if="${type}=='outbound'">Transfer</span>
 				          				<span th:if="${type}=='inbound'">Receive</span>
 						          	</th>
-						          	<th>Action</th>
+						          	<th th:if="${type}=='outbound'">Action</th>
+						          	<th th:if="${type}=='inbound' and ${user.roleid}==1">Action</th>
 					          	</tr>
 				          	</tfoot>
 				          	<tbody>
@@ -113,13 +115,21 @@
 					            	 		<span th:unless="${trans.isReceived}=='pending'" th:text="'Received'"></span>
 					          			</span>
 				          			</td>
-									<td>
-						                <span>
-							                <a th:if="${type}=='outbound'" th:onclick="'doAction(\'edit\',\''+ ${trans.transferhistoryid} +'\',\'outbound\');'"><button class="btn btn-primary" title="Edit Transfer Transaction"><i class="fa fa-edit"></i></button></a>
-							                <a th:if="${type}=='inbound'" th:onclick="'doAction(\'edit\',\''+ ${trans.transferhistoryid} +'\',\'inbound\');'"><button class="btn btn-primary" title="Edit Transfer Transaction"><i class="fa fa-edit"></i></button></a>
-						                </span>
+									<td th:if="${type}=='outbound'">
+						                <span th:if="${user.roleid}!=1">
+						                	<span th:if="${trans.isReceived}=='pending'">
+								                <a th:onclick="'doAction(\'edit\',\''+ ${trans.transferhistoryid} +'\',\'outbound\');'"><button class="btn btn-primary" title="Edit Transfer Transaction"><i class="fa fa-edit"></i></button></a> 
+						               		</span>
+						               	</span>
+						               	<span th:if="${user.roleid}==1">
+						               		<a th:onclick="'doAction(\'edit\',\''+ ${trans.transferhistoryid} +'\',\'outbound\');'"><button class="btn btn-primary" title="Edit Transfer Transaction"><i class="fa fa-edit"></i></button></a> 
+					               		</span>
+					               		<a th:onclick="'doAction(\'delete\',\''+ ${trans.transferhistoryid} +'\');'"><button class="btn btn-primary" title="Delete Transfer Transaction"><i class="fa fa-trash" ></i></button></a>
+						             </td>
+						             <td th:if="${user.roleid}==1 and ${type}=='inbound'">
+						                <a th:onclick="'doAction(\'edit\',\''+ ${trans.transferhistoryid} +'\',\'inbound\');'"><button class="btn btn-primary" title="Edit Transfer Transaction"><i class="fa fa-edit"></i></button></a>
 						                <a th:onclick="'doAction(\'delete\',\''+ ${trans.transferhistoryid} +'\');'"><button class="btn btn-primary" title="Delete Transfer Transaction"><i class="fa fa-trash" ></i></button></a>
-				            	 	</td>
+						             </td>
 				            	 </tr>
 				          	</tbody>
 			          	</table>

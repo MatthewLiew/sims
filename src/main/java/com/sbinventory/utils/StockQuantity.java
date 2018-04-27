@@ -42,7 +42,7 @@ public class StockQuantity {
 	public void update() {
 		
 		this.updatestockio();
-//		this.updatetransfer();
+		this.updatetransfer();
 //		this.updatedisposal();
 //		this.updaterma();
 		
@@ -85,28 +85,29 @@ public class StockQuantity {
 		}
 	}
 
-//	public void updatetransfer() {
-//		
-//		List<Storage> storages = storageDAO.getAllStorage();
-//		for(Storage stor : storages){
-//			
-//			int totalquantity=0;
-//			List<TransferHistory> transferHistories = transferHistoryDAO.findAll();
-//			for(TransferHistory trans: transferHistories){
-//				
-//				if((stor.getOrgid() == trans.getOrgid())&&(stor.getDeptid() == trans.getDeptid())&&(stor.getSubdeptid() == trans.getSubdeptid())
-//						&& (stor.getMainlocid() == trans.getOrimainlocid()) && (stor.getSublocid() == trans.getOrisublocid())
-//						&& (stor.getProductid() == trans.getProductid()) && (trans.getApproval().equalsIgnoreCase("approved"))) {
-//					totalquantity-=trans.getQuantity();
-//				} else if((stor.getOrgid() == trans.getOrgid())&&(stor.getDeptid() == trans.getDeptid())&&(stor.getSubdeptid() == trans.getSubdeptid())
-//						&& (stor.getMainlocid() == trans.getDesmainlocid()) && (stor.getSublocid() == trans.getDessublocid())
-//						&& (stor.getProductid() == trans.getProductid()) && (trans.getApproval().equalsIgnoreCase("approved"))){
-//					totalquantity+=trans.getQuantity();
-//				}
-//			}
-//			storageDAO.updateQuantity(stor.getStorageid(), totalquantity+stor.getQuantity());
-//		}
-//	}
+	public void updatetransfer() {
+		
+		List<Storage> storages = storageDAO.getAllStorage();
+		for(Storage stor : storages){
+			
+			int totalquantity=0;
+			List<TransferHistory> transferHistories = transferHistoryDAO.findAll();
+			for(TransferHistory th: transferHistories){
+				
+				if((stor.getOrgid() == th.getSrcorgid())&&(stor.getDeptid() == th.getSrcdeptid())&&(stor.getSubdeptid() == th.getSrcsubdeptid())
+						&& (stor.getMainlocid() == th.getSrcmainlocid()) && (stor.getSublocid() == th.getSrcsublocid())
+						&& (stor.getProductid() == th.getProductid()) && (th.getIsTransfered().equalsIgnoreCase("approved"))) {
+					totalquantity-=th.getQuantity();
+				} 
+				if((stor.getOrgid() == th.getDesorgid())&&(stor.getDeptid() == th.getDesdeptid())&&(stor.getSubdeptid() == th.getDessubdeptid())
+						&& (stor.getMainlocid() == th.getDesmainlocid()) && (stor.getSublocid() == th.getDessublocid())
+						&& (stor.getProductid() == th.getProductid()) && (th.getIsReceived().equalsIgnoreCase("received"))){
+					totalquantity+=th.getQuantity();
+				}
+			}
+			storageDAO.updateQuantity(stor.getStorageid(), totalquantity+stor.getQuantity());
+		}
+	}
 	
 //	public void updatedisposal() {
 //		

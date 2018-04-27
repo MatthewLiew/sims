@@ -73,6 +73,61 @@
 		<div class="form-group">
 	    	<div class="form-row">
 	        	<div class="col-md-3">
+	            	<label for="ReasonLabel">SRC ORG</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<span th:each="elem: ${org}" th:if="${elem.isOrgname(th.srcorgid)}" th:text="${elem.orgname}"></span>
+	       	 	</div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	    	<div class="form-row">
+	        	<div class="col-md-3">
+	            	<label for="ReasonLabel">SRC DEPT</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<span th:each="elem: ${dpt}" th:if="${elem.isDeptname(th.srcdeptid)}" th:text="${elem.deptname}"></span>
+	       	 	</div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	    	<div class="form-row">
+	        	<div class="col-md-3">
+	            	<label for="ReasonLabel">SRC SUB DEPT</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<span th:each="elem: ${sbdpt}" th:if="${elem.isSubdeptname(th.srcsubdeptid)}" th:text="${elem.subdeptname}"></span>
+	       	 	</div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	    	<div class="form-row">
+	        	<div class="col-md-3">
+	            	<label for="ReasonLabel">SRC MAIN LOC</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<span th:each="elem: ${mainlocs}" th:if="${elem.isMainLocName(th.srcmainlocid)}" th:text="${elem.mainlocname}"></span>
+	       	 	</div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	    	<div class="form-row">
+	        	<div class="col-md-3">
+	            	<label for="ReasonLabel">SRC SUB DEPT</label>
+	            </div>
+	            <div class="col-md-6">
+	            	<span th:each="elem: ${sublocs}" th:if="${elem.isSubLocName(th.srcsublocid)}" th:text="${elem.sublocname}"></span>
+	       	 	</div>
+	        </div>
+	    </div>
+	    
+		<div class="form-group">
+	    	<div class="form-row">
+	        	<div class="col-md-3">
 	            	<label for="StockTypeLabel">Transfer Type</label>
 	            </div>
 	            <div class="col-md-6">

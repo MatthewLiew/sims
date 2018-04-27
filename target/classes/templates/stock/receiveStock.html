@@ -15,7 +15,13 @@
 	                <label for="transfercode">Transfer Code #</label>
 	            </div>
 	            <div class="col-md-6">
-	            	<input class="form-control transfercode" id="transfercode" name="transfercode" type="text" data-error="Please Enter Transfer Code" aria-describedby="TransferCode" placeholder="Enter Transfer Code" th:field="*{code}" th:value="${th.code}" disabled>
+	            	<div th:unless="${user.roleid}==1">
+		            	<span th:text="*{code}"></span>
+		            	<input type="hidden" th:field="*{code}" th:value="${th.code}" />
+	             	</div>
+	             	<div th:if="${user.roleid}==1">
+	             		<input class="form-control transfercode" id="transfercode" name="transfercode" type="text" data-error="Please Enter Transfer Code" aria-describedby="TransferCode" placeholder="Enter Transfer Code" th:field="*{code}" th:value="${th.code}" required>
+	             	</div>
 	            </div>
 	            <div class="col-md-3">
 	            </div>
@@ -28,10 +34,16 @@
 	            	<label for="StockTypeLabel">Product</label>
 	            </div>
 	            <div class="col-md-6">
-	            	<select class="form-control" name="productid" th:field="*{productid}" disabled>
-	           			<option value="">Select Product</option>
-	           			<option th:each="elem: ${products}" th:selected="${elem.isProduct(th.productid)}" th:value="${elem.productid}" th:text="${elem.productname}"></option>
-	       			</select>
+	            	<div th:unless="${user.roleid}==1">
+		            	<span th:each="list: ${products}" th:if="${list.isProduct(th.productid)}" th:text="${list.productname}"></span>
+		            	<input type="hidden" th:field="*{productid}" th:value="${th.productid}" />
+	             	</div>
+	             	<div th:if="${user.roleid}==1">
+	             		<select class="form-control" name="productid" th:field="*{productid}" required>
+		           			<option value="">Select Product</option>
+		           			<option th:each="list: ${products}" th:selected="${list.isProduct(th.productid)}" th:value="${list.productid}" th:text="${list.productname}"></option>
+		       			</select>
+	             	</div>
 	            </div>
 	        </div>
 	    </div>
@@ -42,11 +54,16 @@
 	            	<label for="SerialNoLabel">Serial No</label>
 	       		</div>
 	           	<div class="col-md-6">
-	           		<input class="form-control serialno" id="serialno" name="serialno" type="text" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Enter Serial No" th:field="*{serialno}" th:value="${th.serialno}" disabled>
+	           		<div th:unless="${user.roleid}==1">
+		            	<span th:text="*{serialno}"></span>
+		            	<input type="hidden" th:field="*{serialno}" th:value="${th.serialno}" />
+	             	</div>
+	             	<div th:if="${user.roleid}==1">
+	             		<input class="form-control serialno" id="serialno" name="serialno" type="text" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Enter Serial No" th:field="*{serialno}" th:value="${th.serialno}" required>
+	             	</div>
+	           		
 	           	</div>
 	           	<div class="col-md-3">
-<!-- 	           		<span style="visibility: hidden;" class="transferserial_flag"></span> -->
-<!-- 	           		<span style="visibility: hidden;" class="transferserial_message"></span> -->
 	           	</div>
 	       	</div>
 		</div>
@@ -57,10 +74,16 @@
 	                <label for="orgid">Organization</label>
 	            </div>
 	            <div class="col-md-6"> 
-	            	<select class="form-control" id="orgid" name="desorgid" th:field="*{desorgid}" onchange="department_select('ReceiveStock',this.value);" required>
-		             	<option value="">Select Organization</option>
-		           		<option th:each="list: ${organizations}" th:value="${list.orgid}" th:text="${list.orgname}" ></option>
-	             	</select>
+	            	<div th:if="${user.roleid}>1">
+		            	<span th:each="list: ${organizations}" th:if="${list.isOrgname(th.desorgid)}" th:text="${list.orgname}"></span>
+		            	<input type="hidden" th:field="*{desorgid}" th:value="${th.desorgid}" />
+	             	</div>
+	             	<div th:unless="${user.roleid}>1">
+	             		<select class="form-control" id="orgid" name="desorgid" th:field="*{desorgid}" onchange="department_select('ReceiveStock',this.value);" required>
+			             	<option value="">Select Organization</option>
+			           		<option th:each="list: ${organizations}" th:value="${list.orgid}" th:text="${list.orgname}" ></option>
+		             	</select>
+	             	</div>
 	            </div>
 	        </div>
 	    </div>
@@ -71,10 +94,16 @@
 	                <label for="DepartmentLabel">Department</label>
 	            </div>
 	            <div class="col-md-6"> 
-	            	<select  class="form-control dept_select" name="desdeptid" th:field="*{desdeptid}" onchange="subdepartment_select('ReceiveStock', this.value);" required>
-	          			<option value="">Select Department</option>
-	          			<option th:each="list: ${depts}" th:value="${list.deptid}" th:text="${list.deptname}" ></option>
-	         		</select>
+	            	<div th:if="${user.roleid}>2">
+		            	<span th:each="list: ${depts}" th:if="${list.isDeptname(th.desdeptid)}" th:text="${list.deptname}"></span>
+		            	<input type="hidden" th:field="*{desdeptid}" th:value="${th.desdeptid}" />
+	             	</div>
+	             	<div th:unless="${user.roleid}>2">
+	             		<select  class="form-control dept_select" name="desdeptid" th:field="*{desdeptid}" onchange="subdepartment_select('ReceiveStock', this.value);" required>
+		          			<option value="">Select Department</option>
+		          			<option th:each="list: ${depts}" th:value="${list.deptid}" th:text="${list.deptname}" ></option>
+		         		</select>
+	             	</div>
 	            </div>
 	        </div>
 	    </div>
@@ -85,10 +114,16 @@
 	                <label for="SubDepartmentLabel">Sub Department</label>
 	            </div>
 	            <div class="col-md-6"> 
-	            	<select class="form-control subdept_select" name="dessubdeptid" th:field="*{dessubdeptid}" required>
-	       				<option value="">Select Sub Department</option>
-	       				<option th:each="list: ${subdepts}" th:value="${list.subdeptid}" th:text="${list.subdeptname}" ></option>
-	          		</select>
+	            	<div th:if="${user.roleid}>3">
+		            	<span th:each="list: ${subdepts}" th:if="${list.isSubdeptname(th.dessubdeptid)}" th:text="${list.subdeptname}"></span>
+		            	<input type="hidden" th:field="*{dessubdeptid}" th:value="${th.dessubdeptid}" />
+	             	</div>
+	             	<div th:unless="${user.roleid}>3">
+	             		<select class="form-control subdept_select" name="dessubdeptid" th:field="*{dessubdeptid}" required>
+		       				<option value="">Select Sub Department</option>
+		       				<option th:each="list: ${subdepts}" th:value="${list.subdeptid}" th:text="${list.subdeptname}" ></option>
+		          		</select>
+	             	</div>
 	            </div>
 	        </div>
 	    </div>
