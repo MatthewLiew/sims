@@ -73,22 +73,28 @@ public class UserController {
 	public String getCreateUser(Model model, HttpServletRequest request ) {
 		
 		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
 		List<Organization> orgs= organizationDAO.findAll();
+		model.addAttribute("orgs",orgs);
+		
 		List<AppRole> approles = appRoleDAO.getAllRoleNames();
-		model.addAttribute("errorString",null);
+		model.addAttribute("approles",approles);
 		
 		UserAccount useracc = (UserAccount) model.asMap().get("useracc");
 		String message = (String) model.asMap().get("message");
 
 		if(useracc==null) {
 			useracc = new UserAccount();
+			useracc.setOrgid(0);
+			useracc.setDeptid(0);
+			useracc.setSubdeptid(0);
 		}
+		
 		model.addAttribute("useracc", useracc);
 		model.addAttribute("errorString", message);
-		model.addAttribute("orgs",orgs);
-		model.addAttribute("approles",approles);
-		model.addAttribute("sourceURL", sourceURL);
-	
+		model.addAttribute("errorString",null);
+
 		return "userAccount/createUser";
 	}
 	

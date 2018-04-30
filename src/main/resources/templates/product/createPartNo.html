@@ -34,7 +34,7 @@
 		            </div>
 		            <div class="col-md-6"> 
 		            	<select class="form-control orgid" id="orgid" name="orgid" th:field="*{orgid}" >
-			             	<option value="">Select Organization</option>
+<!-- 			             	<option value="">Select Organization</option> -->
 			           		<option th:each="list: ${orgs}" th:value="${list.orgid}" th:text="${list.orgname}"></option>
 		             	</select>
 		            </div>
@@ -48,7 +48,7 @@
 		            </div>
 		            <div class="col-md-6"> 
 		            	<select class="form-control deptid" name="deptid" th:field="*{deptid}" >
-		          			<option value="">Select Department</option>
+		          			<option value="0">No Department</option>
 		         		</select>
 		            </div>
 		        </div>
@@ -61,7 +61,7 @@
 		            </div>
 		            <div class="col-md-6"> 
 		            	<select class="form-control subdeptid" name="subdeptid" th:field="*{subdeptid}">
-		       				<option value="">Select Sub Department</option>
+		       				<option value="0">No Sub Department</option>
 		          		</select>
 		            </div>
 		        </div>
@@ -74,7 +74,7 @@
 		            </div>
 		            <div class="col-md-6">
 			            <select class="form-control mainlocid" name="mainlocid" th:field="*{mainlocid}">
-				            <option value="">Select Main Location</option>
+<!-- 				            <option value="0">Select Main Location</option> -->
 				            <option th:each="list: ${mainlocs}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option>
 			       		</select>
 		            </div>
@@ -88,7 +88,7 @@
 		            </div>
 		            <div class="col-md-6">                    
 			            <select class="form-control sublocid" name="sublocid" th:field="*{sublocid}">
-			            	<option value="">Select Sub Location</option>
+			            	<option value="0">Default Sub Location</option>
 			        	</select>
 		            </div>
 		         </div>

@@ -924,9 +924,10 @@ public class StockController {
 		
 		String errorString =null;
 		String[] token = th.getSerialno().split("\\W+");
+		String status="Available";
 		for (int i=0; i<token.length; i++) {
 			
-			PartNo partno =partNoDAO.findOneBySerialNo(token[i]);
+			PartNo partno =partNoDAO.findOneBySerialNo(token[i], status);
 		//INSERT INTO TRANSFER HISTORY
 
 //			System.out.println("Code: "+th.getCode());
@@ -986,7 +987,7 @@ public class StockController {
 			
 			
 			String tfrdatetime = DateTime.Now();
-			errorString = transferHistoryDAO.create(th.getCode(), th.getProductid() , th.getQuantity(), token[i], source, dest, 
+			errorString = transferHistoryDAO.create(th.getCode(), th.getProductid(), 1, token[i], source, dest, 
 					 th.getTransfertype(), partno.getOrgid(), partno.getDeptid(), partno.getSubdeptid(), partno.getMainlocid(), partno.getSublocid(), 
 					"pending", null, tfrdatetime, desorg, desdept, dessubdept, desmainloc, dessubloc, "pending", null, null);	
 		}
@@ -1024,18 +1025,19 @@ public class StockController {
 		List<Organization> organizations = organizationDAO.findAll();
 		model.addAttribute("organizations", organizations);
 		
-		List<Dept> depts = deptDAO.findAll();
+		List<Dept> depts = deptDAO.findAllByOrgid(transferhistory.getDesorgid());
 		model.addAttribute("depts", depts);
 		
-		List<SubDept> subdepts = subdeptDAO.findAll();
+		List<SubDept> subdepts = subdeptDAO.findAllByDeptid(transferhistory.getDesdeptid());
 		model.addAttribute("subdepts", subdepts);
 		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAll();
+		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(transferhistory.getDesmainlocid());
 		model.addAttribute("sublocs", sublocs);
 		
+		System.out.println(transferhistory.getDesmainlocid()+" "+transferhistory.getDessublocid());
 		return "stock/receiveStock";
 	}
 	
@@ -1047,7 +1049,7 @@ public class StockController {
 		errorString = transferHistoryDAO.updateReceiveStock(th.getTransferhistoryid(), th.getDesorgid() , th.getDesdeptid(), th.getDessubdeptid(), th.getDesmainlocid(),
 		th.getDessublocid(),"received", null, recdatetime);	
 		
-		partNoDAO.updateReceiveStock(th.getSerialno(), th.getDesorgid(), th.getDesdeptid(), th.getDessubdeptid(), th.getDesmainlocid(), th.getDessublocid());
+		partNoDAO.updateReceiveStock(th.getSerialno(), th.getDesorgid(), th.getDesdeptid(), th.getDessubdeptid(), th.getDesmainlocid(), th.getDessublocid(), "Available");
 		
 		if(errorString==null) {
 			String message= "Stock Received successfully";
@@ -1065,6 +1067,8 @@ public class StockController {
 		
 		String sourceURL = request.getHeader("Referer");
 		transferHistoryDAO.approval(transferhistoryid, approve);
+		TransferHistory th = transferHistoryDAO.findOne(transferhistoryid);
+		partNoDAO.updateStatus("In-Transit",th.getSerialno());
 		
 		return "redirect:"+sourceURL;
 	}

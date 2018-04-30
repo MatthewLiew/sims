@@ -269,9 +269,9 @@ $(document).on("change", ".orgid", function() {
 		
 		success: function (response) {
 			$(current).closest(".form").find(".deptid").empty();
-			$(current).closest(".form").find(".deptid").append("<option value=''>Select Department</option>");
+			$(current).closest(".form").find(".deptid").append("<option value='0'>No Department</option>");
 			$(current).closest(".form").find(".subdeptid").empty();
-			$(current).closest(".form").find(".subdeptid").append("<option value=''>Select Sub Department</option>");
+			$(current).closest(".form").find(".subdeptid").append("<option value='0'>No Sub Department</option>");
 			for(var i of response) {
 				$(current).closest(".form").find(".deptid").append("<option value='"+i["deptid"]+"'>"+i["deptname"]+"</option>");
 			}
@@ -293,9 +293,11 @@ function department_select(id, val) {
 		
 		success: function (response) {
 			$("#"+id+" .dept_select").empty();
-			$("#"+id+" .dept_select").append("<option value=''>Select Department</option>");
+			$("#"+id+" .dept_select").append("<option value='0'>No Department</option>");
+//			$("#"+id+" .dept_select").append("<option value='0' selected>Default Department</option>");
 			$("#"+id+" .subdept_select").empty();
-			$("#"+id+" .subdept_select").append("<option value=''>Select Sub Department</option>");
+			$("#"+id+" .subdept_select").append("<option value='0'>No Sub Department</option>");
+//			$("#"+id+" .subdept_select").append("<option value='0' selected>Default Sub Department</option>");
 			for(var i of response) {
 				$("#"+id+" .dept_select").append("<option value='"+i["deptid"]+"'>"+i["deptname"]+"</option>");
 			}
@@ -316,7 +318,7 @@ $(document).on("change", ".deptid", function() {
 		
 		success: function (response) {
 			$(current).closest(".form").find(".subdeptid").empty();
-			$(current).closest(".form").find(".subdeptid").append("<option value=''>Select Sub Department</option>");
+			$(current).closest(".form").find(".subdeptid").append("<option value='0'>No Sub Department</option>");
 			for(var i of response) {
 				$(current).closest(".form").find(".subdeptid").append("<option value='"+i["subdeptid"]+"'>"+i["subdeptname"]+"</option>");
 			}
@@ -337,10 +339,11 @@ function subdepartment_select(id, val) {
 		
 		success: function (response) {
 			$("#"+id+" .subdept_select").empty();
-			$("#"+id+" .subdept_select").append("<option value=''>Select Sub Department</option>");
-			if(!jQuery.isEmptyObject(response)){
-				$("#"+id+" .subdept_select").append("<option value=''>No Sub Department</option>");
-			}
+			$("#"+id+" .subdept_select").append("<option value='0'>No Sub Department</option>");
+//			$("#"+id+" .subdept_select").append("<option value='0' selected>Default Sub Department</option>");
+//			if(!jQuery.isEmptyObject(response)){
+//				$("#"+id+" .subdept_select").append("<option value=''>No Sub Department</option>");
+//			}
 			for(var i of response) {
 				$("#"+id+" .subdept_select").append("<option value='"+i["subdeptid"]+"'>"+i["subdeptname"]+"</option>");
 			}
@@ -361,7 +364,7 @@ $(document).on("change", ".mainlocid", function() {
 		
 		success: function (response) {
 			$(current).closest(".form").find(".sublocid").empty();
-			$(current).closest(".form").find(".sublocid").append("<option value=''>Select Sub Location</option>");
+			$(current).closest(".form").find(".sublocid").append("<option value='0'>Default Sub Location</option>");
 			for(var i of response) {
 				$(current).closest(".form").find(".sublocid").append("<option value='"+i["sublocid"]+"'>"+i["sublocname"]+"</option>");
 			}
@@ -382,7 +385,7 @@ function subloc_select(id, val) {
 		success: function (response) {
 
 			$("#"+id+" .subloc_select").empty();
-			$("#"+id+" .subloc_select").append("<option value=''>Select Sub Location</option>");
+			$("#"+id+" .subloc_select").append("<option value='0'>Default Sub Location</option>");
 			for(var i of response) {
 				$("#"+id+" .subloc_select").append("<option value='"+i["sublocid"]+"'>"+i["sublocname"]+"</option>");
 			}

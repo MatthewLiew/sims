@@ -46,7 +46,7 @@
 			                  	</tr>
 		                  	</tfoot>
 		                  	<tbody>
-		                		<tr th:each="org : ${orgs}">
+		                		<tr th:each="org : ${orgs}" th:if="${org.orgid}>0">
 		                			<td th:text="${org.orgcode}"></td>
 	             					<td th:text="${org.orgname}"></td>
 						            <td>

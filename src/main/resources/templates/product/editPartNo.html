@@ -27,8 +27,8 @@
 	            </div>
 	            <div class="col-md-6"> 
 	            	<select class="form-control" id="orgid" name="orgid" th:field="*{orgid}" onchange="department_select('EditPartNo',this.value);" required>
-		             	<option value="0">Select Organization</option>
-		             	
+<!-- 		             	<option value="0">Select Organization</option> -->
+<!-- 		             	<option value="0">No Organization</option> -->
 <!-- 		           		<option th:each="list: ${orgs}" th:value="${list.orgid}" th:text="${list.orgname}"></option> -->
 		           		<option th:each="list: ${orgs}" th:selected="${list.isOrgname(partno.orgid)}" th:value="${list.orgid}" th:text="${list.orgname}" ></option>
 	             	</select>
@@ -43,7 +43,8 @@
 	            </div>
 	            <div class="col-md-6"> 
 	            	<select  class="form-control dept_select" name="deptid" th:field="*{deptid}" onchange="subdepartment_select('EditPartNo', this.value);" required>
-	          			<option value="0">Select Department</option>
+<!-- 	          			<option value="0">Select Department</option> -->
+	          			<option value="0">No Department</option>
 	          			<option th:each="list: ${depts}" th:selected="${list.isDeptname(partno.deptid)}" th:value="${list.deptid}" th:text="${list.deptname}" ></option>
 	         		</select>
 	            </div>
@@ -57,7 +58,8 @@
 	            </div>
 	            <div class="col-md-6"> 
 	            	<select class="form-control subdept_select" name="subdeptid" th:field="*{subdeptid}" required>
-	       				<option value="0">Select Sub Department</option>
+<!-- 	       				<option value="0">Select Sub Department</option> -->
+	       				<option value="0">No Sub Department</option>
 	       				<option th:each="list: ${subdepts}" th:selected="${list.isSubdeptname(partno.subdeptid)}" th:value="${list.subdeptid}" th:text="${list.subdeptname}" ></option>
 	          		</select>
 	            </div>
@@ -71,7 +73,8 @@
 	            </div>
 	            <div class="col-md-6">
 		            <select class="form-control" name="mainlocid" th:field="*{mainlocid}" onchange="subloc_select('EditPartNo',this.value);" required>
-			            <option value="">Select Main Location</option>
+<!-- 			            <option value="">Select Main Location</option> -->
+<!-- 			            <option value="0">Default Main Location</option> -->
 			            <option th:each="list: ${mainlocs}" th:selected="${list.isMainLocName(partno.mainlocid)}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option>
 		       		</select>
 	            </div>
@@ -85,7 +88,8 @@
 	            </div>
 	            <div class="col-md-6">                    
 		            <select class="form-control subloc_select" name="sublocid" th:field="*{sublocid}" required>
-		            	<option value="">Select Sub Location</option>
+<!-- 		            	<option value="">Select Sub Location</option> -->
+		            	<option value="0">Default Sub Location</option>
 		            	<option th:each="list: ${sublocs}" th:selected="${list.isSubLocName(partno.sublocid)}" th:value="${list.sublocid}" th:text="${list.sublocname}"></option>
 		        	</select>
 	            </div>

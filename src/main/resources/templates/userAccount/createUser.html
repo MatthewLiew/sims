@@ -55,7 +55,6 @@
 	            </div>
 	            <div class="col-md-6"> 
 	            	<select class="form-control" id="orgid" name="orgid" th:field="*{orgid}" onchange="department_select('CreateUser',this.value);" required>
-		             	<option value="0">Select Organization</option>
 		           		<option th:each="list: ${orgs}" th:value="${list.orgid}" th:text="${list.orgname}"></option>
 	             	</select>
 	            </div>
@@ -69,7 +68,7 @@
 	            </div>
 	            <div class="col-md-6"> 
 	            	<select  class="form-control dept_select" name="deptid" th:field="*{deptid}" onchange="subdepartment_select('CreateUser', this.value);" required>
-	          			<option value="0">Select Department</option>
+	          			<option value="0">No Department</option>
 	         		</select>
 	            </div>
 	        </div>
@@ -82,7 +81,7 @@
 	            </div>
 	            <div class="col-md-6"> 
 	            	<select class="form-control subdept_select" name="subdeptid" th:field="*{subdeptid}" required>
-	       				<option value="0">Select Sub Department</option>
+	       				<option value="0">No Sub Department</option>
 	          		</select>
 	            </div>
 	        </div>

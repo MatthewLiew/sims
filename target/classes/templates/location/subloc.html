@@ -47,7 +47,7 @@
 			                  	</tr>
 		                  	</tfoot>
 		                  	<tbody>
-		                		<tr th:each="sub : ${sublocs}">
+		                		<tr th:each="sub : ${sublocs}" th:if="${sub.sublocid}>0">
 		                			<td th:each="main : ${mainlocs}" th:if="${main.isMainLocName(sub.mainlocid)}" th:text="${main.mainlocname}"></td>
 	             					<td th:text="${sub.sublocname}"></td>
 						            <td>

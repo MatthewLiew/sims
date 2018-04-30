@@ -134,6 +134,7 @@
 	                <label for="MainLocationLabel">Main Location</label>
 	            </div>
 	            <div class="col-md-6">
+	            	<span th:text="*{desmainlocid}"></span>
 		            <select class="form-control" name="desmainlocid" th:field="*{desmainlocid}" onchange="subloc_select('ReceiveStock',this.value);" required>
 			            <option value="">Select Main Location</option>
 			            <option th:each="list: ${mainlocs}" th:value="${list.mainlocid}" th:text="${list.mainlocname}"></option>
@@ -147,7 +148,8 @@
 	            <div class="col-md-3">
 	                <label for="SubLocationLabel">Sub Location</label>
 	            </div>
-	            <div class="col-md-6">                    
+	            <div class="col-md-6">             
+	            	<span th:text="*{dessublocid}"></span>
 		            <select class="form-control subloc_select" name="dessublocid" th:field="*{dessublocid}" required>
 		            	<option value="">Select Sub Location</option>
 		            	<option th:each="list: ${sublocs}" th:value="${list.sublocid}" th:text="${list.sublocname}"></option>

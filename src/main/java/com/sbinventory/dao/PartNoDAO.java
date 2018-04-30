@@ -63,9 +63,24 @@ public class PartNoDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public String updateReceiveStock(String serialno, int orgid, int deptid, int subdeptid, int mainlocid, int sublocid ){
-		String sql=UPDATE_SQL+" set ORG_ID = ?, DEPT_ID = ?, SUB_DEPT_ID = ?, MAIN_LOC_ID = ?, SUB_LOC_ID = ? where SERIAL_NO = ?";
-		Object[] params=new Object[] { orgid, deptid, subdeptid, mainlocid, sublocid, serialno };
+	public String updateStatus(String status, String serialno){
+		String sql=UPDATE_SQL+" set STOCK_STATUS = ? where SERIAL_NO = ?";
+		Object[] params=new Object[] { status, serialno};
+		try {
+			int rows=this.getJdbcTemplate().update(sql, params);
+			System.out.println(rows + " row(s) updated.");
+			return null;
+		} catch (EmptyResultDataAccessException e) {
+			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
+			
+		} catch (DataAccessException e) {
+			return e.getMessage();
+		}
+	}
+	
+	public String updateReceiveStock(String serialno, int orgid, int deptid, int subdeptid, int mainlocid, int sublocid, String status ){
+		String sql=UPDATE_SQL+" set ORG_ID = ?, DEPT_ID = ?, SUB_DEPT_ID = ?, MAIN_LOC_ID = ?, SUB_LOC_ID = ?, STOCK_STATUS = ? where SERIAL_NO = ?";
+		Object[] params=new Object[] { orgid, deptid, subdeptid, mainlocid, sublocid, status, serialno };
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
@@ -124,10 +139,10 @@ public class PartNoDAO extends JdbcDaoSupport{
         }
 	}
 	
-	public PartNo findOneBySerialNo(String serialno){
-		
-		String sql=READ_SQL+ " where SERIAL_NO = ?";
-		Object[] params =new Object[] {serialno};
+	public PartNo findOneBySerialNo(String serialno, String status){
+//		String status="Available";
+		String sql=READ_SQL+ " where SERIAL_NO = ? and STOCK_STATUS = ?";
+		Object[] params =new Object[] {serialno, status};
 		PartNoMapper mapper=new PartNoMapper();
 		
 		try {

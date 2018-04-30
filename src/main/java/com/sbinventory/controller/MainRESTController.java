@@ -454,15 +454,16 @@ public class MainRESTController {
 
 		boolean flag = true;
 		UserAccount user = null;
+		String status = "Available";
 		if(principal != null) {
 			user = userAccountDAO.findOneByUsername(principal.getName(), 0);
 		}
-		Response response = AccessRightVerification(user, data);
+		Response response = AccessRightVerification(user, data, status);
 		return response;
 
 	}
 	
-	private Response AccessRightVerification(UserAccount user, String[] serialno) {
+	private Response AccessRightVerification(UserAccount user, String[] serialno, String status) {
 		
 		int role = user.getRoleid();
 		boolean flag = true;
@@ -470,7 +471,7 @@ public class MainRESTController {
 		String available = "";
 		String message = "";
 		for(int i = 0; i < serialno.length; i++) {
-			PartNo partno = partNoDAO.findOneBySerialNo(serialno[i]);
+			PartNo partno = partNoDAO.findOneBySerialNo(serialno[i], status);
 			
 			if (partno != null) {
 				boolean orglvl = user.getOrgid() == partno.getOrgid();

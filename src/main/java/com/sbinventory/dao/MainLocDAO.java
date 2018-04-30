@@ -92,7 +92,7 @@ public class MainLocDAO extends JdbcDaoSupport{
 	
 	public List<MainLoc> findAll(){
 		
-		String sql=READ_SQL + " ORDER BY MAIN_LOC_NAME";
+		String sql=READ_SQL + " ORDER BY ID";
 		MainLocMapper mapper=new MainLocMapper();
 		
 		try {

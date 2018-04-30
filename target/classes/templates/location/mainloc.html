@@ -45,7 +45,7 @@
 			                  	</tr>
 		                  	</tfoot>
 		                  	<tbody>
-		                		<tr th:each="mainloc : ${mainlocs}">
+		                		<tr th:each="mainloc : ${mainlocs}" th:if="${mainloc.mainlocid}>0">
 		                			<td th:text="${mainloc.mainlocname}"></td>
 						            <td>
 						                <a th:onclick="'doAction(\'edit\',\''+ ${mainloc.mainlocid} + '\');'" ><button class="btn btn-primary" title="Edit Main Location"><i class="fa fa-edit" title="Edit Main Location"></i></button></a>				          
