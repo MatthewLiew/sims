@@ -18,7 +18,7 @@ import com.sbinventory.model.DisposalHistory;
 @Transactional
 public class DisposalHistoryDAO extends JdbcDaoSupport{
 
-	private static final String CREATE_SQL="INSERT INTO DISPOSAL_HISTORY (LOG_USER, LOG_DATETIME, PRODUCT_ID, QUANTITY, MAIN_LOC, SUB_LOC, APPROVAL) VALUES (?,?,?,?,?,?,?)";
+	private static final String CREATE_SQL="INSERT INTO DISPOSAL_HISTORY (CODE, PRODUCT_ID, QUANTITY, SERIAL_NO, ORG_ID, DEPT_ID, SUB_DEPT_ID, MAIN_LOC_ID, SUB_LOC_ID, APPROVAL, LOG_USER, LOG_DATETIME) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 //	private static final String CREATE_SQL="INSERT INTO TRANSFER_HISTORY (LOG_USER ) VALUES (?)";
 	private static final String READ_SQL="SELECT * FROM DISPOSAL_HISTORY";
 	private static final String UPDATE_SQL="UPDATE DISPOSAL_HISTORY";
@@ -29,10 +29,10 @@ public class DisposalHistoryDAO extends JdbcDaoSupport{
 		this.setDataSource(dataSource);
 	}
 	
-	public String create(String loguser, String logdatetime, int productid, int quantity, int mainlocid, int sublocid, 
-			String approval) {
+	public String create(String code, Integer productid, int quantity, String serialno, Integer orgid, Integer deptid, Integer subdeptid, Integer mainlocid, 
+			Integer sublocid, String approval, Integer loguser, String logdatetime) {
 
-		Object[] params=new Object[]{loguser, logdatetime, productid, quantity, mainlocid, sublocid, approval};
+		Object[] params=new Object[]{code, productid, quantity, serialno, orgid, deptid, subdeptid, mainlocid, sublocid,  approval, loguser, logdatetime};
 //		Object[] params=new Object[]{"null",logdatetime, productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid};
 		String sql=CREATE_SQL;
 		

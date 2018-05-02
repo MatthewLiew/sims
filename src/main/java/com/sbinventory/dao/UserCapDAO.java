@@ -24,8 +24,8 @@ import com.sbinventory.model.UserCap;
 @Transactional
 public class UserCapDAO extends JdbcDaoSupport {
 
-	private static final String CREATE_SQL="INSERT INTO USER_CAP (APP_ROLE_ID, ACCESS_RIGHT, STOCK_APPROVE, STOCK_ADD, STOCK_EDIT, "
-			+ "STOCK_DELETE, SERIAL_ADD, SERIAL_EDIT, SERIAL_DELETE) VALUES (?,?,?,?,?,?,?,?,?)";
+	private static final String CREATE_SQL="INSERT INTO USER_CAP (APP_ROLE_ID, ACCESS_RIGHT, SIO_APPROVE, SIO_ADD, SIO_EDIT, "
+			+ "SIO_DELETE, SM_ADD, SM_EDIT, SM_DELETE) VALUES (?,?,?,?,?,?,?,?,?)";
 	private static final String READ_SQL="SELECT * FROM USER_CAP";
 	private static final String UPDATE_SQL="UPDATE USER_CAP";
 	private static final String DELETE_SQL="DELETE FROM USER_CAP";
@@ -58,11 +58,14 @@ public class UserCapDAO extends JdbcDaoSupport {
 		}
 	}
 	
-	public String update(int usercapid, int accessright, int stockapprove, int stockadd, int stockedit, int stockdelete, int serialadd, 
-			int serialedit, int serialdelete){
-		String sql=UPDATE_SQL+" set ACCESS_RIGHT = ?, STOCK_APPROVE = ?, STOCK_ADD = ? , STOCK_EDIT = ?, STOCK_DELETE = ?, "
-				+ "SERIAL_ADD = ?, SERIAL_EDIT = ?, SERIAL_DELETE = ? where ID= ?";
-		Object[] params=new Object[]{accessright, stockapprove, stockadd, stockedit, stockdelete, serialadd, serialedit, serialdelete, usercapid};
+	public String update(int usercapid, int accessright, int sioapprove, int sioadd, int sioedit, int siodelete, int smadd, 
+			int smedit, int smdelete, int sttransfer, int streceive, int stapprove, int stedit, int stdelete, int sddispose, 
+			int sdapprove, int sdedit, int sddelete){
+		String sql=UPDATE_SQL+" set ACCESS_RIGHT = ?, SIO_APPROVE = ?, SIO_ADD = ? , SIO_EDIT = ?, SIO_DELETE = ?, "
+				+ "SM_ADD = ?, SM_EDIT = ?, SM_DELETE = ?, ST_TRANSFER = ?, ST_RECEIVE = ?, ST_APPROVE = ?, ST_EDIT = ?, "
+				+ "ST_DELETE = ?, SD_DISPOSE = ?, SD_APPROVE = ?, SD_EDIT = ?, SD_DELETE = ? where ID= ?";
+		Object[] params=new Object[]{accessright, sioapprove, sioadd, sioedit, siodelete, smadd, smedit, smdelete, sttransfer, streceive, stapprove, stedit,
+				stdelete, sddispose, sdapprove, sdedit, sddelete, usercapid};
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");

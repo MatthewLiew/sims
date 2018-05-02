@@ -914,7 +914,7 @@ public class StockController {
 		TransferHistory transferhistory = new TransferHistory();
 		transferhistory.setQuantity(1);
 		model.addAttribute("th", transferhistory);
-			
+
 		return "stock/transferStock";
 	}
 	
@@ -1028,16 +1028,24 @@ public class StockController {
 		List<Dept> depts = deptDAO.findAllByOrgid(transferhistory.getDesorgid());
 		model.addAttribute("depts", depts);
 		
-		List<SubDept> subdepts = subdeptDAO.findAllByDeptid(transferhistory.getDesdeptid());
-		model.addAttribute("subdepts", subdepts);
+		if(transferhistory.getDesdeptid()!=null) {
+			List<SubDept> subdepts = subdeptDAO.findAllByDeptid(transferhistory.getDesdeptid());
+			model.addAttribute("subdepts", subdepts);
+		} else {
+			model.addAttribute("subdepts", null);
+		}
 		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(transferhistory.getDesmainlocid());
-		model.addAttribute("sublocs", sublocs);
+		if(transferhistory.getDesmainlocid()!=null) {
+			List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(transferhistory.getDesmainlocid());
+			model.addAttribute("sublocs", sublocs);
+		} else {
+//			List<SubLoc> sublocs = subLocDAO.findAll();
+			model.addAttribute("sublocs", null);
+		}
 		
-		System.out.println(transferhistory.getDesmainlocid()+" "+transferhistory.getDessublocid());
 		return "stock/receiveStock";
 	}
 	
@@ -1256,8 +1264,16 @@ public class StockController {
 	public String postDisposeStock(@ModelAttribute DisposalHistory dh, @RequestParam int productid, Model model, 
 			@RequestParam String sourceURL, RedirectAttributes ra) {
 		
-		String errorString = disposalHistoryDAO.create(null, DateTime.Now(), dh.getProductid(), dh.getQuantity(), 
-				dh.getMainlocid(), dh.getSublocid(), "pending");		
+		String errorString =null;
+		String[] token = dh.getSerialno().split("\\W+");
+		String status="Available";
+		
+		for (int i=0; i<token.length; i++) {
+					
+			PartNo partno =partNoDAO.findOneBySerialNo(token[i], status);
+			errorString = disposalHistoryDAO.create(dh.getCode(), dh.getProductid(), 1, token[i], partno.getOrgid(), partno.getDeptid(),
+					partno.getSubdeptid(), partno.getMainlocid(), partno.getSublocid(), "pending", null, DateTime.Now());	
+		}
 //		
 		if(errorString==null) {
 			String message= "Stock Disposed successfully";
@@ -1312,7 +1328,8 @@ public class StockController {
 		
 		String sourceURL = request.getHeader("Referer");
 		disposalHistoryDAO.approval(disposalhistoryid, approve);
-		
+		DisposalHistory dh = disposalHistoryDAO.findOne(disposalhistoryid);
+		partNoDAO.updateStatus("Disposed",dh.getSerialno());
 		return "redirect:"+sourceURL;
 	}
 	
@@ -1736,9 +1753,11 @@ public class StockController {
 	}
 		
 	@PostMapping(value= "/usercap")
-	public String postUserCap(/*@ModelAttribute List<UserCap> usercaps*/int[] usercapid, @RequestParam int[] accessright, @RequestParam int[] stockapprove,
-			@RequestParam  int[] stockadd, @RequestParam  int[] stockedit, @RequestParam int[] stockdelete, @RequestParam  int[] serialadd, 
-			@RequestParam  int[] serialedit, @RequestParam int[] serialdelete, Model model, @RequestParam String sourceURL,
+	public String postUserCap(/*@ModelAttribute List<UserCap> usercaps*/int[] usercapid, @RequestParam int[] accessright, @RequestParam int[] sioapprove,
+			@RequestParam int[] sioadd, @RequestParam int[] sioedit, @RequestParam int[] siodelete, @RequestParam int[] smadd, 
+			@RequestParam int[] smedit, @RequestParam int[] smdelete, @RequestParam int[] sttransfer, @RequestParam int[] streceive, 
+			@RequestParam int[] stapprove, @RequestParam int[] stedit, @RequestParam int[] stdelete, @RequestParam int[] sddispose, 
+			@RequestParam int[] sdapprove, @RequestParam int[] sdedit, @RequestParam int[] sddelete, Model model, @RequestParam String sourceURL,
 			RedirectAttributes ra) {
 		
 		String errorString=null;
@@ -1750,7 +1769,8 @@ public class StockController {
 //			System.out.println("Add"+j+": "+add[j]);
 //			System.out.println("Edit"+j+": "+edit[j]);
 //			System.out.println("Delete"+j+": "+delete[j]);
-			errorString=userCapDAO.update(usercapid[j], accessright[j], stockapprove[j], stockadd[j], stockedit[j], stockdelete[j], serialadd[j], serialedit[j], serialdelete[j]);
+			errorString=userCapDAO.update(usercapid[j], accessright[j], sioapprove[j], sioadd[j], sioedit[j], siodelete[j], smadd[j], smedit[j], smdelete[j],
+					sttransfer[j], streceive[j], stapprove[j], stedit[j], stdelete[j], sddispose[j], sdapprove[j], sdedit[j], sddelete[j]);
 		}
 
 		

@@ -16,13 +16,14 @@ $(document).ready(function() {
 	  });
 });
 
-//$(document).ready(function() {
-//  $('table.settingTable').DataTable({
-//      "paging":   false,
-//      "ordering": false,
-////	      "info":     false
-//  });
-//});
+$(document).ready(function() {
+  $('#settingTable').DataTable({
+      "paging":   false,
+      "ordering": false,
+      "info":     false,
+      "searching":   false
+  });
+});
 
 //$(document).ready(function() {
 //  $('#stockin').DataTable({

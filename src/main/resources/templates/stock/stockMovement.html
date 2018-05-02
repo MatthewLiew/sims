@@ -25,10 +25,10 @@
 	      	<div class="card mb-3">
       			<div class="card-header">
       				<i class="fa fa-table"></i> Stock Movement &nbsp;&nbsp;
-<!--       				<span sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.stockadd}"> -->
+      				<span sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.sioadd}">
       				<a onclick="doAction('in', 0);"><button class="btn btn-primary" data-toggle="modal" >Stock In</button></a>
 	      			<a onclick="doAction('out', 0);"><button class="btn btn-primary" data-toggle="modal" >Stock Out</button></a>
-<!-- 	      			</span> -->
+	      			</span>
 	      			<form method="GET" th:action="@{/stockmovement}">
 	      			
 						<div class="form-group mt-3">
@@ -74,7 +74,7 @@
 							        <th>Reason Details</th>
 							        <!-- <th>Main Location</th>
 							        <th>Sub Location</th> -->
-						          	<th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.stockapprove} or ${usercap.stockedit} or ${usercap.stockdelete}">Action</th>
+						          	<th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.sioapprove} or ${usercap.sioedit} or ${usercap.siodelete}">Action</th>
 	               			 	</tr>
 		              		</thead>
 		              		<tfoot>
@@ -89,7 +89,7 @@
 							        <th>Reason Details</th>
 							        <!-- <th>Main Location</th>
 							        <th>Sub Location</th> -->
-						          	<th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" width="17%" th:if="${usercap.stockapprove} or ${usercap.stockedit} or ${usercap.stockdelete}">Action</th>
+						          	<th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" width="17%" th:if="${usercap.sioapprove} or ${usercap.sioedit} or ${usercap.siodelete}">Action</th>
 					          	</tr>
 				          	</tfoot>
 				          	<tbody>
@@ -108,10 +108,10 @@
 						             <!-- <td th:each="m : ${mainlocs}" th:if="${m.isMainLocName(sh.mainlocid)}" th:text="${m.mainlocname}"></td>
 						             <td th:each="s : ${sublocs}" th:if="${s.isSubLocName(sh.sublocid)}" th:text="${s.sublocname}"></td> -->
 						             
-						             <td sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.stockapprove} or ${usercap.stockedit} or ${usercap.stockdelete}" >
-						                <a th:if="${usercap.stockedit}" th:onclick="'doAction(\'edit\',\''+ ${sh.stockhistoryid} +'\');'"><button class="btn btn-primary" title="Edit Stock Transaction"><i class="fa fa-edit"></i></button></a>
-						           		<a th:if="${usercap.stockdelete}" th:onclick="'doAction(\'delete\',\''+ ${sh.stockhistoryid} +'\');'"><button class="btn btn-primary" title="Delete Stock Transaction"><i class="fa fa-trash"></i></button></a>
-						             	<span th:if="${usercap.stockapprove}">&nbsp;&nbsp;
+						             <td sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.sioapprove} or ${usercap.sioedit} or ${usercap.siodelete}" >
+						                <a th:if="${usercap.sioedit}" th:onclick="'doAction(\'edit\',\''+ ${sh.stockhistoryid} +'\');'"><button class="btn btn-primary" title="Edit Stock Transaction"><i class="fa fa-edit"></i></button></a>
+						           		<a th:if="${usercap.siodelete}" th:onclick="'doAction(\'delete\',\''+ ${sh.stockhistoryid} +'\');'"><button class="btn btn-primary" title="Delete Stock Transaction"><i class="fa fa-trash"></i></button></a>
+						             	<span th:if="${usercap.sioapprove}">&nbsp;&nbsp;
 							             	<span th:if="${sh.approval}=='pending'"><a  th:href="@{/stockioapproval(stockhistoryid=${sh.stockhistoryid},approve='approved')}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/stockioapproval(stockhistoryid=${sh.stockhistoryid},approve='cancelled')}"><i class="fa fa-close" title="Not Approve"></i></a></span>
 							             	<span th:unless="${sh.approval}=='pending'" th:text="(${sh.approval}=='approved') ? 'Approved' : 'Not Approve'"></span>
 						             	</span>

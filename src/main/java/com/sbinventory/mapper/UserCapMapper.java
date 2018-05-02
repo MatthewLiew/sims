@@ -15,15 +15,25 @@ public class UserCapMapper implements RowMapper<UserCap>{
 		int usercapid = rs.getInt("ID");
 		int approleid = rs.getInt("APP_ROLE_ID");
 		int accessright = rs.getInt("ACCESS_RIGHT");
-		int stockapprove = rs.getInt("STOCK_APPROVE");
-		int stockadd = rs.getInt("STOCK_ADD");
-		int stockedit = rs.getInt("STOCK_EDIT");
-		int stockdelete = rs.getInt("STOCK_DELETE"); 
-		int serialadd = rs.getInt("SERIAL_ADD");
-		int serialedit = rs.getInt("SERIAL_EDIT");
-		int serialdelete = rs.getInt("SERIAL_DELETE"); 
+		int sioapprove = rs.getInt("SIO_APPROVE");
+		int sioadd = rs.getInt("SIO_ADD");
+		int sioedit = rs.getInt("SIO_EDIT");
+		int siodelete = rs.getInt("SIO_DELETE"); 
+		int smadd = rs.getInt("SM_ADD");
+		int smedit = rs.getInt("SM_EDIT");
+		int smdelete = rs.getInt("SM_DELETE"); 
+		int sttransfer = rs.getInt("ST_TRANSFER");
+		int streceive = rs.getInt("ST_RECEIVE");
+		int stapprove = rs.getInt("ST_APPROVE");
+		int stedit = rs.getInt("ST_EDIT");
+		int stdelete = rs.getInt("ST_DELETE");
+		int sddispose = rs.getInt("SD_DISPOSE");
+		int sdapprove = rs.getInt("SD_APPROVE");
+		int sdedit = rs.getInt("SD_EDIT");
+		int sddelete = rs.getInt("SD_DELETE");
 
-		return new UserCap(usercapid, approleid, accessright, stockapprove, stockadd, stockedit, stockdelete, serialadd, serialedit, serialdelete);
+		return new UserCap(usercapid, approleid, accessright, sioapprove, sioadd, sioedit, siodelete, smadd, smedit, smdelete,
+				sttransfer, streceive, stapprove, stedit, stdelete, sddispose, sdapprove, sdedit, sddelete);
 	}
 
 }

@@ -43,7 +43,7 @@ public class StockQuantity {
 		
 		this.updatestockio();
 		this.updatetransfer();
-//		this.updatedisposal();
+		this.updatedisposal();
 //		this.updaterma();
 		
 		List<Product> products = productDAO.findAll();
@@ -94,38 +94,48 @@ public class StockQuantity {
 			List<TransferHistory> transferHistories = transferHistoryDAO.findAll();
 			for(TransferHistory th: transferHistories){
 				
-				if((stor.getOrgid() == th.getSrcorgid())&&(stor.getDeptid() == th.getSrcdeptid())&&(stor.getSubdeptid() == th.getSrcsubdeptid())
-						&& (stor.getMainlocid() == th.getSrcmainlocid()) && (stor.getSublocid() == th.getSrcsublocid())
-						&& (stor.getProductid() == th.getProductid()) && (th.getIsTransfered().equalsIgnoreCase("approved"))) {
-					totalquantity-=th.getQuantity();
-				} 
-				if((stor.getOrgid() == th.getDesorgid())&&(stor.getDeptid() == th.getDesdeptid())&&(stor.getSubdeptid() == th.getDessubdeptid())
-						&& (stor.getMainlocid() == th.getDesmainlocid()) && (stor.getSublocid() == th.getDessublocid())
-						&& (stor.getProductid() == th.getProductid()) && (th.getIsReceived().equalsIgnoreCase("received"))){
-					totalquantity+=th.getQuantity();
+				if(th.getIsTransfered().equalsIgnoreCase("approved")) {
+					if((stor.getOrgid() == th.getSrcorgid())&&(stor.getDeptid() == th.getSrcdeptid())&&(stor.getSubdeptid() == th.getSrcsubdeptid())
+							&& (stor.getMainlocid() == th.getSrcmainlocid()) && (stor.getSublocid() == th.getSrcsublocid())
+							&& (stor.getProductid() == th.getProductid())) {
+						
+						totalquantity-=th.getQuantity();
+						System.out.println("YES "+totalquantity);
+					}
+				}
+				if(th.getIsReceived().equalsIgnoreCase("received")) {
+					if((stor.getOrgid() == th.getDesorgid())&&(stor.getDeptid() == th.getDesdeptid())&&(stor.getSubdeptid() == th.getDessubdeptid())
+							&& (stor.getMainlocid() == th.getDesmainlocid()) && (stor.getSublocid() == th.getDessublocid())
+							&& (stor.getProductid() == th.getProductid())){
+						totalquantity+=th.getQuantity();
+						System.out.println("NO "+totalquantity);
+					}
 				}
 			}
 			storageDAO.updateQuantity(stor.getStorageid(), totalquantity+stor.getQuantity());
 		}
 	}
 	
-//	public void updatedisposal() {
-//		
-//		List<Storage> storages = storageDAO.getAllStorage();
-//		for(Storage stor : storages){
-//			
-//			int totalquantity=0;
-//			List<DisposalHistory> disposalHistories = disposalHistoryDAO.findAll();
-//			for(DisposalHistory dis: disposalHistories){
-//				
-//				if((stor.getMainlocid() == dis.getMainlocid()) && (stor.getSublocid() == dis.getSublocid())
-//						&& (stor.getProductid() == dis.getProductid())) {
-//					totalquantity-=dis.getQuantity();
-//				} 
-//			}
-//			storageDAO.updateQuantity(stor.getStorageid(), totalquantity+stor.getQuantity());
-//		}
-//	}
+	public void updatedisposal() {
+		
+		List<Storage> storages = storageDAO.getAllStorage();
+		for(Storage stor : storages){
+			
+			int totalquantity=0;
+			List<DisposalHistory> disposalHistories = disposalHistoryDAO.findAll();
+			for(DisposalHistory dh: disposalHistories){
+				
+				if(dh.getApproval().equalsIgnoreCase("approved")) {
+					if((stor.getOrgid() == dh.getOrgid())&&(stor.getDeptid() == dh.getDeptid())&&(stor.getSubdeptid() == dh.getSubdeptid())
+							&& (stor.getMainlocid() == dh.getMainlocid()) && (stor.getSublocid() == dh.getSublocid())
+							&& (stor.getProductid() == dh.getProductid())) {
+						totalquantity-=dh.getQuantity();
+					} 
+				}
+			}
+			storageDAO.updateQuantity(stor.getStorageid(), totalquantity+stor.getQuantity());
+		}
+	}
 	
 //	public void updaterma() {
 //		

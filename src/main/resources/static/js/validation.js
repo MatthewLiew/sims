@@ -1367,8 +1367,8 @@ function checkSerialAuth(form) {
  		url: BASE_URL + "api/checkSerialAuth",
  		data: data,
  		success: function (response) {
- 			$("#"+form+" .transferserial_message" ).html(response.status);
- 			$("#"+form+" .transferserial_flag" ).html(response.flag);
+ 			$("#"+form+" .message" ).html(response.status);
+ 			$("#"+form+" .flag" ).html(response.flag);
   		},
  		error : function(e) {
  			/*$("#"+form+" .serialno_status" ).html("Error");
@@ -1383,14 +1383,14 @@ function checkSerialAuth(form) {
 
 function transferForm(form) {
 	
-	var transferserialflag=$("#"+form+" .transferserial_flag" ).text();
-	var transferserialmessage=$("#"+form+" .transferserial_message" ).text();
+	var flag=$("#"+form+" .flag" ).text();
+	var message=$("#"+form+" .message" ).text();
 //	let productcode=$("#"+form+" .productcode").val();
 //	let productname=$("#"+form+" .productname").val();
 	
-	if(transferserialflag=="false"){
+	if(flag=="false"){
 		$("#"+form+" #modal_error").show();
-		$("#"+form+" #modal_error").text(transferserialmessage);
+		$("#"+form+" #modal_error").text(message);
 		return false;
 	} /*else if(productnameflag=="false"){
 		$("#"+form+" #modal_error").show();

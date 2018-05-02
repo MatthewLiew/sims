@@ -25,11 +25,11 @@
 	      	<div class="card mb-3">
       			<div class="card-header">
       				<i class="fa fa-table"></i> Serial Management &nbsp;&nbsp;
-      				<!-- <span sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.serialadd}"> -->
+      				<span sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.smadd}">
       				<a onclick="doAction('new', 0);">
       					<button class="btn btn-primary" data-toggle="modal" >Add Serial No</button>
 	      			</a>
-	      			<!-- </span> -->
+	      			</span>
 	      			<!-- <form method="POST" th:action="@{/uploadOneFile}" th:object="${UploadForm}" enctype="multipart/form-data" style="display:inline-block;">
 
 					&nbsp;&nbsp;
@@ -60,7 +60,7 @@
 						          	<!-- <th>Organization</th>
 						          	<th>Department</th>
 						          	<th>Sub Department</th> -->
-						          	<th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.serialedit} or ${usercap.serialdelete}" width="10%">Action</th>
+						          	<th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.smedit} or ${usercap.smdelete}" width="10%">Action</th>
 	               			 	</tr>
 		              		</thead>
 		              		<tfoot>
@@ -77,7 +77,7 @@
 						          	<!-- <th>Organization</th>
 						          	<th>Department</th>
 						          	<th>Sub Department</th> -->
-						          	<th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.serialedit} or ${usercap.serialdelete}">Action</th>
+						          	<th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.smedit} or ${usercap.smdelete}">Action</th>
 					          	</tr>
 				          	</tfoot>
 				          	<tbody>
@@ -97,9 +97,9 @@
 					             	<!-- <td th:each="list: ${organizations}" th:if="${list.isOrgname(pn.orgid)}" th:text="${list.orgname}"></td>
 					             	<td th:each="list: ${depts}" th:if="${list.isDeptname(pn.deptid)}" th:text="${list.deptname}"></td>
 					             	<td th:each="list: ${subdepts}" th:if="${list.isSubdeptname(pn.subdeptid)}" th:text="${list.subdeptname}"></td> -->
-					             	<td sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.serialedit} or ${usercap.serialdelete}">
-					              	 	<a th:if="${usercap.serialedit}" th:onclick="'doAction(\'edit\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Edit Serial No"><i class="fa fa-edit" title="Edit Serial No"></i></button></a>
-						             	<a th:if="${usercap.serialdelete}" th:onclick="'doAction(\'delete\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Delete Serial No"><i class="fa fa-trash" title="Delete Serial No"></i></button></a>
+					             	<td sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_USER')" th:if="${usercap.smedit} or ${usercap.smdelete}">
+					              	 	<a th:if="${usercap.smedit}" th:onclick="'doAction(\'edit\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Edit Serial No"><i class="fa fa-edit" title="Edit Serial No"></i></button></a>
+						             	<a th:if="${usercap.smdelete}" th:onclick="'doAction(\'delete\',\''+ ${pn.partnoid} +'\');'"><button class="btn btn-primary" title="Delete Serial No"><i class="fa fa-trash" title="Delete Serial No"></i></button></a>
 					             	</td>
 					          	</tr>
 				          	</tbody>

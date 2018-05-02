@@ -7,7 +7,22 @@
 	<p class="error" style="color: red;" th:text="${errorString}" ></p>
 	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
     
-    <div th:object="${dh}">  
+    <div th:object="${dh}">
+    	<div class="form-group">
+	       <div class="form-row">
+	           <div class="col-md-3">
+	               <label for="OrganizationCodeLabel">Disposal Code #</label>
+	           </div>
+	           <div class="col-md-6">
+	           	<input class="form-control code" name="disposalcode" type="text" data-error="Please Enter Disposal Code" aria-describedby="DisposalCode" placeholder="Enter Disposal Code" th:field="*{code}" value=""  required>
+	           </div>
+	           <div class="col-md-3">
+         		   <span class="disposalcode_status"></span>
+	               <span style="visibility:hidden;"class="disposalcode_flag" th:text="true"></span>
+	           </div>
+	       </div>
+	   </div>
+	     
 		<div class="form-group">
 	    	<div class="form-row">
 	        	<div class="col-md-3">
@@ -41,13 +56,15 @@
 	            	<label for="SerialNoLabel">Serial No</label>
 	       		</div>
 	           	<div class="col-md-6">
-	       			<textarea class="form-control serialno" id="serialno" name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space" onkeyup="countSerialNo('DisposeStock');" required></textarea>
+	       			<textarea class="form-control serialno" id="serialno" name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space" onkeyup="checkSerialAuth('DisposeStock');" required></textarea>
 	           	</div>
 	           	<div class="col-md-3">
+	           		<span style="display: ;" class="flag"></span>
+	           		<span style="display: ;" class="message"></span>
 	           	</div>
 	       	</div>
 		</div>
-	    <div class="form-group">
+	    <!-- <div class="form-group">
 	    	<div class="form-row">
 	        	<div class="col-md-3">
 	            	<label for="StockTypeLabel">Main Location</label>
@@ -73,7 +90,7 @@
 	       			</select>
 	            </div>
 	        </div>
-	    </div>
+	    </div> -->
     </div>
         
 </html>

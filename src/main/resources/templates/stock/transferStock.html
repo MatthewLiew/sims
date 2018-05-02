@@ -59,8 +59,8 @@
 	       			<textarea class="form-control serialno" id="serialno" name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space" th:field="*{serialno}" onkeyup="checkSerialAuth('TransferStock')"></textarea>
 	           	</div>
 	           	<div class="col-md-3">
-	           		<span style="display: ;" class="transferserial_flag"></span>
-	           		<span style="display: ;" class="transferserial_message"></span>
+	           		<span style="display: ;" class="flag"></span>
+	           		<span style="display: ;" class="message"></span>
 	           	</div>
 	       	</div>
 		</div>
@@ -71,6 +71,7 @@
 	            	<label for="StockTypeLabel">Transfer Type</label>
 	            </div>
 	            <div class="col-md-6">
+	            <span th:text="*{transfertype}"></span>
 	            	<select class="form-control" name="transfertypeid" onchange="transfer_mode(this.value);" th:field="*{transfertype}" required>
 	           			<option value="">Select Transfer Type</option>
 	           			<option th:each="elem: ${transfertypes}" th:value="${elem.transfertypeid}" th:text="${elem.mode}"></option>
@@ -130,7 +131,7 @@
 	            <div class="col-md-6">
 	            	<!-- th:field="*{orimainlocid}" onchange="subloc_select('From',this.value);" -->
 	            	<select class="form-control" id="desmainloc"name="destination" th:field="*{desmainlocid}">
-	           			<option value="">Select Main Location</option>
+<!-- 	           			<option value="">Select Main Location</option> -->
 	           			<option th:each="elem: ${mainlocs}" th:value="${elem.mainlocid}" th:text="${elem.mainlocname}"></option>
 	       			</select>
 	            </div>

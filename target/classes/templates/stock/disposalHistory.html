@@ -32,38 +32,38 @@
 		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 		        			<thead>
 		        				<tr>
+		        					<th>Order No #</th>
 		        					<th>Product</th>
 		        					<th>Quantity</th>
-						          	<th>Main Location</th>
-						          	<th>Sub Location</th>
-						          	<th>Log User</th>
-						          	<th>Log Datetime</th>
+						          	<th>Serial No</th>
+						          	<th>Datetime</th>
 						          	<th>Approval</th>
 						          	<th>Action</th>
 	               			 	</tr>
 		              		</thead>
 		              		<tfoot>
 		                		<tr>
-		                			<th>Product</th>
+		                			<th>Order No #</th>
+		        					<th>Product</th>
 		        					<th>Quantity</th>
-						          	<th>Main Location</th>
-						          	<th>Sub Location</th>
-						          	<th>Log User</th>
-						          	<th>Log Datetime</th>
+						          	<th>Serial No</th>
+						          	<th>Datetime</th>
 						          	<th>Approval</th>
 						          	<th>Action</th>
 					          	</tr>
 				          	</tfoot>
 				          	<tbody>
 				          		<tr th:each="dis : ${disposalhistories}">
+				          			<td th:text="${dis.code}"></td>
 				          			<td th:each="p : ${products}" th:if="${p.isProduct(dis.productid)}" th:text="${p.productname}"></td>
 				          			<td th:text="${dis.quantity}"></td>
-				          			<td th:each="m : ${mainlocs}" th:if="${m.isMainLocName(dis.mainlocid)}" th:text="${m.mainlocname}"></td>
-				          			<td th:each="sub : ${sublocs}" th:if="${sub.isSubLocName(dis.sublocid)}" th:text="${sub.sublocname}"></td>
-				          			<td th:if="${dis.sublocid}==0" th:text="'-'"></td>
-				          			<td th:text="${dis.loguser}"></td>
+				          			<td th:text="${dis.serialno}"></td>
+<!-- 				          			<td th:each="m : ${mainlocs}" th:if="${m.isMainLocName(dis.mainlocid)}" th:text="${m.mainlocname}"></td> -->
+<!-- 				          			<td th:each="sub : ${sublocs}" th:if="${sub.isSubLocName(dis.sublocid)}" th:text="${sub.sublocname}"></td> -->
+<!-- 				          			<td th:if="${dis.sublocid}==0" th:text="'-'"></td> -->
+<!-- 				          			<td th:text="${dis.loguser}"></td> -->
 				          			<td th:text="${dis.logdatetime}"></td>
-				          			<td th:if="${dis.approval}=='pending'"><a th:href="@{/approval(disposalhistoryid=${dis.disposalhistoryid},approve='approved')}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/approval(disposalhistoryid=${dis.disposalhistoryid},approve='cancelled')}"><i class="fa fa-close" title="Not Approve"></i></a></td>
+				          			<td th:if="${dis.approval}=='pending'"><a th:href="@{/disposalapproval(disposalhistoryid=${dis.disposalhistoryid},approve='approved')}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/disposalapproval(disposalhistoryid=${dis.disposalhistoryid},approve='cancelled')}"><i class="fa fa-close" title="Not Approve"></i></a></td>
 						             <td th:unless="${dis.approval}=='pending'" th:text="(${dis.approval}=='approved') ? 'Approved' : 'Not Approve'"></td>
 					             	<td>
 						                <a th:onclick="'doAction(\'edit\',\''+ ${dis.disposalhistoryid} +'\');'"><button class="btn btn-primary" title="Edit Disposal Transaction"><i class="fa fa-edit"></i></button></a>
@@ -78,7 +78,7 @@
           	</div>
       		
       		<div class="modal clickable" id="DisposeStock" tabindex="-1" role="dialog" aria-labelledby="DisposeStock" aria-hidden="true">
-		            <form method="POST" th:action="@{/disposeStock}" id="DisposeStock">
+		            <form method="POST" th:action="@{/disposeStock}" id="DisposeStock"  onsubmit="return transferForm('DisposeStock');">
 		                <div class="vertical-alignment-helper">
 		                    <div class="modal-dialog  modal-lg vertical-align-center">
 		                        <!-- Modal content-->
