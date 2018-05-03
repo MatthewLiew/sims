@@ -193,14 +193,14 @@ public class TransferHistoryDAO extends JdbcDaoSupport{
 		if(role == 1) {
 			sql=READ_SQL;
 		} else if (role == 2){
-			sql=READ_SQL+" where SRC_ORG_ID = ? and TRANSFER_TYPE >= ?";
-			params=new Object[] {orgid, 1};
+			sql=READ_SQL+" where SRC_ORG_ID = ? and TRANSFER_TYPE >= 1";
+			params=new Object[] {orgid};
 		} else if (role == 3){
-			sql=READ_SQL+" where SRC_DEPT_ID = ? and TRANSFER_TYPE >= ?";
-			params=new Object[] {deptid, 2};
+			sql=READ_SQL+" where SRC_DEPT_ID = ? and TRANSFER_TYPE >= 2";
+			params=new Object[] {deptid};
 		} else if (role == 4){
-			sql=READ_SQL+" where SRC_SUB_DEPT_ID = ? and TRANSFER_TYPE >= ?";
-			params=new Object[] {subdeptid, 3};
+			sql=READ_SQL+" where SRC_SUB_DEPT_ID = ? and TRANSFER_TYPE >= 3";
+			params=new Object[] {subdeptid};
 		}
 		
 		try {

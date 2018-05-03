@@ -905,6 +905,7 @@ public class StockController {
 		List<SubDept> subdepts = subdeptDAO.findAllByDeptid(user.getDeptid(), user.getSubdeptid());
 		model.addAttribute("subdepts", subdepts);
 		
+		//** should restrict the mainloc and subloc, only allow those who is not belong to user
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
