@@ -8,33 +8,33 @@
 	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
     
     <div th:object="${rma}">  
+		
 		<div class="form-group">
-	    	<div class="form-row">
-	        	<div class="col-md-3">
-	            	<label for="StockTypeLabel">Product</label>
-	            </div>
-	            <div class="col-md-6">
-	            	<select class="form-control" name="productid" th:field="*{productid}" required>
-	           			<option value="">Select Product</option>
-	           			<option th:each="elem: ${products}" th:value="${elem.productid}" th:text="${elem.productname}"></option>
-	       			</select>
-	            </div>
-	        </div>
-	    </div>
-	    
-	    <div class="form-group">
-	    	<div class="form-row">
-	        	<div class="col-md-3">
-	            	<label for="ReasonLabel">Quantity</label>
-	            </div>
-	            <div class="col-md-6">
-	           		<input class="form-control quantity" id="quantity" name="quantity" type="text" data-error="Please Enter Quantity" aria-describedby="Quantity" placeholder="Enter Quantity" th:field="*{quantity}" value="" required>
-	       	 	</div>
-	            <div class="col-md-3">
-	            </div>
-	        </div>
-	    </div>
-	    
+	       <div class="form-row">
+	           <div class="col-md-3">
+	               <label for="OrganizationCodeLabel">RMA Code #</label>
+	           </div>
+	           <div class="col-md-6">
+	           	<input class="form-control" name="rmacode" type="text" data-error="Please Enter RMA Code" aria-describedby="RMACode" placeholder="Enter RMA Code" th:field="*{code}" value="" >
+	           </div>
+	           <div class="col-md-3">
+	           </div>
+	       </div>
+	   </div>
+	   
+	   <div class="form-group">
+	       <div class="form-row">
+	           <div class="col-md-3">
+	               <label>Invoice No</label>
+	           </div>
+	           <div class="col-md-6">
+	           	<input class="form-control" name="invoiceno" type="text" placeholder="Enter Invoice No" th:field="*{invoiceno}">
+	           </div>
+	           <div class="col-md-3">
+	           </div>
+	       </div>
+	   </div>
+	   
 	    <div class="form-group">
 	    	<div class="form-row">
 	        	<div class="col-md-3">
@@ -47,41 +47,53 @@
 	           	</div>
 	       	</div>
 		</div>
-	    <div class="form-group">
+		
+		<div class="form-group">
+	       <div class="form-row">
+	           <div class="col-md-3">
+	               <label>Name</label>
+	           </div>
+	           <div class="col-md-6">
+	           	<input class="form-control" name="name" type="text" placeholder="Enter Your Name" th:field="*{name}">
+	           </div>
+	           <div class="col-md-3">
+	           </div>
+	       </div>
+	   	</div>
+	   	
+	   	<div class="form-group">
+	       <div class="form-row">
+	           <div class="col-md-3">
+	               <label>Email</label>
+	           </div>
+	           <div class="col-md-6">
+	           	<input class="form-control" name="email" type="text" placeholder="Enter Your Email" th:field="*{email}">
+	           </div>
+	           <div class="col-md-3">
+	           </div>
+	       </div>
+	   	</div>
+	   	
+	   	<div class="form-group">
+	       <div class="form-row">
+	           <div class="col-md-3">
+	               <label>Phone No</label>
+	           </div>
+	           <div class="col-md-6">
+	           	<input class="form-control" name="phoneno" type="text" placeholder="Enter Your Phone No" th:field="*{phoneno}">
+	           </div>
+	           <div class="col-md-3">
+	           </div>
+	       </div>
+	   	</div>
+	   	
+	   	<div class="form-group">
 	    	<div class="form-row">
 	        	<div class="col-md-3">
-	            	<label for="StockTypeLabel">Main Location</label>
-	            </div>
-	            <div class="col-md-6">
-	            	<select class="form-control" name="mainlocid" th:field="*{mainlocid}" onchange="subloc_select('CreateRMA',this.value);" required>
-	           			<option value="">Select Main Location</option>
-	           			<option th:each="elem: ${mainlocs}" th:value="${elem.mainlocid}" th:text="${elem.mainlocname}">
-	           			</option>
-	       			</select>
-	            </div>
-	        </div>
-	    </div>
-	    
-	    <div class="form-group">
-	    	<div class="form-row">
-	        	<div class="col-md-3">
-	            	<label for="StockTypeLabel">Sub Location</label>
-	            </div>
-	            <div class="col-md-6">
-	            	<select class="form-control subloc_select" name="sublocid" th:field="*{sublocid}" required>
-	           			<option value="">Select Sub Location</option>
-	       			</select>
-	            </div>
-	        </div>
-	    </div>
-	    
-	    <div class="form-group">
-	    	<div class="form-row">
-	        	<div class="col-md-3">
-	            	<label for="SerialNoLabel">Reason</label>
+	            	<label>Description</label>
 	       		</div>
 	           	<div class="col-md-6">
-	       			<textarea class="form-control reason" id="reason" name="reason" type="text" rows="2" cols="50" data-error="Please Enter Reason" aria-describedby="Reason" placeholder="Enter Reason" th:field="*{reason}"></textarea>
+	       			<textarea class="form-control" name="desc" type="text" rows="4" cols="50" placeholder="Enter Your Description" th:field="*{desc}"></textarea>
 	           	</div>
 	           	<div class="col-md-3">
 	           	</div>

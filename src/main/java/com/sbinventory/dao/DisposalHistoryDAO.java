@@ -118,4 +118,17 @@ public class DisposalHistoryDAO extends JdbcDaoSupport{
 			return e.getMessage();
 		}
 	}
+	
+	public int getCurrentIdent() {
+		
+		String sql="SELECT IDENT_CURRENT('DISPOSAL_HISTORY')";
+		
+		try {
+			int index = this.getJdbcTemplate().queryForObject(sql, int.class);
+			return index;
+		}catch(EmptyResultDataAccessException e) {
+			e.printStackTrace();
+			return 0;
+		}
+	}
 }

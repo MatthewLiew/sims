@@ -139,4 +139,5 @@ public class DisposalHistory {
 	public void setLogdatetime(String logdatetime) {
 		this.logdatetime = logdatetime;
 	}
+	
 }

@@ -20,22 +20,22 @@ import com.sbinventory.model.RMA;
 @Transactional
 public class RMADAO extends JdbcDaoSupport{
 
-	private static final String CREATE_SQL="INSERT INTO RMA (LOG_USER, LOG_DATETIME, PRODUCT_ID, QUANTITY, MAIN_LOC, SUB_LOC, APPROVAL, REASON) VALUES (?,?,?,?,?,?,?,?)";
+	private static final String CREATE_SQL="INSERT INTO RMA_HISTORY(CODE, INVOICE_NO, SERIAL_NO, NAME, EMAIL, PHONE_NO, DESCRIPTION, REASON, TYPE, APPROVAL, REQUEST_USER, REQUEST_DATETIME, LOG_USER, LOG_DATETIME) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 //	private static final String CREATE_SQL="INSERT INTO TRANSFER_HISTORY (LOG_USER ) VALUES (?)";
-	private static final String READ_SQL="SELECT * FROM RMA";
-	private static final String UPDATE_SQL="UPDATE RMA";
-	private static final String DELETE_SQL="DELETE FROM RMA";
+	private static final String READ_SQL="SELECT * FROM RMA_HISTORY";
+	private static final String UPDATE_SQL="UPDATE RMA_HISTORY";
+	private static final String DELETE_SQL="DELETE FROM RMA_HISTORY";
 	
 	@Autowired
 	public RMADAO(DataSource dataSource) {
 		this.setDataSource(dataSource);
 	}
 	
-	public String create(String loguser, String logdatetime, int productid, int quantity, int mainlocid, int sublocid, 
-			String approval, String reason) {
+	public String create(String code, String invoiceno, String serialno, String name, String email, String phoneno, String desc, Integer rmareason, Integer rmatype, 
+			String approval, String rquser, String rqdatetime, String loguser, String logdatetime) {
 
-		Object[] params=new Object[]{loguser, logdatetime, productid, quantity, mainlocid, sublocid, approval, reason};
-//		Object[] params=new Object[]{"null",logdatetime, productid, quantity, orimainlocid, orisublocid, desmainlocid, dessublocid};
+		Object[] params=new Object[]{code, invoiceno, serialno, name, email, phoneno, desc, rmareason, rmatype, approval, rquser, rqdatetime, loguser, logdatetime};
+
 		String sql=CREATE_SQL;
 		
 		try {
@@ -118,6 +118,19 @@ public class RMADAO extends JdbcDaoSupport{
 			return e.getMessage();
 		}catch(DataAccessException  e) {
 			return e.getMessage();
+		}
+	}
+	
+	public int getCurrentIdent() {
+		
+		String sql="SELECT IDENT_CURRENT('RMA_HISTORY')";
+		
+		try {
+			int index = this.getJdbcTemplate().queryForObject(sql, int.class);
+			return index;
+		} catch(EmptyResultDataAccessException e) {
+			e.printStackTrace();
+			return 0;
 		}
 	}
 }

@@ -33,40 +33,45 @@
 		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 		        			<thead>
 		        				<tr>
-		        					<th>Product</th>
-		        					<th>Quantity</th>
-						          	<th>Main Location</th>
-						          	<th>Sub Location</th>
-						          	<th>Log User</th>
-						          	<th>Log Datetime</th>
+		        					<th>Order No #</th>
+		        					<th>Invoice No</th>
+						          	<th>Serial No</th>
+						          	<th>Client Info</th>
+						          	<th>Description</th>
 						          	<th>Reason</th>
+						          	<th>Type</th>
+						          	<th>Request User</th>
+						          	<th>Requested By</th>
 						          	<th>Approval</th>
 						          	<th>Action</th>
 	               			 	</tr>
 		              		</thead>
 		              		<tfoot>
 		                		<tr>
-		                			<th>Product</th>
-		        					<th>Quantity</th>
-						          	<th>Main Location</th>
-						          	<th>Sub Location</th>
-						          	<th>Log User</th>
-						          	<th>Log Datetime</th>
+		                			<th>Order No #</th>
+		        					<th>Invoice No</th>
+						          	<th>Serial No</th>
+						          	<th>Client Info</th>
+						          	<th>Description</th>
 						          	<th>Reason</th>
+						          	<th>Type</th>
+						          	<th>Request User</th>
+						          	<th>Requested By</th>
 						          	<th>Approval</th>
 						          	<th>Action</th>
 					          	</tr>
 				          	</tfoot>
 				          	<tbody>
 				          		<tr th:each="rma : ${rmas}">
-				          			<td th:each="p : ${products}" th:if="${p.isProduct(rma.productid)}" th:text="${p.productname}"></td>
-				          			<td th:text="${rma.quantity}"></td>
-				          			<td th:each="m : ${mainlocs}" th:if="${m.isMainLocName(rma.mainlocid)}" th:text="${m.mainlocname}"></td>
-				          			<td th:each="sub : ${sublocs}" th:if="${sub.isSubLocName(rma.sublocid)}" th:text="${sub.sublocname}"></td>
-				          			<td th:if="${rma.sublocid}==0" th:text="'-'"></td>
-				          			<td th:text="${rma.loguser}"></td>
-				          			<td th:text="${rma.logdatetime}"></td>
-				          			<td th:text="${rma.reason}"></td>
+				          			<td th:text="${rma.code}"></td>
+				          			<td th:text="${rma.invoiceno}"></td>
+				          			<td th:text="${rma.serialno}"></td>
+				          			<td th:utext="'Name: ' + ${rma.name} +'<br>Email: '+ ${rma.email} +'<br>Phone No: '+ ${rma.phoneno}"></td>
+				          			<td th:text="${rma.desc}"></td>
+				          			<td th:text="${rma.rmareason}"></td>
+				          			<td th:text="${rma.rmatype}"></td>
+				          			<td th:text="${rma.rquser}"></td>
+				          			<td th:text="${rma.rqdatetime}"></td>
 				          			<td th:if="${rma.approval}=='pending'"><a th:href="@{/rmaapproval(rmaid=${rma.rmaid},approve='approved')}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/rmaapproval(rmaid=${rma.rmaid},approve='cancelled')}"><i class="fa fa-close" title="Not Approve"></i></a></td>
 						             <td th:unless="${rma.approval}=='pending'" th:text="(${rma.approval}=='approved') ? 'Approved' : 'Not Approve'"></td>
 					             	<td>

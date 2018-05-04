@@ -75,6 +75,7 @@ import com.sbinventory.model.UploadForm;
 import com.sbinventory.model.UserAccount;
 import com.sbinventory.model.UserCap;
 import com.sbinventory.utils.DateTime;
+import com.sbinventory.utils.OrderCodeGenerator;
 import com.sbinventory.utils.StockQuantity;
 import com.sbinventory.validator.CustomFileValidator;
 
@@ -152,6 +153,9 @@ public class StockController {
 	
 	@Autowired
 	CustomFileValidator customFileValidator;
+	
+	@Autowired
+	OrderCodeGenerator orderCodeGenerator;
 	
 	private String doUpload(HttpServletRequest request, Model model, //
 			   UploadForm myUploadForm, BindingResult bindingResult) {
@@ -476,6 +480,12 @@ public class StockController {
 	@GetMapping(value= "/disposalhistory")
 	public String getDisposalHistory(Model model) {
 
+//		String code = orderCodeGenerator.getOrderCode("stockdisposal");
+//		System.out.println(code);
+//		int disposalhistory = disposalHistoryDAO.getCurrentIdent();
+//		String dis = String.format("SD-%06d", disposalhistory);
+//		System.out.println(dis);
+		
 		List<DisposalHistory> disposalhistories = disposalHistoryDAO.findAll();
 		model.addAttribute("disposalhistories", disposalhistories);
 		
@@ -922,6 +932,10 @@ public class StockController {
 	@PostMapping(value= "/transferStock")
 	public String postTransferStock(@ModelAttribute TransferHistory th, /*@RequestParam Integer[] destination,*/ Model model, @RequestParam String sourceURL, RedirectAttributes ra, Principal pricipal) {
 		
+		if(th.getCode().isEmpty()) {
+			String code = orderCodeGenerator.getOrderCode("stocktransfer");
+			th.setCode(code);
+		}
 		
 		String errorString =null;
 		String[] token = th.getSerialno().split("\\W+");
@@ -1265,6 +1279,11 @@ public class StockController {
 	public String postDisposeStock(@ModelAttribute DisposalHistory dh, @RequestParam int productid, Model model, 
 			@RequestParam String sourceURL, RedirectAttributes ra) {
 		
+		if(dh.getCode().isEmpty()) {
+			String code = orderCodeGenerator.getOrderCode("stockdisposal");
+			dh.setCode(code);
+		}
+		
 		String errorString =null;
 		String[] token = dh.getSerialno().split("\\W+");
 		String status="Available";
@@ -1370,26 +1389,27 @@ public class StockController {
 	
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
-		
-		List<Product> products = productDAO.findAll();
-		model.addAttribute("products", products);
-		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
-		model.addAttribute("mainlocs", mainlocs);
-		
-		List<SubLoc> sublocs = subLocDAO.findAll();
-		model.addAttribute("sublocs", sublocs);
-		
+
 		model.addAttribute("rma",new RMA());
 			
 		return "stock/createRMA";
 	}
 	
 	@PostMapping(value= "/createRMA")
-	public String postCreateRMA(@ModelAttribute RMA rma, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+	public String postCreateRMA(@ModelAttribute RMA rma, Model model, @RequestParam String sourceURL, RedirectAttributes ra, Principal principal) {
 		
-		String errorString = rmaDAO.create(null, DateTime.Now(), rma.getProductid(), rma.getQuantity(), rma.getMainlocid(), rma.getSublocid(),
-				"pending", rma.getReason());		
+		UserAccount user = null;
+		if(principal!=null) {
+			user = userAccountDAO.findOneByUsername(principal.getName(), 0);
+			model.addAttribute("user", user);
+		}
+		if(rma.getCode().isEmpty()) {
+			String code = orderCodeGenerator.getOrderCode("rma");
+			rma.setCode(code);
+		}
+		String errorString = null;
+		errorString = rmaDAO.create(rma.getCode(), rma.getInvoiceno(), rma.getSerialno(), rma.getName(), rma.getEmail(), rma.getPhoneno(), rma.getDesc(), 
+				rma.getRmareason(), rma.getRmatype(), "pending", principal != null ? String.valueOf(user.getUserid()) :"web user", DateTime.Now(), null, null);		
 		
 		if(errorString==null) {
 			String message= "RMA created successfully";
@@ -1416,8 +1436,8 @@ public class StockController {
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(rma.getMainlocid());
-		model.addAttribute("sublocs", sublocs);
+//		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(rma.getMainlocid());
+//		model.addAttribute("sublocs", sublocs);
 			
 		return "stock/editRMA";
 	}
@@ -1426,8 +1446,9 @@ public class StockController {
 	public String postEditRMA(/*@RequestParam (defaultValue="0")int sublocid,*/
 			@ModelAttribute RMA rma, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
-		String errorString = rmaDAO.update(rma.getRmaid(), rma.getProductid(), rma.getMainlocid(), rma.getSublocid(), rma.getQuantity(), 
-				rma.getReason());
+		String errorString = null;
+//		errorString = rmaDAO.update(rma.getRmaid(), rma.getProductid(), rma.getMainlocid(), rma.getSublocid(), rma.getQuantity(), 
+//				rma.getReason());
 		
 		if(errorString==null) {
 			String message= "RMA record updated";
@@ -1455,10 +1476,12 @@ public class StockController {
 		model.addAttribute("sourceURL", sourceURL);
 		
 		RMA rma = rmaDAO.findOne(rmaid);
-		Product product = productDAO.findOne(rma.getProductid());
+		model.addAttribute("rma", rma);	
 		
-		model.addAttribute("rma", rma);		
-		model.addAttribute("product", product);	
+//		Product product = productDAO.findOne(rma.getProductid());
+//		model.addAttribute("product", product);	
+			
+		
 		
 		return "stock/deleteRMA";
 	}
@@ -1478,6 +1501,48 @@ public class StockController {
 		}
 	}
 	
+	@GetMapping(value= "/rmarequest")
+	public String getRmarequest(Model model, HttpServletRequest request) {
+	
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
+		model.addAttribute("rma",new RMA());
+			
+		return "stock/rmarequest";
+	}
+	
+	@PostMapping(value= "/rmarequest")
+	public String postRmarequest(@ModelAttribute RMA rma, Model model, @RequestParam String sourceURL, RedirectAttributes ra, Principal principal) {
+		
+		UserAccount user = null;
+		if(principal!=null) {
+			user = userAccountDAO.findOneByUsername(principal.getName(), 0);
+			model.addAttribute("user", user);
+		}
+		if(rma.getCode().isEmpty()) {
+			String code = orderCodeGenerator.getOrderCode("rma");
+			rma.setCode(code);
+		}
+		String errorString = null;
+		errorString = rmaDAO.create(rma.getCode(), rma.getInvoiceno(), rma.getSerialno(), rma.getName(), rma.getEmail(), rma.getPhoneno(), rma.getDesc(), 
+				rma.getRmareason(), rma.getRmatype(), "pending", principal != null ? String.valueOf(user.getUserid()) :"web user", DateTime.Now(), null, null);		
+		
+		if(errorString==null) {
+//			String message= "RMA created successfully";
+//			ra.addFlashAttribute("message", message);
+			return "redirect:/rmarequestsuccess";
+		} else {
+//			model.addAttribute("errorString",errorString);
+			return "redirect:/rmarequest";
+		}
+	}
+	
+	@GetMapping(value= "/rmarequestsuccess")
+	public String getRmarequestsuccess(Model model, HttpServletRequest request) {
+	
+		return "stock/rmarequestsuccess";
+	}
 	/**************** ITF ACTION ***********************/
 	@GetMapping(value= "/createITF")
 	public String getCreateITF(Model model, HttpServletRequest request) {

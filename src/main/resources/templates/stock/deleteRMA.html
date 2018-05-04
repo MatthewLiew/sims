@@ -11,10 +11,12 @@
 		<div class="form-group">
 	        <div class="form-row">
 	            <div class="col-md-12">
-	                Are you sure to Delete Following RMA Transaction ? <br/>
-	                Product - <b><span th:text="${product.productname}"></span></b>
-	                										<br/>
-	                Quantity - <b><span th:text="${rma.quantity}"></span></b>
+	                Are you sure to Delete Following RMA Record ? <br/>
+	                Order Code # - <b><span th:text="*{code}"></span></b>
+      				<br/>
+	                Invoice No - <b><span th:text="*{invoiceno}"></span></b>
+	                <br/>
+	                Serial No - <b><span th:text="*{serialno}"></span></b>
 	            </div>
 	        </div>
 	    </div>

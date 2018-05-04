@@ -3,29 +3,42 @@ package com.sbinventory.model;
 public class RMA {
 	
 	private int rmaid;
+	private String code;
+	private String invoiceno;
+	private String serialno;
+	private String name;
+	private String email;
+	private String phoneno;
+	private String desc;
+	private Integer rmareason;
+	private Integer rmatype;
+	private String approval;
+	private String rquser;
+	private String rqdatetime;
 	private String loguser;
 	private String logdatetime;
-	private Integer productid;
-	private Integer quantity;
-	private Integer mainlocid;
-	private Integer sublocid;
-	private String approval;
-	private String reason;
 	
 	public RMA() {}
 
-	public RMA(int rmaid, String loguser, String logdatetime, int productid, int quantity, int mainlocid, int sublocid,
-			String approval, String reason) {
+	public RMA(int rmaid, String code, String invoiceno, String serialno, String name, String email, String phoneno,
+			String desc, Integer rmareason, Integer rmatype, String approval, String rquser, String rqdatetime,
+			String loguser, String logdatetime) {
 		super();
 		this.rmaid = rmaid;
+		this.code = code;
+		this.invoiceno = invoiceno;
+		this.serialno = serialno;
+		this.name = name;
+		this.email = email;
+		this.phoneno = phoneno;
+		this.desc = desc;
+		this.rmareason = rmareason;
+		this.rmatype = rmatype;
+		this.approval = approval;
+		this.rquser = rquser;
+		this.rqdatetime = rqdatetime;
 		this.loguser = loguser;
 		this.logdatetime = logdatetime;
-		this.productid = productid;
-		this.quantity = quantity;
-		this.mainlocid = mainlocid;
-		this.sublocid = sublocid;
-		this.approval = approval;
-		this.reason = reason;
 	}
 
 	public int getRmaid() {
@@ -34,6 +47,102 @@ public class RMA {
 
 	public void setRmaid(int rmaid) {
 		this.rmaid = rmaid;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getInvoiceno() {
+		return invoiceno;
+	}
+
+	public void setInvoiceno(String invoiceno) {
+		this.invoiceno = invoiceno;
+	}
+
+	public String getSerialno() {
+		return serialno;
+	}
+
+	public void setSerialno(String serialno) {
+		this.serialno = serialno;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPhoneno() {
+		return phoneno;
+	}
+
+	public void setPhoneno(String phoneno) {
+		this.phoneno = phoneno;
+	}
+
+	public String getDesc() {
+		return desc;
+	}
+
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+
+	public Integer getRmareason() {
+		return rmareason;
+	}
+
+	public void setRmareason(Integer rmareason) {
+		this.rmareason = rmareason;
+	}
+
+	public Integer getRmatype() {
+		return rmatype;
+	}
+
+	public void setRmatype(Integer rmatype) {
+		this.rmatype = rmatype;
+	}
+
+	public String getApproval() {
+		return approval;
+	}
+
+	public void setApproval(String approval) {
+		this.approval = approval;
+	}
+
+	public String getRquser() {
+		return rquser;
+	}
+
+	public void setRquser(String rquser) {
+		this.rquser = rquser;
+	}
+
+	public String getRqdatetime() {
+		return rqdatetime;
+	}
+
+	public void setRqdatetime(String rqdatetime) {
+		this.rqdatetime = rqdatetime;
 	}
 
 	public String getLoguser() {
@@ -51,53 +160,4 @@ public class RMA {
 	public void setLogdatetime(String logdatetime) {
 		this.logdatetime = logdatetime;
 	}
-
-	public Integer getProductid() {
-		return productid;
-	}
-
-	public void setProductid(Integer productid) {
-		this.productid = productid;
-	}
-
-	public Integer getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
-	}
-
-	public Integer getMainlocid() {
-		return mainlocid;
-	}
-
-	public void setMainlocid(Integer mainlocid) {
-		this.mainlocid = mainlocid;
-	}
-
-	public Integer getSublocid() {
-		return sublocid;
-	}
-
-	public void setSublocid(Integer sublocid) {
-		this.sublocid = sublocid;
-	}
-
-	public String getApproval() {
-		return approval;
-	}
-
-	public void setApproval(String approval) {
-		this.approval = approval;
-	}
-
-	public String getReason() {
-		return reason;
-	}
-
-	public void setReason(String reason) {
-		this.reason = reason;
-	}
-
 }
