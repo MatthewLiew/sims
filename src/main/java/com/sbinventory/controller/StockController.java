@@ -40,6 +40,8 @@ import com.sbinventory.dao.OrganizationDAO;
 import com.sbinventory.dao.PartNoDAO;
 import com.sbinventory.dao.ProductDAO;
 import com.sbinventory.dao.RMADAO;
+import com.sbinventory.dao.RMAItemReasonDAO;
+import com.sbinventory.dao.RMAItemTypeDAO;
 import com.sbinventory.dao.ReasonDAO;
 import com.sbinventory.dao.StockHistoryDAO;
 import com.sbinventory.dao.StockTypeDAO;
@@ -63,6 +65,8 @@ import com.sbinventory.model.Organization;
 import com.sbinventory.model.PartNo;
 import com.sbinventory.model.Product;
 import com.sbinventory.model.RMA;
+import com.sbinventory.model.RMAItemReason;
+import com.sbinventory.model.RMAItemType;
 import com.sbinventory.model.Reason;
 import com.sbinventory.model.StockHistory;
 import com.sbinventory.model.StockType;
@@ -156,6 +160,12 @@ public class StockController {
 	
 	@Autowired
 	OrderCodeGenerator orderCodeGenerator;
+	
+	@Autowired
+	RMAItemReasonDAO rmaItemReasonDAO;
+	
+	@Autowired
+	RMAItemTypeDAO rmaItemTypeDAO;
 	
 	private String doUpload(HttpServletRequest request, Model model, //
 			   UploadForm myUploadForm, BindingResult bindingResult) {
@@ -251,8 +261,6 @@ public class StockController {
 		
 		if(principal!=null) {
 			UserAccount user = userAccountDAO.findOneByUsername(principal.getName(), 0);
-//			AppRole approle = appRoleDAO.findRoleNameByRoleid(user.getRoleid());
-//			model.addAttribute("role", approle.getRolename());
 			
 			UserCap usercap = userCapDAO.findOneByApprole(user.getRoleid());
 			model.addAttribute("usercap", usercap);
@@ -396,7 +404,7 @@ public class StockController {
 				model.addAttribute("storages", storages);
 			}
 			if(user.getRoleid()==2) {
-				List<Storage> storages = storageDAO.findAllBySubdeptid(user.getSubdeptid());
+				List<Storage> storages = storageDAO.findAllByOrgid(user.getOrgid());
 				model.addAttribute("storages", storages);
 			}
 			if(user.getRoleid()==3) {
@@ -404,7 +412,7 @@ public class StockController {
 				model.addAttribute("storages", storages);
 			}
 			if(user.getRoleid()==4) {
-				List<Storage> storages = storageDAO.findAllByOrgid(user.getOrgid());
+				List<Storage> storages = storageDAO.findAllBySubdeptid(user.getSubdeptid());
 				model.addAttribute("storages", storages);
 			}
 			
@@ -1421,6 +1429,30 @@ public class StockController {
 		}
 	}
 	
+	@GetMapping(value= "/confirmRMA")
+	public String getConfirmRMA(@RequestParam int rmaid, Model model, HttpServletRequest request) {
+	
+		String sourceURL = request.getHeader("Referer");
+		model.addAttribute("sourceURL", sourceURL);
+		
+		RMA rma= rmaDAO.findOne(rmaid);
+		model.addAttribute("rma", rma);
+		
+		List<Product> products = productDAO.findAll();
+		model.addAttribute("products", products);
+		
+		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		model.addAttribute("mainlocs", mainlocs);
+		
+		List<RMAItemReason> rmaitemreasons = rmaItemReasonDAO.findAll();
+		model.addAttribute("rmaitemreasons", rmaitemreasons);
+		
+		List<RMAItemType> rmaitemtypes = rmaItemTypeDAO.findAll();
+		model.addAttribute("rmaitemtypes", rmaitemtypes);
+			
+		return "stock/confirmRMA";
+	}
+	
 	@GetMapping(value= "/editRMA")
 	public String getEditRMA(@RequestParam int rmaid, Model model, HttpServletRequest request) {
 	
@@ -1435,9 +1467,6 @@ public class StockController {
 		
 		List<MainLoc> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
-		
-//		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(rma.getMainlocid());
-//		model.addAttribute("sublocs", sublocs);
 			
 		return "stock/editRMA";
 	}
@@ -1447,8 +1476,8 @@ public class StockController {
 			@ModelAttribute RMA rma, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
 		String errorString = null;
-//		errorString = rmaDAO.update(rma.getRmaid(), rma.getProductid(), rma.getMainlocid(), rma.getSublocid(), rma.getQuantity(), 
-//				rma.getReason());
+		errorString = rmaDAO.update(rma.getRmaid(), rma.getCode(),  rma.getInvoiceno(), rma.getSerialno(), rma.getName(), rma.getEmail(), 
+				rma.getPhoneno(), rma.getDesc(), rma.getRmareason(), rma.getRmatype());
 		
 		if(errorString==null) {
 			String message= "RMA record updated";

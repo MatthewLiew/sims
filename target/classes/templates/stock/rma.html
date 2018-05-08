@@ -72,7 +72,7 @@
 				          			<td th:text="${rma.rmatype}"></td>
 				          			<td th:text="${rma.rquser}"></td>
 				          			<td th:text="${rma.rqdatetime}"></td>
-				          			<td th:if="${rma.approval}=='pending'"><a th:href="@{/rmaapproval(rmaid=${rma.rmaid},approve='approved')}"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/rmaapproval(rmaid=${rma.rmaid},approve='cancelled')}"><i class="fa fa-close" title="Not Approve"></i></a></td>
+				          			<td th:if="${rma.approval}=='pending'"><a href="#" th:onclick="'doAction(\'confirm\',\''+ ${rma.rmaid} +'\');'"><i class="fa fa-check" title="Approve"></i></a>&nbsp;&nbsp;<a th:href="@{/rmaapproval(rmaid=${rma.rmaid},approve='cancelled')}"><i class="fa fa-close" title="Not Approve"></i></a></td>
 						             <td th:unless="${rma.approval}=='pending'" th:text="(${rma.approval}=='approved') ? 'Approved' : 'Not Approve'"></td>
 					             	<td>
 						                <a th:onclick="'doAction(\'edit\',\''+ ${rma.rmaid} +'\');'"><button class="btn btn-primary" title="Edit RMA Transaction"><i class="fa fa-edit"></i></button></a>
@@ -165,6 +165,33 @@
 		                    </div>
 		                </div>
 		            </form>
+		        </div>
+		        
+		        <div class="modal clickable" id="ConfirmRMA" tabindex="-1" role="dialog" aria-labelledby="ConfirmRMA" aria-hidden="true">
+		            <form method="POST" th:action="@{/confirmRMA}" id="ConfirmRMA">
+		                <div class="vertical-alignment-helper">
+		                    <div class="modal-dialog  modal-lg vertical-align-center">
+		                        <!-- Modal content-->
+		                        <div class="modal-content">
+		                            <div class="modal-header">
+		                                <h4 class="modal-title">Confirm RMA</h4>
+		                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                            </div>
+		                            
+		                            <div class="alert alert-danger" role="alert" id="modal_error" style="display:none;"></div>
+		
+		                            <div class="modal-body">
+		
+		                            </div>
+		
+		                            <div class="modal-footer">
+		                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		                                <button type="submit" class="btn btn-primary">Save</button>
+		                            </div>
+		                        </div>
+		                    </div>
+		                </div>
+		            </form>
 		        </div>		      
 	   	</div><!-- end of .container-fluid-->
     </div><!-- end of .content-wrapper-->
@@ -186,12 +213,12 @@
                 $('#EditRMA .modal-body').load('editRMA?rmaid=' + id, function () {
                     $('#EditRMA').modal({show: true});
                 });
-            } else if (action == 'change') {
-            	console.log("change");
-                $('#ChangePwd .modal-body').empty();
-                $('#ChangePwd .modal-title').text("Change Password");
-                $('#ChangePwd .modal-body').load('changePassword?userid=' + id, function () {
-                    $('#ChangePwd').modal({show: true});
+            } else if (action == 'confirm') {
+                $('#ConfirmRMA .modal-body').empty();
+                $('#ConfirmRMA .modal-title').text("Confirm RMA Request");
+                $('#ConfirmRMA #modal_error').hide();
+                $('#ConfirmRMA .modal-body').load('confirmRMA?rmaid=' + id, function () {
+                    $('#ConfirmRMA').modal({show: true});
                 });
             } else if (action == 'delete') {
                 $('#DeleteRMA .modal-body').empty();

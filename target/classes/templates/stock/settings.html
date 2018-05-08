@@ -132,7 +132,7 @@
 	              				<td th:each="ar : ${approles}" th:if="${ar.isAppRole(uc.approleid)}" th:text="${ar.rolename}"></td>
 				             	<td>
 				             		<input type="hidden" name="usercapid" th:value="${uc.usercapid}">
-					             	<input class="accessright" type="checkbox" th:checked="${uc.accessright}"/>
+					             	<input class="accessright" type="checkbox" th:checked="${uc.accessright}" /><!-- onchange="accessright.call(this)" -->
 					             	<input class="checkboxesvalue" type="hidden" name="accessright" th:value="${uc.accessright}">
 				             	</td>
 				             	

@@ -8,8 +8,9 @@
 	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
     
     <div th:object="${rma}">  
+    	<input type="hidden" name="rmaid" th:field="*{rmaid}" th:value="${rma.rmaid}" />
 		
-		<div class="form-group">
+	    <div class="form-group">
 	       <div class="form-row">
 	           <div class="col-md-3">
 	               <label for="OrganizationCodeLabel">RMA Code #</label>
@@ -28,33 +29,33 @@
 	               <label>Invoice No</label>
 	           </div>
 	           <div class="col-md-6">
-	           	<input class="form-control" name="invoiceno" type="text" placeholder="Enter Invoice No" th:field="*{invoiceno}" required>
+	           	<input class="form-control" name="invoiceno" type="text" placeholder="Enter Invoice No" th:field="*{invoiceno}">
 	           </div>
 	           <div class="col-md-3">
 	           </div>
 	       </div>
 	   </div>
 	   
-	    <div class="form-group">
+	   <div class="form-group">
 	    	<div class="form-row">
 	        	<div class="col-md-3">
 	            	<label for="SerialNoLabel">Serial No</label>
 	       		</div>
 	           	<div class="col-md-6">
-	       			<textarea class="form-control serialno" id="serialno" name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space" onkeyup="countSerialNo('CreateRMA');" required></textarea>
+	           		<input class="form-control" name="serialno" type="text" placeholder="Enter Serial No" th:field="*{serialno}">
+<!-- 	       			<textarea class="form-control serialno" id="serialno" name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space" onkeyup="countSerialNo('CreateRMA');"></textarea> -->
 	           	</div>
 	           	<div class="col-md-3">
 	           	</div>
 	       	</div>
 		</div>
-		
 		<div class="form-group">
 	       <div class="form-row">
 	           <div class="col-md-3">
 	               <label>Name</label>
 	           </div>
 	           <div class="col-md-6">
-	           	<input class="form-control" name="name" type="text" placeholder="Enter Your Name" th:field="*{name}" required>
+	           	<input class="form-control" name="name" type="text" placeholder="Enter Your Name" th:field="*{name}">
 	           </div>
 	           <div class="col-md-3">
 	           </div>
@@ -67,7 +68,7 @@
 	               <label>Email</label>
 	           </div>
 	           <div class="col-md-6">
-	           	<input class="form-control" name="email" type="text" placeholder="Enter Your Email" th:field="*{email}" required>
+	           	<input class="form-control" name="email" type="text" placeholder="Enter Your Email" th:field="*{email}">
 	           </div>
 	           <div class="col-md-3">
 	           </div>
@@ -80,7 +81,7 @@
 	               <label>Phone No</label>
 	           </div>
 	           <div class="col-md-6">
-	           	<input class="form-control" name="phoneno" type="text" placeholder="Enter Your Phone No" th:field="*{phoneno}" required>
+	           	<input class="form-control" name="phoneno" type="text" placeholder="Enter Your Phone No" th:field="*{phoneno}">
 	           </div>
 	           <div class="col-md-3">
 	           </div>
@@ -99,5 +100,33 @@
 	           	</div>
 	       	</div>
 		</div>
+		
+		<div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="orgid">Reason</label>
+	            </div>
+	            <div class="col-md-6"> 
+             		<select class="form-control" id="rmaitemreason" name="rmaitemreason" required>
+		             	<option value=""></option>
+		           		<option th:each="list: ${rmaitemreasons}" th:value="${list.id}" th:text="${list.name}" ></option>
+	             	</select>
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <div class="form-group">
+	        <div class="form-row">
+	            <div class="col-md-3">
+	                <label for="orgid">Type</label>
+	            </div>
+	            <div class="col-md-6"> 
+             		<select class="form-control" id="rmaitemtype" name="rmaitemtype" required>
+		             	<option value=""></option>
+		           		<option th:each="list: ${rmaitemtypes}" th:value="${list.id}" th:text="${list.name}" ></option>
+	             	</select>
+	            </div>
+	        </div>
+	    </div>
     </div>
 </html>

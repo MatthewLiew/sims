@@ -21,7 +21,6 @@ import com.sbinventory.model.RMA;
 public class RMADAO extends JdbcDaoSupport{
 
 	private static final String CREATE_SQL="INSERT INTO RMA_HISTORY(CODE, INVOICE_NO, SERIAL_NO, NAME, EMAIL, PHONE_NO, DESCRIPTION, REASON, TYPE, APPROVAL, REQUEST_USER, REQUEST_DATETIME, LOG_USER, LOG_DATETIME) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-//	private static final String CREATE_SQL="INSERT INTO TRANSFER_HISTORY (LOG_USER ) VALUES (?)";
 	private static final String READ_SQL="SELECT * FROM RMA_HISTORY";
 	private static final String UPDATE_SQL="UPDATE RMA_HISTORY";
 	private static final String DELETE_SQL="DELETE FROM RMA_HISTORY";
@@ -51,9 +50,10 @@ public class RMADAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public String update(int rmaid, int productid, int mainlocid, int sublocid, int quantity, String reason){
-		String sql=UPDATE_SQL+" set PRODUCT_ID = ?, MAIN_LOC = ?, SUB_LOC = ?, QUANTITY = ?, REASON = ? where ID= ?";
-		Object[] params=new Object[]{productid, mainlocid, sublocid, quantity, reason, rmaid};
+	public String update(int rmaid, String code, String invoiceno, String serialno, String name, String email, String phoneno, String desc, Integer rmareason, 
+			Integer rmatype){
+		String sql=UPDATE_SQL+" set CODE = ?, INVOICE_NO = ?, SERIAL_NO = ?, NAME = ?, EMAIL = ?, PHONE_NO = ?, DESCRIPTION = ?, REASON = ?, TYPE = ? where ID= ?";
+		Object[] params=new Object[]{ code, invoiceno, serialno, name, email, phoneno, desc, rmareason, rmatype, rmaid};
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");

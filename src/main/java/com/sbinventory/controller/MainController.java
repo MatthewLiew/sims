@@ -5,10 +5,12 @@ import com.sbinventory.dao.DeptDAO;
 import com.sbinventory.dao.OrganizationDAO;
 import com.sbinventory.dao.SubDeptDAO;
 import com.sbinventory.dao.UserAccountDAO;
+import com.sbinventory.dao.UserCapDAO;
 import com.sbinventory.model.Dept;
 import com.sbinventory.model.Organization;
 import com.sbinventory.model.SubDept;
 import com.sbinventory.model.UserAccount;
+import com.sbinventory.model.UserCap;
 import com.sbinventory.utils.WebUtils;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class MainController {
 	
 	@Autowired
 	private SubDeptDAO subDeptDAO;
+	
+	@Autowired
+	private UserCapDAO userCapDAO;
 	
 	@GetMapping(value= {"/"/*,"/welcome"*/})
 	public String welcomePage(Model model) {
@@ -69,6 +74,13 @@ public class MainController {
         // After user login successfully.
         // (vi)
         // Sau khi user login thanh cong se co principal
+		if(principal!=null) {
+			UserAccount user = userAccountDAO.findOneByUsername(principal.getName(), 0);
+			
+			UserCap usercap = userCapDAO.findOneByApprole(user.getRoleid());
+			model.addAttribute("usercap", usercap);
+		}
+		
 		model.addAttribute("title", "My Profile");
 		
         String userName = principal.getName();

@@ -28,7 +28,7 @@
 	               <label>Invoice No</label>
 	           </div>
 	           <div class="col-md-6">
-	           	<input class="form-control" name="invoiceno" type="text" placeholder="Enter Invoice No" th:field="*{invoiceno}">
+	           	<input class="form-control" name="invoiceno" type="text" placeholder="Enter Invoice No" th:field="*{invoiceno}" required>
 	           </div>
 	           <div class="col-md-3">
 	           </div>
@@ -41,7 +41,7 @@
 	            	<label for="SerialNoLabel">Serial No</label>
 	       		</div>
 	           	<div class="col-md-6">
-	       			<textarea class="form-control serialno" id="serialno" name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space" onkeyup="countSerialNo('CreateRMA');"></textarea>
+	       			<textarea class="form-control serialno" id="serialno" name="serialno" type="text" rows="4" cols="50" data-error="Please Enter Serial No" aria-describedby="SerialNo" placeholder="Seperate each serial number with newline or space" onkeyup="countSerialNo('CreateRMA');" required></textarea>
 	           	</div>
 	           	<div class="col-md-3">
 	           	</div>
@@ -54,7 +54,7 @@
 	               <label>Name</label>
 	           </div>
 	           <div class="col-md-6">
-	           	<input class="form-control" name="name" type="text" placeholder="Enter Your Name" th:field="*{name}">
+	           	<input class="form-control" name="name" type="text" placeholder="Enter Your Name" th:field="*{name}" required>
 	           </div>
 	           <div class="col-md-3">
 	           </div>
@@ -67,7 +67,7 @@
 	               <label>Email</label>
 	           </div>
 	           <div class="col-md-6">
-	           	<input class="form-control" name="email" type="text" placeholder="Enter Your Email" th:field="*{email}">
+	           	<input class="form-control" name="email" type="text" placeholder="Enter Your Email" th:field="*{email}" required>
 	           </div>
 	           <div class="col-md-3">
 	           </div>
@@ -80,7 +80,7 @@
 	               <label>Phone No</label>
 	           </div>
 	           <div class="col-md-6">
-	           	<input class="form-control" name="phoneno" type="text" placeholder="Enter Your Phone No" th:field="*{phoneno}">
+	           	<input class="form-control" name="phoneno" type="text" placeholder="Enter Your Phone No" th:field="*{phoneno}" required>
 	           </div>
 	           <div class="col-md-3">
 	           </div>

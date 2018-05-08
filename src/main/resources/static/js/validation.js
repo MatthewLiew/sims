@@ -10,12 +10,25 @@ $(document).ready (function(){
 });
 
 /***********  User Capabilities Control *************/
+//function accessright() {
+//	console.log(this);
+//	if(this.checked){
+//    	$(this).parent().find('.checkboxesvalue').val(1);
+//    	$(this).closest("tr").find(".actionright").prop('disabled', false);
+//    } else {
+//    	$(this).closest("tr").find(".checkboxesvalue").val(0);
+//    	$(this).closest("tr").find(".actionright").prop('checked', false);
+//		$(this).closest("tr").find(".actionright").prop('disabled', true);
+//    }
+//}
 $(document).on("change", ".accessright", function(){
-//    console.log(this);
     if(this.checked){
     	$(this).parent().find('.checkboxesvalue').val(1);
+    	$(this).closest("tr").find(".actionright").prop('disabled', false);
     } else {
     	$(this).closest("tr").find(".checkboxesvalue").val(0);
+    	$(this).closest("tr").find(".actionright").prop('checked', false);
+		$(this).closest("tr").find(".actionright").prop('disabled', true);
     }
 });
 
@@ -27,14 +40,14 @@ $(document).on("change", ".actionright", function(){
     }
 });
 
-$(document).on("change", ".accessright", function() {
+/*$(document).on("change", ".accessright", function() {
 	if(this.checked){
 		$(this).closest("tr").find(".actionright").prop('disabled', false);
 	} else {
 		$(this).closest("tr").find(".actionright").prop('checked', false);
 		$(this).closest("tr").find(".actionright").prop('disabled', true);
 	}
-});
+});*/
 
 /***********  Duplicate Form *************/
 function addmorepartno(){
