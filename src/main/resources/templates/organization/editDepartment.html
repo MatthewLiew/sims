@@ -7,45 +7,29 @@
 	<p class="error" style="color: red;" th:text="${errorString}" ></p>
  	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
  	<div th:object="${dept}">   
- 		<input type="hidden" class="deptid" name="deptid" th:field="*{deptid}" th:value="${dept.deptid}" />
+ 		<input type="hidden" class="deptid" name="deptid" th:field="*{id}" />
 	 	<div class="form-group">
 	        <div class="form-row">
 	            <div class="col-md-3">
 	                <label for="OrganizationLabel">Organization</label>
 	            </div>
 	            <div class="col-md-6"> 
-	            	<input type="hidden" name="orgid" th:field="*{orgid}" th:value="${org.orgid}" />
-	                <span th:text=${org.orgname}></span>
+	                <span th:text=*{organizationName}></span>
 	            </div>
 	        </div>
 	    </div>
 		        
-	 	<div class="form-group">
-	        <div class="form-row">
-	            <div class="col-md-3">
-	                <label for="DepartmentCodeLabel">Department Code</label>
-	            </div>
-	            <div class="col-md-6"> 
-	            	<input class="form-control deptcode" id="deptcode" name="deptcode" type="text" data-error="Please Enter Department Code" aria-describedby="DepartmentCode" placeholder="Enter Department Code" th:field="*{deptcode}" th:value="${dept.deptcode}" onkeyup="deptCode('EditDepartment');" required>
-	            </div>
-	            <div class="col-md-3">
-	            	<span class="deptcode_status"></span>
-	                <span style="visibility:hidden;"class="deptcode_flag" th:text="true"></span>
-	            </div>
-	        </div>
-	    </div>
-	        
 	   	<div class="form-group">
 	        <div class="form-row">
 	            <div class="col-md-3">
-	                <label for="DepartmentNameLabel">Department Name</label>
+	                <label for="deptname">Department Name</label>
 	            </div>
 	            <div class="col-md-6"> 
-	            	<input class="form-control deptname" id="deptname" name="deptname" type="text" data-error="Please Enter Department Name" aria-describedby="DepartmentName" placeholder="Enter Department Name" th:field="*{deptname}" th:value="${dept.deptname}" onkeyup="deptName('EditDepartment');" required>
+	            	<input class="form-control deptname" id="deptname" name="deptname" type="text" placeholder="Enter Department Name" th:field="*{name}" onkeyup="deptName('EditDepartment');" required>
 	            </div>
 	            <div class="col-md-3">
 	            	<span class="deptname_status"></span>
-	                <span style="visibility:hidden;"class="deptname_flag" th:text="true"></span>
+	                <span style="display:none;" class="deptname_flag" th:text="true"></span>
 	            </div>
 	        </div>
 	    </div>

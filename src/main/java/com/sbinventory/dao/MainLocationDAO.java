@@ -13,26 +13,26 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sbinventory.mapper.MainLocMapper;
-import com.sbinventory.model.MainLoc;
+import com.sbinventory.mapper.MainLocationMapper;
+import com.sbinventory.model.MainLocation;
 
 @Repository
 @Transactional
-public class MainLocDAO extends JdbcDaoSupport{
+public class MainLocationDAO extends JdbcDaoSupport{
 	
-	private static final String READ_SQL="SELECT * FROM MAIN_LOC";
-	private static final String CREATE_SQL="INSERT INTO MAIN_LOC (MAIN_LOC_NAME) VALUES (?)";
-	private static final String UPDATE_SQL="UPDATE MAIN_LOC";
-	private static final String DELETE_SQL="DELETE FROM MAIN_LOC";
+	private static final String READ_SQL="select * from mainLocation";
+	private static final String CREATE_SQL="insert into mainLocation (name) values (?)";
+	private static final String UPDATE_SQL="update mainLocation";
+	private static final String DELETE_SQL="delete from mainLocation";
 	
 	@Autowired
-	public MainLocDAO(DataSource dataSource) {
+	public MainLocationDAO(DataSource dataSource) {
 		this.setDataSource(dataSource);
 	}
 	
-	public String create(String mainlocname) {
+	public String create(String name) {
 		
-		Object[] params=new Object[]{mainlocname};
+		Object[] params=new Object[]{name};
 		String sql=CREATE_SQL;
 		
 		try {
@@ -40,7 +40,7 @@ public class MainLocDAO extends JdbcDaoSupport{
 			System.out.println(rows + " row(s) updated.");
 			return null;
 		} catch (DuplicateKeyException e) {
-			return "Main Location "+mainlocname+" Exist. Main Location Creation Failed.";
+			return "Main Location "+name+" Exist. Main Location Creation Failed.";
 			
 		} catch (EmptyResultDataAccessException e) {
 			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
@@ -53,10 +53,10 @@ public class MainLocDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public String update(int mainlocid, String mainlocname ){
+	public String update(int id, String name ){
 		
-		String sql=UPDATE_SQL+" set MAIN_LOC_NAME = ? where ID= ?";
-		Object[] params=new Object[]{ mainlocname, mainlocid};
+		String sql=UPDATE_SQL+" set name = ?, dateLastModified = default where id= ?";
+		Object[] params=new Object[]{ name, id};
 		
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
@@ -70,10 +70,10 @@ public class MainLocDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public String delete(int mainlocid){
+	public String delete(int id){
 		
-		String sql=DELETE_SQL+" where ID= ?";
-		Object[] params= new Object[] {mainlocid};
+		String sql=DELETE_SQL+" where id= ?";
+		Object[] params= new Object[] {id};
 		
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
@@ -90,49 +90,57 @@ public class MainLocDAO extends JdbcDaoSupport{
 		}
 	}
 	
-	public List<MainLoc> findAll(){
+	public List<MainLocation> findAll(){
 		
-		String sql=READ_SQL + " ORDER BY ID";
-		MainLocMapper mapper=new MainLocMapper();
+		String sql=READ_SQL;
+		MainLocationMapper mapper=new MainLocationMapper();
 		
 		try {
-            List<MainLoc> mainlocs =  this.getJdbcTemplate().query(sql, mapper);
-            return mainlocs;
+            List<MainLocation> mainlocations =  this.getJdbcTemplate().query(sql, mapper);
+            return mainlocations;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
 	}
 	
-	public MainLoc findOne(int mainlocid){
+	public MainLocation findOne(int id){
 		
-		String sql=READ_SQL+" where ID = ?";
-		Object[] params=new Object[] {mainlocid};
-		MainLocMapper mapper=new MainLocMapper();
+		String sql=READ_SQL+" where id = ?";
+		Object[] params=new Object[] {id};
+		MainLocationMapper mapper=new MainLocationMapper();
 		
 		try {
-			MainLoc mainloc = this.getJdbcTemplate().queryForObject(sql, params, mapper);
+			MainLocation mainloc = this.getJdbcTemplate().queryForObject(sql, params, mapper);
             return mainloc;
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
 	}
 
-	public MainLoc getMainLocName(String mainlocname, int mainlocid){
+	public MainLocation getMainLocName(String name, int id){
 		
-		String sql=READ_SQL+" where MAIN_LOC_NAME = ? ";
-		Object[] params= new Object[] {mainlocname};
-		if(mainlocid!=0) {
-			sql+="AND ID != ?";
-			params= new Object[] {mainlocname, mainlocid};
+		String sql=READ_SQL+" where name = ? ";
+		Object[] params= new Object[] {name};
+		if(id!=0) {
+			sql+="AND id != ?";
+			params= new Object[] {name, id};
 		}
-		MainLocMapper mapper=new MainLocMapper();
+		MainLocationMapper mapper=new MainLocationMapper();
 		
 		try {
-			MainLoc mainloc = this.getJdbcTemplate().queryForObject(sql,params,mapper);
+			MainLocation mainloc = this.getJdbcTemplate().queryForObject(sql,params,mapper);
 			return mainloc;
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
+	}
+	
+	public int getIdentCurrent() {
+		String sql = "SELECT IDENT_CURRENT ('mainLocation')";
+		
+		int num = this.getJdbcTemplate().queryForObject(sql, int.class);
+		return num;
+	
 	}
 	
 }

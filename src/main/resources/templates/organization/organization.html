@@ -33,25 +33,23 @@
 		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 		        			<thead>
 		        				<tr>
-		        					<th>Organization Code</th>
 				                  	<th>Organization Name</th>
 				                  	<th>Action</th>
 	               			 	</tr>
 		              		</thead>
 		              		<tfoot>
 		                		<tr>
-		                  			<th>Organization Code</th>
 				                  	<th>Organization Name</th>
 				                  	<th>Action</th>
 			                  	</tr>
 		                  	</tfoot>
 		                  	<tbody>
-		                		<tr th:each="org : ${orgs}" th:if="${org.orgid}>0">
-		                			<td th:text="${org.orgcode}"></td>
-	             					<td th:text="${org.orgname}"></td>
+		                  	<!-- th:if="${org.orgid}>0" -->
+		                		<tr th:each="org : ${organizations}" >
+	             					<td th:text="${org.name}"></td>
 						            <td>
-						                <a th:onclick="'doAction(\'edit\',\''+ ${org.orgid} + '\');'" ><button class="btn btn-primary" title="Edit Organization"><i class="fa fa-edit" title="Edit Organization"></i></button></a>
-						            	<a th:onclick="'doAction(\'delete\',\''+ ${org.orgid} +'\');'"><button class="btn btn-primary" title="Delete Organization"><i class="fa fa-trash" title="Delete Organization"></i></button></a>
+						                <a th:onclick="'doAction(\'edit\',\''+ ${org.id} + '\');'" ><button class="btn btn-primary" title="Edit Organization"><i class="fa fa-edit" title="Edit Organization"></i></button></a>
+						            	<a th:onclick="'doAction(\'delete\',\''+ ${org.id} +'\');'"><button class="btn btn-primary" title="Delete Organization"><i class="fa fa-trash" title="Delete Organization"></i></button></a>
 					            	</td>
 					            </tr>
 		              		</tbody>

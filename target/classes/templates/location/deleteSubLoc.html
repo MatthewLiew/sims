@@ -7,14 +7,14 @@
 	
 	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
 	
-	<div th:object="${subloc}">
-		<input type="hidden" name="sublocid" th:field="*{sublocid}" th:value="${subloc.sublocid}" />
-		<input type="hidden" name="sublocname" th:field="*{sublocname}" th:value="${subloc.sublocname}" />
+	<div th:object="${sb}">
+		<input type="hidden" name="sublocid" th:field="*{id}" />
+		<input type="hidden" name="sublocname" th:field="*{name}" />
 		<div class="form-group">
 	        <div class="form-row">
 	            <div class="col-md-12">
 	                Are you sure to Delete Following Sub Location ? <br/>
-	                Sub Location - <b><span th:text="${subloc.sublocname}"></span></b>
+	                Sub Location - <b><span th:text="*{name}"></span></b>
 	            </div>
 	        </div>
 	    </div>

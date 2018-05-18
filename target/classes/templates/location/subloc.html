@@ -34,25 +34,30 @@
 		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 		        			<thead>
 		        				<tr>
-		        					<th>Main Location</th>
-		          					<th>Sub Location</th>
+		        					<th>Sub Location</th>
+		        					<th>Description</th>
+		          					<th>By Main Location</th>
 				                  	<th>Action</th>
 	               			 	</tr>
 		              		</thead>
 		              		<tfoot>
 		                		<tr>
-		                  			<th>Main Location</th>
-		          					<th>Sub Location</th>
+		                  			<th>Sub Location</th>
+		                  			<th>Description</th>
+		          					<th>By Main Location</th>
 				                  	<th>Action</th>
 			                  	</tr>
 		                  	</tfoot>
 		                  	<tbody>
-		                		<tr th:each="sub : ${sublocs}" th:if="${sub.sublocid}>0">
-		                			<td th:each="main : ${mainlocs}" th:if="${main.isMainLocName(sub.mainlocid)}" th:text="${main.mainlocname}"></td>
-	             					<td th:text="${sub.sublocname}"></td>
+<!-- 		                  	th:if="${sub.sublocid}>0" -->
+		                		<tr th:each="sb : ${sublocations}" >
+									<td th:text="${sb.name}"></td>
+									<td th:text="${sb.description}"></td>
+									<td th:text="${sb.mainLocationName}"></td>
+	             					
 						            <td>
-						                <a th:onclick="'doAction(\'edit\',\''+ ${sub.sublocid} + '\');'" ><button class="btn btn-primary" title="Edit Sub Location"><i class="fa fa-edit" title="Edit Sub Location"></i></button></a>
-						            	<a th:onclick="'doAction(\'delete\',\''+ ${sub.sublocid} +'\');'"><button class="btn btn-primary" title="Delete Sub Location"><i class="fa fa-trash" title="Delete Sub Location"></i></button></a>
+						                <a th:onclick="'doAction(\'edit\',\''+ ${sb.id} + '\');'" ><button class="btn btn-primary" title="Edit Sub Location"><i class="fa fa-edit" title="Edit Sub Location"></i></button></a>
+						            	<a th:onclick="'doAction(\'delete\',\''+ ${sb.id} +'\');'"><button class="btn btn-primary" title="Delete Sub Location"><i class="fa fa-trash" title="Delete Sub Location"></i></button></a>
 					            	</td>
 					            </tr>
 		              		</tbody>

@@ -22,19 +22,19 @@ import com.sbinventory.model.UserAccount;
 @Transactional
 public class OrganizationDAO extends JdbcDaoSupport {
 
-	private static final String CREATE_SQL="INSERT INTO ORG (ORG_CODE, ORG_NAME) VALUES (?,?)";
-	private static final String READ_SQL="SELECT * FROM ORG";
-	private static final String UPDATE_SQL="UPDATE ORG";
-	private static final String DELETE_SQL="DELETE FROM ORG";
+	private static final String CREATE_SQL="insert into organization (name) values (?)";
+	private static final String READ_SQL="select * from organization";
+	private static final String UPDATE_SQL="update organization";
+	private static final String DELETE_SQL="delete from organization";
 	
 	@Autowired
 	public OrganizationDAO(DataSource dataSource) {
 		this.setDataSource(dataSource);
 	}
 	
-	public String create(int orgcode, String orgname) {
+	public String create (String name) {
 		
-		Object[] params=new Object[]{orgcode, orgname};
+		Object[] params=new Object[]{name};
 		String sql=CREATE_SQL;
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
@@ -42,7 +42,7 @@ public class OrganizationDAO extends JdbcDaoSupport {
 			return null;
 			
 		} catch (DuplicateKeyException e) {
-			return "Organization "+orgname+" Exist. Organization Creation Failed.";
+			return "Organization "+ name + " Exist. Organization Creation Failed.";
 			
 		} catch (EmptyResultDataAccessException e) {
 			throw new EmptyResultDataAccessException("No Result Found.", 0 , e);
@@ -55,9 +55,9 @@ public class OrganizationDAO extends JdbcDaoSupport {
 		}
 	}
 	
-	public String update(int orgid, int orgcode, String orgname ){
-		String sql=UPDATE_SQL+" set ORG_CODE = ?, ORG_NAME = ? where ID= ?";
-		Object[] params=new Object[]{orgcode, orgname, orgid};
+	public String update(int id, String name ){
+		String sql=UPDATE_SQL+" set name = ?, dateLastModified = default where id = ?";
+		Object[] params=new Object[]{name, id};
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
@@ -71,9 +71,9 @@ public class OrganizationDAO extends JdbcDaoSupport {
 		}
 	}
 	
-	public String delete(int orgid){
+	public String delete(int id){
 		String sql=DELETE_SQL+" where ID= ?";
-		Object[] params= new Object[] {orgid};
+		Object[] params= new Object[] {id};
 		try {
 			int rows=this.getJdbcTemplate().update(sql, params);
 			System.out.println(rows + " row(s) updated.");
@@ -103,10 +103,10 @@ public class OrganizationDAO extends JdbcDaoSupport {
         }
 	}
 	
-	public List<Organization> findAll(int orgid){
+	public List<Organization> findAll(int id){
 		
-		String sql=READ_SQL+" WHERE ID ! = ?";
-		Object[] params=new Object[] {orgid};
+		String sql=READ_SQL+" where id ! = ?";
+		Object[] params=new Object[] {id};
 		OrganizationMapper mapper=new OrganizationMapper();
 		
 		try {
@@ -117,10 +117,10 @@ public class OrganizationDAO extends JdbcDaoSupport {
         }
 	}
 	
-	public Organization findOne(int orgid){
+	public Organization findOne(int id){
 		
-		String sql=READ_SQL+" where ID = ?";
-		Object[] params=new Object[] {orgid};
+		String sql=READ_SQL+" where id = ?";
+		Object[] params=new Object[] {id};
 		OrganizationMapper mapper=new OrganizationMapper();
 		
 		try {
@@ -131,30 +131,12 @@ public class OrganizationDAO extends JdbcDaoSupport {
         }
 	}
 	
-	public Organization getOrganizationCode(int orgcode, int orgid){
-		
-		String sql=READ_SQL+" where ORG_CODE = ?";
-		Object[] params=new Object[] {orgcode};
-		if(orgid!=0) {
-			sql+="AND ID != ?";
-			params= new Object[] {orgcode, orgid};
-		}
-		OrganizationMapper mapper=new OrganizationMapper();
-		
-		try {
-            Organization org = this.getJdbcTemplate().queryForObject(sql, params, mapper);
-            return org;
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
-	}
-	
-	public Organization getOrganizationName(String orgname, int orgid){
-		String sql=READ_SQL+" where ORG_NAME = ? ";
-		Object[] params= new Object[] {orgname, orgid};
-		if(orgid!=0) {
-			sql+="AND ID != ?";
-			params= new Object[] {orgname, orgid};
+	public Organization getOrganizationName(String name, int id){
+		String sql=READ_SQL+" where name = ? ";
+		Object[] params= new Object[] {name};
+		if(id!=0) {
+			sql+="AND id != ?";
+			params= new Object[] {name, id};
 		}
 		OrganizationMapper mapper=new OrganizationMapper();
 		
@@ -164,6 +146,14 @@ public class OrganizationDAO extends JdbcDaoSupport {
 		}catch(EmptyResultDataAccessException e) {
 			return null;
 		}
+	}
+	
+	public int getIdentCurrent() {
+		String sql = "SELECT IDENT_CURRENT ('organization')";
+		
+		int num = this.getJdbcTemplate().queryForObject(sql, int.class);
+		return num;
+	
 	}
 	
 }

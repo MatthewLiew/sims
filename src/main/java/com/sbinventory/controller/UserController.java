@@ -14,15 +14,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sbinventory.dao.AppRoleDAO;
-import com.sbinventory.dao.DeptDAO;
+import com.sbinventory.dao.DepartmentDAO;
 import com.sbinventory.dao.OrganizationDAO;
-import com.sbinventory.dao.SubDeptDAO;
+import com.sbinventory.dao.SubDepartmentDAO;
 import com.sbinventory.dao.UserAccountDAO;
 //import com.sbinventory.dao.UserRoleDAO;
 import com.sbinventory.model.AppRole;
-import com.sbinventory.model.Dept;
+import com.sbinventory.model.Department;
 import com.sbinventory.model.Organization;
-import com.sbinventory.model.SubDept;
+import com.sbinventory.model.SubDepartment;
 import com.sbinventory.model.UserAccount;
 
 @Controller
@@ -35,10 +35,10 @@ public class UserController {
 	private UserAccountDAO userAccountDAO;
 	
 	@Autowired
-	private DeptDAO deptDAO;
+	private DepartmentDAO deptDAO;
 	
 	@Autowired
-	private SubDeptDAO subDeptDAO;
+	private SubDepartmentDAO subDeptDAO;
 
 //	@Autowired
 //	private UserRoleDAO userRoleDAO;
@@ -53,8 +53,8 @@ public class UserController {
 		List<UserAccount> useraccs=userAccountDAO.findAll();
 		List<AppRole> approles = appRoleDAO.getAllRoleNames();
 		List<Organization> orgs= organizationDAO.findAll();
-		List<Dept> depts= deptDAO.findAll();
-		List<SubDept> subdepts = subDeptDAO.findAll();
+		List<Department> depts= deptDAO.findAll();
+		List<SubDepartment> subdepts = subDeptDAO.findAll();
 		
 		String message = (String)model.asMap().get("message");
 		
@@ -135,10 +135,10 @@ public class UserController {
 		List<Organization> orgs= organizationDAO.findAll();
 		model.addAttribute("orgs",orgs);
 		
-		List<Dept> depts= deptDAO.findAllByOrgid(useracc.getOrgid());
+		List<Department> depts= deptDAO.findAllByOrgid(useracc.getOrgid());
 		model.addAttribute("depts",depts);
 		
-		List<SubDept> subdepts = subDeptDAO.findAllByDeptid(useracc.getDeptid());
+		List<SubDepartment> subdepts = subDeptDAO.findAllByDeptid(useracc.getDeptid());
 		model.addAttribute("subdepts",subdepts);
        
         model.addAttribute("errorString",null);

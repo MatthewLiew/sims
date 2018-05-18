@@ -296,7 +296,7 @@ $(document).on("change", ".orgid", function() {
 
 function department_select(id, val) {
 
-	var data={ orgid:val }
+	var data={ organizationId:val }
 	$.ajax({
 		type: "POST",
 		url: BASE_URL + "api/getDept",
@@ -306,13 +306,13 @@ function department_select(id, val) {
 		
 		success: function (response) {
 			$("#"+id+" .dept_select").empty();
-			$("#"+id+" .dept_select").append("<option value='0'>No Department</option>");
+//			$("#"+id+" .dept_select").append("<option value='0'>No Department</option>");
 //			$("#"+id+" .dept_select").append("<option value='0' selected>Default Department</option>");
 			$("#"+id+" .subdept_select").empty();
 			$("#"+id+" .subdept_select").append("<option value='0'>No Sub Department</option>");
 //			$("#"+id+" .subdept_select").append("<option value='0' selected>Default Sub Department</option>");
 			for(var i of response) {
-				$("#"+id+" .dept_select").append("<option value='"+i["deptid"]+"'>"+i["deptname"]+"</option>");
+				$("#"+id+" .dept_select").append("<option value='"+i["id"]+"'>"+i["name"]+"</option>");
 			}
 		}
 	});
@@ -626,15 +626,15 @@ function orgCode(form) {
 
 function orgName(form) {
 	var data= { 
-			orgid: $("#"+form+" .orgid").val(),
-			orgname: $("#"+form+" .orgname").val()
+			id: $("#"+form+" .orgid").val() === undefined ? 0 : $("#"+form+" .orgid").val(),
+			name: $("#"+form+" .orgname").val()
 			}
 	if(!$.isEmptyObject($("#"+form+" .orgname").val())) {
  		$.ajax({
  		type: "POST",
- 		contentType: "application/json",
+// 		contentType: "application/json",
  		url: BASE_URL + "api/checkOrgName",
- 		data: JSON.stringify (data),
+ 		data: data,
  		dataType: 'json',
  		
  		success: function (response) {
@@ -667,16 +667,16 @@ function orgName(form) {
 
 function orgForm(form) {
 	
-	var orgcodeflag=$("#"+form+" .orgcode_flag" ).text();
+//	var orgcodeflag=$("#"+form+" .orgcode_flag" ).text();
 	var orgnameflag=$("#"+form+" .orgname_flag" ).text();
-	let orgcode=$("#"+form+" .orgcode").val();
+//	let orgcode=$("#"+form+" .orgcode").val();
 	let orgname=$("#"+form+" .orgname").val();
 
-	if(orgcodeflag=="false"){
+	/*if(orgcodeflag=="false"){
 		$("#"+form+" #modal_error").show();
 		$("#"+form+" #modal_error").text("Organization Code - "+orgcode+" Exists.");
 		return false;
-	} else if(orgnameflag=="false"){
+	} else*/ if(orgnameflag=="false"){
 		$("#"+form+" #modal_error").show();
 		$("#"+form+" #modal_error").text("Organization Name - "+orgname+" Exists.");
 		return false;
@@ -731,17 +731,17 @@ function deptCode(form) {
 
 function deptName(form) {
 	var data= { 
-			deptid: $("#"+form+" .deptid").val(),
-			deptname: $("#"+form+" .deptname").val()
+			id: $("#"+form+" .deptid").val() === undefined ? 0 : $("#"+form+" .deptid").val(),
+			name: $("#"+form+" .deptname").val()
 			}
  	
  	if(!$.isEmptyObject($("#"+form+" .deptname").val())) {
  		
  		$.ajax({
  		type: "POST",
- 		contentType: "application/json",
+// 		contentType: "application/json",
  		url: BASE_URL + "api/checkDeptName",
- 		data: JSON.stringify (data),
+ 		data: data,
  		dataType: 'json',
  		
  		success: function (response) {
@@ -838,17 +838,17 @@ function subdeptCode(form) {
 
 function subdeptName(form) {
 	var data= { 
-			subdeptid: $("#"+form+" .subdeptid").val(),
-			subdeptname: $("#"+form+" .subdeptname").val()
+			id: $("#"+form+" .subdeptid").val() === undefined ? 0 : $("#"+form+" .subdeptid").val(),
+			name: $("#"+form+" .subdeptname").val()
 			}
  	
  	if(!$.isEmptyObject($("#"+form+" .subdeptname").val())) {
  		
  		$.ajax({
  		type: "POST",
- 		contentType: "application/json",
+// 		contentType: "application/json",
  		url: BASE_URL + "api/checkSubDeptName",
- 		data: JSON.stringify (data),
+ 		data: data,
  		dataType: 'json',
  		
  		success: function (response) {
@@ -881,16 +881,16 @@ function subdeptName(form) {
 
 function subdeptForm(form) {
 	
-	var subdeptcodeflag=$("#"+form+" .subdeptcode_flag" ).text();
+//	var subdeptcodeflag=$("#"+form+" .subdeptcode_flag" ).text();
 	var subdeptnameflag=$("#"+form+" .subdeptname_flag" ).text();
-	let subdeptcode=$("#"+form+" .subdeptcode").val();
+//	let subdeptcode=$("#"+form+" .subdeptcode").val();
 	let subdeptname=$("#"+form+" .subdeptname").val();
 
-	if(subdeptcodeflag=="false"){
+	/*if(subdeptcodeflag=="false"){
 		$("#"+form+" #modal_error").show();
 		$("#"+form+" #modal_error").text("Sub Department Code - "+subdeptcode+" Exists.");
 		return false;
-	} else if(subdeptnameflag=="false"){
+	} else*/ if(subdeptnameflag=="false"){
 		$("#"+form+" #modal_error").show();
 		$("#"+form+" #modal_error").text("Sub Department Name - "+subdeptname+" Exists.");
 		return false;
@@ -901,19 +901,20 @@ function subdeptForm(form) {
 }
 
 function mainlocName(form) {
+	
 	var data= { 
-			mainlocid: $("#"+form+" .mainlocid").val(),
-			mainlocname: $("#"+form+" .mainlocname").val()
+			id: $("#"+form+" .mainlocid").val() === undefined ? 0 : $("#"+form+" .mainlocid").val(),
+			name: $("#"+form+" .mainlocname").val()
 			}
- 	
+
  	if(!$.isEmptyObject($("#"+form+" .mainlocname").val())) {
  		
  		$.ajax({
  		type: "POST",
- 		contentType: "application/json",
- 		url: BASE_URL + "api/checkMainLocName",
- 		data: JSON.stringify (data),
+ 		/*contentType: "application/json",*/
  		dataType: 'json',
+ 		url: BASE_URL + "api/checkMainLocName",
+ 		data: data,
  		
  		success: function (response) {
  			if(response.flag=="true"){
@@ -931,7 +932,7 @@ function mainlocName(form) {
  			$("#"+form+" .mainlocname_flag").html(response.flag);
   		},
  		error : function(e) {
- 			$("#"+form+" .mainlocname_status").html("Error");
+ 			$("#"+form+" .mainlocname_status").html("Error"+e);
  			$("#"+form+" .mainlocname_flag").html("false");
 			}
  		});
@@ -961,17 +962,17 @@ function mainlocForm(form) {
 
 function sublocName(form) {
 	var data= { 
-			sublocid: $("#"+form+" .sublocid").val(),
-			sublocname: $("#"+form+" .sublocname").val()
+			id: $("#"+form+" .sublocid").val() === undefined ? 0 : $("#"+form+" .sublocid").val(),
+			name: $("#"+form+" .sublocname").val()
 			}
  	
  	if(!$.isEmptyObject($("#"+form+" .sublocname").val())) {
  		
  		$.ajax({
  		type: "POST",
- 		contentType: "application/json",
+// 		contentType: "application/json",
  		url: BASE_URL + "api/checkSubLocName",
- 		data: JSON.stringify (data),
+ 		data: data,
  		dataType: 'json',
  		
  		success: function (response) {

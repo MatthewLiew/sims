@@ -10,25 +10,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sbinventory.dao.BrandDAO;
-import com.sbinventory.dao.DeptDAO;
+import com.sbinventory.dao.DepartmentDAO;
 import com.sbinventory.dao.HardwareDAO;
-import com.sbinventory.dao.MainLocDAO;
+import com.sbinventory.dao.MainLocationDAO;
 import com.sbinventory.dao.OrganizationDAO;
 import com.sbinventory.dao.PartNoDAO;
 import com.sbinventory.dao.ProductDAO;
 import com.sbinventory.dao.ReasonDAO;
-import com.sbinventory.dao.SubDeptDAO;
-import com.sbinventory.dao.SubLocDAO;
+import com.sbinventory.dao.SubDepartmentDAO;
+import com.sbinventory.dao.SubLocationDAO;
 import com.sbinventory.dao.UserAccountDAO;
 import com.sbinventory.message.Response;
 
-import com.sbinventory.model.SubDept;
-import com.sbinventory.model.SubLoc;
+import com.sbinventory.model.SubDepartment;
+import com.sbinventory.model.SubLocation;
 import com.sbinventory.model.TransferHistory;
 import com.sbinventory.model.Brand;
-import com.sbinventory.model.Dept;
+import com.sbinventory.model.Department;
 import com.sbinventory.model.Hardware;
-import com.sbinventory.model.MainLoc;
+import com.sbinventory.model.MainLocation;
 import com.sbinventory.model.Organization;
 import com.sbinventory.model.PartNo;
 import com.sbinventory.model.Product;
@@ -46,16 +46,16 @@ public class MainRESTController {
 	private OrganizationDAO organizationDAO;
 	
 	@Autowired
-    private DeptDAO deptDAO;
+    private DepartmentDAO deptDAO;
 	
 	@Autowired
-    private SubDeptDAO subDeptDAO;
+    private SubDepartmentDAO subDeptDAO;
 	
 	@Autowired
-    private MainLocDAO mainLocDAO;
+    private MainLocationDAO mainLocDAO;
 
 	@Autowired
-    private SubLocDAO subLocDAO;
+    private SubLocationDAO subLocDAO;
 	
 	@Autowired
     private HardwareDAO hardwareDAO;
@@ -89,23 +89,23 @@ public class MainRESTController {
 	
 	//******* ORGANIZATION ********//
 	
-	@PostMapping(value="/api/checkOrgCode")
-	public Response getOrgCodeResponse(@RequestBody Organization org ) {
-		Organization result = organizationDAO.getOrganizationCode(org.getOrgcode(), org.getOrgid());
-		
-		if(result==null) {
-			Response response = new Response("OK", "true");
-			return response;
-		}
-		else {
-			Response response = new Response("ORG Code Exist", "false");
-			return response;
-		}
-	}
+//	@PostMapping(value="/api/checkOrgCode")
+//	public Response getOrgCodeResponse(@RequestBody Organization org ) {
+//		Organization result = organizationDAO.getOrganizationCode(org.getOrgcode(), org.getOrgid());
+//		
+//		if(result==null) {
+//			Response response = new Response("OK", "true");
+//			return response;
+//		}
+//		else {
+//			Response response = new Response("ORG Code Exist", "false");
+//			return response;
+//		}
+//	}
 	
 	@PostMapping(value="/api/checkOrgName")
-	public Response getOrgNameResponse(@RequestBody Organization org ) {
-		Organization result= organizationDAO.getOrganizationName(org.getOrgname(), org.getOrgid());
+	public Response getOrgNameResponse(@RequestParam int id, @RequestParam String name ) {
+		Organization result= organizationDAO.getOrganizationName(name, id);
 		
 		if(result==null) {
 			Response response = new Response("OK", "true");
@@ -118,23 +118,23 @@ public class MainRESTController {
 		
 	}
 	
-	@PostMapping(value="/api/checkDeptCode")
-	public Response getDeptCodeResponse(@RequestBody Dept dept ) {
-		Dept result= deptDAO.getDeptCode(dept.getDeptcode(), dept.getDeptid());
-		
-		if(result==null) {
-			Response response = new Response("OK", "true");
-			return response;
-		}
-		else {
-			Response response = new Response("Dept Code Exist", "false");
-			return response;
-		}
-	}
+//	@PostMapping(value="/api/checkDeptCode")
+//	public Response getDeptCodeResponse(@RequestBody Department dept ) {
+//		Department result= deptDAO.getDeptCode dept.getDeptid());
+//		
+//		if(result==null) {
+//			Response response = new Response("OK", "true");
+//			return response;
+//		}
+//		else {
+//			Response response = new Response("Dept Code Exist", "false");
+//			return response;
+//		}
+//	}
 	
 	@PostMapping(value="/api/checkDeptName")
-	public Response getDeptNameResponse(@RequestBody Dept dept ) {
-		Dept result= deptDAO.getDeptName(dept.getDeptname(), dept.getDeptid());
+	public Response getDeptNameResponse(@RequestParam int id, @RequestParam String name ) {
+		Department result= deptDAO.getDeptName(name, id);
 		
 		if(result==null) {
 			Response response = new Response("OK", "true");
@@ -147,23 +147,10 @@ public class MainRESTController {
 		
 	}
 	
-	@PostMapping(value="/api/checkSubDeptCode")
-	public Response getSubDeptCodeResponse(@RequestBody SubDept subdept ) {
-		SubDept result= subDeptDAO.getSubDeptCode(subdept.getSubdeptcode(), subdept.getSubdeptid());
-		
-		if(result==null) {
-			Response response = new Response("OK", "true");
-			return response;
-		}
-		else {
-			Response response = new Response("Dept Code Exist", "false");
-			return response;
-		}
-	}
 	
 	@PostMapping(value="/api/checkSubDeptName")
-	public Response getSubDeptNameResponse(@RequestBody SubDept subdept ) {
-		SubDept result= subDeptDAO.getSubDeptName(subdept.getSubdeptname(), subdept.getSubdeptid());
+	public Response getSubDeptNameResponse(@RequestParam int id, @RequestParam String name ) {
+		SubDepartment result= subDeptDAO.getSubDeptName(name, id);
 		
 		if(result==null) {
 			Response response = new Response("OK", "true");
@@ -178,9 +165,10 @@ public class MainRESTController {
 	
 	//********** LOCATION **********//
 	@PostMapping(value="/api/checkMainLocName")
-	public Response getMainLocNameResponse(@RequestBody MainLoc mainloc ) {
-		MainLoc result= mainLocDAO.getMainLocName(mainloc.getMainlocname(),mainloc.getMainlocid());
+	public Response getMainLocNameResponse(@RequestParam int id, @RequestParam String name ) {
 		
+		MainLocation result= mainLocDAO.getMainLocName(name, id);
+
 		if(result==null) {
 			Response response = new Response("OK", "true");
 			return response;
@@ -193,8 +181,8 @@ public class MainRESTController {
 	}
 	
 	@PostMapping(value="/api/checkSubLocName")
-	public Response getSubLocNameResponse(@RequestBody SubLoc subloc ) {
-		SubLoc result= subLocDAO.getSubLocName(subloc.getSublocname(), subloc.getSublocid());
+	public Response getSubLocNameResponse(@RequestParam int id, @RequestParam String name) {
+		SubLocation result= subLocDAO.getSubLocName(name, id);
 		
 		if(result==null) {
 			Response response = new Response("OK", "true");
@@ -408,15 +396,15 @@ public class MainRESTController {
 	}
 	
 	@PostMapping(value="/api/getDept")
-	public List<Dept> getDept(@RequestBody Dept dept) {
-		List<Dept> depts=deptDAO.findAllByOrgid(dept.getOrgid());
+	public List<Department> getDept(@RequestBody Department dept) {
+		List<Department> depts = deptDAO.findAllByOrgid(dept.getOrganizationId());
 		
 		return depts;
 	}
 	
 	@PostMapping(value="/api/getSubDept")
-	public List<SubDept> getSubDept(@RequestBody SubDept subdept) {
-		List<SubDept> subdepts=subDeptDAO.findAllByDeptid(subdept.getDeptid());
+	public List<SubDepartment> getSubDept(@RequestBody SubDepartment subdept) {
+		List<SubDepartment> subdepts=subDeptDAO.findAllByDeptid(subdept.getDepartmentId());
 		
 		return subdepts;
 	}
@@ -429,8 +417,8 @@ public class MainRESTController {
 	}
 	
 	@PostMapping(value="/api/getSubLoc")
-	public List<SubLoc> getSubLoc(@RequestBody SubLoc subloc) {
-		List<SubLoc> sublocs=subLocDAO.findAllByMainlocid(subloc.getMainlocid());
+	public List<SubLocation> getSubLoc(@RequestBody SubLocation subloc) {
+		List<SubLocation> sublocs=subLocDAO.findAllByMainlocid(subloc.getId());
 		
 		return sublocs;
 	}

@@ -34,7 +34,6 @@
 		        		<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 		        			<thead>
 		        				<tr>
-				                  	<th>Department Code</th>
 		          					<th>Department Name</th>
 		          					<th>By Organization</th>
 				                  	<th>Action</th>
@@ -42,20 +41,18 @@
 		              		</thead>
 		              		<tfoot>
 		                		<tr>
-				                  	<th>Department Code</th>
 		          					<th>Department Name</th>
 		          					<th>By Organization</th>
 				                  	<th>Action</th>
 			                  	</tr>
 		                  	</tfoot>
 		                  	<tbody>
-		                		<tr th:each="dept : ${depts}" th:if="${dept.deptid}>0">
-					             	<td th:text="${dept.deptcode}"></td>
-					          	 	<td th:text="${dept.deptname}"></td>
-					          	 	<td th:each="org : ${orgs}" th:if="${org.isOrgname(dept.orgid)}" th:text="${org.orgname}"></td>
+		                		<tr th:each="d : ${departments}">
+					          	 	<td th:text="${d.name}"></td>
+					          	 	<td th:text="${d.organizationName}"></td>
 						            <td>
-						                <a th:onclick="'doAction(\'edit\',\''+ ${dept.deptid} + '\');'" ><button class="btn btn-primary" title="Edit Department"><i class="fa fa-edit" title="Edit Department"></i></button></a>
-						            	<a th:onclick="'doAction(\'delete\',\''+ ${dept.deptid} +'\');'"><button class="btn btn-primary" title="Delete Department"><i class="fa fa-trash" title="Delete Department"></i></button></a>
+						                <a th:onclick="'doAction(\'edit\',\''+ ${d.id} + '\');'" ><button class="btn btn-primary" title="Edit Department"><i class="fa fa-edit" title="Edit Department"></i></button></a>
+						            	<a th:onclick="'doAction(\'delete\',\''+ ${d.id} +'\');'"><button class="btn btn-primary" title="Delete Department"><i class="fa fa-trash" title="Delete Department"></i></button></a>
 					            	</td>
 					            </tr>
 		              		</tbody>

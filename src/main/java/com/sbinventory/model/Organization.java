@@ -2,53 +2,50 @@ package com.sbinventory.model;
 
 public class Organization {
 
-	private int orgid;
-	private Integer orgcode;
-	private String orgname;
+	private int id;
+	private boolean activeFlag;
+	private String name;
 	
 	public Organization() {
 		 
     }
 
-	public Organization(int orgid, Integer orgcode, String orgname) {
-		this.orgid = orgid;
-		this.orgcode = orgcode;
-		this.orgname = orgname;
+	public Organization(int id, boolean activeFlag, String name) {
+		super();
+		this.id = id;
+		this.activeFlag = activeFlag;
+		this.name = name;
 	}
 
-	public int getOrgid() {
-		return orgid;
+	public int getId() {
+		return id;
 	}
 
-	public void setOrgid(int orgid) {
-		this.orgid = orgid;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public Integer getOrgcode() {
-		return orgcode;
+	public boolean isActiveFlag() {
+		return activeFlag;
 	}
 
-	public void setOrgcode(Integer orgcode) {
-		this.orgcode = orgcode;
+	public void setActiveFlag(boolean activeFlag) {
+		this.activeFlag = activeFlag;
 	}
 
-	public String getOrgname() {
-		return orgname;
+	public String getName() {
+		return name;
 	}
 
-	public void setOrgname(String orgname) {
-		this.orgname = orgname;
+	public void setName(String name) {
+		this.name = name;
 	}
-	
-	public boolean isSelected(int orgid){
-        if (this.orgid==orgid) {
+
+	public boolean isOrganziation(int id) {
+		if (this.id == id) {
             return true;
-        }
-        return false;
-    }
-	public boolean isOrgname(int orgid) {
-		if (this.orgid==orgid) {
-            return true;
-        } else {return false;}
+        } else {
+        	return false;
+    	}
 	}
 }

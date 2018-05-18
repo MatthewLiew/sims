@@ -8,15 +8,13 @@
 	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
 	
 	<div th:object="${org}">
-		<input type="hidden" name="orgid" th:field="*{orgid}" />
-		<input type="hidden" name="orgid" th:field="*{orgname}" />
+		<input type="hidden" name="orgid" th:field="*{id}" />
+		<input type="hidden" name="orgname" th:field="*{name}" />
 		<div class="form-group">
 	        <div class="form-row">
 	            <div class="col-md-12">
 	                Are you sure to Delete Following Organization ? <br/>
-	                Organization Code - <b><span th:text="${org.orgcode}"></span></b>
-	                										        <br/>
-	                Organization Name - <b><span th:text="${org.orgname}"></span></b>
+	                Organization Name - <b><span th:text="*{name}"></span></b>
 	            </div>
 	        </div>
 	    </div>

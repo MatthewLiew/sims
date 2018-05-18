@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.sbinventory.dao.DeptDAO;
+import com.sbinventory.dao.DepartmentDAO;
 import com.sbinventory.dao.OrganizationDAO;
-import com.sbinventory.dao.SubDeptDAO;
+import com.sbinventory.dao.SubDepartmentDAO;
 //import com.sbinventory.dao.UserRoleDAO;
-import com.sbinventory.model.Dept;
+import com.sbinventory.model.Department;
 import com.sbinventory.model.Organization;
-import com.sbinventory.model.SubDept;
+import com.sbinventory.model.SubDepartment;
 
 @Controller
 public class OrganizationController {
@@ -28,22 +28,16 @@ public class OrganizationController {
 	private OrganizationDAO organizationDAO;
 	
 	@Autowired
-	private DeptDAO deptDAO;
+	private DepartmentDAO departmentDAO;
 	
 	@Autowired
-	private SubDeptDAO subDeptDAO;
+	private SubDepartmentDAO subDepartmentDAO;
 
 	/**************** INFORMATION PORTAL ***********************/
 	@GetMapping(value= "/organization")
 	public String getOrganization(Model model) {
-		List<Organization> orgs=organizationDAO.findAll();
-		model.addAttribute("orgs",orgs);
-		
-		List<Dept> depts=deptDAO.findAll();
-		model.addAttribute("depts",depts);
-		
-		List<SubDept> subdepts=subDeptDAO.findAll();
-		model.addAttribute("subdepts",subdepts);
+		List<Organization> organizations = organizationDAO.findAll();
+		model.addAttribute("organizations", organizations);
 		
 		String message = (String)model.asMap().get("message");
 		model.addAttribute("message", message);
@@ -53,14 +47,9 @@ public class OrganizationController {
 	
 	@GetMapping(value= "/department")
 	public String getDepartment(Model model) {
-		List<Organization> orgs=organizationDAO.findAll();
-		model.addAttribute("orgs",orgs);
 		
-		List<Dept> depts=deptDAO.findAll();
-		model.addAttribute("depts",depts);
-		
-		List<SubDept> subdepts=subDeptDAO.findAll();
-		model.addAttribute("subdepts",subdepts);
+		List<Department> departments = departmentDAO.findAll();
+		model.addAttribute("departments", departments);
         
 		String message = (String)model.asMap().get("message");
 		model.addAttribute("message", message);
@@ -70,14 +59,14 @@ public class OrganizationController {
 	
 	@GetMapping(value= "/subdepartment")
 	public String getSubDepartment(Model model) {
-		List<Organization> orgs=organizationDAO.findAll();
-		model.addAttribute("orgs",orgs);
+//		List<Organization> orgs=organizationDAO.findAll();
+//		model.addAttribute("orgs",orgs);
+//		
+//		List<Department> depts=deptDAO.findAll();
+//		model.addAttribute("depts",depts);
 		
-		List<Dept> depts=deptDAO.findAll();
-		model.addAttribute("depts",depts);
-		
-		List<SubDept> subdepts=subDeptDAO.findAll();
-		model.addAttribute("subdepts",subdepts);
+		List<SubDepartment> subdepartments = subDepartmentDAO.findAll();
+		model.addAttribute("subdepartments", subdepartments);
 		
 		String message = (String)model.asMap().get("message");
 		model.addAttribute("message", message);
@@ -100,10 +89,15 @@ public class OrganizationController {
 	@PostMapping(value= "/organization/createOrganization")
 	public String postCreateOrganization(@ModelAttribute Organization org, Model model, @RequestParam String sourceURL, RedirectAttributes ra ) {
 		
-		String errorString=organizationDAO.create(org.getOrgcode(), org.getOrgname());
+		String errorString=organizationDAO.create(org.getName());
 	
 		if(errorString==null) {
-			String message="Organization - "+ org.getOrgname() +" created succussfully";
+			int organizationId = organizationDAO.getIdentCurrent();
+			departmentDAO.create(organizationId, "");
+			int departmentId = departmentDAO.getIdentCurrent();
+			subDepartmentDAO.create(departmentId, "");
+			
+			String message="Organization - "+ org.getName() +" created succussfully";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {
@@ -127,10 +121,10 @@ public class OrganizationController {
 	@PostMapping(value= "/organization/editOrganization")
 	public String postEditOrganization(@ModelAttribute Organization org, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 
-		String errorString = organizationDAO.update(org.getOrgid(), org.getOrgcode(), org.getOrgname());
+		String errorString = organizationDAO.update(org.getId(), org.getName());
 		
 		if(errorString==null) {
-			String message="Organization - "+ org.getOrgname() +" updated successfully";
+			String message="Organization - "+ org.getName() +" updated successfully";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {
@@ -154,10 +148,10 @@ public class OrganizationController {
 	@PostMapping(value= "/organization/deleteOrganization")
 	public String postDeleteOrganization(@ModelAttribute Organization org, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
-		String errorString = organizationDAO.delete(org.getOrgid());
+		String errorString = organizationDAO.delete(org.getId());
 		
 		if(errorString==null) {
-			String message="Organization - "+ org.getOrgname() +" has deleted";
+			String message="Organization - "+ org.getName() +" has deleted";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {
@@ -174,20 +168,20 @@ public class OrganizationController {
 		model.addAttribute("sourceURL", sourceURL);
 		
 		List<Organization> orgs= organizationDAO.findAll();
-		model.addAttribute("orgs",orgs);
+		model.addAttribute("orgs", orgs);
 		
-		model.addAttribute("dept",new Dept());
+		model.addAttribute("dept", new Department());
 
 		return "organization/createDepartment";
 	}
 	
 	@PostMapping(value= "/department/createDepartment")
-	public String postCreateDepartment(@ModelAttribute Dept dept, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+	public String postCreateDepartment(@ModelAttribute Department dept, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
-		String errorString=deptDAO.create(dept.getOrgid(), dept.getDeptcode(), dept.getDeptname());
+		String errorString=departmentDAO.create(dept.getId(), dept.getName());
 
 		if(errorString==null) {
-			String message="Department - "+ dept.getDeptname() +" created succussfully";
+			String message="Department - "+ dept.getName() +" created succussfully";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {
@@ -202,21 +196,18 @@ public class OrganizationController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		Dept dept = deptDAO.findOne(deptid);
-		model.addAttribute("dept",dept);
+		Department dept = departmentDAO.findOne(deptid);
+		model.addAttribute("dept", dept);
 		
-		Organization org=organizationDAO.findOne(dept.getOrgid());
-	    model.addAttribute("org",org);
-	    
 		return "organization/editDepartment";
 	}
 	
 	@PostMapping(value= "/department/editDepartment")
-	public String postEditDepartment(@ModelAttribute Dept dept, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+	public String postEditDepartment(@ModelAttribute Department dept, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 
-		String errorString=deptDAO.update(dept.getDeptid(), dept.getDeptcode(), dept.getDeptname());
+		String errorString=departmentDAO.update(dept.getId(), dept.getName());
 		if(errorString==null) {
-			String message="Department - "+ dept.getDeptname() +" updated successfully";
+			String message="Department - "+ dept.getName() +" updated successfully";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {
@@ -231,19 +222,19 @@ public class OrganizationController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		Dept dept= deptDAO.findOne(deptid);
+		Department dept= departmentDAO.findOne(deptid);
 		model.addAttribute("dept", dept);
 		
 		return "organization/deleteDepartment";
 	}
 	
 	@PostMapping(value= "/department/deleteDepartment")
-	public String postDeleteDepartment(@ModelAttribute Dept dept, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+	public String postDeleteDepartment(@ModelAttribute Department dept, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
-		String errorString = deptDAO.delete(dept.getDeptid());
+		String errorString = departmentDAO.delete(dept.getId());
 
 		if(errorString==null) {
-			String message="Department - "+ dept.getDeptname() +" has deleted";
+			String message="Department - "+ dept.getName() +" has deleted";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {
@@ -259,24 +250,24 @@ public class OrganizationController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		List<Organization> orgs= organizationDAO.findAll();
-		model.addAttribute("orgs",orgs);
+		List<Organization> organizations = organizationDAO.findAll();
+		model.addAttribute("organizations", organizations);
 		
-		List<Dept> depts= deptDAO.findAll();
-		model.addAttribute("depts",depts);
+		List<Department> departments = departmentDAO.findAll();
+		model.addAttribute("departments", departments);
 
-		model.addAttribute("subdept", new SubDept());
+		model.addAttribute("sd", new SubDepartment());
 		
 		return "organization/createSubDepartment";
 	}
 	
 	@PostMapping(value= "/subdepartment/createSubDepartment")
-	public String postCreateSubDepartment(@ModelAttribute SubDept subdept, Model model,  @RequestParam String sourceURL, RedirectAttributes ra) {
+	public String postCreateSubDepartment(@ModelAttribute SubDepartment subdept, Model model,  @RequestParam String sourceURL, RedirectAttributes ra) {
 		
-		String errorString=subDeptDAO.create(subdept.getDeptid(), subdept.getSubdeptcode(), subdept.getSubdeptname());
+		String errorString=subDepartmentDAO.create(subdept.getDepartmentId(), subdept.getName());
 
 		if(errorString==null) {
-			String message="Sub Department - "+ subdept.getSubdeptname()+" created succussfully";
+			String message="Sub Department - "+ subdept.getName()+" created succussfully";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {
@@ -291,25 +282,25 @@ public class OrganizationController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		SubDept subdept = subDeptDAO.findOne(subdeptid);
-		model.addAttribute("subdept",subdept);
+		SubDepartment sd = subDepartmentDAO.findOne(subdeptid);
+		model.addAttribute("sd", sd);
 		
-		Dept dept=deptDAO.findOne(subdept.getDeptid());
-		model.addAttribute("dept",dept);
-		
-		Organization org=organizationDAO.findOne(dept.getOrgid());
-		model.addAttribute("org",org);
+//		Department dept=deptDAO.findOne(subdept.getDepartmentId());
+//		model.addAttribute("dept",dept);
+//		
+//		Organization org=organizationDAO.findOne(dept.getId());
+//		model.addAttribute("org",org);
 	    
 		return "organization/editSubDepartment";
 	}
 	
 	@PostMapping(value= "/subdepartment/editSubDepartment")
-	public String postEditSubDepartment(@ModelAttribute SubDept subdept, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+	public String postEditSubDepartment(@ModelAttribute SubDepartment subdept, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 
-		String errorString = subDeptDAO.update(subdept.getSubdeptid(), subdept.getSubdeptcode(), subdept.getSubdeptname());
+		String errorString = subDepartmentDAO.update(subdept.getId(), subdept.getName());
 		if(errorString==null) {
 
-			String message="Sub Department - "+ subdept.getSubdeptname() +" updated successfully";
+			String message="Sub Department - "+ subdept.getName() +" updated successfully";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {
@@ -324,19 +315,19 @@ public class OrganizationController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		SubDept subdept = subDeptDAO.findOne(subdeptid);
-		model.addAttribute("subdept", subdept);
+		SubDepartment sd = subDepartmentDAO.findOne(subdeptid);
+		model.addAttribute("sd", sd);
 		
 		return "organization/deleteSubDepartment";
 	}
 	
 	@PostMapping(value= "/subdepartment/deleteSubDepartment")
-	public String postDeleteSubDepartment(@ModelAttribute SubDept subdept, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+	public String postDeleteSubDepartment(@ModelAttribute SubDepartment subdept, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
-		String errorString = subDeptDAO.delete(subdept.getSubdeptid());
+		String errorString = subDepartmentDAO.delete(subdept.getId());
 		
 		if(errorString==null) {
-			String message="Sub Department - "+ subdept.getSubdeptname() +" has deleted";
+			String message="Sub Department - "+ subdept.getName() +" has deleted";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {

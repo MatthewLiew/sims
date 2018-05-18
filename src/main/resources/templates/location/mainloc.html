@@ -45,11 +45,12 @@
 			                  	</tr>
 		                  	</tfoot>
 		                  	<tbody>
-		                		<tr th:each="mainloc : ${mainlocs}" th:if="${mainloc.mainlocid}>0">
-		                			<td th:text="${mainloc.mainlocname}"></td>
+<!-- 		                  	th:if="${ml.id}>0" -->
+		                		<tr th:each="ml : ${mainlocations}" >
+		                			<td th:text="${ml.name}"></td>
 						            <td>
-						                <a th:onclick="'doAction(\'edit\',\''+ ${mainloc.mainlocid} + '\');'" ><button class="btn btn-primary" title="Edit Main Location"><i class="fa fa-edit" title="Edit Main Location"></i></button></a>				          
-						            	<a th:onclick="'doAction(\'delete\',\''+ ${mainloc.mainlocid} +'\');'"><button class="btn btn-primary" title="Delete Main Location"><i class="fa fa-trash" title="Delete Main Location"></i></button></a>
+						                <a th:onclick="'doAction(\'edit\',\''+ ${ml.id} + '\');'" ><button class="btn btn-primary" title="Edit Main Location"><i class="fa fa-edit" title="Edit Main Location"></i></button></a>				          
+						            	<a th:onclick="'doAction(\'delete\',\''+ ${ml.id} +'\');'"><button class="btn btn-primary" title="Delete Main Location"><i class="fa fa-trash" title="Delete Main Location"></i></button></a>
 					            	</td>
 					            </tr>
 		              		</tbody>

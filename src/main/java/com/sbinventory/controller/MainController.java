@@ -1,14 +1,14 @@
 package com.sbinventory.controller;
 
 import java.security.Principal;
-import com.sbinventory.dao.DeptDAO;
+import com.sbinventory.dao.DepartmentDAO;
 import com.sbinventory.dao.OrganizationDAO;
-import com.sbinventory.dao.SubDeptDAO;
+import com.sbinventory.dao.SubDepartmentDAO;
 import com.sbinventory.dao.UserAccountDAO;
 import com.sbinventory.dao.UserCapDAO;
-import com.sbinventory.model.Dept;
+import com.sbinventory.model.Department;
 import com.sbinventory.model.Organization;
-import com.sbinventory.model.SubDept;
+import com.sbinventory.model.SubDepartment;
 import com.sbinventory.model.UserAccount;
 import com.sbinventory.model.UserCap;
 import com.sbinventory.utils.WebUtils;
@@ -30,10 +30,10 @@ public class MainController {
 	private OrganizationDAO organizationDAO;
 	
 	@Autowired
-	private DeptDAO deptDAO;
+	private DepartmentDAO deptDAO;
 	
 	@Autowired
-	private SubDeptDAO subDeptDAO;
+	private SubDepartmentDAO subDeptDAO;
 	
 	@Autowired
 	private UserCapDAO userCapDAO;
@@ -94,8 +94,8 @@ public class MainController {
  
         UserAccount user=userAccountDAO.findOneByUsername(loginedUser.getUsername(),0);
         Organization org=organizationDAO.findOne(user.getOrgid());
-        Dept dept=deptDAO.findOne(user.getDeptid());
-        SubDept subdept=subDeptDAO.findOne(user.getSubdeptid());
+        Department dept=deptDAO.findOne(user.getDeptid());
+        SubDepartment subdept=subDeptDAO.findOne(user.getSubdeptid());
         
         model.addAttribute("user",user);
         model.addAttribute("org",org);
@@ -121,8 +121,8 @@ public class MainController {
             
             UserAccount user=userAccountDAO.findOneByUsername(loginedUser.getUsername(),0);
             Organization org=organizationDAO.findOne(user.getOrgid());
-            Dept dept=deptDAO.findOne(user.getDeptid());
-            SubDept subdept=subDeptDAO.findOne(user.getSubdeptid());
+            Department dept=deptDAO.findOne(user.getDeptid());
+            SubDepartment subdept=subDeptDAO.findOne(user.getSubdeptid());
             
             model.addAttribute("user",user);
             model.addAttribute("org",org);

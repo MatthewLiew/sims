@@ -13,9 +13,9 @@ import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sbinventory.mapper.DeptMapper;
+import com.sbinventory.mapper.DepartmentMapper;
 import com.sbinventory.mapper.HardwareMapper;
-import com.sbinventory.model.Dept;
+import com.sbinventory.model.Department;
 import com.sbinventory.model.Hardware;
 
 @Repository

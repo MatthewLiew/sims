@@ -31,11 +31,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.sbinventory.dao.AppRoleDAO;
 import com.sbinventory.dao.AssetReqsDAO;
 import com.sbinventory.dao.BrandDAO;
-import com.sbinventory.dao.DeptDAO;
+import com.sbinventory.dao.DepartmentDAO;
 import com.sbinventory.dao.DisposalHistoryDAO;
 import com.sbinventory.dao.HardwareDAO;
 import com.sbinventory.dao.ITFDAO;
-import com.sbinventory.dao.MainLocDAO;
+import com.sbinventory.dao.MainLocationDAO;
 import com.sbinventory.dao.OrganizationDAO;
 import com.sbinventory.dao.PartNoDAO;
 import com.sbinventory.dao.ProductDAO;
@@ -46,8 +46,8 @@ import com.sbinventory.dao.ReasonDAO;
 import com.sbinventory.dao.StockHistoryDAO;
 import com.sbinventory.dao.StockTypeDAO;
 import com.sbinventory.dao.StorageDAO;
-import com.sbinventory.dao.SubDeptDAO;
-import com.sbinventory.dao.SubLocDAO;
+import com.sbinventory.dao.SubDepartmentDAO;
+import com.sbinventory.dao.SubLocationDAO;
 import com.sbinventory.dao.TransferHistoryDAO;
 import com.sbinventory.dao.TransferTypeDAO;
 import com.sbinventory.dao.UserAccountDAO;
@@ -56,11 +56,11 @@ import com.sbinventory.fileio.ReadCSVFileExample;
 import com.sbinventory.model.AppRole;
 import com.sbinventory.model.AssetReqs;
 import com.sbinventory.model.Brand;
-import com.sbinventory.model.Dept;
+import com.sbinventory.model.Department;
 import com.sbinventory.model.DisposalHistory;
 import com.sbinventory.model.Hardware;
 import com.sbinventory.model.ITF;
-import com.sbinventory.model.MainLoc;
+import com.sbinventory.model.MainLocation;
 import com.sbinventory.model.Organization;
 import com.sbinventory.model.PartNo;
 import com.sbinventory.model.Product;
@@ -71,8 +71,8 @@ import com.sbinventory.model.Reason;
 import com.sbinventory.model.StockHistory;
 import com.sbinventory.model.StockType;
 import com.sbinventory.model.Storage;
-import com.sbinventory.model.SubDept;
-import com.sbinventory.model.SubLoc;
+import com.sbinventory.model.SubDepartment;
+import com.sbinventory.model.SubLocation;
 import com.sbinventory.model.TransferHistory;
 import com.sbinventory.model.TransferType;
 import com.sbinventory.model.UploadForm;
@@ -93,16 +93,16 @@ public class StockController {
 	private OrganizationDAO organizationDAO;
 	
 	@Autowired
-	private DeptDAO deptDAO;
+	private DepartmentDAO deptDAO;
 	
 	@Autowired
-	private SubDeptDAO subdeptDAO;
+	private SubDepartmentDAO subdeptDAO;
 	
 	@Autowired
-	private MainLocDAO mainLocDAO;
+	private MainLocationDAO mainLocDAO;
 	
 	@Autowired
-	private SubLocDAO subLocDAO;
+	private SubLocationDAO subLocDAO;
 	
 	@Autowired
 	private HardwareDAO hardwareDAO;
@@ -287,10 +287,10 @@ public class StockController {
 		/*List<Organization> orgs = organizationDAO.findAll();
 		model.addAttribute("orgs",orgs);*/
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAll();
+		List<SubLocation> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs",sublocs);
 		
 		model.addAttribute("startdate", startdate);
@@ -324,19 +324,19 @@ public class StockController {
 		UploadForm UploadForm = new UploadForm();
 	    model.addAttribute("UploadForm", UploadForm);
 	    
-	    List<MainLoc> mainlocs = mainLocDAO.findAll();
+	    List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAll();
+		List<SubLocation> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
 		List<Organization> organizations = organizationDAO.findAll();
 		model.addAttribute("organizations", organizations);
 		
-		List<Dept> depts = deptDAO.findAll();
+		List<Department> depts = deptDAO.findAll();
 		model.addAttribute("depts", depts);
 		
-		List<SubDept> subdepts = subdeptDAO.findAll();
+		List<SubDepartment> subdepts = subdeptDAO.findAll();
 		model.addAttribute("subdepts", subdepts);
 		
 		String message = (String)model.asMap().get("message");
@@ -424,16 +424,16 @@ public class StockController {
 		List<Organization> orgs = organizationDAO.findAll();
 		model.addAttribute("orgs", orgs);
 		
-		List<Dept> depts = deptDAO.findAll();
+		List<Department> depts = deptDAO.findAll();
 		model.addAttribute("depts", depts);
 		
-		List<SubDept> subdepts = subdeptDAO.findAll();
+		List<SubDepartment> subdepts = subdeptDAO.findAll();
 		model.addAttribute("subdepts", subdepts);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAll();
+		List<SubLocation> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
 		List<Product> products = productDAO.findAll();
@@ -465,10 +465,10 @@ public class StockController {
 		
 		model.addAttribute("user", user);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAll();
+		List<SubLocation> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
 		List<TransferType> transfertypes = transferTypeDAO.findAll();
@@ -497,10 +497,10 @@ public class StockController {
 		List<DisposalHistory> disposalhistories = disposalHistoryDAO.findAll();
 		model.addAttribute("disposalhistories", disposalhistories);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAll();
+		List<SubLocation> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
 		List<Product> products = productDAO.findAll();
@@ -518,10 +518,10 @@ public class StockController {
 		List<RMA> rmas = rmaDAO.findAll();
 		model.addAttribute("rmas", rmas);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAll();
+		List<SubLocation> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
 		List<Product> products = productDAO.findAll();
@@ -539,10 +539,10 @@ public class StockController {
 		List<ITF> itfs = itfDAO.findAll();
 		model.addAttribute("itfs", itfs);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAll();
+		List<SubLocation> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
 		List<Product> products = productDAO.findAll();
@@ -560,10 +560,10 @@ public class StockController {
 		List<AssetReqs> assetreqs = assetReqsDAO.findAll();
 		model.addAttribute("assetreqs", assetreqs);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAll();
+		List<SubLocation> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
 		List<Product> products = productDAO.findAll();
@@ -680,10 +680,10 @@ public class StockController {
 		List<Organization> orgs = organizationDAO.findAll();
 		model.addAttribute("orgs",orgs);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAll();
+		List<SubLocation> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs",sublocs);
 		
 		StockHistory sh =new StockHistory();
@@ -747,10 +747,10 @@ public class StockController {
 		List<Organization> orgs = organizationDAO.findAll();
 		model.addAttribute("orgs",orgs);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAll();
+		List<SubLocation> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs",sublocs);
 		
 		StockHistory sh =new StockHistory();
@@ -826,16 +826,16 @@ public class StockController {
 		List<Organization> orgs= organizationDAO.findAll();
 		model.addAttribute("orgs",orgs);
 		
-		List<Dept> depts= deptDAO.findAllByOrgid(stockhistory.getOrgid());
+		List<Department> depts= deptDAO.findAllByOrgid(stockhistory.getOrgid());
 		model.addAttribute("depts",depts);
 		
-		List<SubDept> subdepts = subdeptDAO.findAllByDeptid(stockhistory.getDeptid());
+		List<SubDepartment> subdepts = subdeptDAO.findAllByDeptid(stockhistory.getDeptid());
 		model.addAttribute("subdepts",subdepts);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(stockhistory.getMainlocid());
+		List<SubLocation> sublocs = subLocDAO.findAllByMainlocid(stockhistory.getMainlocid());
 		model.addAttribute("sublocs",sublocs);
 		
 		return "stock/editStockHistory";
@@ -917,17 +917,17 @@ public class StockController {
 		List<Organization> organizations = organizationDAO.findAll(user.getOrgid());
 		model.addAttribute("organizations", organizations);
 		
-		List<Dept> depts = deptDAO.findAllByOrgid(user.getOrgid(), user.getDeptid());
+		List<Department> depts = deptDAO.findAllByOrgid(user.getOrgid(), user.getDeptid());
 		model.addAttribute("depts", depts);
 		
-		List<SubDept> subdepts = subdeptDAO.findAllByDeptid(user.getDeptid(), user.getSubdeptid());
+		List<SubDepartment> subdepts = subdeptDAO.findAllByDeptid(user.getDeptid(), user.getSubdeptid());
 		model.addAttribute("subdepts", subdepts);
 		
 		//** should restrict the mainloc and subloc, only allow those who is not belong to user
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAll();
+		List<SubLocation> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
 		TransferHistory transferhistory = new TransferHistory();
@@ -965,46 +965,46 @@ public class StockController {
 			if(transfertype == 1) {
 				Organization src = organizationDAO.findOne(partno.getOrgid());
 				Organization des = organizationDAO.findOne(th.getDesorgid());
-				source = src.getOrgname();
-				dest = des.getOrgname();
+				source = src.getName();
+				dest = des.getName();
 				desorg = th.getDesorgid();
 			} else if(transfertype == 2) {
-				Dept src = deptDAO.findOne(partno.getDeptid());
-				Dept des = deptDAO.findOne(th.getDesdeptid());
-				source = src.getDeptname();
-				dest = des.getDeptname();
-				desorg = des.getOrgid();
+				Department src = deptDAO.findOne(partno.getDeptid());
+				Department des = deptDAO.findOne(th.getDesdeptid());
+				source = src.getName();
+				dest = des.getName();
+				desorg = des.getOrganizationId();
 				desdept = th.getDesdeptid();
 				
 			} else if(transfertype == 3) {
-				SubDept src = subdeptDAO.findOne(partno.getSubdeptid());
-				SubDept des = subdeptDAO.findOne(th.getDessubdeptid());
-				source = src.getSubdeptname();
-				dest = des.getSubdeptname();
-				Dept d = deptDAO.findOne(des.getDeptid());
-				desorg = d.getOrgid();
-				desdept = des.getDeptid();
+				SubDepartment src = subdeptDAO.findOne(partno.getSubdeptid());
+				SubDepartment des = subdeptDAO.findOne(th.getDessubdeptid());
+				source = src.getName();
+				dest = des.getName();
+				Department d = deptDAO.findOne(des.getDepartmentId());
+				desorg = d.getOrganizationId();
+				desdept = des.getDepartmentId();
 				dessubdept = th.getDessubdeptid();
 				
 			} else if(transfertype == 4) {
-				MainLoc src = mainLocDAO.findOne(partno.getMainlocid());
-				MainLoc des = mainLocDAO.findOne(th.getDesmainlocid());
-				source = src.getMainlocname();
-				dest = des.getMainlocname();
+				MainLocation src = mainLocDAO.findOne(partno.getMainlocid());
+				MainLocation des = mainLocDAO.findOne(th.getDesmainlocid());
+				source = src.getName();
+				dest = des.getName();
 				desorg = partno.getOrgid();
 				desdept = partno.getDeptid();
 				dessubdept = partno.getSubdeptid();
 				desmainloc = th.getDesmainlocid();
 				
 			} else if(transfertype == 5) {
-				SubLoc src = subLocDAO.findOne(partno.getSublocid());
-				SubLoc des = subLocDAO.findOne(th.getDessublocid());
-				source = src.getSublocname();
-				dest = des.getSublocname();
+				SubLocation src = subLocDAO.findOne(partno.getSublocid());
+				SubLocation des = subLocDAO.findOne(th.getDessublocid());
+				source = src.getName();
+				dest = des.getName();
 				desorg = partno.getOrgid();
 				desdept = partno.getDeptid();
 				dessubdept = partno.getSubdeptid();
-				desmainloc = des.getMainlocid();
+				desmainloc = des.getMainLocationId();
 				dessubloc = th.getDessublocid();
 			}
 			
@@ -1048,21 +1048,21 @@ public class StockController {
 		List<Organization> organizations = organizationDAO.findAll();
 		model.addAttribute("organizations", organizations);
 		
-		List<Dept> depts = deptDAO.findAllByOrgid(transferhistory.getDesorgid());
+		List<Department> depts = deptDAO.findAllByOrgid(transferhistory.getDesorgid());
 		model.addAttribute("depts", depts);
 		
 		if(transferhistory.getDesdeptid()!=null) {
-			List<SubDept> subdepts = subdeptDAO.findAllByDeptid(transferhistory.getDesdeptid());
+			List<SubDepartment> subdepts = subdeptDAO.findAllByDeptid(transferhistory.getDesdeptid());
 			model.addAttribute("subdepts", subdepts);
 		} else {
 			model.addAttribute("subdepts", null);
 		}
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
 		if(transferhistory.getDesmainlocid()!=null) {
-			List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(transferhistory.getDesmainlocid());
+			List<SubLocation> sublocs = subLocDAO.findAllByMainlocid(transferhistory.getDesmainlocid());
 			model.addAttribute("sublocs", sublocs);
 		} else {
 //			List<SubLoc> sublocs = subLocDAO.findAll();
@@ -1136,25 +1136,25 @@ public class StockController {
 		List<Organization> org = organizationDAO.findAll();
 		model.addAttribute("org", org);
 		
-		List<Dept> dpt = deptDAO.findAll();
+		List<Department> dpt = deptDAO.findAll();
 		model.addAttribute("dpt", dpt);
 		
-		List<SubDept> sbdpt = subdeptDAO.findAll();
+		List<SubDepartment> sbdpt = subdeptDAO.findAll();
 		model.addAttribute("sbdpt", sbdpt);
 		
 		List<Organization> organizations = organizationDAO.findAll(transferhistory.getSrcorgid());
 		model.addAttribute("organizations", organizations);
 		
-		List<Dept> depts = deptDAO.findAllByOrgid(transferhistory.getSrcorgid(), transferhistory.getSrcdeptid());
+		List<Department> depts = deptDAO.findAllByOrgid(transferhistory.getSrcorgid(), transferhistory.getSrcdeptid());
 		model.addAttribute("depts", depts);
 		
-		List<SubDept> subdepts = subdeptDAO.findAllByDeptid(transferhistory.getSrcdeptid(), transferhistory.getSrcsubdeptid());
+		List<SubDepartment> subdepts = subdeptDAO.findAllByDeptid(transferhistory.getSrcdeptid(), transferhistory.getSrcsubdeptid());
 		model.addAttribute("subdepts", subdepts);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAll();
+		List<SubLocation> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
 		model.addAttribute("type", type);
@@ -1172,43 +1172,43 @@ public class StockController {
 		if(transfertype == 1) {
 			Organization src = organizationDAO.findOne(th.getSrcorgid());
 			Organization des = organizationDAO.findOne(th.getDesorgid());
-			source = src.getOrgname();
-			dest = des.getOrgname();
+			source = src.getName();
+			dest = des.getName();
 			desorg = th.getDesorgid();
 		} else if(transfertype == 2) {
-			Dept src = deptDAO.findOne(th.getSrcdeptid());
-			Dept des = deptDAO.findOne(th.getDesdeptid());
-			source = src.getDeptname();
-			dest = des.getDeptname();
-			desorg = des.getOrgid();
+			Department src = deptDAO.findOne(th.getSrcdeptid());
+			Department des = deptDAO.findOne(th.getDesdeptid());
+			source = src.getName();
+			dest = des.getName();
+			desorg = des.getOrganizationId();
 			desdept = th.getDesdeptid();
 		} else if(transfertype == 3) {
-			SubDept src = subdeptDAO.findOne(th.getSrcsubdeptid());
-			SubDept des = subdeptDAO.findOne(th.getDessubdeptid());
-			source = src.getSubdeptname();
-			dest = des.getSubdeptname();
-			Dept d = deptDAO.findOne(des.getDeptid());
-			desorg = d.getOrgid();
-			desdept = des.getDeptid();
+			SubDepartment src = subdeptDAO.findOne(th.getSrcsubdeptid());
+			SubDepartment des = subdeptDAO.findOne(th.getDessubdeptid());
+			source = src.getName();
+			dest = des.getName();
+			Department d = deptDAO.findOne(des.getDepartmentId());
+			desorg = d.getOrganizationId();
+			desdept = des.getDepartmentId();
 			dessubdept = th.getDessubdeptid();
 		} else if(transfertype == 4) {
-			MainLoc src = mainLocDAO.findOne(th.getSrcmainlocid());
-			MainLoc des = mainLocDAO.findOne(th.getDesmainlocid());
-			source = src.getMainlocname();
-			dest = des.getMainlocname();
+			MainLocation src = mainLocDAO.findOne(th.getSrcmainlocid());
+			MainLocation des = mainLocDAO.findOne(th.getDesmainlocid());
+			source = src.getName();
+			dest = des.getName();
 			desorg = th.getSrcorgid();
 			desdept = th.getSrcdeptid();
 			dessubdept = th.getSrcsubdeptid();
 			desmainloc = th.getDesmainlocid();
 		} else if(transfertype == 5) {
-			SubLoc src = subLocDAO.findOne(th.getSrcsublocid());
-			SubLoc des = subLocDAO.findOne(th.getDessublocid());
-			source = src.getSublocname();
-			dest = des.getSublocname();
+			SubLocation src = subLocDAO.findOne(th.getSrcsublocid());
+			SubLocation des = subLocDAO.findOne(th.getDessublocid());
+			source = src.getName();
+			dest = des.getName();
 			desorg = th.getSrcorgid();
 			desdept = th.getSrcdeptid();
 			dessubdept = th.getSrcsubdeptid();
-			desmainloc = des.getMainlocid();
+			desmainloc = des.getMainLocationId();
 			dessubloc = th.getDessublocid();
 		}
 		
@@ -1272,10 +1272,10 @@ public class StockController {
 		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAll();
+		List<SubLocation> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
 		model.addAttribute("dh",new DisposalHistory());
@@ -1325,10 +1325,10 @@ public class StockController {
 		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(disposalhistory.getMainlocid());
+		List<SubLocation> sublocs = subLocDAO.findAllByMainlocid(disposalhistory.getMainlocid());
 		model.addAttribute("sublocs", sublocs);
 			
 		return "stock/editDisposalHistory";
@@ -1441,7 +1441,7 @@ public class StockController {
 		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
 		List<RMAItemReason> rmaitemreasons = rmaItemReasonDAO.findAll();
@@ -1465,7 +1465,7 @@ public class StockController {
 		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 			
 		return "stock/editRMA";
@@ -1582,10 +1582,10 @@ public class StockController {
 		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAll();
+		List<SubLocation> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
 		model.addAttribute("itf",new ITF());
@@ -1625,10 +1625,10 @@ public class StockController {
 		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(itf.getMainlocid());
+		List<SubLocation> sublocs = subLocDAO.findAllByMainlocid(itf.getMainlocid());
 		model.addAttribute("sublocs", sublocs);
 			
 		return "stock/editITF";
@@ -1699,10 +1699,10 @@ public class StockController {
 		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAll();
+		List<SubLocation> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs", sublocs);
 		
 		model.addAttribute("assetreqs",new AssetReqs());
@@ -1738,10 +1738,10 @@ public class StockController {
 		List<Product> products = productDAO.findAll();
 		model.addAttribute("products", products);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs", mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(assetreq.getMainlocid());
+		List<SubLocation> sublocs = subLocDAO.findAllByMainlocid(assetreq.getMainlocid());
 		model.addAttribute("sublocs", sublocs);
 			
 		return "stock/editAssetReqs";

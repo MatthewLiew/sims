@@ -11,10 +11,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.sbinventory.mapper.AppRoleMapper;
-import com.sbinventory.mapper.DeptMapper;
+import com.sbinventory.mapper.DepartmentMapper;
 import com.sbinventory.mapper.TransferHistoryMapper;
 import com.sbinventory.model.AppRole;
-import com.sbinventory.model.Dept;
+import com.sbinventory.model.Department;
  
 @Repository
 @Transactional

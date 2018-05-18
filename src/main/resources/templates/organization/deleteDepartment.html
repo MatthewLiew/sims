@@ -8,16 +8,14 @@
 	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
 	
 	<div th:object="${dept}">
-		<input type="hidden" name="deptid" th:field="*{deptid}" th:value="${dept.deptid}" />
-		<input type="hidden" name="deptname" th:field="*{deptname}" th:value="${dept.deptname}" />
+		<input type="hidden" name="deptid" th:field="*{id}" />
+		<input type="hidden" name="deptname" th:field="*{name}" />
 		
 		<div class="form-group">
 	        <div class="form-row">
 	            <div class="col-md-12">
 	                Are you sure to Delete Following Department ? <br/>
-	                Department Code - <b><span th:text="*{deptcode}"></span></b>
-	                										   	  <br/>
-	                Department Name - <b><span th:text="*{deptname}"></span></b>
+	                Department Name - <b><span th:text="*{name}"></span></b>
 	            </div>
 	        </div>
 	    </div>

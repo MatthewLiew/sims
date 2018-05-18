@@ -15,27 +15,27 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.sbinventory.dao.MainLocDAO;
-import com.sbinventory.dao.SubLocDAO;
+import com.sbinventory.dao.MainLocationDAO;
+import com.sbinventory.dao.SubLocationDAO;
 //import com.sbinventory.dao.UserRoleDAO;
-import com.sbinventory.model.MainLoc;
-import com.sbinventory.model.SubLoc;
+import com.sbinventory.model.MainLocation;
+import com.sbinventory.model.SubLocation;
 
 @Controller
 public class LocationController {
 	
 	@Autowired
-	private MainLocDAO mainLocDAO;
+	private MainLocationDAO mainLocationDAO;
 	
 	@Autowired
-	private SubLocDAO subLocDAO;
+	private SubLocationDAO subLocationDAO;
 	
 	/**************** INFORMATION PORTAL ***********************/
 	@GetMapping(value= "/mainlocation")
 	public String getMainlocation(Model model, Principal principal) {
 		
-		List<MainLoc> mainlocs=mainLocDAO.findAll();
-		model.addAttribute("mainlocs",mainlocs);
+		List<MainLocation> mainlocations = mainLocationDAO.findAll();
+		model.addAttribute("mainlocations", mainlocations);
 		
 //		User loginedUser = (User) ((Authentication) principal).getPrincipal();
 //		UserAccount useracc = userAccountDAO.getUserName(loginedUser.getUsername());
@@ -51,15 +51,13 @@ public class LocationController {
 	
 	@GetMapping(value= "/sublocation")
 	public String getSublocation(Model model, Principal principal) {
-		List<MainLoc> mainlocs=mainLocDAO.findAll();
-		model.addAttribute("mainlocs",mainlocs);
 		
 //		User loginedUser = (User) ((Authentication) principal).getPrincipal();
 //		UserAccount useracc = userAccountDAO.getUserName(loginedUser.getUsername());
 //		System.out.println("User ID: "+useracc.getUserid());
 			
-		List<SubLoc> sublocs=subLocDAO.findAll();
-		model.addAttribute("sublocs",sublocs);
+		List<SubLocation> sublocations = subLocationDAO.findAll();
+		model.addAttribute("sublocations",sublocations);
 		
 		String message = (String)model.asMap().get("message");
 		model.addAttribute("message", message);
@@ -74,17 +72,20 @@ public class LocationController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		model.addAttribute("mainloc",new MainLoc());
+		model.addAttribute("ml",new MainLocation());
 			
 		return "location/createMainLoc";
 	}
 	
 	@PostMapping(value= "/mainlocation/createMainLoc")
-	public String postCreateMainLoc(@ModelAttribute MainLoc mainloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
-		String errorString=mainLocDAO.create(mainloc.getMainlocname());
+	public String postCreateMainLoc(@ModelAttribute MainLocation mainloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+		String errorString=mainLocationDAO.create(mainloc.getName());
 		
 		if(errorString==null) {
-			String message="Main Location - "+ mainloc.getMainlocname() +" created successfully";
+			int mainLocationId = mainLocationDAO.getIdentCurrent();
+			subLocationDAO.create("", "default sub location of "+mainloc.getName(), mainLocationId);
+			
+			String message="Main Location - "+ mainloc.getName() +" created successfully";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {
@@ -99,18 +100,18 @@ public class LocationController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		MainLoc mainloc = mainLocDAO.findOne(mainlocid);
-		model.addAttribute("mainloc",mainloc);
+		MainLocation ml = mainLocationDAO.findOne(mainlocid);
+		model.addAttribute("ml", ml);
 		    
 		return "location/editMainLoc";
 	}
 		
 	@PostMapping(value= "/mainlocation/editMainLoc")
-	public String postEditMainLoc(@ModelAttribute MainLoc mainloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
-		String errorString=mainLocDAO.update(mainloc.getMainlocid(), mainloc.getMainlocname());
+	public String postEditMainLoc(@ModelAttribute MainLocation mainloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+		String errorString=mainLocationDAO.update(mainloc.getId(), mainloc.getName());
 
 		if(errorString==null) {
-			String message="Main Location - "+ mainloc.getMainlocname() +" updated successfully";
+			String message="Main Location - "+ mainloc.getName() +" updated successfully";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {
@@ -125,19 +126,19 @@ public class LocationController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		MainLoc mainloc = mainLocDAO.findOne(mainlocid);
-		model.addAttribute("mainloc", mainloc);
+		MainLocation ml = mainLocationDAO.findOne(mainlocid);
+		model.addAttribute("ml", ml);
 		
 		return "location/deleteMainLoc";
 	}
 	
 	@PostMapping(value= "/mainlocation/deleteMainLoc")
-	public String getDeleteMainLoc(@ModelAttribute MainLoc mainloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+	public String getDeleteMainLoc(@ModelAttribute MainLocation mainloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
-		String errorString = mainLocDAO.delete(mainloc.getMainlocid());
+		String errorString = mainLocationDAO.delete(mainloc.getId());
 		
 		if(errorString==null) {
-			String message="Main Location - "+ mainloc.getMainlocname() +" has deleted";
+			String message="Main Location - "+ mainloc.getName() +" has deleted";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {
@@ -152,20 +153,20 @@ public class LocationController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		List<MainLoc> mainlocs= mainLocDAO.findAll();
-		model.addAttribute("mainlocs",mainlocs);
+		List<MainLocation> mainlocations= mainLocationDAO.findAll();
+		model.addAttribute("mainlocations", mainlocations);
 		
-		model.addAttribute("subloc",new SubLoc());
+		model.addAttribute("sublocation",new SubLocation());
 			
 		return "location/createSubLoc";
 	}
 		
 	@PostMapping(value= "/sublocation/createSubLoc")
-	public String postCreateSubLoc(@ModelAttribute SubLoc subloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
-		String errorString=subLocDAO.create(subloc.getSublocname(), subloc.getMainlocid());
+	public String postCreateSubLoc(@ModelAttribute SubLocation subloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+		String errorString=subLocationDAO.create(subloc.getName(), subloc.getDescription(), subloc.getMainLocationId());
 		
 		if(errorString==null) {
-			String message="Sub Location - "+ subloc.getSublocname() +" created successfully";
+			String message="Sub Location - "+ subloc.getName() +" created successfully";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {
@@ -179,21 +180,21 @@ public class LocationController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		SubLoc subloc = subLocDAO.findOne(sublocid);
-		model.addAttribute("subloc",subloc);
+		SubLocation sl = subLocationDAO.findOne(sublocid);
+		model.addAttribute("sl", sl);
 		
-		MainLoc mainloc = mainLocDAO.findOne(subloc.getMainlocid());
-		model.addAttribute("mainloc",mainloc);
+		MainLocation ml = mainLocationDAO.findOne(sl.getMainLocationId());
+		model.addAttribute("ml", ml);
 		    
 		return "location/editSubLoc";
 	}
 		
 	@PostMapping(value= "/sublocation/editSubLoc")
-	public String postEditSubLoc(@ModelAttribute SubLoc subloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
-		String errorString=subLocDAO.update(subloc.getSublocid(), subloc.getSublocname());
+	public String postEditSubLoc(@ModelAttribute SubLocation subloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+		String errorString=subLocationDAO.update(subloc.getId(), subloc.getName(), subloc.getDescription());
 		
 		if(errorString==null) {
-			String message="Sub Location - "+ subloc.getSublocname() +" updated successfully";
+			String message="Sub Location - "+ subloc.getName() +" updated successfully";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {
@@ -207,19 +208,19 @@ public class LocationController {
 		String sourceURL = request.getHeader("Referer");
 		model.addAttribute("sourceURL", sourceURL);
 		
-		SubLoc subloc = subLocDAO.findOne(sublocid);
-		model.addAttribute("subloc", subloc);
+		SubLocation sb = subLocationDAO.findOne(sublocid);
+		model.addAttribute("sb", sb);
 	
 		return "location/deleteSubLoc";
 	}
 	
 	@PostMapping(value= "/sublocation/deleteSubLoc")
-	public String getDeleteSubLoc(@ModelAttribute SubLoc subloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
+	public String getDeleteSubLoc(@ModelAttribute SubLocation subloc, Model model, @RequestParam String sourceURL, RedirectAttributes ra) {
 		
-		String errorString = subLocDAO.delete(subloc.getSublocid());
+		String errorString = subLocationDAO.delete(subloc.getId());
 		
 		if(errorString==null) {
-			String message="Sub Location - "+ subloc.getSublocname() +" has deleted";
+			String message="Sub Location - "+ subloc.getName() +" has deleted";
 			ra.addFlashAttribute("message", message);
 			return "redirect:"+sourceURL;
 		} else {

@@ -92,8 +92,8 @@
 <!-- 					             	<td th:if="${pn.status}!='Available'" style="color:green;" th:text="${pn.status}"></td> -->
 					             	<!-- <td th:text="${pn.customername}"></td>
 					             	<td th:text="${pn.invoiceno}"></td> -->
-					             	<td th:each="list: ${mainlocs}" th:if="${list.isMainLocName(pn.mainlocid)}" th:text="${list.mainlocname}"></td>
-					             	<td th:each="list: ${sublocs}" th:if="${list.isSubLocName(pn.sublocid)}" th:text="${list.sublocname}"></td>
+					             	<td th:each="list: ${mainlocs}" th:if="${list.isMainLocation(pn.mainlocid)}" th:text="${list.name}"></td>
+					             	<td th:each="list: ${sublocs}" th:if="${list.isSubLocation(pn.sublocid)}" th:text="${list.name}"></td>
 					             	<!-- <td th:each="list: ${organizations}" th:if="${list.isOrgname(pn.orgid)}" th:text="${list.orgname}"></td>
 					             	<td th:each="list: ${depts}" th:if="${list.isDeptname(pn.deptid)}" th:text="${list.deptname}"></td>
 					             	<td th:each="list: ${subdepts}" th:if="${list.isSubdeptname(pn.subdeptid)}" th:text="${list.subdeptname}"></td> -->

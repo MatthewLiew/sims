@@ -16,27 +16,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sbinventory.dao.BrandDAO;
-import com.sbinventory.dao.DeptDAO;
+import com.sbinventory.dao.DepartmentDAO;
 import com.sbinventory.dao.HardwareDAO;
-import com.sbinventory.dao.MainLocDAO;
+import com.sbinventory.dao.MainLocationDAO;
 import com.sbinventory.dao.OrganizationDAO;
 import com.sbinventory.dao.PartNoDAO;
 import com.sbinventory.dao.ProductDAO;
 import com.sbinventory.dao.StockHistoryDAO;
 import com.sbinventory.dao.StockTypeDAO;
-import com.sbinventory.dao.SubDeptDAO;
-import com.sbinventory.dao.SubLocDAO;
+import com.sbinventory.dao.SubDepartmentDAO;
+import com.sbinventory.dao.SubLocationDAO;
 //import com.sbinventory.dao.UserRoleDAO;
 import com.sbinventory.model.Brand;
-import com.sbinventory.model.Dept;
+import com.sbinventory.model.Department;
 import com.sbinventory.model.Hardware;
-import com.sbinventory.model.MainLoc;
+import com.sbinventory.model.MainLocation;
 import com.sbinventory.model.Organization;
 import com.sbinventory.model.PartNo;
 import com.sbinventory.model.PartNoForm;
 import com.sbinventory.model.Product;
-import com.sbinventory.model.SubDept;
-import com.sbinventory.model.SubLoc;
+import com.sbinventory.model.SubDepartment;
+import com.sbinventory.model.SubLocation;
 import com.sbinventory.utils.DateTime;
 import com.sbinventory.utils.StockQuantity;
 
@@ -59,19 +59,19 @@ public class ProductController {
 	private StockTypeDAO stockTypeDAO;
 	
 	@Autowired
-	private MainLocDAO mainLocDAO;
+	private MainLocationDAO mainLocDAO;
 	
 	@Autowired
-	private SubLocDAO subLocDAO;
+	private SubLocationDAO subLocDAO;
 	
 	@Autowired
 	private OrganizationDAO organizationDAO;
 	
 	@Autowired
-	private DeptDAO deptDAO;
+	private DepartmentDAO deptDAO;
 	
 	@Autowired
-	private SubDeptDAO subdeptDAO;
+	private SubDepartmentDAO subdeptDAO;
 	
 	@Autowired
 	private StockHistoryDAO stockHistoryDAO;
@@ -310,10 +310,10 @@ public class ProductController {
 		List<Organization> orgs = organizationDAO.findAll();
 		model.addAttribute("orgs",orgs);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAll();
+		List<SubLocation> sublocs = subLocDAO.findAll();
 		model.addAttribute("sublocs",sublocs);
 		
 		PartNo partno = new PartNo();
@@ -426,16 +426,16 @@ public class ProductController {
 		List<Organization> orgs= organizationDAO.findAll();
 		model.addAttribute("orgs",orgs);
 		
-		List<Dept> depts= deptDAO.findAllByOrgid(partno.getOrgid());
+		List<Department> depts= deptDAO.findAllByOrgid(partno.getOrgid());
 		model.addAttribute("depts",depts);
 		
-		List<SubDept> subdepts = subdeptDAO.findAllByDeptid(partno.getDeptid());
+		List<SubDepartment> subdepts = subdeptDAO.findAllByDeptid(partno.getDeptid());
 		model.addAttribute("subdepts",subdepts);
 		
-		List<MainLoc> mainlocs = mainLocDAO.findAll();
+		List<MainLocation> mainlocs = mainLocDAO.findAll();
 		model.addAttribute("mainlocs",mainlocs);
 		
-		List<SubLoc> sublocs = subLocDAO.findAllByMainlocid(partno.getMainlocid());
+		List<SubLocation> sublocs = subLocDAO.findAllByMainlocid(partno.getMainlocid());
 		model.addAttribute("sublocs",sublocs);
 		
 		Product product = productDAO.findOne(partno.getProductid());

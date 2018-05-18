@@ -6,7 +6,7 @@
       	
    	<p class="error" style="color: red;" th:text="${errorString}" ></p>
   	<input type="hidden" name="sourceURL" th:value="${sourceURL}" />
-	<div th:object="${subdept}">	
+	<div th:object="${sd}">	
 		<div class="form-group">
 	        <div class="form-row">
 	            <div class="col-md-3">
@@ -15,7 +15,7 @@
 	            <div class="col-md-6">
 		            <select class="form-control" name="orgid" onchange="department_select('CreateSubDepartment',this.value);" required>
 			          	<option value="">Select Organization</option>
-			           	<option th:each="list: ${orgs}" th:value="${list.orgid}" th:text="${list.orgname}"></option>
+			           	<option th:each="o: ${organizations}" th:value="${o.id}" th:text="${o.name}"></option>
 		       		</select>
 	            </div>
 	        </div>
@@ -27,24 +27,9 @@
 	                <label for="OrganizationLabel">Department</label>
 	            </div>
 	            <div class="col-md-6">
-		            <select class="form-control dept_select" name="deptid" th:field="*{deptid}" required>
-		          		<option value="">Select Department</option>
+		            <select class="form-control dept_select" name="deptid" th:field="*{departmentId}" required>
+<!-- 		          		<option value="">Select Department</option> -->
 		       		</select>
-	            </div>
-	        </div>
-	    </div>
-	            
-	 	<div class="form-group">
-	        <div class="form-row">
-	            <div class="col-md-3">
-	                <label for="SubDepartmentCodeLabel">Sub Department Code</label>
-	            </div>
-	            <div class="col-md-6"> 
-	            	<input class="form-control subdeptcode" id="subdeptcode" name="subdeptcode" type="text" data-error="Please Enter Sub Department Code" aria-describedby="SubDepartmentCode" placeholder="Enter Sub Department Code" th:field="*{subdeptcode}" value="" onkeyup="subdeptCode('CreateSubDepartment');" required>
-	            </div>
-	            <div class="col-md-3">
-	            	<span class="subdeptcode_status"></span>
-	                <span style="visibility:hidden;"class="subdeptcode_flag" th:text="true"></span>
 	            </div>
 	        </div>
 	    </div>
@@ -52,14 +37,14 @@
 	   	<div class="form-group">
 	        <div class="form-row">
 	            <div class="col-md-3">
-	                <label for="SubDepartmentNameLabel">Sub Department Name</label>
+	                <label for="subdeptname">Sub Department Name</label>
 	            </div>
 	            <div class="col-md-6">
-	            	<input class="form-control subdeptname" id="subdeptname" name="subdeptname" type="text" data-error="Please Enter Sub Department Name" aria-describedby="SubDepartmentName" placeholder="Enter Sub Department Name" th:field="*{subdeptname}" value="" onkeyup="subdeptName('CreateSubDepartment');" required>
+	            	<input class="form-control subdeptname" id="subdeptname" name="subdeptname" type="text" placeholder="Enter Sub Department Name" th:field="*{name}" value="" onkeyup="subdeptName('CreateSubDepartment');" required>
 	            </div>
 	            <div class="col-md-3">
 	            	<span class="subdeptname_status"></span>
-	                <span style="visibility:hidden;"class="subdeptname_flag" th:text="true"></span>
+	                <span style="display:none;"class="subdeptname_flag" th:text="true"></span>
 	            </div>
 	        </div>
 	    </div>
