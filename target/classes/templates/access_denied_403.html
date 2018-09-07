@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org">
+	<head>
+		<title th:text="${title}"></title>
+	</head>
+	<div class="header_ref" th:include="/header"></div>
+	<div class="content-wrapper">
+    	<div class="container-fluid">
+	   		<!-- Breadcrumbs -->
+	    	<ol class="breadcrumb">
+		        <li class="breadcrumb-item">
+		          <a th:href="@{/}">Dashboard</a>
+		        </li>
+		        <li class="breadcrumb-item active">My DashBoard</li>
+	      	</ol>
+	      	<h3 th:if="${message != null}" th:utext="${message}" style="color: red;"></h3>
+     	</div><!-- end of .container-fluid-->
+    </div><!-- end of .content-wrapper-->
+	<div class="footer_ref" th:include="/footer"></div>
+</html>
