@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) {
 
 		try {
-	        http.csrf().disable();
+	        /*http.csrf().disable();*/
 	 
 	        http
 	        	.authorizeRequests()
