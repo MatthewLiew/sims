@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
-Implementation-Title: SbInventory
+Implementation-Title: SIMS
 Implementation-Version: 0.0.1-SNAPSHOT
 Built-By: Dell Dev 2
-Implementation-Vendor-Id: com.sbinventory
-Build-Jdk: 1.8.0_161
+Implementation-Vendor-Id: com.sims
+Build-Jdk: 1.8.0_181
 Implementation-URL: http://projects.spring.io/spring-boot/spring-boot-
- starter-parent/SbInventory/
+ starter-parent/SIMS/
 Created-By: Maven Integration for Eclipse
 
